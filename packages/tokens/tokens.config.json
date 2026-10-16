@@ -1,0 +1,228 @@
+{
+  "prefix": "nxt",
+  "modes": {
+    "color": [
+      "light",
+      "dark"
+    ],
+    "density": [
+      "comfortable",
+      "compact",
+      "spacious"
+    ],
+    "motion": [
+      "full",
+      "reduced"
+    ]
+  },
+  "contrastPairs": [
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.canvas",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.selected",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.canvas",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.muted",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 4.5,
+      "note": "metadata in hovered rows"
+    },
+    {
+      "fg": "semantic.color.text.link",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.inverse",
+      "bg": "semantic.color.bg.inverse",
+      "min": 4.5,
+      "note": "tooltip/toast"
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.bg.primary",
+      "min": 4.5,
+      "note": "primary button"
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.bg.primary-hover",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.bg.primary-pressed",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.on-danger",
+      "bg": "semantic.color.bg.danger",
+      "min": 4.5,
+      "note": "danger button"
+    },
+    {
+      "fg": "semantic.color.text.on-danger",
+      "bg": "semantic.color.bg.danger-hover",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.on-danger",
+      "bg": "semantic.color.bg.danger-pressed",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.danger",
+      "bg": "semantic.color.bg.danger-subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.danger",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5,
+      "note": "field error text"
+    },
+    {
+      "fg": "semantic.color.text.success",
+      "bg": "semantic.color.bg.success-subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.warning",
+      "bg": "semantic.color.bg.warning-subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.info",
+      "bg": "semantic.color.bg.info-subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.border.input",
+      "bg": "semantic.color.bg.surface",
+      "min": 3,
+      "note": "WCAG 1.4.11 non-text"
+    },
+    {
+      "fg": "semantic.color.border.input",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3,
+      "note": "inputs inside dialogs"
+    },
+    {
+      "fg": "semantic.color.border.danger",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.selected",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.focus.ring.color",
+      "bg": "semantic.color.bg.canvas",
+      "min": 3
+    },
+    {
+      "fg": "semantic.focus.ring.color",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.subtle",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.danger",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.success",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.warning",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.info",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.1",
+      "bg": "semantic.color.bg.surface",
+      "min": 3,
+      "note": "chart marks"
+    },
+    {
+      "fg": "semantic.color.data.2",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.3",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.4",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.5",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.6",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.7",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.data.8",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    }
+  ]
+}

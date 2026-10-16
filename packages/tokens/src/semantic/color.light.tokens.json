@@ -1,0 +1,285 @@
+{
+  "semantic": {
+    "color": {
+      "$type": "color",
+      "bg": {
+        "canvas": {
+          "$value": "{primitive.color.neutral.50}",
+          "$description": "Nền ứng dụng, nằm sau mọi surface."
+        },
+        "surface": {
+          "$value": "{primitive.color.white}",
+          "$description": "Nền vùng nội dung: card, bảng, form."
+        },
+        "surface-hover": {
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Nền surface khi hover (hàng bảng, mục danh sách)."
+        },
+        "surface-raised": {
+          "$value": "{primitive.color.white}",
+          "$description": "Nền phần tử nổi: dropdown, popover, dialog."
+        },
+        "subtle": {
+          "$value": "{primitive.color.neutral.50}",
+          "$description": "Nền phụ bên trong surface: header bảng, vùng nhóm."
+        },
+        "muted": {
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Nền nhấn nhẹ: tag trung tính, track của switch/progress."
+        },
+        "disabled": {
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Nền control bị vô hiệu."
+        },
+        "inverse": {
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Nền đảo màu: tooltip, toast."
+        },
+        "overlay": {
+          "$value": "{primitive.color.scrim.light}",
+          "$description": "Lớp phủ phía sau modal/drawer."
+        },
+        "primary": {
+          "$value": "{primitive.color.brand.600}",
+          "$description": "Nền hành động chính (nút primary). Brand slot."
+        },
+        "primary-hover": {
+          "$value": "{primitive.color.brand.700}",
+          "$description": "Nền hành động chính khi hover. Brand slot."
+        },
+        "primary-pressed": {
+          "$value": "{primitive.color.brand.800}",
+          "$description": "Nền hành động chính khi nhấn. Brand slot."
+        },
+        "primary-subtle": {
+          "$value": "{primitive.color.brand.50}",
+          "$description": "Nền nhấn thương hiệu nhẹ (badge, vùng giới thiệu). Brand slot."
+        },
+        "selected": {
+          "$value": "{primitive.color.brand.50}",
+          "$description": "Nền hàng/mục đang được chọn."
+        },
+        "selected-hover": {
+          "$value": "{primitive.color.brand.100}",
+          "$description": "Nền hàng/mục đang được chọn khi hover."
+        },
+        "danger": {
+          "$value": "{primitive.color.red.600}",
+          "$description": "Nền hành động phá huỷ (nút danger)."
+        },
+        "danger-hover": {
+          "$value": "{primitive.color.red.700}",
+          "$description": "Nền hành động phá huỷ khi hover."
+        },
+        "danger-pressed": {
+          "$value": "{primitive.color.red.800}",
+          "$description": "Nền hành động phá huỷ khi nhấn."
+        },
+        "danger-subtle": {
+          "$value": "{primitive.color.red.50}",
+          "$description": "Nền thông báo/trạng thái lỗi."
+        },
+        "success-subtle": {
+          "$value": "{primitive.color.green.50}",
+          "$description": "Nền thông báo/trạng thái thành công."
+        },
+        "warning-subtle": {
+          "$value": "{primitive.color.amber.50}",
+          "$description": "Nền thông báo/trạng thái cảnh báo."
+        },
+        "info-subtle": {
+          "$value": "{primitive.color.blue.50}",
+          "$description": "Nền thông báo/trạng thái thông tin."
+        },
+        "transparent": {
+          "$value": "{primitive.color.transparent}",
+          "$description": "Không có nền (nút ghost, vùng trong suốt)."
+        }
+      },
+      "text": {
+        "default": {
+          "$value": "{primitive.color.neutral.900}",
+          "$description": "Chữ chính."
+        },
+        "strong": {
+          "$value": "{primitive.color.neutral.950}",
+          "$description": "Tiêu đề, giá trị cần nhấn mạnh."
+        },
+        "subtle": {
+          "$value": "{primitive.color.neutral.600}",
+          "$description": "Chữ phụ: mô tả, metadata, placeholder (vẫn ≥ 4.5:1)."
+        },
+        "disabled": {
+          "$value": "{primitive.color.neutral.400}",
+          "$description": "Chữ của control bị vô hiệu (WCAG không yêu cầu tương phản)."
+        },
+        "inverse": {
+          "$value": "{primitive.color.white}",
+          "$description": "Chữ trên nền inverse."
+        },
+        "link": {
+          "$value": "{primitive.color.brand.600}",
+          "$description": "Liên kết. Brand slot."
+        },
+        "link-hover": {
+          "$value": "{primitive.color.brand.700}",
+          "$description": "Liên kết khi hover. Brand slot."
+        },
+        "on-primary": {
+          "$value": "{primitive.color.white}",
+          "$description": "Chữ trên nền primary. Brand slot."
+        },
+        "on-danger": {
+          "$value": "{primitive.color.white}",
+          "$description": "Chữ trên nền danger."
+        },
+        "danger": {
+          "$value": "{primitive.color.red.700}",
+          "$description": "Chữ lỗi, giá trị âm."
+        },
+        "success": {
+          "$value": "{primitive.color.green.700}",
+          "$description": "Chữ thành công."
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.700}",
+          "$description": "Chữ cảnh báo."
+        },
+        "info": {
+          "$value": "{primitive.color.blue.700}",
+          "$description": "Chữ thông tin."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{primitive.color.neutral.200}",
+          "$description": "Viền card, đường phân tách."
+        },
+        "subtle": {
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Đường kẻ nhẹ giữa các hàng."
+        },
+        "strong": {
+          "$value": "{primitive.color.neutral.300}",
+          "$description": "Viền cần nhấn mạnh hơn default."
+        },
+        "input": {
+          "$value": "{primitive.color.neutral.500}",
+          "$description": "Viền control nhập liệu (≥ 3:1, WCAG 1.4.11)."
+        },
+        "input-hover": {
+          "$value": "{primitive.color.neutral.700}",
+          "$description": "Viền control nhập liệu khi hover."
+        },
+        "danger": {
+          "$value": "{primitive.color.red.600}",
+          "$description": "Viền control có lỗi."
+        },
+        "selected": {
+          "$value": "{primitive.color.brand.600}",
+          "$description": "Viền phần tử đang chọn/đang active. Brand slot."
+        },
+        "transparent": {
+          "$value": "{primitive.color.transparent}",
+          "$description": "Giữ chỗ viền mà không hiện (tránh nhảy layout khi đổi trạng thái)."
+        }
+      },
+      "icon": {
+        "default": {
+          "$value": "{primitive.color.neutral.700}",
+          "$description": "Icon thường."
+        },
+        "subtle": {
+          "$value": "{primitive.color.neutral.500}",
+          "$description": "Icon phụ (≥ 3:1)."
+        },
+        "disabled": {
+          "$value": "{primitive.color.neutral.300}",
+          "$description": "Icon của control bị vô hiệu."
+        },
+        "inverse": {
+          "$value": "{primitive.color.white}",
+          "$description": "Icon trên nền inverse."
+        },
+        "primary": {
+          "$value": "{primitive.color.brand.600}",
+          "$description": "Icon nhấn thương hiệu."
+        },
+        "danger": {
+          "$value": "{primitive.color.red.600}",
+          "$description": "Icon lỗi."
+        },
+        "success": {
+          "$value": "{primitive.color.green.600}",
+          "$description": "Icon thành công."
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.600}",
+          "$description": "Icon cảnh báo."
+        },
+        "info": {
+          "$value": "{primitive.color.blue.600}",
+          "$description": "Icon thông tin."
+        }
+      },
+      "data": {
+        "1": {
+          "$value": "{primitive.color.blue.600}",
+          "$description": "Màu chuỗi dữ liệu thứ 1 (categorical). Không dùng cho trạng thái."
+        },
+        "2": {
+          "$value": "{primitive.color.teal.500}",
+          "$description": "Màu chuỗi dữ liệu thứ 2 (categorical). Không dùng cho trạng thái."
+        },
+        "3": {
+          "$value": "{primitive.color.amber.500}",
+          "$description": "Màu chuỗi dữ liệu thứ 3 (categorical). Không dùng cho trạng thái."
+        },
+        "4": {
+          "$value": "{primitive.color.purple.500}",
+          "$description": "Màu chuỗi dữ liệu thứ 4 (categorical). Không dùng cho trạng thái."
+        },
+        "5": {
+          "$value": "{primitive.color.pink.500}",
+          "$description": "Màu chuỗi dữ liệu thứ 5 (categorical). Không dùng cho trạng thái."
+        },
+        "6": {
+          "$value": "{primitive.color.cyan.600}",
+          "$description": "Màu chuỗi dữ liệu thứ 6 (categorical). Không dùng cho trạng thái."
+        },
+        "7": {
+          "$value": "{primitive.color.orange.500}",
+          "$description": "Màu chuỗi dữ liệu thứ 7 (categorical). Không dùng cho trạng thái."
+        },
+        "8": {
+          "$value": "{primitive.color.green.600}",
+          "$description": "Màu chuỗi dữ liệu thứ 8 (categorical). Không dùng cho trạng thái."
+        }
+      }
+    },
+    "focus": {
+      "ring": {
+        "color": {
+          "$type": "color",
+          "$value": "{primitive.color.brand.600}",
+          "$description": "Màu vòng focus (≥ 3:1 với nền). Brand slot."
+        }
+      }
+    },
+    "elevation": {
+      "$type": "shadow",
+      "raised": {
+        "$value": "{primitive.shadow.1}",
+        "$description": "Phần tử nhô nhẹ: card kéo được, header sticky."
+      },
+      "overlay": {
+        "$value": "{primitive.shadow.2}",
+        "$description": "Dropdown, popover, menu, tooltip."
+      },
+      "modal": {
+        "$value": "{primitive.shadow.3}",
+        "$description": "Dialog, drawer."
+      }
+    }
+  }
+}

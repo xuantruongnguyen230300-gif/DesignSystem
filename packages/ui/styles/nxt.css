@@ -1,0 +1,130 @@
+/* @nxt/ui global styles: cascade layers, reset, base, utilities.
+   Load after @nxt/tokens/css/nxt.css (and the product brand file). App CSS outside these layers
+   always wins over NXT without !important. */
+@layer nxt.reset, nxt.base, nxt.components, nxt.patterns, nxt.utilities;
+
+@layer nxt.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  :where([hidden]:not([hidden='until-found'])) {
+    display: none !important; /* nxt-allow: important — [hidden] must always hide */
+  }
+}
+
+@layer nxt.base {
+  :root {
+    font: var(--nxt-typography-body-md);
+    color: var(--nxt-color-text-default);
+    background-color: var(--nxt-color-bg-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  ::selection {
+    background-color: var(--nxt-color-bg-selected);
+    color: var(--nxt-color-text-strong);
+  }
+
+  a {
+    color: var(--nxt-color-text-link);
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    color: var(--nxt-color-text-link-hover);
+  }
+
+  hr {
+    border: 0;
+    border-block-start: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
+  }
+}
+
+@layer nxt.utilities {
+  /* Typography roles — same names as semantic.typography.* tokens. */
+  .nxt-text-display { font: var(--nxt-typography-display); }
+  .nxt-text-heading-lg { font: var(--nxt-typography-heading-lg); }
+  .nxt-text-heading-md { font: var(--nxt-typography-heading-md); }
+  .nxt-text-heading-sm { font: var(--nxt-typography-heading-sm); }
+  .nxt-text-body-lg { font: var(--nxt-typography-body-lg); }
+  .nxt-text-body-md { font: var(--nxt-typography-body-md); }
+  .nxt-text-body-sm { font: var(--nxt-typography-body-sm); }
+  .nxt-text-label-md { font: var(--nxt-typography-label-md); }
+  .nxt-text-label-sm { font: var(--nxt-typography-label-sm); }
+  .nxt-text-caption { font: var(--nxt-typography-caption); }
+  .nxt-text-code { font: var(--nxt-typography-code); }
+
+  .nxt-text-subtle { color: var(--nxt-color-text-subtle); }
+  .nxt-text-strong { color: var(--nxt-color-text-strong); }
+
+  /* Numbers that must line up in columns (amounts, dates, codes). */
+  .nxt-tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Truncate one line; pair with a tooltip or title for the full value. */
+  .nxt-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Visually hidden but announced by screen readers. */
+  .nxt-visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

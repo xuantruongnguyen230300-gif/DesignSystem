@@ -1,0 +1,32 @@
+{
+  "primitive": {
+    "font": {
+      "family": {
+        "$type": "fontFamily",
+        "inter": {
+          "$value": ["Inter Variable", "Inter", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+          "$description": "Inter: full Vietnamese coverage + tabular numerals."
+        },
+        "jetbrains-mono": { "$value": ["JetBrains Mono", "Cascadia Code", "SFMono-Regular", "Consolas", "Liberation Mono", "monospace"] }
+      },
+      "size": {
+        "$type": "dimension",
+        "12": { "$value": "12px" },
+        "13": { "$value": "13px" },
+        "14": { "$value": "14px" },
+        "16": { "$value": "16px" },
+        "18": { "$value": "18px" },
+        "20": { "$value": "20px" },
+        "24": { "$value": "24px" },
+        "30": { "$value": "30px" }
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "regular": { "$value": 400 },
+        "medium": { "$value": 500 },
+        "semibold": { "$value": 600 },
+        "bold": { "$value": 700 }
+      }
+    }
+  }
+}

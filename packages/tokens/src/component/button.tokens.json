@@ -1,0 +1,58 @@
+{
+  "component": {
+    "button": {
+      "height-sm": { "$type": "dimension", "$value": "{semantic.size.control.sm}", "$description": "Chiều cao nút sm (theo density)." },
+      "height-md": { "$type": "dimension", "$value": "{semantic.size.control.md}", "$description": "Chiều cao nút md (theo density)." },
+      "height-lg": { "$type": "dimension", "$value": "{semantic.size.control.lg}", "$description": "Chiều cao nút lg (theo density)." },
+      "padding-inline-sm": { "$type": "dimension", "$value": "{semantic.space.inset.sm}", "$description": "Padding ngang nút sm." },
+      "padding-inline-md": { "$type": "dimension", "$value": "{semantic.space.inset.md}", "$description": "Padding ngang nút md." },
+      "padding-inline-lg": { "$type": "dimension", "$value": "{semantic.space.inset.lg}", "$description": "Padding ngang nút lg." },
+      "gap": { "$type": "dimension", "$value": "{semantic.space.gap.sm}", "$description": "Khoảng cách icon – nhãn." },
+      "radius": { "$type": "dimension", "$value": "{semantic.radius.control}", "$description": "Góc bo." },
+      "border-width": { "$type": "dimension", "$value": "{semantic.border-width.default}", "$description": "Độ dày viền (mọi variant giữ viền để không nhảy layout)." },
+      "font": { "$type": "typography", "$value": "{semantic.typography.label-md}", "$description": "Chữ nhãn md/lg." },
+      "font-sm": { "$type": "typography", "$value": "{semantic.typography.label-sm}", "$description": "Chữ nhãn sm." },
+      "icon-size": { "$type": "dimension", "$value": "{semantic.size.icon.sm}", "$description": "Kích thước icon và spinner trong nút." },
+      "spinner-width": { "$type": "dimension", "$value": "{semantic.border-width.strong}", "$description": "Độ dày vòng spinner khi loading." },
+      "spinner-radius": { "$type": "dimension", "$value": "{semantic.radius.pill}", "$description": "Bo tròn spinner." },
+      "primary": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.bg.primary}", "$description": "Nền primary." },
+        "bg-hover": { "$value": "{semantic.color.bg.primary-hover}", "$description": "Nền primary khi hover." },
+        "bg-pressed": { "$value": "{semantic.color.bg.primary-pressed}", "$description": "Nền primary khi nhấn." },
+        "text": { "$value": "{semantic.color.text.on-primary}", "$description": "Chữ primary." },
+        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền primary." }
+      },
+      "secondary": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.bg.surface}", "$description": "Nền secondary." },
+        "bg-hover": { "$value": "{semantic.color.bg.surface-hover}", "$description": "Nền secondary khi hover." },
+        "bg-pressed": { "$value": "{semantic.color.bg.muted}", "$description": "Nền secondary khi nhấn." },
+        "text": { "$value": "{semantic.color.text.default}", "$description": "Chữ secondary." },
+        "border": { "$value": "{semantic.color.border.strong}", "$description": "Viền secondary." }
+      },
+      "ghost": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.bg.transparent}", "$description": "Nền ghost." },
+        "bg-hover": { "$value": "{semantic.color.bg.surface-hover}", "$description": "Nền ghost khi hover." },
+        "bg-pressed": { "$value": "{semantic.color.bg.muted}", "$description": "Nền ghost khi nhấn." },
+        "text": { "$value": "{semantic.color.text.default}", "$description": "Chữ ghost." },
+        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền ghost." }
+      },
+      "danger": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.bg.danger}", "$description": "Nền danger." },
+        "bg-hover": { "$value": "{semantic.color.bg.danger-hover}", "$description": "Nền danger khi hover." },
+        "bg-pressed": { "$value": "{semantic.color.bg.danger-pressed}", "$description": "Nền danger khi nhấn." },
+        "text": { "$value": "{semantic.color.text.on-danger}", "$description": "Chữ danger." },
+        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền danger." }
+      },
+      "disabled": {
+        "$type": "color",
+        "bg": { "$value": "{semantic.color.bg.disabled}", "$description": "Nền khi disabled (mọi variant trừ ghost)." },
+        "text": { "$value": "{semantic.color.text.disabled}", "$description": "Chữ khi disabled." },
+        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền khi disabled." }
+      }
+    }
+  }
+}

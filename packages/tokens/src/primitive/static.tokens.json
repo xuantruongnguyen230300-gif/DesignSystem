@@ -1,0 +1,43 @@
+{
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "white": { "$value": "#FFFFFF" },
+      "black": { "$value": "#000000" },
+      "transparent": { "$value": "#00000000" },
+      "scrim": {
+        "light": { "$value": "#090A0C73", "$description": "Modal backdrop on light UI (45%)." },
+        "dark": { "$value": "#000000A6", "$description": "Modal backdrop on dark UI (65%)." }
+      }
+    },
+    "shadow": {
+      "$type": "shadow",
+      "1": { "$value": [{ "color": "#090A0C0F", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" }] },
+      "2": {
+        "$value": [
+          { "color": "#090A0C14", "offsetX": "0px", "offsetY": "4px", "blur": "12px", "spread": "-2px" },
+          { "color": "#090A0C0A", "offsetX": "0px", "offsetY": "1px", "blur": "3px", "spread": "0px" }
+        ]
+      },
+      "3": {
+        "$value": [
+          { "color": "#090A0C1F", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "-6px" },
+          { "color": "#090A0C0F", "offsetX": "0px", "offsetY": "2px", "blur": "6px", "spread": "-2px" }
+        ]
+      },
+      "dark-1": { "$value": [{ "color": "#00000066", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" }] },
+      "dark-2": {
+        "$value": [
+          { "color": "#00000080", "offsetX": "0px", "offsetY": "4px", "blur": "12px", "spread": "-2px" },
+          { "color": "#00000066", "offsetX": "0px", "offsetY": "1px", "blur": "3px", "spread": "0px" }
+        ]
+      },
+      "dark-3": {
+        "$value": [
+          { "color": "#00000099", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "-6px" },
+          { "color": "#00000066", "offsetX": "0px", "offsetY": "2px", "blur": "6px", "spread": "-2px" }
+        ]
+      }
+    }
+  }
+}

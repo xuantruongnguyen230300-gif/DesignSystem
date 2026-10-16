@@ -1,0 +1,17 @@
+{
+  "$description": "Seeds for the generated primitive color scales. Edit here, then run: npm run tokens:palettes",
+  "out": "src/primitive/color.tokens.json",
+  "scales": {
+    "neutral": { "seed": "oklch(0.556 0.008 265)", "neutral": true, "description": "Cool neutral — surfaces, text, borders." },
+    "brand": { "seed": "oklch(0.546 0.2 262)", "description": "NXT core brand (cobalt). Products override this scale in src/brands/<product>/." },
+    "blue": { "seed": "oklch(0.546 0.15 240)", "description": "Info status + data viz." },
+    "green": { "seed": "oklch(0.546 0.15 150)", "description": "Success status + data viz." },
+    "amber": { "seed": "oklch(0.546 0.13 70)", "description": "Warning status + data viz." },
+    "red": { "seed": "oklch(0.546 0.2 27)", "description": "Danger status." },
+    "teal": { "seed": "oklch(0.546 0.11 185)", "description": "Data viz." },
+    "cyan": { "seed": "oklch(0.546 0.11 215)", "description": "Data viz." },
+    "purple": { "seed": "oklch(0.546 0.2 300)", "description": "Data viz." },
+    "pink": { "seed": "oklch(0.546 0.19 355)", "description": "Data viz." },
+    "orange": { "seed": "oklch(0.546 0.17 45)", "description": "Data viz." }
+  }
+}
