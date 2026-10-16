@@ -1,0 +1,17 @@
+{
+  "name": "nxt-design",
+  "private": true,
+  "type": "module",
+  "description": "NXT Design — multi-product design system (Angular 21 + CDK, W3C DTCG tokens)",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "ds:tokens": "node tools/tokens/validate.mjs",
+    "ds:hardcoded": "node tools/lint/check-hardcoded.mjs",
+    "ds:check": "node tools/tokens/validate.mjs && node tools/lint/check-hardcoded.mjs",
+    "ds:palette": "node tools/tokens/palette.mjs",
+    "ds:contrast": "node tools/tokens/contrast.mjs",
+    "ds:new": "node tools/scaffold/component.mjs"
+  }
+}
