@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject, signal } from '@angular/core';
 import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
@@ -57,8 +57,9 @@ const REQUESTS: LeaveRequest[] = [
   imports: [HrmFrame, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtPageHeader, NxtCheckbox, NxtFilter, NxtFilterChips, NxtSearch, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <example-hrm-frame>
-      <div class="stack">
+    <!-- Wide screens: list and detail fill the screen and scroll inside; narrow screens stack and the page scrolls. -->
+    <example-hrm-frame [fill]="wide()">
+      <div class="stack" [class.nxt-fill]="wide()" [class.is-fill]="wide()">
         <nxt-page-header title="Phê duyệt" description="Đơn từ của nhân viên trong các phòng bạn quản lý.">
           <nxt-tabs label="Lọc đơn theo trạng thái" [panels]="false" [value]="tab()" (valueChange)="setTab($event!)">
             <nxt-tab value="pending" label="Chờ tôi duyệt" [count]="count('pending')" />
@@ -70,7 +71,7 @@ const REQUESTS: LeaveRequest[] = [
         <p class="status" role="status">{{ message() }}</p>
 
         <div class="split">
-          <nxt-card padding="none" class="list">
+          <nxt-card padding="none" class="list" [fill]="wide()">
             <div class="list__toolbar">
               <nxt-search class="list__search" label="Tìm đơn" placeholder="Tên người gửi, mã đơn, lý do" [value]="query()" (valueChange)="setQuery($event)" />
               <nxt-filter #filter title="Lọc đơn" [activeCount]="filters.activeCount()" (opened)="filters.edit()" (applied)="applyFilters()" (reset)="filters.resetDraft()">
@@ -123,7 +124,7 @@ const REQUESTS: LeaveRequest[] = [
           </nxt-card>
 
           @if (current(); as r) {
-            <nxt-card padding="none" class="detail">
+            <nxt-card padding="none" class="detail" [fill]="wide()">
               <div class="detail__head">
                 <nxt-avatar [name]="r.name" size="lg" />
                 <div class="detail__who">
@@ -132,7 +133,7 @@ const REQUESTS: LeaveRequest[] = [
                 </div>
                 <nxt-tag dot [tone]="statusOf(r).tone">{{ statusOf(r).label }}</nxt-tag>
               </div>
-              <div class="detail__body">
+              <div class="detail__body" role="region" aria-label="Chi tiết đơn" [attr.tabindex]="wide() ? 0 : null">
                 <dl class="facts">
                   <div><dt>Từ</dt><dd>{{ r.from }}</dd></div>
                   <div><dt>Đến</dt><dd>{{ r.to }}</dd></div>
@@ -192,17 +193,35 @@ const REQUESTS: LeaveRequest[] = [
   `,
   styles: `
     .stack {
-      grid-template-columns: minmax(0, 1fr);
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: var(--nxt-space-gap-lg);
       container-type: inline-size;
+    }
+    /* Fill (wide screens): the split takes the rest of the screen; the list and the detail body scroll. */
+    .is-fill .split {
+      flex: 1 1 0;
+      grid-template-rows: minmax(0, 1fr);
+      align-items: stretch;
+      min-block-size: 0;
+    }
+    .is-fill .requests,
+    .is-fill .detail__body {
+      flex: 1 1 0;
+      min-block-size: 0;
+      overflow: auto;
+    }
+    .detail__body:focus-visible {
+      outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+      outline-offset: calc(-1 * var(--nxt-focus-ring-width));
     }
     .status {
       color: var(--nxt-color-text-success);
       font: var(--nxt-typography-label-sm);
     }
     .status:empty {
-      display: none;
+      /* Out of the flow but still in the accessibility tree, so later messages are announced. */
+      position: absolute;
     }
     .split {
       display: grid;
@@ -376,6 +395,24 @@ const REQUESTS: LeaveRequest[] = [
 })
 export class TemplateApprovalExample {
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  /** Wide enough for list | detail side by side: fill the screen, each column scrolls inside. */
+  /**
+   * Wide enough for list | detail side by side (the same 960px of the page's own width that switches the split
+   * to two columns): then fill the screen and let each column scroll inside. Measured on the page, not the
+   * viewport, so a collapsed menu or a docs preview frame gives the same answer as the layout.
+   */
+  protected readonly wide = signal(false);
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const stack = this.host.querySelector<HTMLElement>('.stack');
+      if (!stack || typeof ResizeObserver === 'undefined') return;
+      const observer = new ResizeObserver(([entry]) => this.wide.set(entry.contentRect.width >= 960));
+      observer.observe(stack);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
+  }
   protected readonly requests = signal<LeaveRequest[]>(REQUESTS);
   protected readonly tab = signal<'pending' | 'done' | 'all'>('pending');
   protected readonly query = signal('');

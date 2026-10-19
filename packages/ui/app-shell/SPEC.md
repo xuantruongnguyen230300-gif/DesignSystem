@@ -174,3 +174,4 @@ Mượn token component khác: skip link dùng `--nxt-tooltip-bg/-text`, badge d
 - Ở mobile không còn nút "Thu gọn menu" (thay bằng nút đóng drawer).
 - Skip link bị gỡ khỏi DOM khi drawer mobile đang mở. Có e2e.
 - Ở rail, tiêu đề section thành `li aria-hidden="true"` (trước là `li role="separator"`, axe báo `aria-required-children`). Có unit test. Còn lại: tiêu đề vẫn không gom các mục thành nhóm có tên.
+- Vùng nội dung (chế độ `scroll="container"`) là một cột flex, để trang dùng `nxtFill` lấp đầy màn hình và chỉ cuộn lưới; trang thường không đổi (phần tử con giữ chiều cao nội dung, vùng nội dung vẫn cuộn như trước). Chế độ `scroll="page"` giữ `display: block`.

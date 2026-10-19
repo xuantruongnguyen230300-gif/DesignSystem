@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { NxtSelection, NxtSort, NxtSortHeader, NxtSortState, NxtTable } from './table';
+import { NxtSelection, NxtSort, NxtSortHeader, NxtSortState, NxtTable, NxtTableScroll } from './table';
 
 @Component({
   imports: [NxtTable, NxtSort, NxtSortHeader],
@@ -108,5 +108,32 @@ describe('NxtSelection', () => {
     s.clear();
     s.select('TP-KD', true, { range: true, order: page });
     expect([...s.selected()]).toEqual(['TP-KD']);
+  });
+});
+
+@Component({
+  imports: [NxtTableScroll, NxtTable],
+  template: `
+    <nxt-table-scroll label="Bảng chức danh" [fill]="fill()">
+      <table nxtTable stickyHeader><thead><tr><th scope="col">Mã</th></tr></thead><tbody><tr><td>KT-TH</td></tr></tbody></table>
+    </nxt-table-scroll>
+  `,
+})
+class ScrollHost {
+  readonly fill = signal(true);
+}
+
+describe('NxtTableScroll', () => {
+  it('is a named, focusable scrolling region (keyboard users can scroll it)', async () => {
+    const fixture = TestBed.createComponent(ScrollHost);
+    fixture.detectChanges();
+    const region = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('nxt-table-scroll')!;
+    expect(region.getAttribute('role')).toBe('region');
+    expect(region.getAttribute('aria-label')).toBe('Bảng chức danh');
+    expect(region.tabIndex).toBe(0);
+    expect(region.hasAttribute('data-fill')).toBe(true);
+    fixture.componentInstance.fill.set(false);
+    await fixture.whenStable();
+    expect(region.hasAttribute('data-fill')).toBe(false);
   });
 });

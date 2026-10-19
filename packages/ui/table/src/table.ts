@@ -36,6 +36,32 @@ export class NxtTable {
   readonly stickyHeader = input(false, { transform: booleanAttribute });
 }
 
+/**
+ * Scrolling region of a table: vertical and horizontal scrollbars stay inside the grid, the sticky header
+ * stays visible, keyboard users can scroll it (focusable, named region). With `fill` it takes the free
+ * height of its flex-column parent (`nxt-card fill`, `nxtFill`), never less than a usable minimum.
+ */
+@Component({
+  selector: 'nxt-table-scroll',
+  template: '<ng-content />',
+  styleUrl: './table.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'nxt-table-scroll',
+    role: 'region',
+    tabindex: '0',
+    '[attr.aria-label]': 'label()',
+    '[attr.data-fill]': 'fill() || null',
+  },
+})
+export class NxtTableScroll {
+  /** Accessible name of the region, e.g. "Bảng chức danh". */
+  readonly label = input.required<string>();
+  /** Fill the free height of a flex-column parent; rows scroll inside. */
+  readonly fill = input(false, { transform: booleanAttribute });
+}
+
 /** Holds the sort state for the sortable headers inside it: `[(nxtSort)]="sort"`. */
 @Directive({ selector: '[nxtSort]' })
 export class NxtSort {

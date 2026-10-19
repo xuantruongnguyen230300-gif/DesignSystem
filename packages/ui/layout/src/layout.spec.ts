@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { NxtGap, NxtGrid, NxtGridColumns, NxtInline, NxtResponsiveSpan, NxtSpan, NxtSpanValue, NxtStack } from './layout';
+import { NxtFill, NxtGap, NxtGrid, NxtGridColumns, NxtInline, NxtResponsiveSpan, NxtSpan, NxtSpanValue, NxtStack } from './layout';
 
 @Component({
   imports: [NxtStack, NxtInline, NxtGrid, NxtSpan],
@@ -77,5 +77,21 @@ describe('layout primitives', () => {
     expect(item.dataset['spanMd']).toBe('6');
     expect(item.dataset['spanXl']).toBe('4');
     expect(item.hasAttribute('data-span-sm')).toBe(false);
+  });
+});
+
+@Component({
+  imports: [NxtFill, NxtStack],
+  template: `<nxt-stack nxtFill><div>Toolbar</div></nxt-stack>`,
+})
+class FillHost {}
+
+describe('NxtFill', () => {
+  it('marks the element so it fills its flex-column parent', () => {
+    const fixture = TestBed.createComponent(FillHost);
+    fixture.detectChanges();
+    const stack = (fixture.nativeElement as HTMLElement).querySelector('nxt-stack')!;
+    expect(stack.classList).toContain('nxt-fill');
+    expect(stack.classList).toContain('nxt-stack');
   });
 });

@@ -2,7 +2,7 @@
 title: Đăng nhập
 description: Màn hình đăng nhập — form ngắn, lỗi nói cách sửa, hiện/ẩn mật khẩu, đăng nhập một lần (SSO).
 status: beta
-order: 4
+order: 5
 keywords:
   - dang nhap
   - login

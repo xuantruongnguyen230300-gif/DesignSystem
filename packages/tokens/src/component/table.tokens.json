@@ -50,6 +50,11 @@
         "$type": "color",
         "$value": "{semantic.color.icon.primary}",
         "$description": "Icon sắp xếp đang active."
+      },
+      "scroll-min-height": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.scroll-region-min}",
+        "$description": "Chiều cao tối thiểu của nxt-table-scroll khi lấp đầy (fill): luôn thấy được vài dòng."
       }
     }
   }

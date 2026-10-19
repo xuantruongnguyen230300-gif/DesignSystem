@@ -57,6 +57,10 @@ Mặc định `gap="gutter"`: 16px khi lưới hẹp hơn 768px, 24px từ 768px
 | [`nxt-inline`](/components/inline) | Xếp ngang có xuống dòng: nhóm nút, toolbar, tag |
 | [`nxt-grid`](/components/grid) | Lưới 12 cột hoặc lưới thẻ `columns="auto"` |
 
+## Lấp đầy chiều cao màn hình
+
+Ở chế độ cuộn trong khung (`scroll="container"`, mặc định của ứng dụng), vùng nội dung của app shell là một cột. Gắn `nxtFill` (`@nxt/ui/layout`) cho phần tử cần chiếm hết chiều cao còn lại; nối tiếp `nxtFill` xuống tới đúng một vùng cuộn (bảng: `nxt-table-scroll fill`, card: `nxt-card fill`). Kết quả: trang vừa khít màn hình, chỉ vùng đó cuộn. Trang đọc dài (dashboard, hồ sơ) **không** dùng `nxtFill`: cả trang cuộn như bình thường.
+
 ## Token bố cục
 
 ::tokens{semantic.layout}

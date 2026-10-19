@@ -61,6 +61,10 @@ Header là tuỳ chọn, gồm `title`, `subtitle` và slot `[nxtCardActions]` c
 
 ::example{card-table}
 
+## Lấp đầy chiều cao
+
+`fill` cho card chiếm phần chiều cao còn lại của cha (một `nxtFill`, vùng nội dung app shell) và xếp nội dung theo cột, để một phần bên trong, thường là `nxt-table-scroll fill`, lấy hết chỗ còn lại và tự cuộn. Thanh công cụ và phân trang trong card đứng yên. Xem [Table › Lấp đầy màn hình](/components/table#lap-day-man-hinh).
+
 ## Stat: chỉ số và xu hướng
 
 `nxt-stat` hiện nhãn, giá trị, đơn vị và biến động so với kỳ trước. `value` và `delta` là **chuỗi đã định dạng sẵn** theo vi-VN (`1.284`, `2,1%`), để component không phải đoán cách làm tròn hay đơn vị.
@@ -89,7 +93,7 @@ Xu hướng không chỉ dựa vào màu. Icon mũi tên đi kèm chữ ẩn "T�
 - Giữ `headingLevel` đúng dàn ý trang (WCAG 1.3.1, 2.4.6). Không chọn cấp heading để có chữ to hơn.
 - Nút trong `[nxtCardActions]` phải có tên đủ nghĩa khi đọc riêng. Nút hiện chữ "Sửa" thì đặt `aria-label="Sửa thông tin hợp đồng"`; tên bắt đầu bằng chữ hiển thị để khớp WCAG 2.5.3.
 - Stat được đọc theo thứ tự: nhãn, giá trị kèm đơn vị, "Tăng/Giảm/Không đổi", biến động, caption. Icon trong ô icon chỉ để trang trí (`aria-hidden`).
-- Bảng trong card `padding="none"` đặt trong vùng cuộn có `role="region"`, `aria-label` và `tabindex="0"` để cuộn ngang được bằng bàn phím.
+- Bảng trong card `padding="none"` đặt trong `nxt-table-scroll` (vùng cuộn có tên, nhận focus) để cuộn được bằng bàn phím.
 
 ## Nội dung
 

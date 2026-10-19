@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NxtTable } from '@nxt/ui/table';
+import { NxtTable, NxtTableScroll } from '@nxt/ui/table';
 
 interface Attendance {
   code: string;
@@ -22,10 +22,10 @@ const decimal = new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 1, maxim
 /** Header dính khi cuộn, trong vùng cuộn có tên và focus được bằng bàn phím */
 @Component({
   selector: 'example-table-sticky',
-  imports: [NxtTable],
+  imports: [NxtTable, NxtTableScroll],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="wrap" role="region" aria-label="Chấm công tuần 42" tabindex="0">
+    <nxt-table-scroll class="wrap" label="Chấm công tuần 42">
       <table nxtTable stickyHeader>
         <caption class="nxt-visually-hidden">Chấm công tuần 42, {{ rows.length }} nhân viên</caption>
         <thead>
@@ -51,19 +51,14 @@ const decimal = new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 1, maxim
           }
         </tbody>
       </table>
-    </div>
+    </nxt-table-scroll>
     <p class="docs-demo-label hint">Cuộn trong bảng (hoặc Tab vào bảng rồi dùng phím mũi tên): hàng tiêu đề luôn ở trên cùng.</p>
   `,
   styles: `
     .wrap {
       max-block-size: calc(var(--nxt-size-row-md) * 8);
-      overflow: auto;
       border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
       border-radius: var(--nxt-radius-container);
-    }
-    .wrap:focus-visible {
-      outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
-      outline-offset: var(--nxt-focus-ring-offset);
     }
     .hint {
       margin-block-start: var(--nxt-space-gap-sm);

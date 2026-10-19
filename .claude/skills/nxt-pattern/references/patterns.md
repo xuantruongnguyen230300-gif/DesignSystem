@@ -25,7 +25,8 @@
 - Trạng thái bảng (filter, sort, page, cột) nằm trên URL query. Bấm Back phải trả về đúng trạng thái.
 - Header bảng sticky; cột định danh (mã, tên) sticky trái khi cuộn ngang.
 - Ô số căn phải, dùng `tabular-nums`; ô trạng thái dùng tag gồm icon và text.
-- Bấm vào dòng mở chi tiết. Checkbox chỉ để chọn, không đồng thời mở chi tiết.
+- Bấm vào dòng (hoặc nút tên trong ô tiêu đề hàng) mở drawer xem chi tiết chỉ đọc; checkbox chỉ để chọn. Drawer có bản ghi trước/sau (Alt+↑/↓) theo thứ tự đang xem, "Sửa" mở form. Bản ghi phức tạp mở trang chi tiết.
+- Lưới lấp đầy màn hình: `nxtFill` → `nxt-card fill` → `nxt-table-scroll fill`; chỉ lưới cuộn (dọc, ngang), header bảng dính, thanh công cụ và phân trang đứng yên.
 
 ## 2. Lọc & tìm kiếm
 - Tìm kiếm không phân biệt dấu (`nxtMatches`), áp dụng ngay với dữ liệu tại máy, `debounce` ~250ms khi gọi máy chủ. Esc xoá nội dung. Phím tắt một ký tự (như `/`) chỉ thêm khi tắt được (WCAG 2.1.4).

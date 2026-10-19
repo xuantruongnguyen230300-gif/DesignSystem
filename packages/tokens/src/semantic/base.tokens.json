@@ -278,6 +278,10 @@
         "$value": "{primitive.size.480}",
         "$description": "Bề rộng tối đa của ô tìm kiếm giữa top bar (kiểu Windows / Microsoft 365)."
       },
+      "scroll-region-min": {
+        "$value": "{primitive.size.240}",
+        "$description": "Chiều cao tối thiểu của một vùng cuộn lấp đầy màn hình (bảng, danh sách). Màn thấp hơn mức này thì cả trang cuộn."
+      },
       "gutter-sm": {
         "$value": "{primitive.space.4}",
         "$description": "Gutter lưới 12 cột khi < md."

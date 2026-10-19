@@ -11,12 +11,14 @@ import { NxtMenu, NxtMenuItem, NxtMenuSeparator, NxtMenuTrigger } from '@nxt/ui/
 import { NxtPageHeader } from '@nxt/ui/page-header';
 import { NxtPagination } from '@nxt/ui/pagination';
 import { NxtSearch, nxtMatches } from '@nxt/ui/search';
-import { NxtSelection, NxtSort, NxtSortHeader, NxtSortState, NxtTable } from '@nxt/ui/table';
+import { NxtFill } from '@nxt/ui/layout';
+import { NxtSelection, NxtSort, NxtSortHeader, NxtSortState, NxtTable, NxtTableScroll } from '@nxt/ui/table';
 import { NxtTab, NxtTabs } from '@nxt/ui/tabs';
 import { NxtTag } from '@nxt/ui/tag';
 import { NxtTooltip } from '@nxt/ui/tooltip';
 import { CATALOGS, CatalogDef, CatalogField, CatalogItem, TODAY, dateKey, daysBetween, formatValue, usageOf } from './catalog-data';
 import { download, fileDate, itemsToRows, toCsv } from './catalog-csv';
+import { CatalogDetail, CatalogDetailData, CatalogDetailResult } from './catalog-detail';
 import { CatalogForm, CatalogFormData } from './catalog-form';
 import { CatalogImport, CatalogImportData } from './catalog-import';
 import { HrmFrame } from './hrm-frame';
@@ -116,6 +118,7 @@ interface Notice {
     NxtEmptyState,
     NxtFilter,
     NxtFilterChips,
+    NxtFill,
     NxtFormField,
     NxtInput,
     NxtIcon,
@@ -130,14 +133,16 @@ interface Notice {
     NxtSortHeader,
     NxtTab,
     NxtTable,
+    NxtTableScroll,
     NxtTabs,
     NxtTag,
     NxtTooltip,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <example-hrm-frame>
-      <div class="stack">
+    <!-- fill: the page fits the screen; the grid scrolls inside (vertical and horizontal). -->
+    <example-hrm-frame fill>
+      <div class="stack" nxtFill>
         <nxt-page-header
           title="Danh mục tổ chức"
           description="Danh mục dùng chung cho hồ sơ nhân viên, hợp đồng và chấm công."
@@ -160,7 +165,7 @@ interface Notice {
         </div>
 
         @if (view(); as v) {
-          <nxt-card padding="none">
+          <nxt-card padding="none" fill>
             @if (v.items().length) {
               @if (v.selection.count()) {
                 <div class="bar bar--bulk" role="group" [attr.aria-label]="'Thao tác với ' + def().noun + ' đã chọn'">
@@ -233,7 +238,7 @@ interface Notice {
               <p class="nxt-visually-hidden" role="status">{{ v.narrowed() ? 'Tìm thấy ' + v.rows().length + ' ' + def().noun : '' }}</p>
 
               @if (v.rows().length) {
-                <div class="table-wrap" role="region" [attr.aria-label]="'Bảng ' + def().noun" tabindex="0">
+                <nxt-table-scroll fill [label]="'Bảng ' + def().noun">
                   <table nxtTable stickyHeader [(nxtSort)]="v.sort">
                     <thead>
                       <tr>
@@ -258,7 +263,7 @@ interface Notice {
                     </thead>
                     <tbody>
                       @for (r of v.pageRows(); track r.code) {
-                        <tr [attr.aria-selected]="v.selection.has(r.code)">
+                        <tr class="row" [attr.aria-selected]="v.selection.has(r.code)" (click)="onRowClick($event, v, r)">
                           <td class="nxt-table__select">
                             <nxt-checkbox
                               [label]="'Chọn ' + r.name"
@@ -268,7 +273,10 @@ interface Notice {
                             />
                           </td>
                           <td class="code">{{ r.code }}</td>
-                          <th scope="row" class="name">{{ r.name }}</th>
+                          <th scope="row" class="name">
+                            <!-- Opens the read-only detail; the whole row does too (mouse), the checkbox only selects. -->
+                            <button type="button" class="name__open" (click)="openDetail(v, r)">{{ r.name }}</button>
+                          </th>
                           @for (f of v.def.fields; track f.key) {
                             <td [class.nxt-table__num]="f.type !== 'select'">{{ format(f, r.extra[f.key]) }}</td>
                           }
@@ -302,7 +310,7 @@ interface Notice {
                       }
                     </tbody>
                   </table>
-                </div>
+                </nxt-table-scroll>
                 <div class="footer">
                   <nxt-pagination [total]="v.rows().length" [(page)]="v.page" [(pageSize)]="v.pageSize" [pageSizeOptions]="[10, 20, 50]" [itemLabel]="def().noun" />
                 </div>
@@ -330,8 +338,6 @@ interface Notice {
   `,
   styles: `
     .stack {
-      grid-template-columns: minmax(0, 1fr);
-      display: grid;
       gap: var(--nxt-space-gap-lg);
     }
     .notice {
@@ -342,7 +348,8 @@ interface Notice {
       font: var(--nxt-typography-label-sm);
     }
     .notice:empty {
-      display: none;
+      /* Out of the flow but still in the accessibility tree, so later messages are announced. */
+      position: absolute;
     }
     .bar {
       display: flex;
@@ -405,17 +412,32 @@ interface Notice {
     .radio input {
       accent-color: var(--nxt-color-bg-primary);
     }
-    .table-wrap {
-      max-block-size: var(--nxt-size-560);
-      overflow: auto;
+    .row {
+      cursor: pointer;
     }
     .code {
       font: var(--nxt-typography-code);
     }
     .name {
+      text-align: start;
+    }
+    .name__open {
+      padding: 0;
+      border: 0;
+      background: none;
       color: var(--nxt-color-text-strong);
       font: var(--nxt-typography-label-md);
       text-align: start;
+      cursor: pointer;
+    }
+    .name__open:hover {
+      color: var(--nxt-color-text-link);
+      text-decoration: underline;
+    }
+    .name__open:focus-visible {
+      outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+      outline-offset: var(--nxt-focus-ring-offset);
+      border-radius: var(--nxt-radius-control);
     }
     .footer {
       padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
@@ -521,6 +543,26 @@ export class TemplateCatalogExample {
   protected undo(n: Notice) {
     n.undo?.();
     this.notice.set({ text: 'Đã hoàn tác.' });
+  }
+
+  /** Mouse convenience: a click anywhere on the row opens the detail, except on the checkbox and buttons. */
+  protected onRowClick(event: MouseEvent, v: CatalogView, r: CatalogItem) {
+    if ((event.target as Element).closest('button, a, input, label, nxt-checkbox')) return;
+    this.openDetail(v, r);
+  }
+
+  protected openDetail(v: CatalogView, r: CatalogItem) {
+    const rows = v.rows();
+    const ref = this.drawer.open<CatalogDetailResult, CatalogDetailData>(CatalogDetail, {
+      title: 'Chi tiết ' + v.def.noun + ' ' + r.name,
+      data: { def: v.def, rows, index: Math.max(0, rows.findIndex((x) => x.code === r.code)) },
+    });
+    ref.closed.subscribe((result) => {
+      if (!result) return;
+      if (result.action === 'edit') this.openForm(result.item);
+      else if (result.action === 'duplicate') this.duplicate(result.item);
+      else this.setActive([result.item.code], !result.item.active);
+    });
   }
 
   protected duplicate(r: CatalogItem) {

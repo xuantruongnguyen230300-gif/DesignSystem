@@ -35,7 +35,8 @@ Mẫu cho nhóm danh mục dùng chung: chức danh, cấp bậc, phòng ban, lo
 - **Thanh công cụ**: bên trái ô tìm kiếm và nút **Bộ lọc** (mọi tiêu chí lọc nằm trong panel); bên phải hai nút icon nhập/xuất Excel, vạch ngăn, nút primary **Thêm mới** ngoài cùng.
 - **Chip bộ lọc** dưới toolbar khi đang lọc, cuối hàng "Xoá bộ lọc".
 - **Thanh hàng loạt** thay toolbar khi có hàng được chọn: Ngừng sử dụng, Dùng lại, Xuất, Xoá, Bỏ chọn, và "Chọn tất cả 29 chức danh" khi đã chọn hết trang.
-- **Bảng**: header dính, sắp xếp, cột số căn phải, ô không xuống dòng (bảng cuộn ngang trên màn hẹp).
+- **Bảng**: lấp đầy màn hình, chỉ lưới cuộn (dọc và ngang, thanh cuộn trong lưới), header dính, phân trang ghim ở đáy; sắp xếp, cột số căn phải, ô không xuống dòng.
+- **Xem chi tiết**: bấm tên hoặc chỗ trống của dòng mở drawer chỉ đọc (thông tin, ràng buộc, lịch sử), nút bản ghi trước/sau (Alt+↑/↓), "Sửa" mở form.
 
 ## Quyết định UX
 

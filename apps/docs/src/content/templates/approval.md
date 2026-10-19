@@ -32,7 +32,7 @@ Trưởng phòng thường duyệt nhiều đơn liền một lúc. Mẫu này t
 - **"Trả lại" khác "Từ chối"**: trả lại cho phép người gửi sửa và gửi lại, giữ nguyên lịch sử.
 - **Không hỏi xác nhận lần hai** cho từng đơn; thay vào đó kết quả được đọc qua `role="status"` và đơn chuyển sang tab "Đã xử lý" để xem lại.
 - **Tự chọn đơn kế tiếp** sau khi xử lý, đúng thứ tự trong danh sách.
-- **Màn hẹp** xếp danh sách trên, chi tiết dưới (container query ở 960px).
+- **Màn rộng lấp đầy màn hình**: danh sách và phần chi tiết tự cuộn, thanh quyết định luôn thấy ở đáy. **Màn hẹp** xếp danh sách trên, chi tiết dưới và cả trang cuộn.
 
 ## Components dùng
 

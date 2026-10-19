@@ -38,6 +38,8 @@ Selector: `table[nxtTable]`, `[nxtSort]`, `th[nxtSortHeader]`. Export type `NxtS
 |------|-----|------|----------|-------|
 | `nxtTable` input | `stickyHeader` | `boolean` | `false` | Hàng tiêu đề dính đầu khi cuộn trong container; phản ánh ra `data-sticky` |
 | `nxtTable` content | (default) | `caption`, `thead`, `tbody`, `tfoot` | | Cấu trúc bảng native |
+| `nxt-table-scroll` input | `label` | `string` | (bắt buộc) | Tên vùng cuộn (`role="region"`, `aria-label`); host có `tabindex="0"` để cuộn bằng bàn phím |
+| `nxt-table-scroll` input | `fill` | `boolean` | `false` | Lấp đầy chiều cao còn lại của cha dạng cột (`nxtFill`, `nxt-card fill`), không thấp hơn `table.scroll-min-height`; thanh cuộn dọc và ngang nằm trong lưới |
 | `nxtSort` model | `nxtSort` | `NxtSortState` | `{ active: '', direction: '' }` | Two-way `[(nxtSort)]="sort"` |
 | `nxtSort` method | `toggle(key)` | `(key: string) => void` | | Không sắp xếp → tăng dần → giảm dần → không sắp xếp; đổi sang cột khác bắt đầu từ tăng dần |
 | `nxtSortHeader` input | `nxtSortHeader` | `string` | (bắt buộc) | Khoá của cột |
@@ -118,7 +120,7 @@ Dùng thẳng semantic: `color.text.{default,strong}`, `space.inset.{xs,md}`, `s
 
 ## 11. Việc còn mở
 - `src/table.css:50`: `aria-selected` trên `tr` của bảng native (không phải grid) thường không được screen reader đọc; trạng thái chọn thực tế chỉ đến từ checkbox trong hàng. Cần ghi rõ trong docs: luôn có checkbox có tên.
-- Chưa có trạng thái loading / empty / error dựng sẵn và chưa có wrapper cuộn ngang; mỗi màn hình tự dựng.
+- Chưa có trạng thái loading / empty / error dựng sẵn; mỗi màn hình tự dựng.
 - `src/table.ts:69`: `th[nxtSortHeader]` không có `[nxtSort]` ở tổ tiên sẽ lỗi DI lúc chạy, không có thông báo rõ.
 - `src/table.css:7`, `:91`, `:103`: màu chữ dùng thẳng `--nxt-color-text-*`; `:79`–`81` dùng primitive `--nxt-space-1`, `--nxt-space-0-5`.
 
@@ -126,3 +128,4 @@ Dùng thẳng semantic: `color.text.{default,strong}`, `space.inset.{xs,md}`, `s
 - Focus không bị tiêu đề dính che (WCAG 2.4.11): phần tử focus trong `tbody` có `scroll-margin-block-start` bằng chiều cao tiêu đề.
 - Ô dữ liệu không xuống dòng mặc định (bảng cuộn ngang trên màn hẹp); `.nxt-table__wrap` cho cột chữ dài.
 - `NxtSelection` cho chọn nhiều, gồm Shift+click chọn dải và "chọn tất cả N kết quả" (`setMany`). Có unit test.
+- `nxt-table-scroll` (2026-10-19): vùng cuộn dựng sẵn của bảng (tên, focus, cuộn dọc và ngang trong lưới), `fill` để lưới lấp đầy màn hình; token `table.scroll-min-height` → `layout.scroll-region-min`. Có unit test và e2e (mẫu Danh mục: trang không cuộn, chỉ lưới cuộn).

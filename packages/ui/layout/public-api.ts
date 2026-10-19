@@ -1,4 +1,4 @@
-export { NxtGrid, NxtInline, NxtSpan, NxtStack } from './src/layout';
+export { NxtFill, NxtGrid, NxtInline, NxtSpan, NxtStack } from './src/layout';
 export type {
   NxtGap,
   NxtGridColumns,

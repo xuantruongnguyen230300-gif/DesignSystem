@@ -77,6 +77,17 @@ Thứ tự trên thanh công cụ, từ trái sang phải: ô tìm kiếm, Bộ 
 
 Người dùng đang đăng nhập chỉ xuất hiện **một lần**, ở góc phải thanh trên cùng (avatar + menu: tên và chức vụ, Hồ sơ của tôi, Đăng xuất), giống Windows, Microsoft 365 và SAP Fiori. Không lặp lại ở chân menu trái; chân menu dành cho mục phụ như phiên bản hay chuyển đơn vị.
 
+## Lưới lấp đầy màn hình
+
+Trang danh sách vừa khít màn hình: header, tab, thanh công cụ và phân trang đứng yên; **chỉ lưới cuộn**, thanh cuộn dọc và ngang nằm trong lưới, header bảng dính. Người dùng luôn thấy thanh công cụ và phân trang khi đọc tới dòng thứ 50. Dựng bằng `nxtFill` → `nxt-card fill` → `nxt-table-scroll fill` (xem [Table › Lấp đầy màn hình](/components/table#lap-day-man-hinh)). Màn quá thấp thì lưới giữ tối thiểu 240px và cả trang cuộn. Màn chia đôi danh sách | chi tiết (như [Phê duyệt](/templates/approval)) lấp đầy khi đủ rộng, mỗi cột tự cuộn; màn hẹp thì xếp chồng và cuộn cả trang.
+
+## Xem chi tiết từ lưới
+
+- Bấm **tên** (nút trong ô tiêu đề hàng, dùng được bằng bàn phím) hoặc bấm vào **chỗ trống của dòng** để mở drawer xem chi tiết chỉ đọc. Checkbox chỉ chọn; nút trên dòng giữ việc của chúng.
+- Drawer gồm thông tin (Descriptions), ràng buộc ("Đang được dùng ở 4 hồ sơ: không xoá được"), lịch sử thay đổi, và hành động: Nhân bản, Ngừng sử dụng, **Sửa** (primary) mở form.
+- Nút **bản ghi trước / sau** (<kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd>) đi theo đúng thứ tự đang xem (tìm kiếm, bộ lọc, sắp xếp), kèm vị trí "10 / 29": duyệt nhanh như Outlook, Jira, không phải đóng mở lại.
+- Bản ghi phức tạp (hồ sơ nhân viên, quy trình) mở **trang chi tiết** thay vì drawer; trang chi tiết có hành động trên page header (Lưu, Áp dụng).
+
 ## Khi có nhiều tab
 
 - Tab không vừa bề ngang được dồn vào menu **"Xem thêm"** ở cuối hàng tab; tab đang chọn luôn hiện. Nhãn tab không bao giờ bị cắt.

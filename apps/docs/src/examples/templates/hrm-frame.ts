@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, booleanAttribute, input, signal } from '@angular/core';
 import { NxtAppShell, NxtNavItem, NxtSidenav, NxtTopbar } from '@nxt/ui/app-shell';
 import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtButton } from '@nxt/ui/button';
@@ -45,6 +45,7 @@ export const HRM_NAV: NxtNavItem[] = [
       { label: 'Danh mục lương & phúc lợi', disabled: true, hint: DEMO },
     ],
   },
+  { label: 'Quy trình duyệt', icon: 'route', link: '/templates/workflow' },
   { label: 'Cấu hình hệ thống', icon: 'settings', disabled: true, hint: DEMO },
 ];
 
@@ -111,7 +112,8 @@ export const HRM_NAV: NxtNavItem[] = [
         </div>
       </nxt-topbar>
 
-      <div class="page"><ng-content /></div>
+      <!-- fill: the page fits the screen and only its table / list scrolls (list pages). -->
+      <div class="page" [class.nxt-fill]="fill()"><ng-content /></div>
     </nxt-app-shell>
   `,
   styles: `
@@ -185,6 +187,7 @@ export const HRM_NAV: NxtNavItem[] = [
       outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
     }
     .page {
+      box-sizing: border-box;
       padding: var(--nxt-space-section-sm) var(--nxt-space-section-md) var(--nxt-space-section-md);
     }
   `,
@@ -193,4 +196,6 @@ export const HRM_NAV: NxtNavItem[] = [
 export class HrmFrame {
   protected readonly nav = HRM_NAV;
   protected readonly collapsed = signal(false);
+  /** List pages: fit the screen; the grid scrolls inside (vertical and horizontal), not the page. */
+  readonly fill = input(false, { transform: booleanAttribute });
 }

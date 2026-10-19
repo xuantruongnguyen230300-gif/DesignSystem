@@ -52,6 +52,7 @@ Selector: `nxt-card`, `nxt-stat`.
 | `nxt-card` input | `subtitle` | `string` | `undefined` | |
 | `nxt-card` input | `headingLevel` | `number` (`numberAttribute`) | `2` | `3` → `h3`, `4` → `h4`, giá trị khác → `h2` |
 | `nxt-card` input | `padding` | `'none' \| 'md' \| 'lg'` | `'md'` | `none` cho nội dung tràn mép như bảng; phản ánh ra `data-padding` |
+| `nxt-card` input | `fill` | `boolean` | `false` | Chiếm phần chiều cao còn lại của cha dạng cột; thân xếp nội dung theo cột để một phần (vd. `nxt-table-scroll fill`) lấy hết chỗ còn lại; phản ánh ra `data-fill` |
 | `nxt-card` content | (default) | bất kỳ | | Thân card |
 | `nxt-card` content | `[nxtCardActions]` | nút, menu | | Chỉ hiện khi có `title` |
 | `nxt-card` content | `[nxtCardFooter]` | bất kỳ | | Chiếu vào cuối card, tự lo style |
@@ -145,3 +146,6 @@ Dùng thẳng semantic: `elevation.raised`, `border-width.default`, `space.inset
 - `src/card.ts:14`: `headingLevel` ngoài 2/3/4 lặng lẽ thành `h2`.
 - `src/card.ts:104`: chữ ẩn xu hướng ("Tăng"/"Giảm"/"Không đổi") viết cứng, không đổi được khi sản phẩm cần thuật ngữ khác.
 - `src/card.css:30`, `:91`, `:107`, `:117`: gap / margin dùng primitive `--nxt-space-0-5`, `--nxt-space-1` thay vì semantic `space.gap.*`, không theo density.
+
+### Bổ sung (2026-10-19)
+- Input `fill`: card lấp đầy chiều cao còn lại của cha dạng cột (dùng cho trang danh sách vừa khít màn hình). Host không còn để lại thuộc tính `title` gốc (tooltip của trình duyệt) khi dùng input `title`.

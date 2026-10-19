@@ -45,6 +45,17 @@ export class NxtStack {
   readonly align = input<NxtStackAlign>('stretch');
 }
 
+/**
+ * Takes the free height of its flex-column parent (the app-shell content area, an `nxt-stack`, another
+ * `nxtFill`, an `nxt-card fill`) and lays out its own children in a column. Chain it down to the one
+ * region that should scroll — a table, a list — so the page fits the screen and only that region scrolls.
+ */
+@Directive({
+  selector: '[nxtFill]',
+  host: { class: 'nxt-fill' },
+})
+export class NxtFill {}
+
 /** Horizontal row that wraps: toolbars, tag lists, button groups. */
 @Component({
   selector: 'nxt-inline',

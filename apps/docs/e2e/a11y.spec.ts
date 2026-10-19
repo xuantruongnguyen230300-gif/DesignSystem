@@ -208,6 +208,56 @@ test.describe('templates', () => {
     await expect(page.getByRole('button', { name: 'Tài khoản: Đặng Anh' })).toHaveCount(1);
   });
 
+  test('catalog: the grid fills the screen and scrolls inside; the page itself does not scroll', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 860 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.locator('nxt-pagination select').selectOption('50');
+    const region = page.getByRole('region', { name: 'Bảng chức danh' });
+    const sizes = await page.evaluate(() => {
+      const main = document.querySelector<HTMLElement>('.nxt-app-shell__main')!;
+      const grid = document.querySelector<HTMLElement>('nxt-table-scroll')!;
+      return { pageOverflow: main.scrollHeight - main.clientHeight, gridOverflow: grid.scrollHeight - grid.clientHeight };
+    });
+    expect(sizes.pageOverflow).toBeLessThanOrEqual(1);
+    expect(sizes.gridOverflow).toBeGreaterThan(100);
+    await region.evaluate((el) => (el.scrollTop = el.scrollHeight));
+    const header = region.getByRole('columnheader', { name: /^Mã/ });
+    await expect(header).toBeInViewport();
+    await expect(page.locator('nxt-pagination')).toBeInViewport();
+    await region.focus();
+    await expect(region).toBeFocused();
+  });
+
+  test('catalog: a row opens a read-only detail with previous/next; "Sửa" opens the form', async ({ page }) => {
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('row', { name: /Kế toán tổng hợp/ }).getByRole('cell').nth(3).click();
+    const detail = page.getByRole('dialog', { name: 'Chi tiết chức danh Kế toán tổng hợp' });
+    await expect(detail.getByRole('heading', { name: 'Kế toán tổng hợp' })).toBeVisible();
+    await expect(detail.getByRole('definition').first()).toContainText('KT-TH');
+    await expect(detail).toContainText('9 / 29');
+    await page.keyboard.press('Alt+ArrowDown');
+    await expect(detail.getByRole('heading', { name: 'Kế toán thuế' })).toBeVisible();
+    await expect(detail).toContainText('10 / 29');
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await detail.getByRole('button', { name: 'Sửa' }).click();
+    await expect(page.getByRole('dialog', { name: 'Sửa chức danh Kế toán thuế' })).toBeVisible();
+  });
+
+  test('approval: on wide screens list and detail fill the screen; decisions stay visible', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 760 });
+    await page.goto('/examples/template-approval');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const pageOverflow = await page.evaluate(() => {
+      const main = document.querySelector<HTMLElement>('.nxt-app-shell__main')!;
+      return main.scrollHeight - main.clientHeight;
+    });
+    expect(pageOverflow).toBeLessThanOrEqual(1);
+    await expect(page.getByRole('button', { name: 'Duyệt đơn' })).toBeInViewport();
+    await expect(page.getByRole('region', { name: 'Chi tiết đơn' })).toHaveAttribute('tabindex', '0');
+  });
+
   test('catalog: every filter lives in the "Bộ lọc" panel; applied filters become chips', async ({ page }) => {
     await page.goto('/examples/template-catalog');
     await page.locator('docs-example-page[data-ready]').waitFor();
@@ -309,5 +359,50 @@ test.describe('templates', () => {
     await page.getByRole('searchbox', { name: 'Tìm đơn' }).fill('kiem ke');
     await expect(list.getByRole('listitem')).toHaveCount(1);
     await expect(list).toContainText('Hoàng Văn Đức');
+  });
+
+  test('workflow: the editor validates on "Áp dụng", bumps the version, and guards unsaved changes', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/examples/template-workflow');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await expect(page.getByRole('region', { name: 'Bảng quy trình duyệt' })).toBeVisible();
+    await page.getByRole('button', { name: 'Nghỉ phép · toàn công ty', exact: true }).click();
+    const flow = page.getByRole('region', { name: 'Các bước duyệt' });
+    await expect(flow).toHaveAttribute('tabindex', '0');
+    const pageOverflow = await page.evaluate(() => {
+      const main = document.querySelector<HTMLElement>('.nxt-app-shell__main')!;
+      return main.scrollHeight - main.clientHeight;
+    });
+    expect(pageOverflow).toBeLessThanOrEqual(1);
+    expect(await axe(page, '[data-example-root]')).toEqual([]);
+
+    await flow.getByRole('button', { name: /^Bước 3/ }).click();
+    await page.getByRole('combobox', { name: 'Người duyệt', exact: true }).selectOption({ label: 'Người cụ thể' });
+    await page.getByRole('button', { name: 'Áp dụng' }).click();
+    const person = page.getByRole('combobox', { name: 'Người cụ thể' });
+    await expect(person).toBeFocused();
+    await expect(flow).toContainText('Bước 3 cần chọn người duyệt');
+    await person.selectOption({ index: 1 });
+    await page.getByRole('button', { name: 'Áp dụng' }).click();
+    await expect(page.locator('.notice')).toContainText('Đã áp dụng phiên bản 4. Đơn đang chờ duyệt vẫn đi theo phiên bản 3.');
+
+    await flow.getByRole('button', { name: 'Thêm bước sau bước 1' }).click();
+    await expect(page.getByRole('textbox', { name: 'Tên bước' })).toBeFocused();
+    await expect(flow.getByRole('button', { name: /^Xoá bước \d$/ })).toHaveCount(4);
+    await flow.getByRole('button', { name: 'Xoá bước 2' }).click();
+    await expect(page.locator('.notice')).toContainText('Đã xoá bước 2');
+    await page.locator('.notice').getByRole('button', { name: 'Hoàn tác' }).click();
+    await expect(flow.getByRole('button', { name: /^Xoá bước \d$/ })).toHaveCount(4);
+
+    await page.getByRole('button', { name: 'Quay lại danh sách' }).click();
+    const leave = page.getByRole('group', { name: 'Có thay đổi chưa lưu' });
+    await expect(leave.getByRole('button', { name: 'Lưu nháp' })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(leave).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Quay lại danh sách' })).toBeFocused();
+    await page.getByRole('button', { name: 'Quay lại danh sách' }).click();
+    await leave.getByRole('button', { name: 'Bỏ thay đổi' }).click();
+    await expect(page.getByRole('region', { name: 'Bảng quy trình duyệt' })).toBeVisible();
+    await expect(page.getByRole('row', { name: /Nghỉ phép · toàn công ty/ })).toContainText('4');
   });
 });

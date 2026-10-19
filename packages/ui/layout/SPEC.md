@@ -31,6 +31,7 @@ apg-pattern: "none (presentational)"
 |------|-----|------|----------|-------|
 | `nxt-stack` input | `gap` | `NxtGap` | `'md'` | `none · xs · sm · md · lg · xl`, theo density |
 | `nxt-stack` input | `align` | `start · center · end · stretch` | `'stretch'` | Căn theo trục ngang |
+| `[nxtFill]` directive | — | — | — | Phần tử chiếm phần chiều cao còn lại của cha dạng cột (vùng nội dung app shell, `nxt-stack`, `nxtFill` khác) và xếp con theo cột (`flex: 1 1 0; min-block-size: 0`). CSS nằm trong `styles/nxt.css` (`.nxt-fill`) vì directive không mang stylesheet |
 | `nxt-inline` input | `gap` | `NxtGap` | `'sm'` | |
 | `nxt-inline` input | `align` | `start · center · end · baseline · stretch` | `'center'` | Căn theo trục dọc |
 | `nxt-inline` input | `justify` | `start · center · end · between` | `'start'` | |
@@ -71,3 +72,6 @@ Không áp dụng.
 - [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-16)
 - [x] `npm run ds:check` sạch
 - [x] Docs page đủ mục
+
+### Bổ sung (2026-10-19)
+- `nxtFill`: chuỗi lấp đầy chiều cao cho trang danh sách vừa khít màn hình; chỉ một vùng (bảng, danh sách) cuộn. Trang đọc dài không dùng. Có unit test.

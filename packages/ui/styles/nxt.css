@@ -115,6 +115,16 @@
     white-space: nowrap;
   }
 
+  /* [nxtFill] (@nxt/ui/layout): grow into the free height of a flex-column parent and stack children in a
+     column, down to the one region that scrolls. Page styles may change `display` (e.g. grid). */
+  .nxt-fill {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-block-size: 0;
+    min-inline-size: 0;
+  }
+
   /* Visually hidden but announced by screen readers. */
   .nxt-visually-hidden {
     position: absolute;

@@ -136,11 +136,38 @@ Giữ <kbd>Shift</kbd> khi bấm (hoặc nhấn <kbd>Shift</kbd>+<kbd>Space</kbd
 
 ## Header dính
 
-`stickyHeader` giữ hàng tiêu đề ở trên cùng khi bảng cuộn **bên trong vùng chứa của nó**. Vùng chứa cần `max-block-size` và `overflow: auto`, cùng `role="region"`, `aria-label` và `tabindex="0"` để cuộn được bằng phím mũi tên.
+`stickyHeader` giữ hàng tiêu đề ở trên cùng khi bảng cuộn **bên trong vùng chứa của nó**. Đặt bảng trong `nxt-table-scroll` (`label` bắt buộc): vùng cuộn có tên, nhận focus để cuộn bằng phím mũi tên, thanh cuộn dọc và ngang nằm trong lưới. Giới hạn chiều cao bằng `max-block-size`, hoặc dùng `fill` để lấp đầy màn hình (mục dưới).
 
 ::example{table-sticky}
 
 **Focus không bị che dưới header dính** (WCAG 2.4.11): trong bảng có `stickyHeader`, phần tử đang focus trong `tbody` có `scroll-margin-block-start` bằng chiều cao hàng tiêu đề. Khi người dùng Tab tới checkbox hay nút ở một hàng đang nằm sau header, trình duyệt cuộn hàng đó ra dưới header thay vì để nó khuất phía sau. Bạn không cần làm gì thêm.
+
+## Lấp đầy màn hình
+
+Trang danh sách vừa khít màn hình: tiêu đề, tab, thanh công cụ và phân trang đứng yên, **chỉ lưới cuộn**, cả dọc lẫn ngang, và thanh cuộn nằm trong lưới. Nối `nxtFill` (`@nxt/ui/layout`) từ vùng nội dung của app shell xuống tới `nxt-table-scroll fill`:
+
+```html
+<div class="page" nxtFill>                       <!-- vùng nội dung của trang -->
+  <nxt-stack nxtFill>
+    <nxt-page-header title="Chức danh" />
+    <nxt-card padding="none" fill>
+      <div class="toolbar">…tìm kiếm, Bộ lọc, Thêm mới…</div>
+      <nxt-table-scroll fill label="Bảng chức danh">
+        <table nxtTable stickyHeader>…</table>
+      </nxt-table-scroll>
+      <div class="footer"><nxt-pagination … /></div>
+    </nxt-card>
+  </nxt-stack>
+</div>
+```
+
+- `nxt-table-scroll` là vùng cuộn có tên (`role="region"`, `aria-label`) và nhận focus, nên người dùng bàn phím cuộn được bằng phím mũi tên.
+- Khi màn quá thấp, vùng lưới không nhỏ hơn `layout.scroll-region-min` (240px): lúc đó cả trang cuộn, lưới vẫn đọc được.
+- Xem mẫu [Danh mục](/templates/catalog): đổi sang 50 dòng/trang để thấy lưới cuộn bên trong.
+
+## Xem chi tiết
+
+Bấm vào tên (một nút trong ô tiêu đề hàng) hoặc bấm vào bất kỳ chỗ trống nào của dòng để mở drawer **xem chi tiết** chỉ đọc; checkbox chỉ để chọn, các nút trên dòng giữ việc của chúng. Trong drawer có nút bản ghi trước/sau (<kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd>) để duyệt danh sách mà không phải đóng mở lại, và nút "Sửa" mở form. Xem mẫu [Danh mục](/templates/catalog).
 
 ## Thao tác trên hàng
 

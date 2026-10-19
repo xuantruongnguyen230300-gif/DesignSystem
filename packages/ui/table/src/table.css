@@ -124,3 +124,22 @@
     flex-direction: row-reverse;
   }
 }
+
+@layer nxt.components {
+  /* ---------- scrolling region ---------- */
+  .nxt-table-scroll {
+    display: block;
+    min-inline-size: 0;
+    overflow: auto;
+  }
+
+  .nxt-table-scroll[data-fill] {
+    flex: 1 1 0;
+    min-block-size: var(--nxt-table-scroll-min-height);
+  }
+
+  .nxt-table-scroll:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-focus-ring-width));
+  }
+}

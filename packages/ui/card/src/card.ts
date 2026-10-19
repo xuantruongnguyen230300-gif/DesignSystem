@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input, numberAttribute } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, booleanAttribute, computed, input, numberAttribute } from '@angular/core';
 import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
 
 /**
@@ -38,6 +38,7 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
   host: {
     class: 'nxt-card',
     '[attr.data-padding]': 'padding()',
+    '[attr.data-fill]': 'fill() || null',
     '[attr.title]': 'null',
   },
 })
@@ -48,6 +49,8 @@ export class NxtCard {
   readonly headingLevel = input(2, { transform: numberAttribute });
   /** `none` for edge-to-edge content such as tables. */
   readonly padding = input<'none' | 'md' | 'lg'>('md');
+  /** Take the free height of a flex-column parent (`nxtFill`); the body then stacks its children in a column. */
+  readonly fill = input(false, { transform: booleanAttribute });
 }
 
 /**
