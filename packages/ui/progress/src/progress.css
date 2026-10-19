@@ -1,0 +1,27 @@
+@layer nxt.components {
+  .nxt-progress {
+    --_fill: var(--nxt-progress-fill);
+    display: block;
+    block-size: var(--nxt-space-2);
+    overflow: hidden;
+    border-radius: var(--nxt-progress-radius);
+    background: var(--nxt-progress-track);
+  }
+
+  .nxt-progress[data-tone='success'] { --_fill: var(--nxt-progress-fill-success); }
+  .nxt-progress[data-tone='warning'] { --_fill: var(--nxt-progress-fill-warning); }
+  .nxt-progress[data-tone='danger'] { --_fill: var(--nxt-progress-fill-danger); }
+
+  .nxt-progress__fill {
+    display: block;
+    block-size: 100%;
+    border-radius: inherit;
+    background: var(--_fill);
+    transition: inline-size var(--nxt-motion-duration-slow) var(--nxt-motion-ease-standard);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-progress { border: 1px solid CanvasText; }
+    .nxt-progress__fill { background: Highlight; }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "component": {
+    "tabs": {
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ tab chưa chọn."
+      },
+      "text-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ tab khi hover."
+      },
+      "text-selected": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ tab đang chọn."
+      },
+      "indicator": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Vạch dưới tab đang chọn."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Đường kẻ dưới danh sách tab."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Chiều cao tab."
+      }
+    }
+  }
+}

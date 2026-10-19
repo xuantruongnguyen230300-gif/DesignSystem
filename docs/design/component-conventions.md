@@ -56,6 +56,10 @@ Hành vi bàn phím **phải** khớp WAI-ARIA APG của pattern ghi trong `SPEC
   - Không có literal màu, px (trừ `0` và hairline `1px`), z-index, font-family.
   - Kiểm bằng `npm run ds:hardcoded`.
   - Ngoại lệ phải có comment `/* nxt-allow: <rule> — lý do */`.
+- **Component token và semantic token:**
+  - Thuộc tính mà sản phẩm có thể muốn tuỳ biến riêng cho từng component (**màu, bo góc, chiều cao/bề rộng chính**) phải đi qua component token `--nxt-<component>-*`.
+  - Khoảng cách nội bộ, typography, focus, motion, elevation, z-index, độ dày viền và kích thước icon được dùng thẳng semantic token (`--nxt-space-*`, `--nxt-typography-*`, `--nxt-focus-ring-*`, `--nxt-motion-*`, `--nxt-elevation-*`, `--nxt-z-*`, `--nxt-border-width-*`, `--nxt-size-icon-*`). Tạo component token cho từng padding chỉ sinh hàng trăm token không ai override.
+- **Icon lồng nhau:** component đặt `--nxt-icon-size` trên root của mình, rồi `nxt-icon` bên trong tự nhận kích thước đó (ví dụ Button đặt bằng `--nxt-button-icon-size`).
 - **Focus:** dùng `:focus-visible` với `--nxt-focus-ring-*`. Không `outline: none` khi không có focus style thay thế.
 - **Motion:** dùng `--nxt-motion-*`. Mode reduced đưa duration về 0, nên không cần viết media query riêng trong component.
 - **Kích thước:** dùng logical properties (`inline-size`, `padding-inline`, `margin-block`).

@@ -39,6 +39,7 @@ Thử đổi màu của ví dụ sang **tối** hoặc đổi brand ở thanh tr
 - **Màu trạng thái giữ nguyên ý nghĩa** ở mọi sản phẩm: đỏ là lỗi hoặc phá huỷ, xanh lá là thành công, hổ phách là cảnh báo, xanh dương là thông tin.
 - **Màu dữ liệu** (`color.data.1…8`) chỉ dùng cho biểu đồ, không dùng cho trạng thái.
 - **Chữ phụ** (`text.subtle`) vẫn đạt ≥ 4,5:1. Đừng làm nhạt thêm bằng `opacity`.
+- **Nền trang khác bề mặt.** Ở chế độ sáng, `bg.canvas` là xám nhạt, card và bảng dùng `bg.surface` trắng kèm viền, nên vùng làm việc luôn tách khỏi nền. Chữ, link và vòng focus được kiểm tương phản trên **cả hai** nền (xem [Elevation](/foundations/elevation)).
 
 ## Token nền
 

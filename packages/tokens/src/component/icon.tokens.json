@@ -1,0 +1,16 @@
+{
+  "component": {
+    "icon": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.md}",
+        "$description": "Kích thước icon mặc định; component cha override biến này cho icon lồng bên trong."
+      },
+      "stroke": {
+        "$type": "number",
+        "$value": "{semantic.size.icon.stroke}",
+        "$description": "Độ dày nét icon (Tabler outline)."
+      }
+    }
+  }
+}

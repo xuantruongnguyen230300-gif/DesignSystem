@@ -170,6 +170,26 @@
         "lg": {
           "$value": "{primitive.size.24}",
           "$description": "Icon minh hoạ trong empty state nhỏ, alert có tiêu đề."
+        },
+        "stroke": {
+          "$type": "number",
+          "$value": 1.75,
+          "$description": "Độ dày nét icon outline (Tabler mặc định 2; 1.75 rõ hơn ở cỡ 16–20px)."
+        }
+      },
+      "drawer": {
+        "$type": "dimension",
+        "sm": {
+          "$value": "{primitive.size.400}",
+          "$description": "Drawer hẹp: chi tiết nhanh, bộ lọc."
+        },
+        "md": {
+          "$value": "{primitive.size.560}",
+          "$description": "Drawer mặc định: form thêm/sửa bản ghi."
+        },
+        "lg": {
+          "$value": "{primitive.size.720}",
+          "$description": "Drawer rộng: form nhiều section, xem chi tiết đầy đủ."
         }
       }
     },
@@ -246,6 +266,10 @@
       "header-height": {
         "$value": "{primitive.size.56}",
         "$description": "Top bar app shell."
+      },
+      "header-search-width": {
+        "$value": "{primitive.size.480}",
+        "$description": "Bề rộng tối đa của ô tìm kiếm giữa top bar (kiểu Windows / Microsoft 365)."
       },
       "gutter-sm": {
         "$value": "{primitive.space.4}",

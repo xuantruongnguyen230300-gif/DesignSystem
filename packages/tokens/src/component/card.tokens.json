@@ -1,0 +1,31 @@
+{
+  "component": {
+    "card": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền card."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền card."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Bo góc card."
+      },
+      "title-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ tiêu đề card."
+      },
+      "subtitle-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ mô tả card."
+      }
+    }
+  }
+}

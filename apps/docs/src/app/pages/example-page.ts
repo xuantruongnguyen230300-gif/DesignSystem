@@ -8,7 +8,7 @@ import type { ExampleEntry } from '../core/types';
   selector: 'docs-example-page',
   imports: [NgComponentOutlet],
   template: `
-    <main class="docs-example-page" data-example-root [attr.data-example-id]="id()">
+    <main class="docs-example-page" [class.docs-example-page--screen]="id().startsWith('template-')" data-example-root [attr.data-example-id]="id()">
       <h1 class="nxt-visually-hidden">Ví dụ: {{ entry()?.title ?? id() }}</h1>
       @if (component(); as c) {
         <ng-container *ngComponentOutlet="c" />

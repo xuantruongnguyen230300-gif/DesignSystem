@@ -1,0 +1,26 @@
+{
+  "component": {
+    "topbar": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền thanh trên cùng."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền dưới thanh trên cùng."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.header-height}",
+        "$description": "Chiều cao."
+      },
+      "center-width": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.header-search-width}",
+        "$description": "Bề rộng tối đa của vùng giữa (ô tìm kiếm); co lại khi màn hẹp."
+      }
+    }
+  }
+}

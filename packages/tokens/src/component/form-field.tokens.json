@@ -1,0 +1,81 @@
+{
+  "component": {
+    "form-field": {
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn field."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý dưới field."
+      },
+      "error-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Thông báo lỗi."
+      },
+      "required-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Dấu bắt buộc."
+      },
+      "control-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền control."
+      },
+      "control-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền control khi vô hiệu."
+      },
+      "control-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ nhập."
+      },
+      "control-placeholder": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Placeholder (vẫn đạt 4.5:1)."
+      },
+      "control-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền control (≥ 3:1)."
+      },
+      "control-border-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input-hover}",
+        "$description": "Viền control khi hover."
+      },
+      "control-border-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.border.danger}",
+        "$description": "Viền control có lỗi."
+      },
+      "control-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc control."
+      },
+      "control-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao control."
+      },
+      "control-height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao control sm."
+      },
+      "affix-color": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon tiền tố/hậu tố."
+      }
+    }
+  }
+}

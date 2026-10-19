@@ -6,7 +6,7 @@ Mỗi quyết định kiến trúc được ghi thành một file `NNN-ten.md` g
 |-----|--------|-----------|
 | [001](001-font.md) | Font mặc định: Inter | Đã áp dụng, chờ xác nhận |
 | [002](002-data-grid.md) | Lưới dữ liệu nâng cao | Đề xuất |
-| [003](003-icons.md) | Bộ icon: Lucide | Đề xuất |
+| [003](003-icons.md) | Bộ icon: Tabler Icons (chọn lọc) | Đã áp dụng, chờ xác nhận |
 | [004](004-angular-aria.md) | Dùng `@angular/aria` hay chỉ CDK | Đề xuất |
 | [005](005-docs-site.md) | Docs: app Angular tự dựng thay Storybook | Đã áp dụng, chờ xác nhận |
 | [006](006-npm-scope.md) | Scope npm và nơi publish | Đề xuất |

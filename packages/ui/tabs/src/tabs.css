@@ -1,0 +1,91 @@
+@layer nxt.components {
+  .nxt-tabs {
+    display: block;
+    min-inline-size: 0;
+  }
+
+  .nxt-tabs__list {
+    display: flex;
+    gap: var(--nxt-space-gap-md);
+    overflow-x: auto;
+    border-block-end: var(--nxt-border-width-default) solid var(--nxt-tabs-border);
+    scrollbar-width: none;
+  }
+
+  .nxt-tabs__tab {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--nxt-space-gap-xs);
+    min-block-size: var(--nxt-tabs-height);
+    padding-inline: var(--nxt-space-0-5);
+    border: 0;
+    background: transparent;
+    color: var(--nxt-tabs-text);
+    font: var(--nxt-typography-label-md);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .nxt-tabs__tab:hover:not(:disabled) {
+    color: var(--nxt-tabs-text-hover);
+  }
+
+  .nxt-tabs__tab[aria-selected='true'] {
+    color: var(--nxt-tabs-text-selected);
+  }
+
+  .nxt-tabs__tab[aria-selected='true']::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: calc(-1 * var(--nxt-border-width-default));
+    block-size: var(--nxt-border-width-strong);
+    border-radius: var(--nxt-radius-pill);
+    background: var(--nxt-tabs-indicator);
+  }
+
+  .nxt-tabs__tab:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-focus-ring-width));
+    border-radius: var(--nxt-radius-control);
+  }
+
+  .nxt-tabs__tab:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .nxt-tabs__count {
+    min-inline-size: var(--nxt-badge-height);
+    padding-inline: var(--nxt-space-inset-xs);
+    border-radius: var(--nxt-badge-radius);
+    background: var(--nxt-badge-neutral-bg);
+    color: var(--nxt-badge-neutral-text);
+    font: var(--nxt-typography-label-sm);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .nxt-tabs__tab[aria-selected='true'] .nxt-tabs__count {
+    background: var(--nxt-badge-brand-bg);
+    color: var(--nxt-badge-brand-text);
+  }
+
+  .nxt-tabs__panel {
+    padding-block-start: var(--nxt-space-gap-lg);
+  }
+
+  .nxt-tabs__panel:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-tabs__tab[aria-selected='true']::after {
+      background: Highlight;
+    }
+  }
+}

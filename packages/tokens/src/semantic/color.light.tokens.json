@@ -4,8 +4,8 @@
       "$type": "color",
       "bg": {
         "canvas": {
-          "$value": "{primitive.color.neutral.50}",
-          "$description": "Nền ứng dụng, nằm sau mọi surface."
+          "$value": "{primitive.color.neutral.100}",
+          "$description": "Nền ứng dụng, nằm sau mọi surface (≈1.16:1 với surface trắng để tách lớp rõ)."
         },
         "surface": {
           "$value": "{primitive.color.white}",
@@ -118,11 +118,11 @@
           "$description": "Chữ trên nền inverse."
         },
         "link": {
-          "$value": "{primitive.color.brand.600}",
-          "$description": "Liên kết. Brand slot."
+          "$value": "{primitive.color.brand.700}",
+          "$description": "Liên kết. Brand slot. Bậc 700 để đạt 4.5:1 trên cả surface lẫn canvas xám."
         },
         "link-hover": {
-          "$value": "{primitive.color.brand.700}",
+          "$value": "{primitive.color.brand.800}",
           "$description": "Liên kết khi hover. Brand slot."
         },
         "on-primary": {

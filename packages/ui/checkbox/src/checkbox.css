@@ -1,0 +1,36 @@
+@layer nxt.components {
+  .nxt-checkbox {
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  .nxt-checkbox__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+    min-block-size: var(--nxt-size-icon-lg);
+    min-inline-size: var(--nxt-size-icon-lg);
+    color: var(--nxt-checkbox-label-text);
+    font: var(--nxt-typography-body-md);
+    cursor: pointer;
+  }
+
+  .nxt-checkbox__input {
+    flex: none;
+    inline-size: var(--nxt-checkbox-size);
+    block-size: var(--nxt-checkbox-size);
+    margin: 0 auto;
+    accent-color: var(--nxt-checkbox-accent);
+    cursor: inherit;
+  }
+
+  .nxt-checkbox__input:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  .nxt-checkbox__label:has(:disabled) {
+    color: var(--nxt-color-text-disabled);
+    cursor: not-allowed;
+  }
+}

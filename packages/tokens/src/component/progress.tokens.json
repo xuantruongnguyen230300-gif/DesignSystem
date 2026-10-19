@@ -1,0 +1,36 @@
+{
+  "component": {
+    "progress": {
+      "track": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Rãnh thanh tiến độ."
+      },
+      "fill": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Phần đã đạt."
+      },
+      "fill-success": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.success}",
+        "$description": "Phần đã đạt, tông thành công."
+      },
+      "fill-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.warning}",
+        "$description": "Phần đã đạt, tông cảnh báo."
+      },
+      "fill-danger": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Phần đã đạt, tông lỗi."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo góc."
+      }
+    }
+  }
+}

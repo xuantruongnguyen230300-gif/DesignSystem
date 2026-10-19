@@ -1,85 +1,81 @@
-import { Dialog } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { NxtAppShell, NxtSidenav, NxtTopbar } from '@nxt/ui/app-shell';
 import { NxtButton } from '@nxt/ui/button';
-import { ColorPref, DensityPref, ThemeService } from './core/theme';
-import { NAV } from './core/nav';
+import { NxtIcon } from '@nxt/ui/icon';
+import { NxtMenu, NxtMenuGroup, NxtMenuItemRadio, NxtMenuLabel, NxtMenuSeparator, NxtMenuTrigger } from '@nxt/ui/menu';
+import { NxtSegmented, NxtSegmentedOption } from '@nxt/ui/segmented';
+import { NxtTooltip } from '@nxt/ui/tooltip';
 import { BRANDS } from '../generated/brands';
-import { ChoiceGroup, Choice } from './shell/choice-group';
-import { DocsIcon } from './shell/icons';
-import { SearchDialog } from './shell/search-dialog';
-import { StatusBadge } from './shell/status-badge';
+import { STATS } from '../generated/stats';
+import { NAV } from './core/nav';
+import { ColorPref, DensityPref, ThemeService } from './core/theme';
+import { DocsSearch } from './shell/docs-search';
+
+const NAV_KEY = 'nxt-docs-nav-collapsed';
 
 @Component({
   selector: 'docs-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NxtButton, ChoiceGroup, DocsIcon, StatusBadge],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    NxtAppShell,
+    NxtSidenav,
+    NxtTopbar,
+    NxtButton,
+    NxtIcon,
+    NxtSegmented,
+    NxtTooltip,
+    NxtMenu,
+    NxtMenuGroup,
+    NxtMenuItemRadio,
+    NxtMenuLabel,
+    NxtMenuSeparator,
+    NxtMenuTrigger,
+    DocsSearch,
+  ],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(document:keydown)': 'onGlobalKey($event)',
-  },
 })
 export class App {
   protected readonly theme = inject(ThemeService);
-  private readonly dialog = inject(Dialog);
   private readonly router = inject(Router);
 
   protected readonly nav = NAV;
-  protected readonly navOpen = signal(false);
-  protected readonly bare = signal(false);
+  protected readonly version = STATS.version;
   protected readonly brands = BRANDS;
+  protected readonly bare = signal(false);
+  protected readonly collapsed = signal(readCollapsed());
 
-  protected readonly colorOptions: Choice<ColorPref>[] = [
-    { value: 'light', label: 'Sáng' },
-    { value: 'dark', label: 'Tối' },
-    { value: 'auto', label: 'Theo hệ thống' },
+  protected readonly colorOptions: NxtSegmentedOption<ColorPref>[] = [
+    { value: 'light', label: 'Giao diện sáng', icon: 'sun' },
+    { value: 'dark', label: 'Giao diện tối', icon: 'moon' },
+    { value: 'auto', label: 'Theo hệ thống', icon: 'device-desktop' },
   ];
-  protected readonly densityOptions: Choice<DensityPref>[] = [
+  protected readonly densityOptions: { value: DensityPref; label: string }[] = [
     { value: 'compact', label: 'Gọn' },
-    { value: 'comfortable', label: 'Vừa' },
+    { value: 'comfortable', label: 'Vừa (mặc định)' },
     { value: 'spacious', label: 'Rộng' },
   ];
 
   constructor() {
     this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.navOpen.set(false);
-        this.bare.set(e.urlAfterRedirects.startsWith('/examples/'));
+      if (e instanceof NavigationEnd) this.bare.set(e.urlAfterRedirects.startsWith('/examples/'));
+    });
+    effect(() => {
+      try {
+        localStorage.setItem(NAV_KEY, String(this.collapsed()));
+      } catch {
+        /* storage unavailable — not remembered */
       }
     });
   }
+}
 
-  protected openSearch() {
-    if (this.dialog.openDialogs.length) return;
-    this.dialog.open(SearchDialog, {
-      ariaLabel: 'Tìm kiếm tài liệu',
-      panelClass: 'docs-search-panel',
-      backdropClass: 'docs-backdrop',
-      autoFocus: '#docs-search-input',
-      restoreFocus: true,
-    });
-  }
-
-  protected onGlobalKey(event: KeyboardEvent) {
-    if (event.key === 'Escape' && this.navOpen()) {
-      this.navOpen.set(false);
-      document.getElementById('docs-menu-toggle')?.focus();
-      return;
-    }
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-      event.preventDefault();
-      this.openSearch();
-    }
-  }
-
-  protected skipToMain(event: Event) {
-    event.preventDefault();
-    const main = document.getElementById('main');
-    main?.focus();
-    main?.scrollIntoView();
-  }
-
-  protected setBrand(event: Event) {
-    this.theme.brand.set((event.target as HTMLSelectElement).value);
+function readCollapsed(): boolean {
+  try {
+    return localStorage.getItem(NAV_KEY) === 'true';
+  } catch {
+    return false;
   }
 }

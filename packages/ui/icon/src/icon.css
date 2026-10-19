@@ -1,0 +1,26 @@
+@layer nxt.components {
+  .nxt-icon {
+    --_size: var(--nxt-icon-size);
+    display: inline-flex;
+    flex: none;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    vertical-align: middle;
+  }
+
+  .nxt-icon[data-size='sm'] { --_size: var(--nxt-size-icon-sm); }
+  .nxt-icon[data-size='md'] { --_size: var(--nxt-size-icon-md); }
+  .nxt-icon[data-size='lg'] { --_size: var(--nxt-size-icon-lg); }
+
+  .nxt-icon > svg {
+    inline-size: 100%;
+    block-size: 100%;
+    stroke-width: var(--nxt-icon-stroke);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-icon > svg {
+      stroke: CanvasText;
+    }
+  }
+}

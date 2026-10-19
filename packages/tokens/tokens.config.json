@@ -63,6 +63,24 @@
       "min": 4.5
     },
     {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.muted",
+      "min": 4.5,
+      "note": "neutral tag, avatar tone 6"
+    },
+    {
+      "fg": "semantic.color.text.link",
+      "bg": "semantic.color.bg.primary-subtle",
+      "min": 4.5,
+      "note": "brand tag, avatar tone 1"
+    },
+    {
+      "fg": "semantic.color.text.link",
+      "bg": "semantic.color.bg.canvas",
+      "min": 4.5,
+      "note": "links in page text sit on the canvas, not only on cards"
+    },
+    {
       "fg": "semantic.color.text.inverse",
       "bg": "semantic.color.bg.inverse",
       "min": 4.5,

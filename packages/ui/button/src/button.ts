@@ -4,10 +4,12 @@ import {
   DestroyRef,
   ElementRef,
   ViewEncapsulation,
+  afterNextRender,
   booleanAttribute,
   computed,
   inject,
   input,
+  isDevMode,
 } from '@angular/core';
 
 /** Emphasis level — see packages/ui/button/SPEC.md §4. */
@@ -22,9 +24,10 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
  * - `disabled` uses `aria-disabled`, so the button stays focusable and can explain *why* it is disabled.
  * - `disabled` / `loading` block activation before any consumer `(click)` listener runs.
  * - `type` defaults to `button`, so it never submits a form by accident.
+ * - `nxtIconButton` renders a square, icon-only button — it must have an `aria-label`.
  */
 @Component({
-  selector: 'button[nxtButton], a[nxtButton]',
+  selector: 'button[nxtButton], a[nxtButton], button[nxtIconButton], a[nxtIconButton]',
   exportAs: 'nxtButton',
   template: `
     @if (loading()) {
@@ -40,6 +43,7 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
     '[attr.data-loading]': 'loading() || null',
+    '[attr.data-icon-only]': 'iconOnly || null',
     '[attr.aria-disabled]': 'inactive() || null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.type]': 'isNativeButton ? type() : null',
@@ -50,6 +54,7 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
 export class NxtButton {
   private readonly host: HTMLButtonElement | HTMLAnchorElement = inject(ElementRef).nativeElement;
   protected readonly isNativeButton = this.host.tagName === 'BUTTON';
+  protected readonly iconOnly = this.host.hasAttribute('nxticonbutton');
 
   /** Emphasis: at most one `primary` per region. */
   readonly variant = input<NxtButtonVariant>('secondary');
@@ -74,5 +79,13 @@ export class NxtButton {
     };
     this.host.addEventListener('click', block, { capture: true });
     inject(DestroyRef).onDestroy(() => this.host.removeEventListener('click', block, { capture: true }));
+
+    if (this.iconOnly && isDevMode()) {
+      afterNextRender(() => {
+        if (!this.host.getAttribute('aria-label') && !this.host.getAttribute('aria-labelledby')) {
+          console.warn('[nxtIconButton] icon-only button needs aria-label (WCAG 4.1.2).', this.host);
+        }
+      });
+    }
   }
 }

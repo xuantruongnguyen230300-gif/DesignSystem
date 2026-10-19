@@ -27,6 +27,7 @@ NXT Design là design system đa sản phẩm cho phần mềm nghiệp vụ d�
 | `npm run ds:tokens [-- --json]` | Validate token (tier, mode, brand, tương phản, độc lập giữa trục mode) |
 | `npm run tokens:build` | Sinh `packages/tokens/dist` (CSS theo mode/brand, SCSS, JS, JSON) |
 | `npm run tokens:palettes` | Sinh lại thang màu core từ `palettes.json` |
+| `npm run icons:build` | Sinh `packages/ui/icon/src/icons.generated.ts` từ danh sách chọn lọc `packages/ui/icon/icons.json` (Tabler, ADR-003) |
 | `npm run docs:generate` | Sinh `apps/docs/src/generated` (nội dung, example, API, llms.txt) |
 | `npm run ds:palette -- --name <x> --seed "<màu>"` | Thang màu OKLCH + bảng tương phản (dùng cho brand mới) |
 | `npm run ds:contrast -- "<fg>" "<bg>"` | Tương phản WCAG cho một cặp màu |
@@ -52,8 +53,13 @@ Kiến thức Angular tổng quát lấy từ skill `angular-developer` ([angula
 ## Cấu trúc
 ```
 packages/tokens   @nxt/tokens: palettes.json, tokens.config.json, src/{primitive,semantic,component,brands/<product>} → dist/
-packages/ui       @nxt/ui: styles/nxt.css + entry points button/, layout/ (SPEC.md, public-api.ts, src/)
-apps/docs         docs site: src/content/**/*.md, src/examples/**/*.example.ts, e2e/a11y.spec.ts
+packages/ui       @nxt/ui: styles/nxt.css + mỗi entry point một thư mục (SPEC.md, public-api.ts, src/):
+                  hành động: button (+ nxtIconButton), menu, segmented · nhập liệu: form-field, checkbox
+                  bố cục: layout · điều hướng: app-shell (shell, topbar, sidenav), page-header, tabs, pagination
+                  dữ liệu: table, card (+ stat), tag (+ badge), avatar, progress, timeline, icon
+                  phản hồi/lớp phủ: tooltip, drawer, empty-state
+apps/docs         docs site: src/content/<section>/*.md, src/examples/**/*.example.ts, e2e/a11y.spec.ts
+                  mẫu màn hình thật (HRM): src/examples/templates/ (dashboard, danh mục, phê duyệt, đăng nhập)
 tools/            lib/ (color, palette, tokens), tokens/ (validate, build, palette, contrast), lint/, docs/, scaffold/, hooks/
 docs/             PLAN, ADR, design principles
 .claude/          skills/, agents/, settings.json (hook)

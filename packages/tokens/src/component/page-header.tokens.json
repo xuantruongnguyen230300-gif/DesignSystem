@@ -1,0 +1,26 @@
+{
+  "component": {
+    "page-header": {
+      "title-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Tiêu đề trang."
+      },
+      "description-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Mô tả trang."
+      },
+      "crumb-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Mục breadcrumb."
+      },
+      "crumb-current-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Mục breadcrumb hiện tại."
+      }
+    }
+  }
+}

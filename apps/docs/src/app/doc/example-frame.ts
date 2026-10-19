@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { EXAMPLES } from '../../generated/examples';
 import type { ExampleEntry } from '../core/types';
 import { CopyButton } from '../shell/copy-button';
-import { DocsIcon } from '../shell/icons';
+import { NxtIcon } from '@nxt/ui/icon';
 
 let nextId = 0;
 
@@ -14,9 +14,9 @@ let nextId = 0;
  */
 @Component({
   selector: 'docs-example',
-  imports: [NgComponentOutlet, RouterLink, CopyButton, DocsIcon],
+  imports: [NgComponentOutlet, RouterLink, CopyButton, NxtIcon],
   template: `
-    <div class="docs-example" role="group" [attr.aria-labelledby]="uid + '-title'">
+    <div class="docs-example" role="group" [attr.aria-labelledby]="uid + '-title'" [class.docs-example--screen]="screen()">
       <div class="docs-example__bar">
         <span class="docs-example__title" [id]="uid + '-title'">{{ entry()?.title ?? id() }}</span>
         <div class="docs-example__tools">
@@ -41,7 +41,7 @@ let nextId = 0;
             {{ showCode() ? 'Ẩn code' : 'Xem code' }}
           </button>
           <a class="docs-tool" [routerLink]="['/examples', id()]" target="_blank">
-            <docs-icon name="external" /><span>Mở riêng</span><span class="nxt-visually-hidden">(tab mới)</span>
+            <nxt-icon name="external-link" /><span>{{ screen() ? 'Mở toàn màn hình' : 'Mở riêng' }}</span><span class="nxt-visually-hidden">(tab mới)</span>
           </a>
         </div>
       </div>
@@ -68,6 +68,8 @@ export class ExampleFrame {
   readonly id = input.required<string>();
   protected readonly uid = `docs-example-${nextId++}`;
   protected readonly entry = computed<ExampleEntry | undefined>(() => EXAMPLES[this.id()]);
+  /** Full screens (templates) render edge-to-edge in a tall frame. */
+  protected readonly screen = computed(() => this.id().startsWith('template-'));
   protected readonly component = signal<Type<unknown> | null>(null);
   protected readonly failed = signal(false);
   protected readonly color = signal('');

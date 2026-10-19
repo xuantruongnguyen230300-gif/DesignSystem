@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtGrid, NxtInline, NxtSpan, NxtStack } from '@nxt/ui/layout';
-import { PAGES } from '../../generated/content';
+import { STATS } from '../../generated/stats';
 
 interface Pillar {
   title: string;
@@ -18,7 +18,7 @@ interface Pillar {
     <div class="docs-home">
       <section class="docs-hero" aria-labelledby="docs-hero-title">
         <nxt-stack gap="lg">
-          <p class="docs-hero__kicker">NXT Design · v0.1</p>
+          <p class="docs-hero__kicker">NXT Design · v{{ stats.version }}</p>
           <h1 id="docs-hero-title" class="docs-hero__title">Design system cho phần mềm nghiệp vụ dày dữ liệu</h1>
           <p class="docs-hero__lead">
             Một bộ token, component Angular và pattern dùng chung cho mọi sản phẩm. Ưu tiên tốc độ thao tác, bàn phím,
@@ -48,10 +48,10 @@ interface Pillar {
       <section aria-labelledby="docs-status-title" class="docs-home__section">
         <h2 id="docs-status-title" class="docs-home__heading">Hiện trạng</h2>
         <dl class="docs-stats">
-          <div><dt>Trang tài liệu</dt><dd class="nxt-tabular-nums">{{ pageCount }}</dd></div>
-          <div><dt>Component đã phát hành (beta)</dt><dd class="nxt-tabular-nums">{{ betaCount }}</dd></div>
-          <div><dt>Token</dt><dd class="nxt-tabular-nums">~390</dd></div>
-          <div><dt>Cặp tương phản được kiểm tự động</dt><dd class="nxt-tabular-nums">400</dd></div>
+          <div><dt>Trang tài liệu</dt><dd class="nxt-tabular-nums">{{ stats.pages }}</dd></div>
+          <div><dt>Gói component (@nxt/ui/*)</dt><dd class="nxt-tabular-nums">{{ stats.entries }}</dd></div>
+          <div><dt>Token</dt><dd class="nxt-tabular-nums">{{ stats.tokens }}</dd></div>
+          <div><dt>Lượt kiểm tương phản tự động</dt><dd class="nxt-tabular-nums">{{ stats.contrastChecks }}</dd></div>
         </dl>
       </section>
     </div>
@@ -59,8 +59,7 @@ interface Pillar {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  protected readonly pageCount = PAGES.length;
-  protected readonly betaCount = PAGES.filter((p) => p.section === 'components' && p.status === 'beta').length;
+  protected readonly stats = STATS;
   protected readonly pillars: Pillar[] = [
     {
       title: 'Token đúng ở mọi ngữ cảnh',

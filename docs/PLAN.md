@@ -5,27 +5,29 @@
 > **Tham chiếu:** [vnrpromax.vercel.app/styleguide](https://vnrpromax.vercel.app/styleguide/hrm/layout/grid) chỉ dùng để học hỏi. NXT không dùng lại code hay thương hiệu của trang này.
 > Cập nhật: 2026-10-16
 
-## Trạng thái (2026-10-16)
+## Trạng thái (2026-10-19)
 
 | Giai đoạn | Trạng thái | Đã có |
 |-----------|-----------|-------|
 | 0. Nền móng | ✅ Xong | Workspace Angular 21 (zoneless, Vitest, ng-packagr), npm 11; CI GitHub Actions; hook Claude Code; ADR 001–009; 10 skill + 1 agent |
-| 1. Foundations & token | ✅ Xong, còn icon | Khoảng 390 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); brand mẫu `sample`; engine build mode/brand lồng nhau; 400/400 phép kiểm tương phản đạt; docs Nền tảng đủ 6 trang. **Còn lại:** `@nxt/icons` (ADR-003) |
-| 2. Core components | 🟡 Bắt đầu | Button + layout primitives (Stack, Inline, Grid, Span) ở mức beta: SPEC, unit test 15/15, axe 0 vi phạm. Các đợt A–D còn lại xem §6 |
-| 3–4 | ⏳ Chưa bắt đầu | |
+| 1. Foundations & token | ✅ Xong | 563 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); nền sáng chỉnh lại để canvas xám tách khỏi surface trắng; brand mẫu `sample`; 430/430 lượt kiểm tương phản đạt; bộ icon Tabler chọn lọc 259 icon (ADR-003) |
+| 2. Core components | 🟡 Đang làm | Beta, có SPEC + docs + axe: Button/IconButton, Stack/Inline/Grid, Menu (+ nhóm radio), Segmented, Form field, Checkbox, Tag/Badge, Avatar, Tooltip, Drawer, Tabs, Page header/Breadcrumb, Pagination. Còn lại xem Roadmap |
+| 3. Dữ liệu & pattern | 🟡 Bắt đầu | Beta: App shell/Sidenav (rail, drawer mobile), Table (sắp xếp, chọn hàng), Card/Stat, Progress, Timeline, Empty state. Mẫu màn hình HRM: Tổng quan, Danh mục, Phê duyệt, Đăng nhập |
+| 4 | ⏳ Chưa bắt đầu | |
 
 **Kiểm chứng ở thời điểm ghi:**
-- `npm run ds:check` sạch;
-- `npm test` 15/15;
-- `npm run test:a11y` 90/90 (axe trên 18 example × 3 ngữ cảnh, 16 trang × sáng/tối, 4 test bàn phím);
-- build `@nxt/ui` và docs không cảnh báo.
+- `npm run ds:check` sạch (563 token, 430/430 tương phản, 0 giá trị hard-code);
+- `npm test` 71/71 (14 file spec);
+- `npm run test:a11y` 341/341 (axe trên 85 example × sáng/tối/gọn, 38 trang × sáng/tối, 10 test bàn phím và hành vi: skip link, tìm kiếm kiểu Windows, sidenav rail, drawer mobile, nút sáng/tối, mẫu Phê duyệt và Danh mục, link Roadmap);
+- build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 578 kB (nội dung từng trang nạp lazy).
+
+**Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có trạng thái indeterminate).
 
 **Việc tiếp theo** (theo thứ tự):
-1. Chốt các ADR còn "Đề xuất": 002, 003, 004, 006, 007.
-2. `@nxt/icons`.
-3. Đợt A: IconButton, Link, Badge/Tag, StatusTag, Spinner, Skeleton, Tooltip.
-4. Đợt B (nhập liệu).
-5. Visual regression.
+1. Chốt các ADR còn "Đề xuất": 002, 004, 006, 007; xác nhận ADR-003 (Tabler).
+2. Dọn §11 của các SPEC: thay primitive bằng semantic/component token, mở rộng detector để bắt lỗi này.
+3. Đợt còn lại: Link, Spinner, Skeleton, Radio, Switch, NumberInput (VND), Combobox, DatePicker, Dialog/Confirm, Toast/Alert.
+4. Visual regression.
 
 ## Mục lục
 1. Trang tham chiếu đang có gì và NXT làm khác ở đâu

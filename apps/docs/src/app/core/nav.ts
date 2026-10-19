@@ -1,51 +1,49 @@
+import type { NxtNavItem } from '@nxt/ui/app-shell';
+import type { NxtIconName } from '@nxt/ui/icon';
 import { PAGES } from '../../generated/content';
-import type { DocPage, DocStatus } from './types';
+import type { DocStatus } from './types';
 
-export interface NavItem {
+const SECTION_ICON: Record<string, NxtIconName> = {
+  'getting-started': 'rocket',
+  foundations: 'palette',
+  components: 'components',
+  templates: 'template',
+  patterns: 'layers-subtract',
+};
+
+export interface ReadingItem {
   title: string;
   path: string;
-  status: DocStatus | null;
-}
-export interface NavGroup {
-  title: string | null;
-  items: NavItem[];
-}
-export interface NavSection {
-  key: string;
-  title: string;
-  groups: NavGroup[];
 }
 
-const toItem = (p: DocPage): NavItem => ({ title: p.title, path: p.path, status: p.status });
-
-/** Navigation is derived from content frontmatter: every page appears exactly once. */
-export function buildNav(): NavSection[] {
-  const sections: NavSection[] = [];
+/**
+ * Side navigation derived from content frontmatter: every page appears exactly once,
+ * sections are collapsible groups with icons, component groups become headings.
+ */
+function buildNav(): NxtNavItem[] {
+  const items: NxtNavItem[] = [{ label: 'Trang chủ', icon: 'home', link: '/', exact: true }];
+  const sections = new Map<string, { title: string; groups: Map<string | null, NxtNavItem[]> }>();
   for (const page of PAGES) {
-    let section = sections.find((s) => s.key === page.section);
-    if (!section) {
-      section = { key: page.section, title: page.sectionTitle, groups: [] };
-      sections.push(section);
-    }
-    let group = section.groups.find((g) => g.title === page.group);
-    if (!group) {
-      group = { title: page.group, items: [] };
-      section.groups.push(group);
-    }
-    group.items.push(toItem(page));
+    if (!sections.has(page.section)) sections.set(page.section, { title: page.sectionTitle, groups: new Map() });
+    const groups = sections.get(page.section)!.groups;
+    if (!groups.has(page.group)) groups.set(page.group, []);
+    groups.get(page.group)!.push({ label: page.title, link: page.path });
   }
-  sections.push({
-    key: 'resources',
-    title: 'Tài nguyên',
-    groups: [{ title: null, items: [{ title: 'Roadmap & trạng thái', path: '/roadmap', status: null }] }],
-  });
-  return sections;
+  for (const [key, s] of sections) {
+    const children = [...s.groups].flatMap(([group, links]) => (group ? [{ label: group, heading: true }, ...links] : links));
+    items.push({ label: s.title, icon: SECTION_ICON[key] ?? 'folder', children });
+  }
+  items.push({ label: 'Tài nguyên', icon: 'map-2', children: [{ label: 'Roadmap & trạng thái', link: '/roadmap' }] });
+  return items;
 }
 
-export const NAV = buildNav();
+export const NAV: NxtNavItem[] = buildNav();
 
 /** Flat reading order for previous/next links. */
-export const READING_ORDER: NavItem[] = NAV.flatMap((s) => s.groups.flatMap((g) => g.items));
+export const READING_ORDER: ReadingItem[] = [
+  ...PAGES.map((p) => ({ title: p.title, path: p.path })),
+  { title: 'Roadmap & trạng thái', path: '/roadmap' },
+];
 
 export const STATUS_LABEL: Record<DocStatus, string> = {
   draft: 'Draft',

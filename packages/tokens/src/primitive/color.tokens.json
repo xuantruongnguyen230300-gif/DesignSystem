@@ -20,36 +20,36 @@
           "$value": {
             "colorSpace": "oklch",
             "components": [
-              0.967,
+              0.952,
               0.008,
               264.92
             ],
             "alpha": 1,
-            "hex": "#F1F4FA"
+            "hex": "#ECEFF5"
           }
         },
         "200": {
           "$value": {
             "colorSpace": "oklch",
             "components": [
-              0.922,
+              0.9,
               0.008,
               264.92
             ],
             "alpha": 1,
-            "hex": "#E2E5EB"
+            "hex": "#DBDEE3"
           }
         },
         "300": {
           "$value": {
             "colorSpace": "oklch",
             "components": [
-              0.87,
+              0.85,
               0.008,
               264.92
             ],
             "alpha": 1,
-            "hex": "#D2D4DA"
+            "hex": "#CBCED3"
           }
         },
         "400": {

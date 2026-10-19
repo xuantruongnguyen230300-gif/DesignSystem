@@ -1,0 +1,16 @@
+{
+  "component": {
+    "app-shell": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.canvas}",
+        "$description": "Nền vùng nội dung của ứng dụng (phía sau card, bảng)."
+      },
+      "backdrop": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.overlay}",
+        "$description": "Lớp phủ phía sau ngăn điều hướng trên màn hình hẹp."
+      }
+    }
+  }
+}

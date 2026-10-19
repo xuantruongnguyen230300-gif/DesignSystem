@@ -21,7 +21,6 @@ export interface DocPage {
   package: string | null;
   /** Extra search terms, e.g. Vietnamese names: "nút" for Button. */
   keywords: string[];
-  segments: DocSegment[];
   toc: { id: string; text: string }[];
 }
 

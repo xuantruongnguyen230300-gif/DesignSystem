@@ -1,0 +1,111 @@
+{
+  "component": {
+    "tag": {
+      "neutral-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền tag tông neutral."
+      },
+      "neutral-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ tag tông neutral."
+      },
+      "neutral-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Chấm/icon trạng thái tông neutral."
+      },
+      "info-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.info-subtle}",
+        "$description": "Nền tag tông info."
+      },
+      "info-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.info}",
+        "$description": "Chữ tag tông info."
+      },
+      "info-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.info}",
+        "$description": "Chấm/icon trạng thái tông info."
+      },
+      "success-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.success-subtle}",
+        "$description": "Nền tag tông success."
+      },
+      "success-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.success}",
+        "$description": "Chữ tag tông success."
+      },
+      "success-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.success}",
+        "$description": "Chấm/icon trạng thái tông success."
+      },
+      "warning-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.warning-subtle}",
+        "$description": "Nền tag tông warning."
+      },
+      "warning-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.warning}",
+        "$description": "Chữ tag tông warning."
+      },
+      "warning-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.warning}",
+        "$description": "Chấm/icon trạng thái tông warning."
+      },
+      "danger-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.danger-subtle}",
+        "$description": "Nền tag tông danger."
+      },
+      "danger-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Chữ tag tông danger."
+      },
+      "danger-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Chấm/icon trạng thái tông danger."
+      },
+      "brand-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary-subtle}",
+        "$description": "Nền tag tông brand."
+      },
+      "brand-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ tag tông brand."
+      },
+      "brand-dot": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.primary}",
+        "$description": "Chấm/icon trạng thái tông brand."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo góc tag."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.lg}",
+        "$description": "Chiều cao tag md."
+      },
+      "height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.md}",
+        "$description": "Chiều cao tag sm."
+      }
+    }
+  }
+}

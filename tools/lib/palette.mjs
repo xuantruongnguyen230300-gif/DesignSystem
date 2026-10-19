@@ -6,8 +6,10 @@ export const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const LIGHTNESS = [0.971, 0.936, 0.885, 0.808, 0.704, 0.623, 0.546, 0.488, 0.424, 0.379, 0.282];
 const CHROMA = [0.057, 0.131, 0.241, 0.429, 0.673, 0.873, 1, 0.992, 0.812, 0.596, 0.371];
 // Neutral scales need a wider range: near-white surfaces and near-black dark-mode canvases.
-// 600 sits at 0.48 so secondary text (~6:1 on white) stays clearly lighter than body text (~18:1).
-const NEUTRAL_LIGHTNESS = [0.985, 0.967, 0.922, 0.87, 0.708, 0.556, 0.48, 0.371, 0.269, 0.205, 0.145];
+// 100 (app canvas) sits at 0.952 → ~1.16:1 against white surfaces, so cards/panels read as separate layers
+//   (0.967 gave 1.05:1 and surfaces blended into the background).
+// 200/300 (borders) are darker for the same reason; 600 at 0.48 keeps secondary text (~6:1) lighter than body text.
+const NEUTRAL_LIGHTNESS = [0.985, 0.952, 0.9, 0.85, 0.708, 0.556, 0.48, 0.371, 0.269, 0.205, 0.145];
 const NEUTRAL_THRESHOLD = 0.03;
 
 const round = (x, d) => Math.round(x * 10 ** d) / 10 ** d;

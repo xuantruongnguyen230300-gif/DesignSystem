@@ -50,6 +50,7 @@ npm run test:a11y       # axe mọi example × sáng/tối/gọn + test bàn ph�
 CI (`.github/workflows/ci.yml`) chạy đúng chuỗi này trên mỗi PR.
 - Visual diff có thay đổi thì từng ảnh phải được xác nhận là **có chủ đích** và đã ghi trong changeset. Không cập nhật snapshot hàng loạt.
 - Bước nào chưa có hạ tầng (ví dụ chưa có Playwright) thì ghi "chưa áp dụng" trong báo cáo, không ghi "pass".
+- **Giấy phép bên thứ ba:** gói phát hành phải kèm file `NOTICE` ghi tên, phiên bản và giấy phép của mã/tài nguyên nhúng vào bundle. Hiện có: Tabler Icons (MIT, path data trong `@nxt/ui/icon`, xem ADR-003). Thêm thư viện nhúng mới thì cập nhật `NOTICE` trong cùng changeset.
 
 ## 5. Báo cáo phát hành
 - Danh sách gói và version mới.

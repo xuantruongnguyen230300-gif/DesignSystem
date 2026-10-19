@@ -1,0 +1,56 @@
+{
+  "component": {
+    "table": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền bảng."
+      },
+      "header-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.subtle}",
+        "$description": "Nền hàng tiêu đề."
+      },
+      "header-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ tiêu đề cột."
+      },
+      "row-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Đường kẻ giữa các hàng."
+      },
+      "row-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền hàng khi hover."
+      },
+      "row-bg-selected": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền hàng đang chọn."
+      },
+      "row-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.row.md}",
+        "$description": "Chiều cao hàng (theo mật độ)."
+      },
+      "header-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.row.sm}",
+        "$description": "Chiều cao hàng tiêu đề."
+      },
+      "sort-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon sắp xếp chưa active."
+      },
+      "sort-icon-active": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.primary}",
+        "$description": "Icon sắp xếp đang active."
+      }
+    }
+  }
+}

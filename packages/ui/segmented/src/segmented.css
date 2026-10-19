@@ -1,0 +1,74 @@
+@layer nxt.components {
+  .nxt-segmented {
+    --_height: var(--nxt-segmented-height);
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: inline-flex;
+  }
+
+  .nxt-segmented[data-size='sm'] {
+    --_height: var(--nxt-segmented-height-sm);
+  }
+
+  .nxt-segmented__group {
+    display: inline-flex;
+    gap: var(--nxt-space-0-5);
+    margin: 0;
+    padding: var(--nxt-space-0-5);
+    border: var(--nxt-border-width-default) solid var(--nxt-segmented-track-border);
+    border-radius: var(--nxt-segmented-radius);
+    background: var(--nxt-segmented-track-bg);
+  }
+
+  .nxt-segmented__option {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .nxt-segmented__option input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .nxt-segmented__face {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nxt-space-gap-xs);
+    min-block-size: calc(var(--_height) - 2 * var(--nxt-space-0-5) - 2 * var(--nxt-border-width-default));
+    padding-inline: var(--nxt-space-inset-sm);
+    border-radius: calc(var(--nxt-segmented-radius) - var(--nxt-space-0-5));
+    color: var(--nxt-segmented-item-text);
+    font: var(--nxt-typography-label-sm);
+    white-space: nowrap;
+    transition: background-color var(--nxt-motion-duration-fast) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-segmented[data-icon-only] .nxt-segmented__face {
+    min-inline-size: calc(var(--_height) - 2 * var(--nxt-space-0-5) - 2 * var(--nxt-border-width-default));
+    padding-inline: 0;
+  }
+
+  .nxt-segmented__option input:hover + .nxt-segmented__face {
+    color: var(--nxt-segmented-item-text-hover);
+  }
+
+  .nxt-segmented__option input:checked + .nxt-segmented__face {
+    background: var(--nxt-segmented-selected-bg);
+    color: var(--nxt-segmented-selected-text);
+    box-shadow: var(--nxt-elevation-raised);
+  }
+
+  .nxt-segmented__option input:focus-visible + .nxt-segmented__face {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-segmented__option input:checked + .nxt-segmented__face {
+      outline: var(--nxt-focus-ring-width) solid Highlight;
+    }
+  }
+}

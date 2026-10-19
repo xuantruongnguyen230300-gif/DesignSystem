@@ -57,7 +57,8 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 | `space.section` | `sm`, `md`, `lg` (khoảng cách giữa các khối trang) |
 | `size.control` | `sm`, `md`, `lg` (block-size của input/button/select) |
 | `size.row` | `sm`, `md`, `lg` (row height của table/list) |
-| `size.icon` | `sm`, `md`, `lg` |
+| `size.icon` | `sm`, `md`, `lg`, `stroke` (độ dày nét icon, kiểu number) |
+| `size.drawer` | `sm`, `md`, `lg` (bề rộng drawer) |
 | `radius` | `control`, `container`, `overlay`, `pill` |
 | `typography` | `display`, `heading-lg`, `heading-md`, `heading-sm`, `body-lg`, `body-md`, `body-sm`, `label-md`, `label-sm`, `caption`, `code` (composite `typography`; lớp tiện ích `.nxt-text-<vai-trò>`) |
 | `font-family` | `sans`, `mono` |
@@ -65,7 +66,7 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 | `motion.duration` | `instant`, `fast`, `normal`, `slow` |
 | `motion.ease` | `standard`, `enter`, `exit` |
 | `z` | `base`, `sticky`, `dropdown`, `overlay`, `modal`, `toast`, `tooltip` |
-| `layout` | `container-max`, `content-default`, `content-narrow`, `sidebar-width`, `sidebar-width-collapsed`, `header-height`, `gutter-sm/md/lg`, `item-min-sm/md/lg` |
+| `layout` | `container-max`, `content-default`, `content-narrow`, `sidebar-width`, `sidebar-width-collapsed`, `header-height`, `header-search-width`, `gutter-sm/md/lg`, `item-min-sm/md/lg` |
 
 Tên CSS của primitive và semantic **không được trùng nhau**. Validator chặn trường hợp này; ví dụ thực tế là `primitive.font.family.sans` và `semantic.font-family.sans` cùng ra `--nxt-font-family-sans`. Vì vậy primitive đặt tên theo bản chất (`font.family.inter`), còn semantic đặt theo vai trò (`font-family.sans`).
 

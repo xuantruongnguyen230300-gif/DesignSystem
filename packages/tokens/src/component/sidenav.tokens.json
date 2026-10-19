@@ -1,0 +1,86 @@
+{
+  "component": {
+    "sidenav": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền thanh điều hướng."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền ngăn với nội dung."
+      },
+      "width": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.sidebar-width}",
+        "$description": "Bề rộng khi mở."
+      },
+      "width-collapsed": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.sidebar-width-collapsed}",
+        "$description": "Bề rộng khi thu gọn (chỉ icon)."
+      },
+      "item-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Chiều cao mục cấp 1."
+      },
+      "subitem-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao mục con."
+      },
+      "item-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc mục."
+      },
+      "item-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ mục."
+      },
+      "item-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon mục."
+      },
+      "item-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền mục khi hover."
+      },
+      "item-active-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền mục đang ở trang hiện tại."
+      },
+      "item-active-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ mục đang active."
+      },
+      "item-active-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.primary}",
+        "$description": "Icon mục đang active."
+      },
+      "indicator": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Vạch chỉ báo mục con đang active trên đường dẫn phân cấp."
+      },
+      "guide": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Đường dẫn phân cấp nối các mục con."
+      },
+      "heading-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ tiêu đề nhóm."
+      }
+    }
+  }
+}

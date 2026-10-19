@@ -1,0 +1,46 @@
+{
+  "component": {
+    "badge": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.danger}",
+        "$description": "Nền badge đếm (mặc định: cần chú ý)."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-danger}",
+        "$description": "Chữ badge đếm."
+      },
+      "neutral-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền badge đếm trung tính (đếm trong tab)."
+      },
+      "neutral-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ badge đếm trung tính."
+      },
+      "brand-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Nền badge đếm nhấn thương hiệu."
+      },
+      "brand-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Chữ badge đếm nhấn thương hiệu."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo góc badge."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.md}",
+        "$description": "Chiều cao badge."
+      }
+    }
+  }
+}

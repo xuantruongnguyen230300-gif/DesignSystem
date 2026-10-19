@@ -1,0 +1,164 @@
+@layer nxt.components {
+  .nxt-app-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    block-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+    background: var(--nxt-app-shell-bg);
+    color: var(--nxt-color-text-default);
+  }
+
+  .nxt-app-shell__skip {
+    position: absolute;
+    inset-block-start: var(--nxt-space-gap-sm);
+    inset-inline-start: var(--nxt-space-gap-sm);
+    z-index: var(--nxt-z-tooltip);
+    padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
+    border-radius: var(--nxt-radius-control);
+    background: var(--nxt-tooltip-bg);
+    color: var(--nxt-tooltip-text);
+    font: var(--nxt-typography-label-md);
+    transform: translateY(-200%);
+  }
+
+  .nxt-app-shell__skip:focus-visible {
+    transform: none;
+    color: var(--nxt-tooltip-text);
+  }
+
+  .nxt-app-shell__nav {
+    display: flex;
+    min-block-size: 0;
+  }
+
+  .nxt-app-shell__frame {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  .nxt-app-shell__main {
+    min-block-size: 0;
+    overflow: auto;
+  }
+
+  .nxt-app-shell__main:focus {
+    outline: none;
+  }
+
+  /* ---------- scroll="page": document scrolls, nav + top bar stick ---------- */
+  .nxt-app-shell[data-scroll='page'] {
+    block-size: auto;
+    min-block-size: 100dvh;
+    overflow: visible;
+  }
+
+  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__nav {
+    position: sticky;
+    inset-block-start: 0;
+    align-self: start;
+    block-size: 100dvh;
+  }
+
+  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__frame {
+    grid-template-rows: auto 1fr;
+  }
+
+  .nxt-app-shell[data-scroll='page'] .nxt-topbar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--nxt-z-sticky);
+  }
+
+  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__main {
+    overflow: visible;
+  }
+
+  /* ---------- below 1024px: navigation drawer ---------- */
+  .nxt-app-shell[data-mobile] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nxt-app-shell[data-mobile] .nxt-app-shell__nav {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: var(--nxt-z-overlay);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform var(--nxt-motion-duration-slow) var(--nxt-motion-ease-exit),
+      visibility 0s linear var(--nxt-motion-duration-slow);
+  }
+
+  .nxt-app-shell[data-mobile] .nxt-app-shell__nav[data-open] {
+    visibility: visible;
+    transform: none;
+    box-shadow: var(--nxt-elevation-modal);
+    transition: transform var(--nxt-motion-duration-slow) var(--nxt-motion-ease-enter);
+  }
+
+  .nxt-app-shell__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: calc(var(--nxt-z-overlay) - 1);
+    background: var(--nxt-app-shell-backdrop);
+  }
+
+  .nxt-app-shell[data-mobile][data-scroll='page'] .nxt-app-shell__nav,
+  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__backdrop {
+    position: fixed;
+    block-size: auto;
+  }
+
+  /* ---------- top bar ---------- */
+  .nxt-topbar {
+    display: block;
+    min-inline-size: 0;
+  }
+
+  .nxt-topbar__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-md);
+    block-size: var(--nxt-topbar-height);
+    padding-inline: var(--nxt-space-inset-lg);
+    border-block-end: var(--nxt-border-width-default) solid var(--nxt-topbar-border);
+    background: var(--nxt-topbar-bg);
+  }
+
+  .nxt-topbar__start,
+  .nxt-topbar__end {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+    min-inline-size: 0;
+  }
+
+  /* Centered, fixed-width search area (Windows / Microsoft 365). Start and end share the rest equally,
+     so an empty start slot still acts as a spacer and keeps the center truly centered. */
+  .nxt-topbar__center {
+    display: flex;
+    flex: 0 1 var(--nxt-topbar-center-width);
+    min-inline-size: 0;
+  }
+
+  .nxt-topbar__center > * {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  /* Actions never get covered: when space runs out the center search shrinks instead. */
+  .nxt-topbar__end {
+    justify-content: flex-end;
+    min-inline-size: max-content;
+  }
+
+  .nxt-topbar__center:empty {
+    display: none;
+  }
+}
