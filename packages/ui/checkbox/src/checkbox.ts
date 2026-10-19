@@ -6,6 +6,7 @@ import {
   forwardRef,
   input,
   model,
+  output,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -17,7 +18,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: 'nxt-checkbox',
   template: `
-    <label class="nxt-checkbox__label">
+    <label class="nxt-checkbox__label" (pointerdown)="rememberModifiers($event)" (keydown)="rememberModifiers($event)">
       <input
         type="checkbox"
         class="nxt-checkbox__input"
@@ -44,15 +45,29 @@ export class NxtCheckbox implements ControlValueAccessor {
   readonly hideLabel = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
 
+  /**
+   * User toggled the box, with whether Shift was held — for range selection in tables
+   * (`NxtSelection.select(key, checked, { range: shiftKey })`, the Gmail / Windows Explorer convention).
+   */
+  readonly toggled = output<{ checked: boolean; shiftKey: boolean }>();
+
   private readonly formDisabled = signal(false);
   protected isDisabled = () => this.disabled() || this.formDisabled();
   private onChangeFn: (v: boolean) => void = () => {};
   protected onTouched: () => void = () => {};
+  /** Taken from the real pointer/key event: `change` itself carries no modifier keys. */
+  private shiftKey = false;
+
+  protected rememberModifiers(event: PointerEvent | KeyboardEvent) {
+    this.shiftKey = event.shiftKey;
+  }
 
   protected onChange(event: Event) {
     const value = (event.target as HTMLInputElement).checked;
     this.checked.set(value);
     this.onChangeFn(value);
+    this.toggled.emit({ checked: value, shiftKey: this.shiftKey });
+    this.shiftKey = false;
   }
 
   writeValue(value: boolean): void {

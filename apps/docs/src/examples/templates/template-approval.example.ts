@@ -6,7 +6,9 @@ import { NxtEmptyState } from '@nxt/ui/empty-state';
 import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtIcon } from '@nxt/ui/icon';
 import { NxtPageHeader } from '@nxt/ui/page-header';
-import { NxtSegmented } from '@nxt/ui/segmented';
+import { NxtCheckbox } from '@nxt/ui/checkbox';
+import { NxtFilter, NxtFilterChip, NxtFilterChips, NxtFilterState } from '@nxt/ui/filter';
+import { NxtSearch, nxtMatches } from '@nxt/ui/search';
 import { NxtTab, NxtTabs } from '@nxt/ui/tabs';
 import { NxtTag, NxtTone } from '@nxt/ui/tag';
 import { NxtTimeline, NxtTimelineItem } from '@nxt/ui/timeline';
@@ -52,7 +54,7 @@ const REQUESTS: LeaveRequest[] = [
 /** Phê duyệt đơn từ — danh sách (↑/↓ để chuyển đơn) và chi tiết, quy trình, ý kiến */
 @Component({
   selector: 'example-template-approval',
-  imports: [HrmFrame, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtPageHeader, NxtSegmented, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
+  imports: [HrmFrame, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtPageHeader, NxtCheckbox, NxtFilter, NxtFilterChips, NxtSearch, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <example-hrm-frame>
@@ -70,8 +72,27 @@ const REQUESTS: LeaveRequest[] = [
         <div class="split">
           <nxt-card padding="none" class="list">
             <div class="list__toolbar">
-              <nxt-segmented label="Loại đơn" size="sm" [options]="typeOptions" [value]="type()" (valueChange)="setType($event!)" />
+              <nxt-search class="list__search" label="Tìm đơn" placeholder="Tên người gửi, mã đơn, lý do" [value]="query()" (valueChange)="setQuery($event)" />
+              <nxt-filter #filter title="Lọc đơn" [activeCount]="filters.activeCount()" (opened)="filters.edit()" (applied)="applyFilters()" (reset)="filters.resetDraft()">
+                <fieldset class="group">
+                  <legend class="group__title">Loại đơn</legend>
+                  @for (t of typeOptions; track t) {
+                    <nxt-checkbox [label]="t" [checked]="filters.draft().types.includes(t)" (checkedChange)="filters.toggle('types', t, $event)" />
+                  }
+                </fieldset>
+                <fieldset class="group">
+                  <legend class="group__title">Phòng ban</legend>
+                  @for (d of deptOptions; track d) {
+                    <nxt-checkbox [label]="d" [checked]="filters.draft().depts.includes(d)" (checkedChange)="filters.toggle('depts', d, $event)" />
+                  }
+                </fieldset>
+              </nxt-filter>
             </div>
+            @if (chips().length) {
+              <div class="list__chips">
+                <nxt-filter-chips [chips]="chips()" [returnFocusTo]="filter" (remove)="filters.clear($any($event))" (clearAll)="filters.clearAll()" />
+              </div>
+            }
             @if (visible().length) {
               <ul class="requests" role="list" aria-label="Danh sách đơn" (keydown)="onListKey($event)">
                 @for (r of visible(); track r.id) {
@@ -91,7 +112,13 @@ const REQUESTS: LeaveRequest[] = [
                 }
               </ul>
             } @else {
-              <nxt-empty-state icon="circle-check" title="Không còn đơn nào ở đây" description="Bạn đã xử lý hết đơn trong mục này. Đơn mới sẽ xuất hiện tự động." size="sm" />
+              @if (query().trim() || filters.activeCount()) {
+                <nxt-empty-state icon="search" title="Không có đơn phù hợp" description="Thử từ khoá khác, hoặc bỏ bớt bộ lọc." size="sm">
+                  <button nxtEmptyActions nxtButton type="button" (click)="clearSearch()">Xoá tìm kiếm và bộ lọc</button>
+                </nxt-empty-state>
+              } @else {
+                <nxt-empty-state icon="circle-check" title="Không còn đơn nào ở đây" description="Bạn đã xử lý hết đơn trong mục này. Đơn mới sẽ xuất hiện tự động." size="sm" />
+              }
             }
           </nxt-card>
 
@@ -165,6 +192,7 @@ const REQUESTS: LeaveRequest[] = [
   `,
   styles: `
     .stack {
+      grid-template-columns: minmax(0, 1fr);
       display: grid;
       gap: var(--nxt-space-gap-lg);
       container-type: inline-size;
@@ -188,8 +216,31 @@ const REQUESTS: LeaveRequest[] = [
       }
     }
     .list__toolbar {
+      display: flex;
+      align-items: center;
+      gap: var(--nxt-space-gap-sm);
       padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
       border-block-end: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
+    }
+    .list__search {
+      flex: 1;
+    }
+    .list__chips {
+      padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
+      border-block-end: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
+    }
+    .group {
+      display: grid;
+      gap: var(--nxt-space-gap-xs);
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    .group__title {
+      margin-block-end: var(--nxt-space-gap-xs);
+      padding: 0;
+      color: var(--nxt-color-text-strong);
+      font: var(--nxt-typography-label-md);
     }
     .requests {
       margin: 0;
@@ -327,26 +378,33 @@ export class TemplateApprovalExample {
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
   protected readonly requests = signal<LeaveRequest[]>(REQUESTS);
   protected readonly tab = signal<'pending' | 'done' | 'all'>('pending');
-  protected readonly type = signal<'all' | RequestType>('all');
+  protected readonly query = signal('');
+  protected readonly filters = new NxtFilterState({ types: [] as string[], depts: [] as string[] });
   protected readonly selectedId = signal<string | null>(REQUESTS[0].id);
   protected readonly comment = signal('');
   protected readonly commentError = signal<string | null>(null);
   protected readonly message = signal('');
 
-  protected readonly typeOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: 'Nghỉ phép', label: 'Nghỉ phép' },
-    { value: 'Tăng ca', label: 'Tăng ca' },
-    { value: 'Công tác', label: 'Công tác' },
-  ];
+  protected readonly typeOptions: RequestType[] = ['Nghỉ phép', 'Tăng ca', 'Công tác'];
+  protected readonly deptOptions = [...new Set(REQUESTS.map((r) => r.dept))].sort((a, b) => a.localeCompare(b, 'vi'));
 
-  protected readonly visible = computed(() =>
-    this.requests().filter(
+  protected readonly visible = computed(() => {
+    const { types, depts } = this.filters.applied();
+    return this.requests().filter(
       (r) =>
         (this.tab() === 'all' || (this.tab() === 'pending' ? r.status === 'pending' : r.status !== 'pending')) &&
-        (this.type() === 'all' || r.type === this.type()),
-    ),
-  );
+        nxtMatches(this.query(), r.name, r.id, r.reason) &&
+        (!types.length || types.includes(r.type)) &&
+        (!depts.length || depts.includes(r.dept)),
+    );
+  });
+  protected readonly chips = computed<NxtFilterChip[]>(() => {
+    const { types, depts } = this.filters.applied();
+    return [
+      ...(types.length ? [{ key: 'types', label: `Loại đơn: ${types.join(', ')}` }] : []),
+      ...(depts.length ? [{ key: 'depts', label: `Phòng ban: ${depts.join(', ')}` }] : []),
+    ];
+  });
   protected readonly current = computed<LeaveRequest | null>(() => this.visible().find((r) => r.id === this.selectedId()) ?? this.visible()[0] ?? null);
 
   protected count(which: 'pending' | 'done'): number {
@@ -366,8 +424,16 @@ export class TemplateApprovalExample {
     this.tab.set(tab as 'pending' | 'done' | 'all');
     this.selectedId.set(null);
   }
-  protected setType(type: string) {
-    this.type.set(type as 'all' | RequestType);
+  protected setQuery(query: string) {
+    this.query.set(query);
+    this.selectedId.set(null);
+  }
+  protected clearSearch() {
+    this.query.set('');
+    this.filters.clearAll();
+  }
+  protected applyFilters() {
+    this.filters.apply();
     this.selectedId.set(null);
   }
   protected setComment(event: Event) {

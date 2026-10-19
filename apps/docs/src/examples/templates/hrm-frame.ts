@@ -40,10 +40,9 @@ export const HRM_NAV: NxtNavItem[] = [
     label: 'Danh mục',
     icon: 'database',
     children: [
-      { label: 'Chức danh', link: '/templates/catalog' },
-      { label: 'Phòng ban', disabled: true, hint: DEMO },
-      { label: 'Cấp bậc', disabled: true, hint: DEMO },
-      { label: 'Loại hợp đồng', disabled: true, hint: DEMO },
+      { label: 'Danh mục tổ chức', link: '/templates/catalog' },
+      { label: 'Danh mục chấm công', disabled: true, hint: DEMO },
+      { label: 'Danh mục lương & phúc lợi', disabled: true, hint: DEMO },
     ],
   },
   { label: 'Cấu hình hệ thống', icon: 'settings', disabled: true, hint: DEMO },

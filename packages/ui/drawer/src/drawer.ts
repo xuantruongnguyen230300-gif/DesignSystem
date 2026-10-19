@@ -64,7 +64,8 @@ export class NxtDrawer {
   styleUrl: './drawer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'nxt-drawer' },
+  // The title input must not leave a native title attribute (browser tooltip over the whole drawer).
+  host: { class: 'nxt-drawer', '[attr.title]': 'null' },
 })
 export class NxtDrawerLayout {
   protected readonly ref = inject(DialogRef, { optional: true });

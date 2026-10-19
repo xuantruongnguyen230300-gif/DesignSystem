@@ -14,6 +14,8 @@ keywords:
   - danh dau
   - tick
   - xac nhan
+  - shift click
+  - chon dai
 ---
 
 # Checkbox
@@ -57,6 +59,21 @@ protected readonly some = computed(() => this.granted().size > 0 && !this.all())
 <nxt-checkbox label="Tất cả quyền" [checked]="all()" [indeterminate]="some()" (checkedChange)="setAll($event)" />
 ```
 
+## Chọn một dải bằng Shift
+
+Output `toggled` phát `{ checked, shiftKey }` mỗi khi **người dùng** đổi ô (bấm chuột, chạm, hoặc <kbd>Space</kbd>), kèm việc có giữ <kbd>Shift</kbd> hay không. Sự kiện `change` gốc không mang phím bổ trợ, nên component lấy `shiftKey` từ cú bấm chuột hoặc phím ngay trước đó.
+
+Dùng `toggled` cho cột chọn hàng của bảng, để Shift+click (hoặc <kbd>Shift</kbd>+<kbd>Space</kbd>) chọn cả một dải hàng như Gmail và Windows Explorer, cùng với `NxtSelection`:
+
+```html
+<nxt-checkbox [label]="'Chọn ' + r.name" hideLabel
+  [checked]="selection.has(r.code)"
+  (toggled)="selection.select(r.code, $event.checked, { range: $event.shiftKey, order: pageKeys() })" />
+```
+
+- `toggled` chỉ phát khi người dùng thao tác; đặt `checked` từ code hoặc qua forms (`writeValue`) không phát. `checkedChange` vẫn phát như cũ.
+- Ví dụ chạy được và bảng API của `NxtSelection` ở [Table: chọn nhiều hàng](/components/table#chon-nhieu-hang).
+
 ## Với Angular forms
 
 `NxtCheckbox` implement `ControlValueAccessor`, nên dùng được với `formControlName`, `[formControl]` và `[(ngModel)]`:
@@ -84,6 +101,7 @@ Checkbox chưa nối được thông báo lỗi vào ô bên trong bằng `aria-
 |------|---------|
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Focus vào/ra từng checkbox |
 | <kbd>Space</kbd> | Chọn hoặc bỏ chọn; ô đang indeterminate chuyển sang được chọn |
+| <kbd>Shift</kbd>+<kbd>Space</kbd> | Như <kbd>Space</kbd>, và `toggled` báo `shiftKey: true` (chọn dải trong bảng) |
 
 - Dùng `<input type="checkbox">` native trong `<label>`, nên role, trạng thái `checked`/`mixed` và `disabled` do trình duyệt cung cấp.
 - `hideLabel` (cho cột chọn trong bảng) chỉ ẩn chữ khỏi mắt nhìn, nhãn vẫn được đọc. Nhãn phải nêu đối tượng: "Chọn Nguyễn Văn An", không chỉ "Chọn".
@@ -108,4 +126,4 @@ Checkbox chưa nối được thông báo lỗi vào ô bên trong bằng `aria-
 
 ## Changelog
 
-- **0.1.0**: phát hành beta: model `checked`, `indeterminate`, `label` bắt buộc, `hideLabel`, `disabled`, `ControlValueAccessor` cho Reactive Forms và `ngModel`.
+- **0.1.0**: phát hành beta: model `checked`, `indeterminate`, `label` bắt buộc, `hideLabel`, `disabled`, `ControlValueAccessor` cho Reactive Forms và `ngModel`; output `toggled` (`{ checked, shiftKey }`) cho Shift chọn dải.

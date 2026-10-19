@@ -96,3 +96,98 @@ describe('NxtTabs', () => {
     expect(tabs()[0].hasAttribute('aria-controls')).toBe(false);
   });
 });
+
+@Component({
+  imports: [NxtTabs, NxtTab],
+  template: `
+    <nxt-tabs label="Danh mục tổ chức" [panels]="false" [(value)]="value">
+      @for (c of catalogs; track c) {
+        <nxt-tab [value]="c" [label]="c" />
+      }
+    </nxt-tabs>
+  `,
+})
+class ManyTabs {
+  readonly catalogs = ['Chức danh', 'Cấp bậc', 'Phòng ban', 'Loại hợp đồng', 'Ca làm việc', 'Lý do nghỉ việc'];
+  readonly value = signal<string | undefined>(undefined);
+}
+
+describe('NxtTabs overflow', () => {
+  // No layout engine in the test DOM: give every tab 100px, the "Xem thêm" button 80px, the bar 350px.
+  beforeEach(() => {
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
+      const width = this.classList.contains('nxt-tabs__more') ? 80 : this.classList.contains('nxt-tabs__tab') ? 100 : 0;
+      return { width, height: 40, top: 0, left: 0, right: width, bottom: 40, x: 0, y: 0, toJSON: () => ({}) } as DOMRect;
+    });
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function (this: HTMLElement) {
+      return this.classList.contains('nxt-tabs__bar') ? 350 : 0;
+    });
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  async function setup() {
+    const fixture = TestBed.createComponent(ManyTabs);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const tabs = () => [...el.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const more = el.querySelector<HTMLButtonElement>('.nxt-tabs__more')!;
+    return { fixture, host: fixture.componentInstance, el, tabs, more };
+  }
+
+  it('moves the tabs that do not fit under "Xem thêm", outside the tablist', async () => {
+    const { tabs, more } = await setup();
+    expect(tabs().filter((t) => t.hasAttribute('data-overflow')).map((t) => t.textContent!.trim())).toEqual([
+      'Phòng ban',
+      'Loại hợp đồng',
+      'Ca làm việc',
+      'Lý do nghỉ việc',
+    ]);
+    expect(more.hasAttribute('data-hidden')).toBe(false);
+    expect(more.getAttribute('aria-label')).toBe('Xem thêm 4 tab');
+    expect(more.closest('[role="tablist"]')).toBeNull();
+  });
+
+  it('keeps the selected tab visible, and arrow keys only visit visible tabs', async () => {
+    const { fixture, host, tabs, el } = await setup();
+    host.value.set('Lý do nghỉ việc');
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const visible = tabs().filter((t) => !t.hasAttribute('data-overflow')).map((t) => t.textContent!.trim());
+    expect(visible).toEqual(['Chức danh', 'Lý do nghỉ việc']);
+    el.querySelector('[role="tablist"]')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    await fixture.whenStable();
+    expect(host.value()).toBe('Chức danh');
+  });
+});
+
+@Component({
+  imports: [NxtTabs, NxtTab],
+  template: `
+    <nxt-tabs label="Hồ sơ" [(value)]="value">
+      <nxt-tab value="a" label="Thông tin chung"><input class="note" aria-label="Ghi chú" /></nxt-tab>
+      <nxt-tab value="b" label="Hợp đồng">Hợp đồng lao động</nxt-tab>
+    </nxt-tabs>
+  `,
+})
+class TabWithInput {
+  readonly value = signal<string | undefined>('a');
+}
+
+describe('NxtTabs panel content', () => {
+  it('keeps the content of a tab (and what was typed) when switching away and back', async () => {
+    const fixture = TestBed.createComponent(TabWithInput);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const el: HTMLElement = fixture.nativeElement;
+    el.querySelector<HTMLInputElement>('input.note')!.value = 'Đang nhập dở';
+    fixture.componentInstance.value.set('b');
+    await fixture.whenStable();
+    expect(el.querySelector('input.note')).toBeNull();
+    fixture.componentInstance.value.set('a');
+    await fixture.whenStable();
+    expect(el.querySelector<HTMLInputElement>('input.note')!.value).toBe('Đang nhập dở');
+  });
+});

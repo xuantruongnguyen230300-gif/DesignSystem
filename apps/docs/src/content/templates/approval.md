@@ -22,7 +22,7 @@ Trưởng phòng thường duyệt nhiều đơn liền một lúc. Mẫu này t
 ## Cấu trúc
 
 - **Tab trạng thái** có số đếm: "Chờ tôi duyệt" là mặc định; "Đã xử lý" để xem lại.
-- **Danh sách đơn**: ảnh đại diện, tên, loại đơn, thời lượng, thời điểm gửi và trạng thái. Lọc theo loại đơn bằng `nxt-segmented`.
+- **Danh sách đơn**: ảnh đại diện, tên, loại đơn, thời lượng, thời điểm gửi và trạng thái. Phía trên là toolbar chuẩn: ô tìm kiếm (tên, mã đơn, lý do) và nút **Bộ lọc** (loại đơn, phòng ban), chip bộ lọc khi đang lọc.
 - **Chi tiết đơn**: thông tin dạng cặp nhãn–giá trị, lý do, file đính kèm, **quy trình duyệt** (`nxt-timeline`) cho biết đơn đang ở bước nào và sau bạn là ai.
 - **Thanh quyết định** ở cuối thẻ chi tiết: Từ chối, Trả lại, và một nút primary "Duyệt đơn" tách sang phải.
 
@@ -36,7 +36,7 @@ Trưởng phòng thường duyệt nhiều đơn liền một lúc. Mẫu này t
 
 ## Components dùng
 
-`nxt-page-header` · `nxt-tabs` · `nxt-segmented` · `nxt-card` · `nxt-avatar` · `nxt-tag` · `nxt-timeline` · `nxt-form-field` · `nxt-empty-state` · `nxtButton` · `nxt-icon`
+`nxt-page-header` · `nxt-tabs` · `nxt-search` · `nxt-filter` · `nxt-card` · `nxt-avatar` · `nxt-tag` · `nxt-timeline` · `nxt-form-field` · `nxt-empty-state` · `nxtButton` · `nxt-icon`
 
 ## Accessibility
 

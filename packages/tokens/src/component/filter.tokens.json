@@ -1,0 +1,66 @@
+{
+  "component": {
+    "filter": {
+      "panel-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền panel bộ lọc."
+      },
+      "panel-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền panel và đường kẻ header/footer."
+      },
+      "panel-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.overlay}",
+        "$description": "Bo góc panel."
+      },
+      "panel-width": {
+        "$type": "dimension",
+        "$value": "{semantic.size.popover.md}",
+        "$description": "Bề rộng tối đa của panel."
+      },
+      "active-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền nút Bộ lọc khi đang có tiêu chí áp dụng."
+      },
+      "active-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ nút Bộ lọc khi đang lọc."
+      },
+      "count-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Nền số tiêu chí trên nút."
+      },
+      "count-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Chữ số tiêu chí."
+      },
+      "chip-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền chip bộ lọc đang áp dụng."
+      },
+      "chip-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ chip."
+      },
+      "chip-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền chip (≥ 3:1 để thấy ranh giới vùng bấm)."
+      },
+      "chip-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn chip."
+      }
+    }
+  }
+}

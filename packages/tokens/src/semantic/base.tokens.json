@@ -177,11 +177,18 @@
           "$description": "Độ dày nét icon outline (Tabler mặc định 2; 1.75 rõ hơn ở cỡ 16–20px)."
         }
       },
+      "popover": {
+        "$type": "dimension",
+        "md": {
+          "$value": "{primitive.size.400}",
+          "$description": "Bề rộng tối đa của panel nổi neo vào một nút: bộ lọc, chọn nhanh. Co lại theo màn hình."
+        }
+      },
       "drawer": {
         "$type": "dimension",
         "sm": {
           "$value": "{primitive.size.400}",
-          "$description": "Drawer hẹp: chi tiết nhanh, bộ lọc."
+          "$description": "Drawer hẹp: chi tiết nhanh, bộ lọc nâng cao."
         },
         "md": {
           "$value": "{primitive.size.560}",

@@ -143,6 +143,7 @@ interface Task {
   `,
   styles: `
     .stack {
+      grid-template-columns: minmax(0, 1fr);
       display: grid;
       gap: var(--nxt-space-section-sm);
     }

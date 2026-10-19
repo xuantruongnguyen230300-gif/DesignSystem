@@ -9,7 +9,7 @@
       "corner-down-left", "map-2", "compass"
     ],
     "actions": [
-      "plus", "minus", "pencil", "edit", "trash", "copy", "download", "upload", "file-export", "file-import", "refresh", "filter",
+      "plus", "minus", "pencil", "edit", "trash", "copy", "download", "upload", "file-export", "file-import", "file-upload", "file-download", "file-spreadsheet", "refresh", "filter",
       "filter-off", "adjustments-horizontal", "search", "x", "check", "checks", "settings", "printer", "share", "send", "eye",
       "eye-off", "lock", "lock-open", "link", "unlink", "logout", "login", "player-play", "player-pause", "archive", "restore",
       "history", "sort-ascending", "sort-descending", "arrows-sort", "columns-3", "table", "layout-list", "layout-grid",

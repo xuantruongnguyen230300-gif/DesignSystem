@@ -28,6 +28,10 @@ Mọi đề xuất UI phải ghi rõ đang ở register nào. Không đem thẩm
    - Sắp xếp theo collation `vi`.
    - Định dạng `dd/MM/yyyy`, tiền `1.250.000 ₫`, số thập phân dấu phẩy.
    - Tên người dài phải truncate có tooltip.
+8. **Dùng được ở mọi mức độ.** Mặc định đơn giản, sức mạnh có sẵn khi cần (progressive disclosure). Không bắt người mới học phím tắt, không bắt người thạo đi đường vòng.
+   - *Người mới:* nút có chữ ở hành động chính ("Bộ lọc", "Thêm mới"); icon luôn có tooltip và tên truy cập; empty state nói bước tiếp theo; lỗi nói cách sửa; hoàn tác được.
+   - *Người dùng thường xuyên:* trạng thái hiện rõ (chip bộ lọc, số tiêu chí, số đã chọn); màn hình nhớ lựa chọn (tab, bộ lọc, thu gọn menu); thao tác hàng loạt.
+   - *Người thạo:* bàn phím xuyên suốt theo quy ước Windows (Esc xoá/đóng, Enter áp dụng, mũi tên di chuyển, Shift+click chọn dải, Ctrl+K tìm); mật độ Gọn; "Chọn tất cả N kết quả".
 
 ## 3. Quality floor (không có ngoại lệ)
 
@@ -74,7 +78,8 @@ Skill `nxt-ui-review` và `nxt-a11y-audit` chấm theo danh sách này. Mỗi m�
 ## 5. Giọng văn (UX writing tiếng Việt)
 
 - Viết ngắn, chủ động, gọi đúng tên đối tượng: "Lưu hồ sơ", không viết "OK" hay "Xác nhận".
-- Nhãn nút là động từ, kèm đối tượng nếu cần: "Thêm nhân viên", "Gửi duyệt".
+- Nhãn nút là động từ, kèm đối tượng nếu cần: "Gửi duyệt", "Xoá 3 nhân viên".
+- Nút tạo ở page header của trang danh sách luôn là **"Thêm mới"**: tiêu đề trang hoặc tab đang chọn đã nói đối tượng, và nhãn giống nhau ở mọi phân hệ. Tên truy cập có thể đủ hơn (`aria-label="Thêm mới chức danh"`); tiêu đề drawer ghi rõ "Thêm chức danh". Màn có nhiều loại đối tượng tạo được thì ghi rõ từng nút.
 - Thông báo lỗi trả lời ba câu hỏi: chuyện gì xảy ra, vì sao, làm gì tiếp. Ví dụ: "Không lưu được hợp đồng vì ngày kết thúc trước ngày bắt đầu. Hãy chọn lại ngày kết thúc."
 - Không đổ lỗi cho người dùng và không dùng mã lỗi kỹ thuật làm nội dung chính.
 - Dùng thống nhất thuật ngữ trong glossary của sản phẩm, ví dụ "nhân viên" chứ không lẫn với "người lao động", trừ khi luật yêu cầu.

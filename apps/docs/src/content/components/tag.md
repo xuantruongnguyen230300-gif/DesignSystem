@@ -27,7 +27,7 @@ keywords:
 
 ## Khi nào không dùng
 
-- **Cần bấm, lọc hoặc xoá**: tag không tương tác. Dùng button, segmented control, hoặc chip lọc (đợt B).
+- **Cần bấm, lọc hoặc xoá**: tag không tương tác. Dùng button, segmented control, hoặc chip bộ lọc (`nxt-filter-chips`, xem [Filter](/components/filter)).
 - **Thông báo cho cả trang**: dùng alert hoặc banner (đợt B).
 - **Giá trị số trong ô bảng**: ghi số trực tiếp, không bọc trong badge.
 - **Câu dài**: tag chỉ nên có 1–3 từ; phần dài hơn bị cắt bằng dấu "…".

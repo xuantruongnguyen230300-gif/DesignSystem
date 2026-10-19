@@ -13,6 +13,8 @@ keywords:
   - phan noi dung
   - loc theo trang thai
   - tablist
+  - xem them
+  - nhieu tab
 ---
 
 # Tabs
@@ -54,7 +56,23 @@ Mặc định, `nxt-tabs` hiện nội dung của tab đang chọn trong một `
 
 - Icon là tuỳ chọn. Nếu dùng thì dùng cho mọi tab trong nhóm.
 - Tab bị khoá (`disabled`) không focus được và bị phím mũi tên bỏ qua. Ghi lý do ngay cạnh danh sách tab, vì người dùng bàn phím không tới được tab đó.
-- Khi không đủ chỗ, danh sách tab cuộn ngang. Tab đang focus luôn được cuộn vào tầm nhìn.
+- Khi không đủ chỗ, các tab cuối được dồn vào menu "Xem thêm" (xem mục dưới), không cuộn ngang.
+
+## Nhiều tab
+
+Khi hàng tab không đủ bề ngang, `nxt-tabs` dùng cách **priority-plus**: hiện các tab theo thứ tự cho tới khi hết chỗ, phần còn lại dồn vào nút **"Xem thêm"** ở cuối hàng. Cách này giống PatternFly, ServiceNow và Coloplast; không cần cấu hình gì.
+
+::example{tabs-overflow}
+
+- **Tab đang chọn luôn hiện** trên hàng tab, kể cả khi nó nằm cuối danh sách: các tab khác nhường chỗ cho nó.
+- **Nhãn không bao giờ bị cắt** ("Lý do ngh…"): tab nào không vừa thì vào menu, nhãn đầy đủ kèm số đếm ("Ngân hàng (31)").
+- Bố cục được tính lại khi vùng chứa đổi bề rộng, khi nhãn hoặc số đếm đổi, và khi đổi tab. Hàng tab không bao giờ làm trang rộng ra.
+- Nút "Xem thêm" nằm **ngoài** `tablist` (tablist chỉ được chứa tab) và có tên "Xem thêm 3 tab". Nút chỉ hiện khi có tab bị dồn.
+- Chọn một tab trong menu: tab đó được chọn, hiện lên hàng tab và nhận focus, nên phím mũi tên đi tiếp từ đó.
+- <kbd>←</kbd> <kbd>→</kbd> <kbd>Home</kbd> <kbd>End</kbd> chỉ đi qua các tab **đang hiện**; tab trong "Xem thêm" mở bằng menu.
+- Thứ tự tab là thứ tự ưu tiên: đặt các tab người dùng cần nhất ở đầu, vì tab cuối là tab bị dồn trước.
+
+**Khi nào nên dùng menu trái thay cho tab:** quá khoảng **7 tab**, hoặc các phần không thật sự liên quan với nhau. Khi đó tách thành mục cấp 2 trong [Sidenav](/components/app-shell), mỗi mục một trang có tab của riêng nó. Menu trái tối đa 2 cấp; cấp thứ 3 mới là tab. Xem thêm pattern [Trang danh sách & danh mục](/patterns/list-page).
 
 ## Accessibility
 
@@ -63,8 +81,11 @@ Theo mẫu [Tabs của WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/ta
 | Phím | Hành vi |
 |------|---------|
 | <kbd>Tab</kbd> | Vào danh sách tab tại tab đang chọn. Nhấn tiếp thì vào panel |
-| <kbd>→</kbd> / <kbd>←</kbd> | Chọn tab sau / trước, vòng lại ở hai đầu, bỏ qua tab bị khoá |
-| <kbd>Home</kbd> / <kbd>End</kbd> | Chọn tab đầu / tab cuối |
+| <kbd>→</kbd> / <kbd>←</kbd> | Chọn tab sau / trước trong các tab đang hiện, vòng lại ở hai đầu, bỏ qua tab bị khoá |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Chọn tab đầu / tab cuối trong các tab đang hiện |
+| <kbd>Tab</kbd> từ tab đang chọn | Tới nút "Xem thêm" (khi có tab bị dồn), rồi tới panel |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> trên "Xem thêm" | Mở menu các tab bị dồn |
+| Trong menu "Xem thêm" | <kbd>↑</kbd> / <kbd>↓</kbd> chọn mục, <kbd>Enter</kbd> mở tab đó (tab hiện lên hàng tab và nhận focus), <kbd>Esc</kbd> đóng menu và trả focus về nút |
 | <kbd>Shift</kbd>+<kbd>Tab</kbd> | Ra khỏi danh sách tab |
 
 - `label` là bắt buộc: tên của `tablist`, ví dụ "Hồ sơ Nguyễn Văn An".
@@ -93,4 +114,4 @@ Theo mẫu [Tabs của WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/ta
 
 ## Changelog
 
-- **0.1.0**: phát hành beta: kích hoạt tự động bằng phím mũi tên, `Home`/`End`, panel bật/tắt, icon, số đếm, tab bị khoá.
+- **0.1.0**: phát hành beta: kích hoạt tự động bằng phím mũi tên, `Home`/`End`, panel bật/tắt, icon, số đếm, tab bị khoá; tab không vừa bề ngang dồn vào menu "Xem thêm" (priority-plus), tab đang chọn luôn hiện, nhãn không bị cắt.

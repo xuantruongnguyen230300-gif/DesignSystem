@@ -43,6 +43,8 @@ Selector: `table[nxtTable]`, `[nxtSort]`, `th[nxtSortHeader]`. Export type `NxtS
 | `nxtSortHeader` input | `nxtSortHeader` | `string` | (bắt buộc) | Khoá của cột |
 | `nxtSortHeader` content | (default) | text | | Tên cột |
 
+`NxtSelection<K>` (lớp signal, không phụ thuộc DOM): `selected`, `count`, `has(key)`, `select(key, checked, { range, order })` (Shift: áp trạng thái mới cho cả dải từ hàng vừa chọn tới hàng này, như Gmail / Windows Explorer), `setMany(keys, checked)`, `allSelected(keys)`, `someSelected(keys)`, `retain(keys)`, `clear()`. Dùng với `nxt-checkbox (toggled)` (có `shiftKey`).
+
 Output: `nxtSortChange` (từ `model`). `nxtSortHeader` phải nằm trong một phần tử có `[nxtSort]`. Component **không** tự sắp xếp hay phân trang dữ liệu: nơi dùng sắp xếp theo `NxtSortState` (chuỗi tiếng Việt dùng `Intl.Collator('vi')`) và ghép với `nxt-pagination`.
 
 ## 4. Variants & sizes
@@ -97,7 +99,7 @@ Dùng thẳng semantic: `color.text.{default,strong}`, `space.inset.{xs,md}`, `s
 
 ## 8. Density, responsive, i18n
 - Chiều cao hàng và tiêu đề theo `size.row.*`; padding ô theo density.
-- Bảng rộng 100% và không tự cuộn ngang: đặt trong container `overflow-x: auto` khi có nhiều cột. Tiêu đề không xuống dòng.
+- Bảng rộng tối thiểu 100%; ô tiêu đề và ô dữ liệu **không xuống dòng**, nên trên màn hẹp bảng cuộn ngang trong container (`role="region"` + `aria-label` + `tabindex="0"`, `overflow: auto`) thay vì bẻ tên thành nhiều dòng. Cột chữ dài (mô tả, lý do) thêm `.nxt-table__wrap` để được xuống dòng, rộng tối thiểu `layout.item-min-sm`.
 - Số liệu căn phải (`.nxt-table__num`), `tabular-nums`; tiền và ngày định dạng theo `vi`: "1.250.000 ₫", "15/10/2026".
 - Sắp xếp chuỗi tiếng Việt theo collation `vi` (do nơi dùng).
 
@@ -115,8 +117,12 @@ Dùng thẳng semantic: `color.text.{default,strong}`, `space.inset.{xs,md}`, `s
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
 
 ## 11. Việc còn mở
-- `src/table.css:27`–`31`: tiêu đề dính có thể che control đang focus trong hàng khi Tab cuộn bảng (WCAG 2.4.11); chưa có `scroll-padding-block-start` cho container.
 - `src/table.css:50`: `aria-selected` trên `tr` của bảng native (không phải grid) thường không được screen reader đọc; trạng thái chọn thực tế chỉ đến từ checkbox trong hàng. Cần ghi rõ trong docs: luôn có checkbox có tên.
 - Chưa có trạng thái loading / empty / error dựng sẵn và chưa có wrapper cuộn ngang; mỗi màn hình tự dựng.
 - `src/table.ts:69`: `th[nxtSortHeader]` không có `[nxtSort]` ở tổ tiên sẽ lỗi DI lúc chạy, không có thông báo rõ.
 - `src/table.css:7`, `:91`, `:103`: màu chữ dùng thẳng `--nxt-color-text-*`; `:79`–`81` dùng primitive `--nxt-space-1`, `--nxt-space-0-5`.
+
+### Đã xử lý (2026-10-19)
+- Focus không bị tiêu đề dính che (WCAG 2.4.11): phần tử focus trong `tbody` có `scroll-margin-block-start` bằng chiều cao tiêu đề.
+- Ô dữ liệu không xuống dòng mặc định (bảng cuộn ngang trên màn hẹp); `.nxt-table__wrap` cho cột chữ dài.
+- `NxtSelection` cho chọn nhiều, gồm Shift+click chọn dải và "chọn tất cả N kết quả" (`setMany`). Có unit test.

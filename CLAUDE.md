@@ -54,11 +54,12 @@ Kiến thức Angular tổng quát lấy từ skill `angular-developer` ([angula
 ```
 packages/tokens   @nxt/tokens: palettes.json, tokens.config.json, src/{primitive,semantic,component,brands/<product>} → dist/
 packages/ui       @nxt/ui: styles/nxt.css + mỗi entry point một thư mục (SPEC.md, public-api.ts, src/):
-                  hành động: button (+ nxtIconButton), menu, segmented · nhập liệu: form-field, checkbox
+                  hành động: button (+ nxtIconButton), menu, segmented · nhập liệu: form-field, checkbox, search, filter
                   bố cục: layout · điều hướng: app-shell (shell, topbar, sidenav), page-header, tabs, pagination
                   dữ liệu: table, card (+ stat), tag (+ badge), avatar, progress, timeline, icon
                   phản hồi/lớp phủ: tooltip, drawer, empty-state
 apps/docs         docs site: src/content/<section>/*.md, src/examples/**/*.example.ts, e2e/a11y.spec.ts
+                  pattern: src/content/patterns/ (trang danh sách & danh mục: bố cục, quyết định, nghiên cứu)
                   mẫu màn hình thật (HRM): src/examples/templates/ (dashboard, danh mục, phê duyệt, đăng nhập)
 tools/            lib/ (color, palette, tokens), tokens/ (validate, build, palette, contrast), lint/, docs/, scaffold/, hooks/
 docs/             PLAN, ADR, design principles

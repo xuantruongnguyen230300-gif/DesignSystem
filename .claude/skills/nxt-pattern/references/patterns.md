@@ -16,8 +16,9 @@
 
 ## 1. List page (CRUD)
 - **Anatomy:**
-  - Page header: tiêu đề + đếm tổng ("Nhân viên · 1.284"), một hành động chính ở bên phải ("Thêm nhân viên").
-  - Toolbar: tìm kiếm, bộ lọc nhanh, nút "Bộ lọc", tuỳ chọn cột, density, export.
+  - Page header: breadcrumb, tiêu đề + mô tả; bên phải: hai nút icon "Nhập … từ Excel" (`file-upload`) và "Xuất … ra Excel" (`file-download`) có tooltip, rồi nút primary **"Thêm mới"** (nhãn chuẩn ở mọi phân hệ; `aria-label="Thêm mới <đối tượng>"`).
+  - Tab (khi một nhóm danh mục/phạm vi dùng chung màn): ngay dưới tiêu đề, **trên** toolbar; tab không vừa dồn vào "Xem thêm". Quá ~7 tab thì tách mục trong menu trái.
+  - Toolbar: **chỉ** `nxt-search` + `nxt-filter` ("Bộ lọc"). Không đặt select/segmented lọc nhanh, không đặt nút export trên toolbar. Chọn hàng thì thanh hàng loạt thay toolbar.
   - Bảng.
   - Phân trang hoặc virtual scroll.
 - Hành động trên từng dòng: tối đa 2 nút hiện sẵn, phần còn lại vào menu `⋯`. Hành động phá huỷ luôn nằm cuối menu và có màu danger.
@@ -27,15 +28,17 @@
 - Bấm vào dòng mở chi tiết. Checkbox chỉ để chọn, không đồng thời mở chi tiết.
 
 ## 2. Lọc & tìm kiếm
-- Tìm kiếm không phân biệt dấu, debounce khoảng 250ms. Phím `/` focus ô tìm kiếm.
-- Bộ lọc đang áp dụng hiện thành chip dưới toolbar, có nút "Xoá tất cả". Số kết quả cập nhật ngay.
-- Bộ lọc nâng cao đặt trong drawer bên phải, áp dụng bằng nút "Áp dụng". Bộ lọc nhanh (segmented, select) áp dụng ngay.
+- Tìm kiếm không phân biệt dấu (`nxtMatches`), áp dụng ngay với dữ liệu tại máy, `debounce` ~250ms khi gọi máy chủ. Esc xoá nội dung. Phím tắt một ký tự (như `/`) chỉ thêm khi tắt được (WCAG 2.1.4).
+- Bộ lọc đang áp dụng hiện thành chip dưới toolbar (`nxt-filter-chips`), cuối hàng "Xoá bộ lọc" (không ghi "Xoá tất cả": dễ hiểu nhầm là xoá dữ liệu). Số kết quả đọc qua `role="status"`.
+- **Mọi** tiêu chí lọc nằm trong panel của `nxt-filter`, áp dụng bằng "Áp dụng" (Enter); Esc/Huỷ không áp dụng. Không trộn lọc áp dụng ngay với lọc có nút Áp dụng. Trên ~8 trường hoặc điều kiện lồng nhau: drawer lọc nâng cao.
 - Lọc ra 0 kết quả thì hiện empty state "Không có kết quả phù hợp" kèm nút xoá lọc. Không dùng chung empty state lần đầu.
 - Cho phép lưu bộ lọc (saved view) với danh sách hay dùng.
 
 ## 3. Bulk action
 - Chọn ≥ 1 dòng thì action bar thay thế toolbar (hoặc nổi ở đáy), hiện "Đã chọn 12" và các hành động áp dụng được.
 - Hỗ trợ "Chọn tất cả 1.284 kết quả", không chỉ trang hiện tại. Luôn ghi rõ phạm vi được chọn.
+- Shift+click (hoặc Shift+Space) trên checkbox chọn cả dải từ hàng vừa chọn, như Gmail/Windows Explorer: `NxtSelection.select(key, checked, { range: shiftKey, order })` với `nxt-checkbox (toggled)`.
+- Hoàn tác thay cho hộp xác nhận với thao tác đảo ngược được; bản ghi đang được dùng không xoá được (khoá kèm lý do, gợi ý "Ngừng sử dụng").
 - Hành động phá huỷ hàng loạt dùng dialog xác nhận ghi số lượng và đối tượng. Từ 50 mục trở lên thì yêu cầu gõ xác nhận.
 - Kết quả hiện bằng tóm tắt: thành công / thất bại, kèm danh sách lỗi tải về được.
 
@@ -79,9 +82,9 @@
 - Mỗi widget có loading và error riêng; một widget lỗi không làm hỏng cả trang.
 
 ## 8. Import / Export
-- Import theo bước: tải file mẫu → upload → xem trước kèm lỗi từng dòng → xác nhận → kết quả.
+- Import trong drawer, hai bước: (1) tải file mẫu + kéo-thả/chọn file, báo ngay sai định dạng/thiếu cột; (2) "N dòng hợp lệ · M dòng lỗi" + bảng lỗi (dòng, cột, cách sửa), "Nhập N dòng" nhập phần hợp lệ. Kết quả ở `role="status"` kèm Hoàn tác.
 - Lỗi chỉ rõ dòng, cột và cách sửa. Cho tải về file lỗi.
-- Export lớn chạy nền, có thông báo khi xong, ghi rõ phạm vi (bộ lọc đang áp dụng hay tất cả).
+- Export xuất đúng phạm vi đang xem (tìm kiếm + bộ lọc, mọi trang); tooltip ghi số lượng ("Xuất 7 chức danh đang lọc ra Excel"); đang chọn hàng thì "Xuất N" ở thanh hàng loạt. Export lớn chạy nền, báo khi xong.
 
 ## 9. Trạng thái hệ thống
 | Trạng thái | Nội dung bắt buộc |

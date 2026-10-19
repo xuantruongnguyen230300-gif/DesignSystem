@@ -33,6 +33,7 @@ Selector: `nxt-checkbox`. Implement `ControlValueAccessor` (`formControl`, `ngMo
 | Loại | Tên | Kiểu | Mặc định | Mô tả |
 |------|-----|------|----------|-------|
 | model | `checked` | `boolean` | `false` | Two-way `[(checked)]` |
+| output | `toggled` | `{ checked: boolean; shiftKey: boolean }` | | Người dùng vừa bấm; `shiftKey` lấy từ sự kiện con trỏ/phím thật (`change` không mang phím bổ trợ). Dùng cho chọn dải trong bảng (`NxtSelection`) |
 | input | `indeterminate` | `boolean` | `false` | Trạng thái "một phần" (một số hàng được chọn) |
 | input | `label` | `string` | (bắt buộc) | Tên truy cập và nhãn hiển thị |
 | input | `hideLabel` | `boolean` | `false` | Ẩn nhãn khỏi màn hình (chọn hàng trong bảng), vẫn đọc được |
@@ -89,7 +90,7 @@ Dùng thẳng semantic: `space.gap.sm`, `size.icon.lg` (vùng chạm), `typograp
 
 ## 10. Acceptance (Definition of Done)
 - [ ] Mọi trạng thái ở §5 (gồm `indeterminate`, `hideLabel` trong bảng) có trong docs example
-- [x] Unit test: native checkbox có tên, `[(checked)]` hai chiều, trạng thái mixed, dùng với Angular forms kể cả disabled
+- [x] Unit test: native checkbox có tên, `[(checked)]` hai chiều, trạng thái mixed, dùng với Angular forms kể cả disabled, `toggled` báo đúng trạng thái và phím Shift
 - [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)

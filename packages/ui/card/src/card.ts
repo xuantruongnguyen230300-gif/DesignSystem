@@ -38,6 +38,7 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
   host: {
     class: 'nxt-card',
     '[attr.data-padding]': 'padding()',
+    '[attr.title]': 'null',
   },
 })
 export class NxtCard {

@@ -75,7 +75,7 @@ export class NxtBreadcrumb {
   styleUrl: './page-header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'nxt-page-header' },
+  host: { class: 'nxt-page-header', '[attr.title]': 'null' },
 })
 export class NxtPageHeader {
   readonly title = input.required<string>();

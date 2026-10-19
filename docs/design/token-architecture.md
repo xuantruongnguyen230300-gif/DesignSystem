@@ -58,6 +58,7 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 | `size.control` | `sm`, `md`, `lg` (block-size của input/button/select) |
 | `size.row` | `sm`, `md`, `lg` (row height của table/list) |
 | `size.icon` | `sm`, `md`, `lg`, `stroke` (độ dày nét icon, kiểu number) |
+| `size.popover` | `md` (bề rộng tối đa panel nổi neo vào nút, ví dụ panel Bộ lọc) |
 | `size.drawer` | `sm`, `md`, `lg` (bề rộng drawer) |
 | `radius` | `control`, `container`, `overlay`, `pill` |
 | `typography` | `display`, `heading-lg`, `heading-md`, `heading-sm`, `body-lg`, `body-md`, `body-sm`, `label-md`, `label-sm`, `caption`, `code` (composite `typography`; lớp tiện ích `.nxt-text-<vai-trò>`) |

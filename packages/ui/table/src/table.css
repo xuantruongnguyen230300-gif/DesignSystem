@@ -30,9 +30,22 @@
     z-index: var(--nxt-z-sticky);
   }
 
+  /* Data stays on one line: on narrow screens the table scrolls inside its region instead of breaking
+     names into one word per line. Long free text opts in with .nxt-table__wrap. */
   .nxt-table tbody td,
   .nxt-table tbody th {
     block-size: var(--nxt-table-row-height);
+    white-space: nowrap;
+  }
+
+  .nxt-table .nxt-table__wrap {
+    min-inline-size: var(--nxt-layout-item-min-sm);
+    white-space: normal;
+  }
+
+  /* Keyboard focus is never hidden under the sticky header (WCAG 2.4.11). */
+  .nxt-table[data-sticky] tbody :focus {
+    scroll-margin-block-start: var(--nxt-table-header-height);
   }
 
   .nxt-table tbody th {

@@ -26,7 +26,7 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
   styleUrl: './empty-state.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'nxt-empty-state', '[attr.data-size]': 'size()' },
+  host: { class: 'nxt-empty-state', '[attr.data-size]': 'size()', '[attr.title]': 'null' },
 })
 export class NxtEmptyState {
   readonly title = input.required<string>();

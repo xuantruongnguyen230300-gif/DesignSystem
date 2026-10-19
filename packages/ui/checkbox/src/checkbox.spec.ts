@@ -61,3 +61,28 @@ describe('NxtCheckbox', () => {
     expect(inputs[2].disabled).toBe(true);
   });
 });
+
+@Component({
+  imports: [NxtCheckbox],
+  template: `<nxt-checkbox label="Chọn Kế toán tổng hợp" hideLabel (toggled)="events.push($event)" />`,
+})
+class Toggled {
+  readonly events: { checked: boolean; shiftKey: boolean }[] = [];
+}
+
+describe('NxtCheckbox toggled', () => {
+  it('reports the new state and whether Shift was held (for range selection)', async () => {
+    const fixture = TestBed.createComponent(Toggled);
+    fixture.detectChanges();
+    const label = (fixture.nativeElement as HTMLElement).querySelector('label')!;
+    const input = label.querySelector('input')!;
+    label.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, shiftKey: true }));
+    input.click();
+    label.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    input.click();
+    expect(fixture.componentInstance.events).toEqual([
+      { checked: true, shiftKey: true },
+      { checked: false, shiftKey: false },
+    ]);
+  });
+});

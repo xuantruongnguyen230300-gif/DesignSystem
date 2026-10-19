@@ -10,16 +10,16 @@
 | Giai đoạn | Trạng thái | Đã có |
 |-----------|-----------|-------|
 | 0. Nền móng | ✅ Xong | Workspace Angular 21 (zoneless, Vitest, ng-packagr), npm 11; CI GitHub Actions; hook Claude Code; ADR 001–009; 10 skill + 1 agent |
-| 1. Foundations & token | ✅ Xong | 563 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); nền sáng chỉnh lại để canvas xám tách khỏi surface trắng; brand mẫu `sample`; 430/430 lượt kiểm tương phản đạt; bộ icon Tabler chọn lọc 259 icon (ADR-003) |
-| 2. Core components | 🟡 Đang làm | Beta, có SPEC + docs + axe: Button/IconButton, Stack/Inline/Grid, Menu (+ nhóm radio), Segmented, Form field, Checkbox, Tag/Badge, Avatar, Tooltip, Drawer, Tabs, Page header/Breadcrumb, Pagination. Còn lại xem Roadmap |
-| 3. Dữ liệu & pattern | 🟡 Bắt đầu | Beta: App shell/Sidenav (rail, drawer mobile), Table (sắp xếp, chọn hàng), Card/Stat, Progress, Timeline, Empty state. Mẫu màn hình HRM: Tổng quan, Danh mục, Phê duyệt, Đăng nhập |
+| 1. Foundations & token | ✅ Xong | 585 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); nền sáng chỉnh lại để canvas xám tách khỏi surface trắng; brand mẫu `sample`; 430/430 lượt kiểm tương phản đạt; bộ icon Tabler chọn lọc 262 icon (ADR-003) |
+| 2. Core components | 🟡 Đang làm | Beta, có SPEC + docs + axe: Button/IconButton, Stack/Inline/Grid, Menu (+ nhóm radio), Segmented, Form field, Checkbox, Tag/Badge, Avatar, Tooltip, Drawer, Tabs (tab tràn vào "Xem thêm"), Page header/Breadcrumb, Pagination, **Search** (tìm không dấu), **Filter** (Bộ lọc + chip + `NxtFilterState`). Còn lại xem Roadmap |
+| 3. Dữ liệu & pattern | 🟡 Bắt đầu | Beta: App shell/Sidenav (rail, drawer mobile), Table (sắp xếp, chọn hàng, Shift chọn dải với `NxtSelection`, không bẻ dòng), Card/Stat, Progress, Timeline, Empty state. Pattern **Trang danh sách & danh mục** (bố cục chuẩn: Thêm mới, nhập/xuất Excel, tab trên toolbar, toolbar chỉ tìm kiếm + Bộ lọc). Mẫu màn hình HRM: Tổng quan, Danh mục (8 danh mục, nhập/xuất Excel, hoàn tác), Phê duyệt, Đăng nhập |
 | 4 | ⏳ Chưa bắt đầu | |
 
 **Kiểm chứng ở thời điểm ghi:**
-- `npm run ds:check` sạch (563 token, 430/430 tương phản, 0 giá trị hard-code);
-- `npm test` 71/71 (14 file spec);
-- `npm run test:a11y` 341/341 (axe trên 85 example × sáng/tối/gọn, 38 trang × sáng/tối, 10 test bàn phím và hành vi: skip link, tìm kiếm kiểu Windows, sidenav rail, drawer mobile, nút sáng/tối, mẫu Phê duyệt và Danh mục, link Roadmap);
-- build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 578 kB (nội dung từng trang nạp lazy).
+- `npm run ds:check` sạch (585 token, 430/430 tương phản, 0 giá trị hard-code);
+- `npm test` 94/94 (16 file spec);
+- `npm run test:a11y` 370/370 (axe trên 91 example × sáng/tối/gọn, 41 trang × sáng/tối, 15 test bàn phím và hành vi, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm");
+- build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 589 kB (gần ngưỡng cảnh báo 600 kB, xem việc tiếp theo).
 
 **Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có trạng thái indeterminate).
 
@@ -27,7 +27,8 @@
 1. Chốt các ADR còn "Đề xuất": 002, 004, 006, 007; xác nhận ADR-003 (Tabler).
 2. Dọn §11 của các SPEC: thay primitive bằng semantic/component token, mở rộng detector để bắt lỗi này.
 3. Đợt còn lại: Link, Spinner, Skeleton, Radio, Switch, NumberInput (VND), Combobox, DatePicker, Dialog/Confirm, Toast/Alert.
-4. Visual regression.
+4. Nạp lazy chỉ mục tìm kiếm của docs (metadata + mục lục mọi trang đang ở bundle khởi tạo, 589/600 kB).
+5. Visual regression.
 
 ## Mục lục
 1. Trang tham chiếu đang có gì và NXT làm khác ở đâu

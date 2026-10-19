@@ -1,0 +1,123 @@
+@layer nxt.components {
+  .nxt-filter {
+    display: inline-flex;
+    flex: none;
+  }
+
+  /* Active: the list is narrowed — visible at a glance, not only through the count. */
+  .nxt-filter .nxt-button[data-active] {
+    --_border: var(--nxt-filter-active-border);
+    --_text: var(--nxt-filter-active-text);
+  }
+
+  .nxt-filter__count {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: var(--nxt-size-icon-md);
+    block-size: var(--nxt-size-icon-md);
+    padding-inline: var(--nxt-space-inset-xs);
+    border-radius: var(--nxt-filter-chip-radius);
+    background: var(--nxt-filter-count-bg);
+    color: var(--nxt-filter-count-text);
+    font: var(--nxt-typography-label-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nxt-filter__panel {
+    display: flex;
+    flex-direction: column;
+    inline-size: min(var(--nxt-filter-panel-width), calc(100vw - 2 * var(--nxt-space-inset-lg)));
+    max-block-size: min(70vh, calc(100vh - 2 * var(--nxt-space-inset-lg)));
+    margin-block-start: var(--nxt-space-gap-xs);
+    border: var(--nxt-border-width-default) solid var(--nxt-filter-panel-border);
+    border-radius: var(--nxt-filter-panel-radius);
+    background: var(--nxt-filter-panel-bg);
+    box-shadow: var(--nxt-elevation-overlay);
+  }
+
+  .nxt-filter__title {
+    padding: var(--nxt-space-inset-md) var(--nxt-space-inset-lg);
+    border-block-end: var(--nxt-border-width-default) solid var(--nxt-filter-panel-border);
+    font: var(--nxt-typography-heading-sm);
+  }
+
+  .nxt-filter__body {
+    display: grid;
+    gap: var(--nxt-space-gap-lg);
+    overflow-y: auto;
+    padding: var(--nxt-space-inset-lg);
+  }
+
+  .nxt-filter__footer {
+    display: flex;
+    gap: var(--nxt-space-gap-sm);
+    padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-lg);
+    border-block-start: var(--nxt-border-width-default) solid var(--nxt-filter-panel-border);
+  }
+
+  .nxt-filter__spacer {
+    flex: 1;
+  }
+
+  /* ---------- applied filters ---------- */
+  .nxt-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+  }
+
+  .nxt-filter-chips__list {
+    display: contents;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nxt-filter-chip {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-xs);
+    max-inline-size: 100%;
+    min-block-size: var(--nxt-size-control-sm);
+    padding-inline: var(--nxt-space-inset-sm) var(--nxt-space-inset-xs);
+    border: var(--nxt-border-width-default) solid var(--nxt-filter-chip-border);
+    border-radius: var(--nxt-filter-chip-radius);
+    background: var(--nxt-filter-chip-bg);
+    color: var(--nxt-filter-chip-text);
+    font: var(--nxt-typography-label-sm);
+    cursor: pointer;
+  }
+
+  .nxt-filter-chip__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nxt-filter-chips__clear {
+    min-block-size: var(--nxt-size-control-sm);
+    padding-inline: var(--nxt-space-inset-sm);
+    border: 0;
+    border-radius: var(--nxt-filter-chip-radius);
+    background: transparent;
+    color: var(--nxt-filter-active-text);
+    font: var(--nxt-typography-label-sm);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .nxt-filter-chip:focus-visible,
+  .nxt-filter-chips__clear:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-filter-chip,
+    .nxt-filter__panel {
+      border-color: CanvasText;
+    }
+  }
+}

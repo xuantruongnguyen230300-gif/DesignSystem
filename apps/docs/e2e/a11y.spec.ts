@@ -172,20 +172,129 @@ test.describe('templates', () => {
     await expect(list.locator('[aria-current="true"]')).toBeFocused();
   });
 
-  test('catalog: search ignores diacritics and the form drawer validates on save', async ({ page }) => {
+  test('catalog: search ignores diacritics; "Thêm mới" opens a form that validates on save', async ({ page }) => {
     await page.goto('/examples/template-catalog');
     await page.locator('docs-example-page[data-ready]').waitFor();
-    await page.getByRole('searchbox', { name: 'Tìm chức danh' }).fill('ke toan');
+    const search = page.getByRole('searchbox', { name: 'Tìm chức danh' });
+    await search.fill('ke toan');
     const rows = page.getByRole('table').getByRole('rowheader');
     await expect(rows).toHaveCount(4);
     await expect(rows.first()).toContainText('Kế toán');
-    await page.getByRole('button', { name: 'Thêm chức danh' }).click();
+    await search.press('Escape');
+    await expect(search).toHaveValue('');
+    const add = page.getByRole('button', { name: 'Thêm mới chức danh' });
+    await expect(add).toHaveText(/Thêm mới/);
+    await add.click();
     const dialog = page.getByRole('dialog', { name: 'Thêm chức danh' });
-    await dialog.getByRole('button', { name: 'Lưu chức danh' }).click();
-    await expect(dialog.getByRole('textbox', { name: /Mã chức danh/ })).toBeFocused();
-    await expect(dialog.getByRole('textbox', { name: /Mã chức danh/ })).toHaveAttribute('aria-invalid', 'true');
+    await dialog.getByRole('button', { name: 'Lưu' }).click();
+    const code = dialog.getByRole('textbox', { name: /^Mã/ });
+    await expect(code).toBeFocused();
+    await expect(code).toHaveAttribute('aria-invalid', 'true');
     await page.keyboard.press('Escape');
     await expect(dialog).toHaveCount(0);
-    await expect(page.getByRole('button', { name: 'Thêm chức danh' })).toBeFocused();
+    await expect(add).toBeFocused();
+  });
+
+  test('catalog: every filter lives in the "Bộ lọc" panel; applied filters become chips', async ({ page }) => {
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const filter = page.getByRole('button', { name: /^Bộ lọc/ });
+    await filter.click();
+    const panel = page.getByRole('dialog', { name: 'Lọc chức danh' });
+    await panel.getByRole('checkbox', { name: 'Quản lý' }).check();
+    await panel.getByRole('button', { name: 'Huỷ' }).click();
+    await expect(panel).toHaveCount(0);
+    await expect(filter).toBeFocused();
+    await expect(page.getByRole('table').getByRole('rowheader')).toHaveCount(10);
+
+    await filter.click();
+    await expect(panel.getByRole('checkbox', { name: 'Quản lý' })).not.toBeChecked();
+    await panel.getByRole('checkbox', { name: 'Quản lý' }).check();
+    await panel.getByRole('radio', { name: 'Đang sử dụng' }).check();
+    await panel.getByRole('button', { name: 'Áp dụng' }).click();
+    await expect(filter).toHaveAccessibleName(/đang áp dụng 2/);
+    await expect(page.getByRole('table').getByRole('rowheader')).toHaveCount(7);
+    const chips = page.getByRole('group', { name: 'Bộ lọc đang áp dụng' });
+    await chips.getByRole('button', { name: 'Bỏ lọc Trạng thái: Đang sử dụng' }).click();
+    await expect(chips.getByRole('button', { name: 'Bỏ lọc Nhóm: Quản lý' })).toBeFocused();
+    await chips.getByRole('button', { name: 'Bỏ lọc Nhóm: Quản lý' }).click();
+    await expect(chips).toHaveCount(0);
+    await expect(filter).toBeFocused();
+    expect(await axe(page, '[data-example-root]')).toEqual([]);
+  });
+
+  test('catalog: Shift selects a range; rows in use are not deleted; deletion can be undone', async ({ page }) => {
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const box = (name: string) => page.getByRole('checkbox', { name: `Chọn ${name}` });
+    await box('Giám đốc khối Kinh doanh').check();
+    await box('Lái xe').click({ modifiers: ['Shift'] });
+    await expect(page.getByText('Đã chọn 5')).toBeVisible();
+    await expect(box('Bảo vệ')).toBeChecked();
+    await page.getByRole('button', { name: 'Xoá 5' }).click();
+    const notice = page.locator('.notice');
+    await expect(notice).toContainText('Đã xoá 1 chức danh.');
+    await expect(notice).toContainText('4 chức danh đang được dùng nên chưa xoá');
+    await expect(page.getByRole('table').getByRole('rowheader', { name: 'Bảo vệ' })).toHaveCount(0);
+    await notice.getByRole('button', { name: 'Hoàn tác' }).click();
+    await expect(page.getByRole('table').getByRole('rowheader', { name: 'Bảo vệ' })).toHaveCount(1);
+  });
+
+  test('catalog: import reviews every row before importing; export downloads what is shown', async ({ page }) => {
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('button', { name: 'Nhập chức danh từ Excel' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Nhập chức danh từ Excel' });
+    const csv = '﻿Mã,Tên,Nhóm,Cấp bậc,Mô tả,Trạng thái\nKT-NB,Kiểm toán nội bộ,Chuyên môn,L3 · Chuyên viên chính,,Đang dùng\nKT-TH,Trùng mã,Chuyên môn,L2 · Chuyên viên,,\n,Thiếu mã,Hỗ trợ,L1 · Nhân viên,,\n';
+    await dialog.locator('input[type="file"]').setInputFiles({ name: 'chuc-danh.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
+    await expect(dialog.getByRole('status')).toContainText('1 dòng hợp lệ');
+    await expect(dialog.getByRole('status')).toContainText('2 dòng lỗi');
+    await expect(dialog.getByRole('region', { name: 'Danh sách lỗi' })).toContainText('Mã KT-TH đã tồn tại');
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await dialog.getByRole('button', { name: 'Nhập 1 dòng' }).click();
+    await expect(page.locator('.notice')).toContainText('Đã nhập 1 chức danh.');
+    await expect(page.getByRole('tab', { name: /Chức danh/ })).toContainText('30');
+
+    await page.getByRole('searchbox', { name: 'Tìm chức danh' }).fill('ke toan');
+    const exportButton = page.getByRole('button', { name: 'Xuất 4 chức danh đang lọc ra Excel' });
+    const [download] = await Promise.all([page.waitForEvent('download'), exportButton.click()]);
+    expect(download.suggestedFilename()).toBe('chuc-danh-19-10-2026.csv');
+    const text = (await (await download.createReadStream()).toArray()).join('');
+    expect(text.split(/\r\n/)).toHaveLength(5);
+    expect(text).toContain('Kế toán tổng hợp');
+  });
+
+  test('catalog: tabs that do not fit go under "Xem thêm"; an empty catalog offers the first actions', async ({ page }) => {
+    await page.setViewportSize({ width: 900, height: 800 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const more = page.getByRole('button', { name: /^Xem thêm \d+ tab$/ });
+    await expect(more).toBeVisible();
+    await more.click();
+    await page.getByRole('menuitem', { name: /Phụ cấp/ }).click();
+    const tab = page.getByRole('tab', { name: /Phụ cấp/ });
+    await expect(tab).toHaveAttribute('aria-selected', 'true');
+    await expect(tab).toBeFocused();
+    await expect(page.getByRole('button', { name: 'Thêm mới phụ cấp' })).toBeVisible();
+    await page.keyboard.press('Home');
+    await expect(page.getByRole('tab', { name: /Chức danh/ })).toBeFocused();
+    await page.getByRole('tab', { name: /Ca làm việc/ }).or(page.getByRole('button', { name: /^Xem thêm/ })).first().click();
+    if (await page.getByRole('menuitem', { name: /Ca làm việc/ }).isVisible()) await page.getByRole('menuitem', { name: /Ca làm việc/ }).click();
+    await expect(page.getByRole('heading', { name: 'Chưa có ca làm việc nào' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Nhập từ Excel' })).toBeVisible();
+  });
+
+  test('approval: search + "Bộ lọc" narrow the queue, with chips', async ({ page }) => {
+    await page.goto('/examples/template-approval');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const list = page.getByRole('list', { name: 'Danh sách đơn' });
+    await page.getByRole('button', { name: /^Bộ lọc/ }).click();
+    await page.getByRole('dialog', { name: 'Lọc đơn' }).getByRole('checkbox', { name: 'Tăng ca' }).check();
+    await page.keyboard.press('Enter');
+    await expect(list.getByRole('listitem')).toHaveCount(2);
+    await expect(page.getByRole('group', { name: 'Bộ lọc đang áp dụng' })).toContainText('Loại đơn: Tăng ca');
+    await page.getByRole('searchbox', { name: 'Tìm đơn' }).fill('kiem ke');
+    await expect(list.getByRole('listitem')).toHaveCount(1);
+    await expect(list).toContainText('Hoàng Văn Đức');
   });
 });

@@ -86,9 +86,10 @@ Trang chi tiết có breadcrumb về danh sách, trạng thái của đối tư�
 | Nhân viên | Quản lý danh sách nhân viên |
 | Đơn nghỉ phép DNP-0412 | Chi tiết đơn |
 | 1.284 hồ sơ đang làm việc · cập nhật 5 phút trước | Đây là trang quản lý nhân viên của công ty |
-| Thêm nhân viên | Thêm mới |
+| Thêm mới (nút tạo của trang danh sách; tiêu đề đã nói đối tượng) | Tạo bản ghi mới cho danh mục chức danh |
 
 - Tiêu đề trùng tên mục trong sidenav, hoặc là tên của đối tượng đang xem.
+- Hành động ở bên phải theo thứ tự: nút icon "Nhập … từ Excel", "Xuất … ra Excel" (có tooltip), rồi nút primary **"Thêm mới"**. Xem [Trang danh sách & danh mục](/patterns/list-page).
 - Mô tả không quá một dòng. Hướng dẫn dài đặt trong nội dung trang.
 
 ## API

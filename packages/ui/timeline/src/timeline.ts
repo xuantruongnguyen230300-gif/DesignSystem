@@ -32,7 +32,7 @@ export class NxtTimeline {}
   styleUrl: './timeline.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'nxt-timeline__item', role: 'listitem', '[attr.data-tone]': 'tone()' },
+  host: { class: 'nxt-timeline__item', role: 'listitem', '[attr.data-tone]': 'tone()', '[attr.title]': 'null' },
 })
 export class NxtTimelineItem {
   readonly title = input.required<string>();

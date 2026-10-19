@@ -21,12 +21,13 @@ apg-pattern: tabs
 | # | Phần tử | Bắt buộc | Ghi chú |
 |---|---------|----------|---------|
 | 1 | Host `nxt-tabs` | ✓ | |
-| 2 | Tab list `.nxt-tabs__list` | ✓ | `role="tablist"`, viền dưới, cuộn ngang khi tràn (ẩn thanh cuộn) |
+| 2 | Tab list `.nxt-tabs__list` | ✓ | `role="tablist"`; không làm trang rộng ra: tab không vừa được ẩn và liệt kê trong "Xem thêm" |
 | 3 | Tab `button.nxt-tabs__tab` | ✓ | `role="tab"`; icon (tuỳ chọn) + nhãn + số đếm (tuỳ chọn) |
 | 4 | Chỉ báo chọn | ✓ | `::after` dày `border-width.strong` dưới tab đang chọn |
 | 5 | Số đếm `.nxt-tabs__count` | — | Viên số; đổi sang tông brand khi tab được chọn |
 | 6 | Tab panel `.nxt-tabs__panel` | — | `role="tabpanel"`, chỉ có khi `panels`; chỉ render nội dung của tab đang chọn |
-| 7 | `nxt-tab` | ✓ | Khai báo một tab; nội dung nằm trong `ng-template`, render lười |
+| 7 | `nxt-tab` | ✓ | Khai báo một tab; nội dung nằm trong `ng-template`, chỉ gắn vào panel khi được chọn |
+| 8 | Nút "Xem thêm" `.nxt-tabs__more` | — | Chỉ hiện khi tràn; nằm **ngoài** tablist; mở menu các tab bị ẩn (kèm số đếm); tên "Xem thêm N tab" |
 
 ## 3. API (Angular)
 Selector: `nxt-tabs`, `nxt-tab`.
@@ -69,6 +70,8 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/tabs/ (kích hoạt tự �
 | ← | Chọn và focus tab trước (bỏ qua tab disabled, vòng về cuối) |
 | Home / End | Chọn và focus tab đầu / cuối (trong các tab không disabled) |
 | Enter / Space | Kích hoạt tab (native `button`; tab đã được chọn khi focus) |
+| Tab (từ tablist) | Tới nút "Xem thêm" nếu có, rồi tới panel |
+| Trong menu "Xem thêm" | ↑/↓ chọn tab, Enter mở tab đó, Esc đóng và trả focus về nút |
 
 - Tablist: `role="tablist"`, `aria-label` = `label`.
 - Tab: `role="tab"`, `aria-selected`, `tabindex` 0 cho tab đang chọn và -1 cho tab khác, `aria-controls` trỏ tới panel khi `panels`.
@@ -93,7 +96,7 @@ Số đếm mượn token của badge: `--nxt-badge-height`, `--nxt-badge-radius
 
 ## 8. Density, responsive, i18n
 - Chiều cao tab và khoảng cách giữa tab theo density.
-- Tab không xuống dòng; khi tràn, tablist cuộn ngang (thanh cuộn bị ẩn), phím mũi tên đưa tab được focus vào tầm nhìn.
+- Tab không xuống dòng và không bị cắt chữ. Khi bề ngang không đủ (đo bằng `ResizeObserver`), tab ở cuối được dồn vào menu "Xem thêm" (priority-plus, theo PatternFly / ServiceNow); tab đang chọn luôn hiện. Phím mũi tên chỉ đi qua các tab đang hiện; chọn từ menu thì tab đó hiện ra và nhận focus.
 - Nhãn `label-md` (14 / 20px) đủ chỗ cho dấu chồng tiếng Việt. Số đếm dùng `tabular-nums`, định dạng `vi` do nơi dùng truyền vào.
 
 ## 9. Content guidelines
@@ -103,18 +106,19 @@ Số đếm mượn token của badge: `--nxt-badge-height`, `--nxt-badge-radius
 
 ## 10. Acceptance (Definition of Done)
 - [ ] Tab có panel, tab lọc có `count`, tab có icon, tab disabled, tab tràn ngang có trong docs example
-- [x] Unit test: chọn tab đầu mặc định + một Tab stop, id hợp lệ khi value có dấu cách, ←/→ bỏ qua disabled + vòng + focus, Home/End, bỏ qua click tab disabled + hiện count, `panels` tắt không có tabpanel/`aria-controls`
+- [x] Unit test: tab tràn vào "Xem thêm" và tab đang chọn luôn hiện (giả lập kích thước); chọn tab đầu mặc định + một Tab stop, id hợp lệ khi value có dấu cách, ←/→ bỏ qua disabled + vòng + focus, Home/End, bỏ qua click tab disabled + hiện count, `panels` tắt không có tabpanel/`aria-controls`
 - [x] Playwright e2e: tabs trong template phê duyệt (2026-10-19)
 - [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
 
 ## 11. Việc còn mở
-- `src/tabs.ts:69`: panel chỉ render template của tab đang chọn; chuyển tab sẽ huỷ nội dung tab cũ, kể cả dữ liệu đang nhập trong form chưa lưu (principles §2.5). Cần ghi rõ trong docs hoặc có tuỳ chọn giữ nội dung.
-- `src/tabs.css:10`–`12`: tablist tràn thì cuộn ngang nhưng ẩn thanh cuộn, không có nút cuộn hay dấu hiệu còn tab bị che; người dùng chuột khó biết.
 - `src/tabs.css:61`–`75`: số đếm dùng component token của badge, trái quy tắc "component chỉ dùng token của chính nó".
 - `panels="false"`: `role="tab"` không có `tabpanel` đi kèm, lệch APG; cân nhắc mẫu khác (segmented / toolbar) cho tab lọc hoặc ghi rõ lý do.
 - `src/tabs.css:23`: padding tab dùng primitive `--nxt-space-0-5`; `:57` opacity 0.5 viết cứng.
 
 ### Đã xử lý (2026-10-19)
 - Luôn còn đúng một điểm dừng Tab: tab đang chọn, hoặc tab bật đầu tiên khi `value` không khớp / tab đang chọn bị disabled (`focusValue`). Có unit test.
+- Tab tràn không còn cuộn ngang ẩn: tab không vừa dồn vào menu "Xem thêm" (ngoài tablist), tab đang chọn luôn hiện; tablist có bề rộng nội tại 0 nên không kéo rộng trang. Có unit test (giả lập kích thước) và e2e.
+- Vòng đo lại kích thước dùng `afterRenderEffect`: tab sinh bằng `@for` chỉ có input sau khi render (trước đó đọc `label()` gây NG0950).
+- Đính chính: chuyển tab **không** huỷ nội dung của tab cũ. Nội dung là content chiếu vào nên sống cùng view của nơi dùng, chỉ bị gỡ khỏi panel; chữ đang nhập vẫn còn khi quay lại. Có unit test.

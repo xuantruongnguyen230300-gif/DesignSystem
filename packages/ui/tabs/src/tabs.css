@@ -4,12 +4,64 @@
     min-inline-size: 0;
   }
 
-  .nxt-tabs__list {
+  .nxt-tabs__bar {
     display: flex;
     gap: var(--nxt-space-gap-md);
-    overflow-x: auto;
     border-block-end: var(--nxt-border-width-default) solid var(--nxt-tabs-border);
-    scrollbar-width: none;
+  }
+
+  .nxt-tabs__list {
+    display: flex;
+    /* Zero intrinsic width: the tabs must never widen the page; what does not fit goes under "Xem thêm". */
+    flex: 1 1 0;
+    gap: var(--nxt-space-gap-md);
+    inline-size: 0;
+    min-inline-size: 0;
+    /* Reach over the bar's border so the clipped area still shows the selection indicator on top of it. */
+    margin-block-end: calc(-1 * var(--nxt-border-width-default));
+    padding-block-end: var(--nxt-border-width-default);
+    overflow: hidden;
+  }
+
+  /* Tabs that do not fit are listed under "Xem thêm"; shown again only while measuring. */
+  .nxt-tabs__tab[data-overflow] {
+    display: none;
+  }
+
+  .nxt-tabs[data-measuring] .nxt-tabs__tab[data-overflow],
+  .nxt-tabs[data-measuring] .nxt-tabs__more[data-hidden] {
+    display: inline-flex;
+  }
+
+  .nxt-tabs__more {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--nxt-space-gap-xs);
+    min-block-size: var(--nxt-tabs-height);
+    padding-inline: var(--nxt-space-inset-xs);
+    border: 0;
+    border-radius: var(--nxt-radius-control);
+    background: transparent;
+    color: var(--nxt-tabs-text);
+    font: var(--nxt-typography-label-md);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  /* Not [hidden]: the global [hidden] rule is !important and would win while measuring. */
+  .nxt-tabs__more[data-hidden] {
+    display: none;
+  }
+
+  .nxt-tabs__more:hover {
+    color: var(--nxt-tabs-text-hover);
+  }
+
+  .nxt-tabs__more:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-focus-ring-width));
   }
 
   .nxt-tabs__tab {
