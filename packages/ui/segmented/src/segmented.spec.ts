@@ -54,6 +54,14 @@ describe('NxtSegmented', () => {
     expect(radios(0)[2].checked).toBe(true);
   });
 
+  it('hides the legend visually by default', () => {
+    const { groups } = setup();
+    for (const g of groups) {
+      expect(g.querySelector('legend')!.classList).toContain('nxt-visually-hidden');
+      expect(g.hasAttribute('data-show-label')).toBe(false);
+    }
+  });
+
   it('icon-only keeps every option named (labels visually hidden, not removed)', () => {
     const { groups, radios } = setup();
     expect(groups[0].hasAttribute('data-icon-only')).toBe(true);
@@ -62,5 +70,36 @@ describe('NxtSegmented', () => {
     expect(text.textContent).toBe('Giao diện sáng');
     expect(label.querySelector('nxt-icon')).not.toBeNull();
     expect(groups[1].querySelector('.nxt-visually-hidden:not(legend)')).toBeNull();
+  });
+});
+
+@Component({
+  imports: [NxtSegmented],
+  template: `<nxt-segmented label="Cách duyệt" showLabel [options]="modes" [(value)]="mode" />`,
+})
+class Labelled {
+  readonly mode = signal<'any' | 'all'>('any');
+  readonly modes: NxtSegmentedOption<'any' | 'all'>[] = [
+    { value: 'any', label: 'Một người duyệt là đủ' },
+    { value: 'all', label: 'Tất cả cùng duyệt' },
+  ];
+}
+
+describe('NxtSegmented showLabel', () => {
+  it('shows the legend itself as the visible label: one name, no second label element', () => {
+    const fixture = TestBed.createComponent(Labelled);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('nxt-segmented')!;
+    expect(host.hasAttribute('data-show-label')).toBe(true);
+    const legends = host.querySelectorAll('legend');
+    expect(legends).toHaveLength(1);
+    // It stays the fieldset's first child, so it keeps naming the radio group.
+    expect(host.querySelector('fieldset')!.firstElementChild).toBe(legends[0]);
+    expect(legends[0].classList).not.toContain('nxt-visually-hidden');
+    expect(legends[0].textContent).toBe('Cách duyệt');
+    // The only other text is the option labels: the group name is not repeated anywhere.
+    expect(host.textContent!.match(/Cách duyệt/g)).toHaveLength(1);
+    expect(host.querySelectorAll('[aria-hidden="true"]:not(svg)')).toHaveLength(0);
+    expect(host.querySelectorAll('.nxt-segmented__track input[type="radio"]')).toHaveLength(2);
   });
 });

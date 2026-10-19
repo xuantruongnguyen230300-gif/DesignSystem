@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, afterNextRender, computed, inject, signal, viewChild } from '@angular/core';
+import { NxtAlert, NxtAlertTone, NxtLiveRegion } from '@nxt/ui/alert';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
 import { NxtCheckbox } from '@nxt/ui/checkbox';
@@ -26,6 +27,8 @@ const STATUS_OPTIONS: { value: 'all' | WorkflowStatus; label: string }[] = [
 
 interface Notice {
   text: string;
+  /** Default success. */
+  tone?: NxtAlertTone;
   undo?: () => void;
 }
 
@@ -40,6 +43,7 @@ interface Editing {
   selector: 'example-template-workflow',
   imports: [
     HrmFrame,
+    NxtAlert,
     NxtButton,
     NxtCard,
     NxtCheckbox,
@@ -48,6 +52,7 @@ interface Editing {
     NxtFilter,
     NxtFilterChips,
     NxtIcon,
+    NxtLiveRegion,
     NxtMenu,
     NxtMenuItem,
     NxtMenuSeparator,
@@ -76,13 +81,14 @@ interface Editing {
             [breadcrumb]="[{ label: 'Thiết lập' }, { label: 'Quy trình duyệt' }]"
           />
 
-          <div class="notice" role="status">
+          <div class="notice" nxtLiveRegion>
             @if (notice(); as n) {
-              <nxt-icon name="circle-check" />
-              <span>{{ n.text }}</span>
-              @if (n.undo) {
-                <button nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
-              }
+              <nxt-alert [tone]="n.tone ?? 'success'">
+                {{ n.text }}
+                @if (n.undo) {
+                  <button nxtAlertActions nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
+                }
+              </nxt-alert>
             }
           </div>
 
@@ -207,28 +213,6 @@ interface Editing {
     .stack {
       gap: var(--nxt-space-gap-lg);
     }
-    /* role=status stays in the tree; when empty it takes no room and adds no gap. */
-    .notice {
-      --nxt-icon-size: var(--nxt-size-icon-sm);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--nxt-space-gap-sm);
-      padding: var(--nxt-space-inset-xs) var(--nxt-space-inset-md);
-      border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
-      border-radius: var(--nxt-radius-control);
-      background: var(--nxt-color-bg-surface);
-      color: var(--nxt-color-text-default);
-      font: var(--nxt-typography-label-sm);
-    }
-    .notice:empty {
-      position: absolute;
-      padding: 0;
-      border: 0;
-    }
-    .notice nxt-icon {
-      color: var(--nxt-color-icon-success);
-    }
     .bar {
       display: flex;
       flex-wrap: wrap;
@@ -311,6 +295,7 @@ interface Editing {
 export class TemplateWorkflowExample {
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
   private readonly injector = inject(Injector);
+  private readonly listHeader = viewChild(NxtPageHeader);
   protected readonly statusOptions = STATUS_OPTIONS;
   protected readonly requestTypes = REQUEST_TYPES;
 
@@ -361,7 +346,7 @@ export class TemplateWorkflowExample {
 
   protected undo(n: Notice) {
     n.undo?.();
-    this.notice.set({ text: 'Đã hoàn tác.' });
+    this.notice.set({ text: 'Đã hoàn tác.', tone: 'info' });
   }
 
   // ---------- editor ----------
@@ -399,7 +384,11 @@ export class TemplateWorkflowExample {
     this.editorWide.set(false);
     this.notice.set(message ? { text: message } : null);
     afterNextRender(
-      () => (this.host.querySelector<HTMLElement>(`[data-open="${id}"]`) ?? this.host.querySelector<HTMLElement>('[data-create]'))?.focus(),
+      () => {
+        const target = this.host.querySelector<HTMLElement>(`[data-open="${id}"]`) ?? this.host.querySelector<HTMLElement>('[data-create]');
+        if (target) target.focus();
+        else this.listHeader()?.focusTitle();
+      },
       { injector: this.injector },
     );
   }

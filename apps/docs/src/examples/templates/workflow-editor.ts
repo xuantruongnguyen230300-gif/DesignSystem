@@ -12,10 +12,13 @@ import {
   linkedSignal,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
+import { NxtAlert, NxtAlertTone, NxtLiveRegion } from '@nxt/ui/alert';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
 import { NxtDescription, NxtDescriptions } from '@nxt/ui/descriptions';
+import { NxtDialog } from '@nxt/ui/dialog';
 import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtIcon } from '@nxt/ui/icon';
 import { NxtGrid, NxtSpan } from '@nxt/ui/layout';
@@ -62,7 +65,7 @@ let nextId = 0;
 
 interface Notice {
   text: string;
-  tone: 'success' | 'danger' | 'info';
+  tone: NxtAlertTone;
   undo?: () => void;
 }
 
@@ -79,6 +82,7 @@ interface Problem {
 @Component({
   selector: 'example-workflow-editor',
   imports: [
+    NxtAlert,
     NxtButton,
     NxtCard,
     NxtDescription,
@@ -87,6 +91,7 @@ interface Problem {
     NxtInput,
     NxtGrid,
     NxtIcon,
+    NxtLiveRegion,
     NxtPageHeader,
     NxtSpan,
     NxtTag,
@@ -98,7 +103,7 @@ interface Problem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.nxt-fill]': 'wide()', '[class.is-wide]': 'wide()' },
   template: `
-    <nxt-page-header [title]="title()" [breadcrumb]="breadcrumb()" description="Ai duyệt, theo thứ tự nào, trong bao lâu, và khi nào thì bỏ qua một bước.">
+    <nxt-page-header [title]="title()" [breadcrumb]="breadcrumb()" (navigate)="requestLeave()" description="Ai duyệt, theo thứ tự nào, trong bao lâu, và khi nào thì bỏ qua một bước.">
       <nxt-tag nxtPageMeta dot [tone]="status().tone">{{ status().label }}</nxt-tag>
       <span nxtPageMeta class="meta">{{ versionText() }}</span>
       @if (dirty()) {
@@ -111,29 +116,14 @@ interface Problem {
       </ng-container>
     </nxt-page-header>
 
-    @if (leaving()) {
-      <!-- No dialog component yet: an inline alert under the header, focus moves into it, Esc = "Ở lại". -->
-      <div class="leave" role="group" [attr.aria-labelledby]="uid + '-leave'" [attr.aria-describedby]="uid + '-leave-text'" (keydown.escape)="stay()">
-        <nxt-icon class="leave__icon" name="alert-triangle" />
-        <div class="leave__text">
-          <p class="leave__title" [id]="uid + '-leave'">Có thay đổi chưa lưu</p>
-          <p [id]="uid + '-leave-text'">Rời trang bây giờ sẽ mất các thay đổi trong “{{ title() }}”. Lưu nháp để giữ lại mà chưa áp dụng.</p>
-        </div>
-        <div class="leave__actions">
-          <button nxtButton variant="primary" size="sm" type="button" data-leave-first (click)="leaveSave()">Lưu nháp</button>
-          <button nxtButton size="sm" type="button" (click)="leaveDiscard()">Bỏ thay đổi</button>
-          <button nxtButton variant="ghost" size="sm" type="button" (click)="stay()">Ở lại</button>
-        </div>
-      </div>
-    }
-
-    <div class="notice" role="status" [attr.data-tone]="notice()?.tone">
+    <div class="notice" nxtLiveRegion>
       @if (notice(); as n) {
-        <nxt-icon [name]="n.tone === 'danger' ? 'alert-circle' : n.tone === 'info' ? 'info-circle' : 'circle-check'" />
-        <span>{{ n.text }}</span>
-        @if (n.undo) {
-          <button nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
-        }
+        <nxt-alert [tone]="n.tone">
+          {{ n.text }}
+          @if (n.undo) {
+            <button nxtAlertActions nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
+          }
+        </nxt-alert>
       }
     </div>
 
@@ -183,9 +173,9 @@ interface Problem {
         }
       </div>
       @if (base().draft; as d) {
-        <p class="note">
-          <nxt-icon name="info-circle" size="sm" />Đang sửa bản nháp lưu ngày {{ d.saved }}. Phiên bản {{ base().version }} vẫn áp dụng cho đơn mới cho đến khi bấm “Áp dụng”.
-        </p>
+        <nxt-alert class="summary__note" tone="info">
+          Đang sửa bản nháp lưu ngày {{ d.saved }}. Phiên bản {{ base().version }} vẫn áp dụng cho đơn mới cho đến khi bấm “Áp dụng”.
+        </nxt-alert>
       }
     </nxt-card>
 
@@ -221,9 +211,9 @@ interface Problem {
               </nxt-form-field>
             </nxt-grid>
             @if (outOfScope()) {
-              <p class="note">
-                <nxt-icon name="info-circle" size="sm" />{{ dept().name }} không thuộc phạm vi “{{ work().scope }}”: đơn thật sẽ đi theo quy trình khác. Kết quả dưới đây chỉ để tham khảo.
-              </p>
+              <nxt-alert tone="warning">
+                {{ dept().name }} không thuộc phạm vi “{{ work().scope }}”: đơn thật sẽ đi theo quy trình khác. Kết quả dưới đây chỉ để tham khảo.
+              </nxt-alert>
             }
             <h3 class="section-title" [id]="uid + '-path'">Đường đi của đơn</h3>
             <nxt-timeline [attr.aria-labelledby]="uid + '-path'">
@@ -234,7 +224,7 @@ interface Problem {
                     {{ p.who }} · {{ modeSummary[p.step.mode] }}
                   </nxt-timeline-item>
                 } @else {
-                  <nxt-timeline-item [title]="'Bước ' + (p.index + 1) + ' · ' + stepName(p.step)" time="Bỏ qua: điều kiện không thoả" icon="minus">{{ p.reason }}</nxt-timeline-item>
+                  <nxt-timeline-item skipped [title]="'Bước ' + (p.index + 1) + ' · ' + stepName(p.step)" [time]="p.reason" />
                 }
               }
               <nxt-timeline-item title="Hoàn tất" icon="circle-check" tone="success">Thông báo kết quả cho người gửi</nxt-timeline-item>
@@ -256,72 +246,6 @@ interface Problem {
       font: var(--nxt-typography-label-sm);
     }
 
-    /* ---------- leave guard ---------- */
-    .leave {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--nxt-space-gap-md);
-      padding: var(--nxt-space-inset-md) var(--nxt-space-inset-lg);
-      border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
-      border-inline-start: var(--nxt-border-width-strong) solid var(--nxt-color-icon-warning);
-      border-radius: var(--nxt-radius-control);
-      background: var(--nxt-color-bg-surface);
-      color: var(--nxt-color-text-default);
-      font: var(--nxt-typography-body-md);
-      box-shadow: var(--nxt-elevation-raised);
-    }
-    .leave__icon {
-      --nxt-icon-size: var(--nxt-size-icon-md);
-      color: var(--nxt-color-icon-warning);
-    }
-    .leave__text {
-      display: grid;
-      flex: 1 1 var(--nxt-size-320);
-      gap: var(--nxt-space-0-5);
-    }
-    .leave__title {
-      color: var(--nxt-color-text-strong);
-      font: var(--nxt-typography-label-md);
-    }
-    .leave__actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--nxt-space-gap-sm);
-    }
-
-    /* ---------- notice (role=status stays in the tree; when empty it takes no room and no gap) ---------- */
-    .notice {
-      --nxt-icon-size: var(--nxt-size-icon-sm);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--nxt-space-gap-sm);
-      padding: var(--nxt-space-inset-xs) var(--nxt-space-inset-md);
-      border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
-      border-radius: var(--nxt-radius-control);
-      background: var(--nxt-color-bg-surface);
-      color: var(--nxt-color-text-default);
-      font: var(--nxt-typography-label-sm);
-    }
-    .notice:empty {
-      position: absolute;
-      padding: 0;
-      border: 0;
-    }
-    .notice nxt-icon {
-      color: var(--nxt-color-icon-success);
-    }
-    .notice[data-tone='danger'] {
-      border-color: var(--nxt-color-border-danger);
-    }
-    .notice[data-tone='danger'] nxt-icon {
-      color: var(--nxt-color-icon-danger);
-    }
-    .notice[data-tone='info'] nxt-icon {
-      color: var(--nxt-color-icon-info);
-    }
-
     /* ---------- summary ---------- */
     .summary {
       flex: none;
@@ -336,17 +260,8 @@ interface Problem {
       flex: 1 1 var(--nxt-size-480);
       min-inline-size: 0;
     }
-    .note {
-      --nxt-icon-size: var(--nxt-size-icon-sm);
-      display: flex;
-      align-items: flex-start;
-      gap: var(--nxt-space-gap-xs);
+    .summary__note {
       margin-block-start: var(--nxt-space-gap-md);
-      color: var(--nxt-color-text-subtle);
-      font: var(--nxt-typography-body-sm);
-    }
-    .sim .note {
-      margin: 0;
     }
 
     /* ---------- columns: stacked; side by side and filling the screen when wide ---------- */
@@ -428,6 +343,8 @@ export class WorkflowEditor {
 
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
   private readonly injector = inject(Injector);
+  private readonly dialog = inject(NxtDialog);
+  private readonly header = viewChild.required(NxtPageHeader);
   protected readonly uid = `wf-editor-${nextId++}`;
 
   protected readonly requestTypes = REQUEST_TYPES;
@@ -447,14 +364,13 @@ export class WorkflowEditor {
   protected readonly selectedId = linkedSignal(() => (this.workflow().draft ?? this.workflow()).steps[0]?.id ?? '');
   protected readonly showErrors = signal(false);
   protected readonly nameChecked = signal(false);
-  protected readonly leaving = signal(false);
   protected readonly notice = signal<Notice | null>(null);
   protected readonly wide = signal(false);
   /** Told to the list when the user goes back: "Đã áp dụng phiên bản 4 …". */
   private savedMessage: string | null = null;
 
   protected readonly title = computed(() => this.work().name.trim() || 'Quy trình chưa đặt tên');
-  protected readonly breadcrumb = computed<NxtBreadcrumbItem[]>(() => [{ label: 'Thiết lập' }, { label: 'Quy trình duyệt' }, { label: this.title() }]);
+  protected readonly breadcrumb = computed<NxtBreadcrumbItem[]>(() => [{ label: 'Thiết lập' }, { label: 'Quy trình duyệt', navigable: true }, { label: this.title() }]);
   protected readonly status = computed(() => STATUS_META[this.base().status]);
   protected readonly versionText = computed(() => {
     const b = this.base();
@@ -544,11 +460,7 @@ export class WorkflowEditor {
         name?.select();
         return;
       }
-      const heading = this.host.querySelector<HTMLElement>('.nxt-page-header__title');
-      if (heading) {
-        heading.tabIndex = -1;
-        heading.focus();
-      }
+      this.header().focusTitle();
     });
   }
 
@@ -748,27 +660,24 @@ export class WorkflowEditor {
   }
 
   // ---------- leaving ----------
+  /** Unsaved changes: ask (save as draft / discard / stay). Escape or "Ở lại" keeps the editor, focus back on the button. */
   protected requestLeave() {
     if (!this.dirty()) {
       this.closed.emit(this.savedMessage);
       return;
     }
-    this.leaving.set(true);
-    this.focusLater('[data-leave-first]');
-  }
-
-  protected leaveSave() {
-    this.leaving.set(false);
-    if (this.saveDraft()) this.closed.emit(this.savedMessage);
-  }
-
-  protected leaveDiscard() {
-    this.closed.emit(this.stored() ? `Đã bỏ các thay đổi chưa lưu của “${this.base().name}”.` : null);
-  }
-
-  protected stay() {
-    this.leaving.set(false);
-    this.focusLater('[data-back]');
+    this.dialog
+      .confirm({
+        title: 'Rời trang khi chưa lưu?',
+        message: `Các thay đổi trong “${this.title()}” sẽ mất. Lưu nháp để giữ lại mà chưa áp dụng.`,
+        confirmLabel: 'Lưu nháp',
+        alternateLabel: 'Bỏ thay đổi',
+        cancelLabel: 'Ở lại',
+      })
+      .subscribe((answer) => {
+        if (answer === 'confirm' && this.saveDraft()) this.closed.emit(this.savedMessage);
+        if (answer === 'alternate') this.closed.emit(this.stored() ? `Đã bỏ các thay đổi chưa lưu của “${this.base().name}”.` : null);
+      });
   }
 
   private focusLater(selector: string) {

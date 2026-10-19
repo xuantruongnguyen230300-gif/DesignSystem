@@ -16,7 +16,7 @@ apg-pattern: "none (presentational)"
   - Trong thân bảng, thẻ, tab, drawer (dùng `size="sm"` ở vùng hẹp).
 - **Khi nào KHÔNG dùng:**
   - Đang tải: dùng skeleton đúng hình khối.
-  - Lỗi cần xử lý (không tải được, mất kết nối): dùng inline alert có nguyên nhân và cách sửa.
+  - Lỗi cần xử lý (không tải được, mất kết nối): dùng `nxt-alert` tone `danger` có nguyên nhân và nút "Thử lại".
   - Thông báo ngắn sau thao tác: dùng toast / thông báo trạng thái.
 
 ## 2. Anatomy

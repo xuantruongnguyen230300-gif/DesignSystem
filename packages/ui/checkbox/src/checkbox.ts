@@ -11,9 +11,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+let nextId = 0;
+
 /**
  * Native checkbox with NXT styling (accent-color) and a label that enlarges the hit area to ≥ 24px.
  * Works with `[(checked)]` or Angular forms. `hideLabel` for table row selection (label still announced).
+ * `hint` adds helper text below the label, linked to the box with aria-describedby.
  */
 @Component({
   selector: 'nxt-checkbox',
@@ -25,11 +28,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         [checked]="checked()"
         [indeterminate]="indeterminate()"
         [disabled]="isDisabled()"
+        [attr.aria-describedby]="hint() ? hintId : null"
         (change)="onChange($event)"
         (blur)="onTouched()"
       />
       <span class="nxt-checkbox__text" [class.nxt-visually-hidden]="hideLabel()">{{ label() }}</span>
     </label>
+    <!-- Outside the label: a description, not part of the name. -->
+    @if (hint()) {
+      <p class="nxt-checkbox__hint" [id]="hintId">{{ hint() }}</p>
+    }
   `,
   styleUrl: './checkbox.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,7 +51,11 @@ export class NxtCheckbox implements ControlValueAccessor {
   readonly indeterminate = input(false, { transform: booleanAttribute });
   readonly label = input.required<string>();
   readonly hideLabel = input(false, { transform: booleanAttribute });
+  /** Helper text below the label: what choosing it means or requires. Read after the name and state. */
+  readonly hint = input<string>();
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  protected readonly hintId = `nxt-checkbox-${nextId++}-hint`;
 
   /**
    * User toggled the box, with whether Shift was held — for range selection in tables

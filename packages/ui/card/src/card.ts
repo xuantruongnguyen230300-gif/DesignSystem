@@ -1,9 +1,22 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, booleanAttribute, computed, input, numberAttribute } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostAttributeToken,
+  ViewEncapsulation,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
 import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
+
+let nextId = 0;
 
 /**
  * Surface that groups related content on the app canvas (dashboard widget, form section, list panel).
  * Optional header: title, subtitle and actions (`[nxtCardActions]`). Do not nest cards in cards.
+ * The title has a stable id (`headingId`) for `aria-labelledby`; `region` makes the card a named landmark.
  */
 @Component({
   selector: 'nxt-card',
@@ -13,13 +26,13 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
         <div class="nxt-card__titles">
           @switch (headingLevel()) {
             @case (3) {
-              <h3 class="nxt-card__title">{{ title() }}</h3>
+              <h3 class="nxt-card__title" [id]="headingId">{{ title() }}</h3>
             }
             @case (4) {
-              <h4 class="nxt-card__title">{{ title() }}</h4>
+              <h4 class="nxt-card__title" [id]="headingId">{{ title() }}</h4>
             }
             @default {
-              <h2 class="nxt-card__title">{{ title() }}</h2>
+              <h2 class="nxt-card__title" [id]="headingId">{{ title() }}</h2>
             }
           }
           @if (subtitle()) {
@@ -40,6 +53,9 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
     '[attr.data-padding]': 'padding()',
     '[attr.data-fill]': 'fill() || null',
     '[attr.title]': 'null',
+    // Keep a role / aria-labelledby the app wrote on the host itself when `region` is off.
+    '[attr.role]': 'isRegion() ? "region" : hostRole',
+    '[attr.aria-labelledby]': 'isRegion() ? headingId : hostLabelledBy',
   },
 })
 export class NxtCard {
@@ -51,6 +67,20 @@ export class NxtCard {
   readonly padding = input<'none' | 'md' | 'lg'>('md');
   /** Take the free height of a flex-column parent (`nxtFill`); the body then stacks its children in a column. */
   readonly fill = input(false, { transform: booleanAttribute });
+  /**
+   * Named landmark (`role="region"`, labelled by the title) for the few key blocks screen-reader users jump to,
+   * e.g. a dashboard widget. Needs `title`. The name must be unique on the page.
+   */
+  readonly region = input(false, { transform: booleanAttribute });
+
+  /**
+   * Stable id of the title, for `aria-labelledby` on content inside the card:
+   * `<nxt-card #card title="…">` → `[attr.aria-labelledby]="card.headingId"`.
+   */
+  readonly headingId = `nxt-card-${nextId++}-title`;
+  protected readonly isRegion = computed(() => this.region() && !!this.title());
+  protected readonly hostRole = inject(new HostAttributeToken('role'), { optional: true });
+  protected readonly hostLabelledBy = inject(new HostAttributeToken('aria-labelledby'), { optional: true });
 }
 
 /**

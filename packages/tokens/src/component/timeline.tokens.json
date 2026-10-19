@@ -25,6 +25,16 @@
         "$type": "color",
         "$value": "{semantic.color.text.subtle}",
         "$description": "Thời gian mốc."
+      },
+      "marker-skipped": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Viền nét đứt và icon của mốc bị bỏ qua (≥ 3:1)."
+      },
+      "skipped-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Tiêu đề và thân của mốc bị bỏ qua (vẫn đạt 4.5:1)."
       }
     }
   }

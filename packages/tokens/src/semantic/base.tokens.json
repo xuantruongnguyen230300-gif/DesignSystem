@@ -198,6 +198,21 @@
           "$value": "{primitive.size.720}",
           "$description": "Drawer rộng: form nhiều section, xem chi tiết đầy đủ."
         }
+      },
+      "dialog": {
+        "$type": "dimension",
+        "sm": {
+          "$value": "{primitive.size.400}",
+          "$description": "Dialog xác nhận: một câu hỏi, một đoạn hậu quả, 2–3 nút."
+        },
+        "md": {
+          "$value": "{primitive.size.560}",
+          "$description": "Dialog có form rất ngắn (1–3 trường), ví dụ nhập lý do."
+        },
+        "lg": {
+          "$value": "{primitive.size.720}",
+          "$description": "Dialog có bảng nhỏ hoặc nội dung dài; cân nhắc drawer trước."
+        }
       }
     },
     "motion": {

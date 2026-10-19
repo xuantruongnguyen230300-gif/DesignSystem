@@ -67,9 +67,8 @@ const OVERDUE_HINTS: Record<OverdueAction, string> = {
         </nxt-form-field>
       }
       <div class="field" nxtSpan="full">
-        <!-- nxt-segmented names itself with a visually hidden legend; this is the visible label. -->
-        <span class="field__label" aria-hidden="true">Cách duyệt</span>
-        <nxt-segmented label="Cách duyệt" [options]="modes" [value]="s.mode" (valueChange)="changed.emit({ mode: $event ?? 'any' })" />
+        <!-- showLabel: the segmented's own legend is the visible label, so the group name is read once. -->
+        <nxt-segmented label="Cách duyệt" showLabel [options]="modes" [value]="s.mode" (valueChange)="changed.emit({ mode: $event ?? 'any' })" />
         <p class="hint">
           {{ s.mode === 'any' ? 'Đơn sang bước sau ngay khi một người trong nhóm duyệt.' : 'Đơn chỉ sang bước sau khi mọi người trong nhóm đều duyệt.' }}
         </p>
@@ -119,9 +118,9 @@ const OVERDUE_HINTS: Record<OverdueAction, string> = {
       <fieldset class="group" nxtSpan="full">
         <legend class="group__title">Quyền của người duyệt</legend>
         <p class="hint">Luôn được duyệt. Chọn thêm:</p>
-        <nxt-checkbox label="Được trả lại (người gửi sửa rồi gửi lại)" [checked]="s.canReturn" (checkedChange)="changed.emit({ canReturn: $event })" />
-        <nxt-checkbox label="Được từ chối" [checked]="s.canReject" (checkedChange)="changed.emit({ canReject: $event })" />
-        <nxt-checkbox label="Được uỷ quyền cho người khác duyệt thay" [checked]="s.canDelegate" (checkedChange)="changed.emit({ canDelegate: $event })" />
+        <nxt-checkbox label="Được trả lại" hint="Đơn về lại người gửi để sửa rồi gửi lại." [checked]="s.canReturn" (checkedChange)="changed.emit({ canReturn: $event })" />
+        <nxt-checkbox label="Được từ chối" hint="Đơn dừng ở bước này, người gửi nhận được lý do." [checked]="s.canReject" (checkedChange)="changed.emit({ canReject: $event })" />
+        <nxt-checkbox label="Được uỷ quyền" hint="Khi vắng mặt, người duyệt chọn người khác duyệt thay." [checked]="s.canDelegate" (checkedChange)="changed.emit({ canDelegate: $event })" />
       </fieldset>
     </nxt-grid>
   `,
@@ -133,10 +132,6 @@ const OVERDUE_HINTS: Record<OverdueAction, string> = {
       display: grid;
       justify-items: start;
       gap: var(--nxt-space-gap-xs);
-    }
-    .field__label {
-      color: var(--nxt-color-text-default);
-      font: var(--nxt-typography-label-md);
     }
     .hint {
       color: var(--nxt-color-text-subtle);

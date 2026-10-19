@@ -19,7 +19,7 @@
     "status": [
       "circle-check", "circle-x", "alert-circle", "alert-triangle", "info-circle", "help-circle", "clock", "hourglass", "loader-2",
       "progress", "progress-check", "circle-dot", "point", "circle", "square", "square-check", "shield-check", "shield-lock",
-      "bell", "bell-ringing", "trending-up", "trending-down", "minus-vertical"
+      "bell", "bell-ringing", "trending-up", "trending-down", "minus-vertical", "player-skip-forward"
     ],
     "people": [
       "user", "users", "user-plus", "user-minus", "user-check", "user-x", "user-circle", "user-search", "users-group", "id-badge-2",

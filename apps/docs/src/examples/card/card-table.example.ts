@@ -3,16 +3,17 @@ import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
 import { NxtTable } from '@nxt/ui/table';
 
-/** padding="none": bảng chạy sát mép card, header vẫn giữ khoảng đệm */
+/** padding="none": bảng chạy sát mép card, header vẫn giữ khoảng đệm; vùng cuộn lấy tên từ tiêu đề card (headingId) */
 @Component({
   selector: 'example-card-table',
   imports: [NxtButton, NxtCard, NxtTable],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="canvas">
-      <nxt-card title="Hợp đồng sắp hết hạn" subtitle="Trong 30 ngày tới · 4 hợp đồng" [headingLevel]="3" padding="none">
+      <nxt-card #card title="Hợp đồng sắp hết hạn" subtitle="Trong 30 ngày tới · 4 hợp đồng" [headingLevel]="3" padding="none">
         <a nxtCardActions nxtButton variant="ghost" size="sm" href="#card-table-all">Xem tất cả</a>
-        <div class="table-wrap" role="region" aria-label="Hợp đồng sắp hết hạn" tabindex="0">
+        <!-- Named by the card title: rename the card and the scroll region follows. -->
+        <div class="table-wrap" role="region" [attr.aria-labelledby]="card.headingId" tabindex="0">
           <table nxtTable>
             <thead>
               <tr>

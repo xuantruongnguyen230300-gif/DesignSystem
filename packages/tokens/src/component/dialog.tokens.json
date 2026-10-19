@@ -1,0 +1,41 @@
+{
+  "component": {
+    "dialog": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền dialog."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền ngoài dialog, tách khỏi lớp phủ ở chế độ tối."
+      },
+      "backdrop": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.overlay}",
+        "$description": "Lớp phủ phía sau dialog."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.overlay}",
+        "$description": "Góc bo của dialog."
+      },
+      "width-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.dialog.sm}",
+        "$description": "Bề rộng dialog xác nhận (mặc định của confirm)."
+      },
+      "width-md": {
+        "$type": "dimension",
+        "$value": "{semantic.size.dialog.md}",
+        "$description": "Bề rộng dialog có form ngắn (mặc định của open)."
+      },
+      "width-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.size.dialog.lg}",
+        "$description": "Bề rộng dialog có nội dung dài."
+      }
+    }
+  }
+}

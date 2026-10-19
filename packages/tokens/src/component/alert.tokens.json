@@ -1,0 +1,61 @@
+{
+  "component": {
+    "alert": {
+      "bg-info": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.info-subtle}",
+        "$description": "Nền alert info: lưu ý trung tính."
+      },
+      "bg-success": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.success-subtle}",
+        "$description": "Nền alert success: thao tác đã xong."
+      },
+      "bg-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.warning-subtle}",
+        "$description": "Nền alert warning: thành công một phần, hậu quả cần biết."
+      },
+      "bg-danger": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.danger-subtle}",
+        "$description": "Nền alert danger: không làm được, cần sửa hoặc thử lại."
+      },
+      "icon-info": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.info}",
+        "$description": "Icon alert info."
+      },
+      "icon-success": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.success}",
+        "$description": "Icon alert success."
+      },
+      "icon-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.warning}",
+        "$description": "Icon alert warning."
+      },
+      "icon-danger": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Icon alert danger."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Viền nhẹ, tách alert khỏi nền trang ở mọi tone."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ nội dung alert (giữ màu thường để dễ đọc trên nền tone)."
+      },
+      "title": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ tiêu đề alert."
+      }
+    }
+  }
+}

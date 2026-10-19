@@ -145,6 +145,54 @@
       "min": 4.5
     },
     {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.info-subtle",
+      "min": 4.5,
+      "note": "alert body"
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.success-subtle",
+      "min": 4.5,
+      "note": "alert body"
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.warning-subtle",
+      "min": 4.5,
+      "note": "alert body"
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.danger-subtle",
+      "min": 4.5,
+      "note": "alert body"
+    },
+    {
+      "fg": "semantic.color.icon.success",
+      "bg": "semantic.color.bg.success-subtle",
+      "min": 3,
+      "note": "alert icon"
+    },
+    {
+      "fg": "semantic.color.icon.warning",
+      "bg": "semantic.color.bg.warning-subtle",
+      "min": 3,
+      "note": "alert icon"
+    },
+    {
+      "fg": "semantic.color.icon.danger",
+      "bg": "semantic.color.bg.danger-subtle",
+      "min": 3,
+      "note": "alert icon"
+    },
+    {
+      "fg": "semantic.color.icon.info",
+      "bg": "semantic.color.bg.info-subtle",
+      "min": 3,
+      "note": "alert icon"
+    },
+    {
       "fg": "semantic.color.border.input",
       "bg": "semantic.color.bg.surface",
       "min": 3,
@@ -180,6 +228,12 @@
       "fg": "semantic.color.icon.subtle",
       "bg": "semantic.color.bg.surface",
       "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.subtle",
+      "bg": "semantic.color.bg.canvas",
+      "min": 3,
+      "note": "dashed marker of a skipped timeline step on the page canvas"
     },
     {
       "fg": "semantic.color.icon.danger",

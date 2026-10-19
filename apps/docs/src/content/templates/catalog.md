@@ -50,7 +50,7 @@ Mẫu cho nhóm danh mục dùng chung: chức danh, cấp bậc, phòng ban, lo
 
 ## Components dùng
 
-`nxt-page-header` · `nxt-tabs` · `nxt-search` · `nxt-filter` + `nxt-filter-chips` · `table[nxtTable]` + `nxtSortHeader` + `NxtSelection` · `nxt-checkbox` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-pagination` · `NxtDrawer` · `nxt-empty-state` · `nxtIconButton` + `nxtTooltip`
+`nxt-page-header` · `nxt-tabs` · `nxt-search` · `nxt-filter` + `nxt-filter-chips` · `table[nxtTable]` + `nxtSortHeader` + `NxtSelection` · `nxt-checkbox` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-pagination` · `NxtDrawer` · `dl[nxtDescriptions]` · `nxt-empty-state` · `nxt-alert` + `nxtLiveRegion` (kết quả thao tác, "Hoàn tác") · `nxtIconButton` + `nxtTooltip`
 
 ## Accessibility
 

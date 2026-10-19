@@ -28,7 +28,7 @@ Entry `@nxt/ui/card` gồm hai component: `nxt-card` (bề mặt gom nhóm nội
 |---|---------|----------|---------|
 | 1 | Host `nxt-card` | ✓ | Nền `surface`, viền, bo `radius.container`, `elevation.raised` |
 | 2 | Header `.nxt-card__header` | — | Chỉ render khi có `title` |
-| 3 | Tiêu đề `h2` / `h3` / `h4` | — | Theo `headingLevel` |
+| 3 | Tiêu đề `h2` / `h3` / `h4` | — | Theo `headingLevel`; `id` ổn định = `headingId` (`nxt-card-{n}-title`) |
 | 4 | Phụ đề `.nxt-card__subtitle` | — | Khi có `subtitle` |
 | 5 | Hành động `[nxtCardActions]` | — | Nằm trong header, căn phải; ẩn khi rỗng |
 | 6 | Thân `.nxt-card__body` | ✓ | Nội dung chiếu vào mặc định; padding theo `padding` |
@@ -52,6 +52,8 @@ Selector: `nxt-card`, `nxt-stat`.
 | `nxt-card` input | `subtitle` | `string` | `undefined` | |
 | `nxt-card` input | `headingLevel` | `number` (`numberAttribute`) | `2` | `3` → `h3`, `4` → `h4`, giá trị khác → `h2` |
 | `nxt-card` input | `padding` | `'none' \| 'md' \| 'lg'` | `'md'` | `none` cho nội dung tràn mép như bảng; phản ánh ra `data-padding` |
+| `nxt-card` input | `region` | `boolean` | `false` | Card là landmark `region` có tên = tiêu đề (`role="region"` + `aria-labelledby` = `headingId`). Chỉ có hiệu lực khi có `title` |
+| `nxt-card` property | `headingId` | `string` (readonly) | `nxt-card-{n}-title` | `id` của tiêu đề, ổn định suốt vòng đời card. Dùng cho `aria-labelledby` của nội dung bên trong (vùng cuộn của bảng, danh sách) qua template ref: `#card` → `[attr.aria-labelledby]="card.headingId"` |
 | `nxt-card` input | `fill` | `boolean` | `false` | Chiếm phần chiều cao còn lại của cha dạng cột; thân xếp nội dung theo cột để một phần (vd. `nxt-table-scroll fill`) lấy hết chỗ còn lại; phản ánh ra `data-fill` |
 | `nxt-card` content | (default) | bất kỳ | | Thân card |
 | `nxt-card` content | `[nxtCardActions]` | nút, menu | | Chỉ hiện khi có `title` |
@@ -93,7 +95,9 @@ APG pattern: không áp dụng.
 |------|---------|
 | Tab / Shift+Tab | Chỉ control trong header / thân / footer nhận focus; card không nhận focus |
 
-- Card không có `role`. Tiêu đề là heading thật: chọn `headingLevel` cho đúng cấu trúc trang (`h1` là tiêu đề trang).
+- Card mặc định không có `role`. Tiêu đề là heading thật: chọn `headingLevel` cho đúng cấu trúc trang (`h1` là tiêu đề trang).
+- `headingId`: nội dung trong card đặt tên bằng tiêu đề thay vì lặp chữ trong `aria-label` (ví dụ vùng cuộn `role="region"` của bảng: `[attr.aria-labelledby]="card.headingId"`), nên đổi tiêu đề là tên đổi theo.
+- `region`: chỉ dùng cho vài khối chính mà người dùng screen reader cần nhảy tới bằng phím landmark (widget dashboard "Đơn chờ duyệt"). Không bật cho mọi card: quá nhiều landmark làm danh sách landmark vô dụng. Tên landmark phải duy nhất trên trang. Không bật `region` cho card mà bên trong đã có vùng cuộn `region` cùng tên.
 - Stat: icon chính và icon xu hướng đều `aria-hidden` (qua `nxt-icon` không `label`). Xu hướng được đọc bằng chữ ẩn "Tăng" / "Giảm" / "Không đổi" đặt trước `delta`, nên không chỉ truyền bằng màu hay icon.
 - Màu tốt/xấu của `delta` luôn đi cùng chữ và icon (WCAG 1.4.1).
 
@@ -134,7 +138,7 @@ Dùng thẳng semantic: `elevation.raised`, `border-width.default`, `space.inset
 
 ## 10. Acceptance (Definition of Done)
 - [ ] Card có/không header, ba mức `padding`, có footer; stat với các tổ hợp `trend` × `deltaTone` có trong docs example
-- [ ] Unit test (chưa có)
+- [x] Unit test (card): tiêu đề có `id` = `headingId` ở mọi `headingLevel`, `headingId` khác nhau giữa các card, `region` ra `role="region"` + `aria-labelledby` chỉ khi có `title`
 - [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
@@ -148,4 +152,5 @@ Dùng thẳng semantic: `elevation.raised`, `border-width.default`, `space.inset
 - `src/card.css:30`, `:91`, `:107`, `:117`: gap / margin dùng primitive `--nxt-space-0-5`, `--nxt-space-1` thay vì semantic `space.gap.*`, không theo density.
 
 ### Bổ sung (2026-10-19)
+- `headingId` (readonly, sinh tự động) và input `region`. Phát hiện khi dựng template HRM: bảng trong card cần vùng cuộn có tên, nơi dùng phải lặp lại tiêu đề trong `aria-label`; không có cách trỏ `aria-labelledby` tới tiêu đề. Chọn id sinh tự động + accessor thay vì input `headingId`, vì nơi dùng chỉ cần đọc id, không cần đặt; ít API và không thể trùng id.
 - Input `fill`: card lấp đầy chiều cao còn lại của cha dạng cột (dùng cho trang danh sách vừa khít màn hình). Host không còn để lại thuộc tính `title` gốc (tooltip của trình duyệt) khi dùng input `title`.

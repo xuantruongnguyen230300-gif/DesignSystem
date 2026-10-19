@@ -14,7 +14,7 @@ Entry `@nxt/ui/drawer` gồm service `NxtDrawer` (mở panel trượt từ cạn
 - **Vấn đề người dùng giải quyết:** tạo / sửa một bản ghi hoặc xem nhanh chi tiết mà không rời danh sách, vẫn giữ ngữ cảnh (bộ lọc, vị trí cuộn) của trang phía sau.
 - **Khi nào dùng:** form tạo / sửa vừa phải, chi tiết nhanh của một hàng bảng, bộ lọc nâng cao.
 - **Khi nào KHÔNG dùng:**
-  - Xác nhận ngắn một câu ("Xoá 3 nhân viên?"): dùng dialog xác nhận (chưa có), hoặc ưu tiên undo.
+  - Xác nhận ngắn một câu ("Xoá 3 nhân viên?"): dùng `NxtDialog.confirm()` (`@nxt/ui/dialog`), hoặc ưu tiên undo.
   - Form rất dài, nhiều bước, cần cả màn hình: dùng trang riêng.
   - Mở drawer từ trong drawer: cấm (giống "modal chồng modal", principles §4); chia bước trong cùng drawer.
   - Thông tin không cần chặn tương tác với trang: hiển thị inline hoặc trong panel cố định.

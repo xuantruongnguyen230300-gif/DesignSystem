@@ -105,6 +105,11 @@
         "$type": "dimension",
         "$value": "{semantic.size.icon.md}",
         "$description": "Chiều cao tag sm."
+      },
+      "radius-wrap": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc tag xuống dòng (wrap): bo viên thuốc làm chữ nhiều dòng lòi khỏi nền."
       }
     }
   }

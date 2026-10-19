@@ -25,7 +25,7 @@ keywords:
 
 ## Khi nào không dùng
 
-- **Xác nhận ngắn hoặc hành động phá huỷ** ("Xoá 3 nhân viên?"): dùng dialog xác nhận ở giữa màn hình.
+- **Xác nhận ngắn hoặc hành động phá huỷ** ("Xoá 3 nhân viên?"): dùng [Dialog](/components/dialog) `confirm()` ở giữa màn hình, hoặc tốt hơn là làm ngay kèm "Hoàn tác".
 - **Form dài, nhiều bước hoặc cần so sánh với trang phía sau**: dùng trang riêng có URL, để người dùng lưu nháp, chia sẻ link và dùng nút Back.
 - **Điều hướng chính của ứng dụng**: dùng sidenav. App shell tự chuyển sidenav thành drawer ở màn hình hẹp.
 - **Thông tin phụ không chặn thao tác**: hiện ngay trên trang. Drawer là modal: mọi thứ phía sau bị khoá cho tới khi đóng.

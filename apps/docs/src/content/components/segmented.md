@@ -27,7 +27,7 @@ keywords:
 - **Hơn 5 lựa chọn, hoặc nhãn dài**: dùng select.
 - **Bật/tắt một thứ**: dùng switch hoặc [Checkbox](/components/checkbox).
 - **Chuyển giữa các phần nội dung khác nhau** (Thông tin chung, Hợp đồng, Tài liệu): dùng [Tabs](/components/tabs).
-- **Trường trong form gửi đi**: dùng radio group có nhãn hiển thị. Segmented chưa có trạng thái lỗi và trạng thái khoá.
+- **Trường trong form cần báo lỗi hoặc khoá**: dùng radio group có nhãn hiển thị. Segmented chưa có trạng thái lỗi và trạng thái khoá. Lựa chọn luôn có sẵn giá trị mặc định ("Cách duyệt") thì đặt được trong form, với `showLabel`.
 - **Kích hoạt hành động**: dùng [Button](/components/button). Segmented chỉ đổi một giá trị.
 
 ## Lựa chọn
@@ -51,6 +51,15 @@ Mỗi lựa chọn có thể kèm `icon`. Với `iconOnly`, nhãn bị ẩn về
 
 ::example{segmented-sizes}
 
+## Nhãn hiển thị trong form
+
+Mặc định `label` chỉ dành cho screen reader, vì ngữ cảnh xung quanh (toolbar, tiêu đề card) đã nói nhóm chọn gì. Khi segmented đứng trong form cạnh các [Form field](/components/form-field), thêm `showLabel` để nhãn hiện phía trên, cùng cỡ chữ và màu với nhãn của form field.
+
+::example{segmented-label}
+
+- `showLabel` hiện chính `<legend>` của nhóm, không thêm nhãn thứ hai, nên tên nhóm chỉ được đọc một lần. Đừng tự đặt một `<span aria-hidden>` làm nhãn cạnh segmented.
+- Nhãn là danh từ ngắn như nhãn form field: "Cách duyệt", "Kỳ báo cáo".
+
 ## Lọc nhanh một danh sách
 
 Segmented hợp với bộ lọc **một chiều** đặt ngay trên danh sách. Component không tự thông báo kết quả: đặt số kết quả trong một phần tử `role="status"` để người dùng screen reader biết danh sách đã đổi.
@@ -68,7 +77,7 @@ Segmented hợp với bộ lọc **một chiều** đặt ngay trên danh sách.
 
 ## Accessibility
 
-Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở thành `<legend>` (ẩn về mặt hình ảnh), nên phím mũi tên, ngữ nghĩa và cách screen reader đọc đều do trình duyệt lo.
+Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở thành `<legend>` (ẩn về mặt hình ảnh, hoặc hiện khi có `showLabel`), nên phím mũi tên, ngữ nghĩa và cách screen reader đọc đều do trình duyệt lo.
 
 | Phím | Hành vi |
 |------|---------|
@@ -111,3 +120,4 @@ Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở 
 ## Changelog
 
 - **0.1.0**: phát hành beta: radio native trong `fieldset`, 2 size, icon, chế độ `iconOnly` với tooltip, `value` two-way có kiểu.
+- **Chưa phát hành**: `showLabel` hiện nhãn nhóm như nhãn form field (vẫn là `legend`). Rãnh tách thành `.nxt-segmented__track` bên trong `fieldset`. Token mới `segmented.label-text`.

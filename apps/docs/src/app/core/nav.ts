@@ -1,6 +1,7 @@
 import type { NxtNavItem } from '@nxt/ui/app-shell';
 import type { NxtIconName } from '@nxt/ui/icon';
-import { PAGES } from '../../generated/content';
+// Only the minimal nav list: full page metadata (generated/content.ts) stays out of the initial bundle.
+import { NAV_PAGES } from '../../generated/nav';
 import type { DocStatus } from './types';
 
 const SECTION_ICON: Record<string, NxtIconName> = {
@@ -23,7 +24,7 @@ export interface ReadingItem {
 function buildNav(): NxtNavItem[] {
   const items: NxtNavItem[] = [{ label: 'Trang chủ', icon: 'home', link: '/', exact: true }];
   const sections = new Map<string, { title: string; groups: Map<string | null, NxtNavItem[]> }>();
-  for (const page of PAGES) {
+  for (const page of NAV_PAGES) {
     if (!sections.has(page.section)) sections.set(page.section, { title: page.sectionTitle, groups: new Map() });
     const groups = sections.get(page.section)!.groups;
     if (!groups.has(page.group)) groups.set(page.group, []);
@@ -41,7 +42,7 @@ export const NAV: NxtNavItem[] = buildNav();
 
 /** Flat reading order for previous/next links. */
 export const READING_ORDER: ReadingItem[] = [
-  ...PAGES.map((p) => ({ title: p.title, path: p.path })),
+  ...NAV_PAGES.map((p) => ({ title: p.title, path: p.path })),
   { title: 'Roadmap & trạng thái', path: '/roadmap' },
 ];
 

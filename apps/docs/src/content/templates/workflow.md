@@ -31,7 +31,7 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 - Mở "Nghỉ phép · toàn công ty". Ở **Mô phỏng**, đổi Số ngày nghỉ từ 2 lên 5: bước "Trưởng phòng duyệt" chuyển từ "Bỏ qua" sang có trong đường đi, tổng thời hạn cập nhật ngay.
 - Chọn bước 3, đổi **Người duyệt** sang "Người cụ thể" nhưng không chọn người, rồi bấm **Áp dụng**: focus nhảy vào ô cần sửa, bước 3 được đánh dấu "Bước 3 cần chọn người duyệt".
 - Chọn người, bấm **Áp dụng**: phiên bản tăng lên 4, thông báo "Đơn đang chờ duyệt vẫn đi theo phiên bản 3".
-- Bấm **Thêm bước** giữa hai bước, rồi **Xoá bước** đó và **Hoàn tác**. Sửa gì đó rồi bấm **Quay lại danh sách** để thấy cảnh báo "Có thay đổi chưa lưu".
+- Bấm **Thêm bước** giữa hai bước, rồi **Xoá bước** đó và **Hoàn tác**. Sửa gì đó rồi bấm **Quay lại danh sách** để thấy hộp thoại "Rời trang khi chưa lưu?"; <kbd>Esc</kbd> là ở lại.
 - Thu hẹp cửa sổ: hai cột xếp chồng và cả trang cuộn; màn rộng thì mỗi cột tự cuộn.
 
 ## Cấu trúc
@@ -59,13 +59,13 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 - **Không có thao tác chỉ kéo-thả.** Thứ tự bước đổi bằng nút "Đưa bước 2 lên/xuống" có tên đầy đủ, dùng được bằng bàn phím và trình đọc màn hình (WCAG 2.5.7). Sản phẩm có thể thêm kéo-thả, nhưng chỉ như đường tắt.
 - **Hoàn tác thay cho hộp xác nhận** khi xoá bước, ngừng áp dụng hay xoá quy trình. Quy trình đang áp dụng không xoá được (mục xoá bị khoá kèm lý do): ngừng áp dụng trước.
 - **Lỗi kiểm khi bấm "Áp dụng"**, không chặn người dùng giữa chừng. Lỗi nằm cạnh trường, focus vào trường lỗi đầu tiên, và bước có lỗi được đánh dấu bằng chữ trong danh sách ("Bước 3 cần chọn người duyệt"), không chỉ bằng viền đỏ.
-- **Rời trang khi còn thay đổi chưa lưu** hiện cảnh báo ngay dưới header với ba lựa chọn: Lưu nháp, Bỏ thay đổi, Ở lại. "Thêm mới" và "Nhân bản" chỉ tạo bản ghi khi người dùng lưu, nên mở ra rồi quay lại không để lại bản nháp rác.
+- **Rời trang khi còn thay đổi chưa lưu** mở [Dialog](/components/dialog) xác nhận với ba lựa chọn: Lưu nháp (focus sẵn), Bỏ thay đổi, Ở lại (<kbd>Esc</kbd>). "Thêm mới" và "Nhân bản" chỉ tạo bản ghi khi người dùng lưu, nên mở ra rồi quay lại không để lại bản nháp rác.
 - **Tên bước tự đặt theo người duyệt** ("Trưởng phòng duyệt") cho đến khi người dùng tự gõ tên khác.
 - **Bố cục theo bề rộng của chính trình sửa**: đủ rộng thì hai cột lấp đầy màn hình và mỗi cột tự cuộn; hẹp thì xếp chồng và cả trang cuộn.
 
 ## Components dùng
 
-`nxt-page-header` (`nxtPageMeta`, `nxtPageActions`) · `nxt-search` · `nxt-filter` + `nxt-filter-chips` + `NxtFilterState` · `table[nxtTable]` + `nxtSortHeader` + `nxt-table-scroll` · `nxt-card` · `nxtFill` · `nxt-grid` + `nxtSpan` · `dl[nxtDescriptions]` · `nxt-form-field` + `nxtInput` · `nxt-segmented` · `nxt-checkbox` · `nxt-timeline` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-empty-state` · `nxtIconButton` + `nxtTooltip`
+`nxt-page-header` (`nxtPageMeta`, `nxtPageActions`) · `nxt-search` · `nxt-filter` + `nxt-filter-chips` + `NxtFilterState` · `table[nxtTable]` + `nxtSortHeader` + `nxt-table-scroll` · `nxt-card` · `nxtFill` · `nxt-grid` + `nxtSpan` · `dl[nxtDescriptions]` · `nxt-form-field` + `nxtInput` · `nxt-segmented` · `nxt-checkbox` · `nxt-timeline` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-empty-state` · `nxt-alert` + `nxtLiveRegion` · `NxtDialog.confirm()` · `nxtIconButton` + `nxtTooltip`
 
 ## Accessibility
 
@@ -75,7 +75,7 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 | <kbd>Enter</kbd> / <kbd>Space</kbd> trên một bước | Chọn bước để sửa ở cột bên cạnh; bước đang sửa có `aria-current="step"` |
 | <kbd>Enter</kbd> trên "Đưa bước 2 lên" | Đổi thứ tự; focus ở lại đúng nút của bước vừa chuyển, kết quả đọc qua `role="status"` |
 | <kbd>←</kbd> / <kbd>→</kbd> trong Cách duyệt | Chọn "Một người là đủ" / "Tất cả cùng duyệt" (radio gốc của trình duyệt) |
-| <kbd>Esc</kbd> trong cảnh báo rời trang | Ở lại trang, focus về "Quay lại danh sách" |
+| <kbd>Esc</kbd> trong hộp thoại rời trang | Ở lại trang, focus về "Quay lại danh sách" |
 | <kbd>Esc</kbd> trong ô tìm kiếm | Xoá nội dung tìm kiếm |
 
 - Mở trình sửa thì focus đặt lên tiêu đề trang (quy trình mới: ô Tên quy trình); quay lại danh sách thì focus về đúng tên quy trình vừa mở.

@@ -3,12 +3,13 @@
     --_bg: var(--nxt-tag-neutral-bg);
     --_text: var(--nxt-tag-neutral-text);
     --_dot: var(--nxt-tag-neutral-dot);
+    --_height: var(--nxt-tag-height);
     --nxt-icon-size: var(--nxt-size-icon-sm);
     display: inline-flex;
     align-items: center;
     gap: var(--nxt-space-gap-xs);
     max-inline-size: 100%;
-    min-block-size: var(--nxt-tag-height);
+    min-block-size: var(--_height);
     padding-inline: var(--nxt-space-inset-sm);
     border-radius: var(--nxt-tag-radius);
     background: var(--_bg);
@@ -19,7 +20,7 @@
   }
 
   .nxt-tag[data-size='sm'] {
-    min-block-size: var(--nxt-tag-height-sm);
+    --_height: var(--nxt-tag-height-sm);
     padding-inline: var(--nxt-space-inset-xs);
   }
 
@@ -41,9 +42,24 @@
     background: var(--_dot);
   }
 
+  /* Cut off with "…" by CSS only: the full text stays in the DOM (screen readers), and a tooltip shows it on hover. */
   .nxt-tag__label {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* wrap: several lines within the parent's width, nothing cut off. A pill radius would push the corner
+     glyphs of the first and last lines outside the background, so the radius becomes the control radius. */
+  .nxt-tag[data-wrap] {
+    /* One line stays exactly as tall as a normal tag; each extra line adds one line-height. */
+    padding-block: calc((var(--_height) - 1lh) / 2);
+    border-radius: var(--nxt-tag-radius-wrap);
+    white-space: normal;
+  }
+
+  .nxt-tag[data-wrap] .nxt-tag__label {
+    overflow: visible;
+    overflow-wrap: anywhere;
   }
 
   .nxt-badge {

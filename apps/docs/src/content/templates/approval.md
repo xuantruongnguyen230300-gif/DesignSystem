@@ -36,7 +36,7 @@ Trưởng phòng thường duyệt nhiều đơn liền một lúc. Mẫu này t
 
 ## Components dùng
 
-`nxt-page-header` · `nxt-tabs` · `nxt-search` · `nxt-filter` · `nxt-card` · `nxt-avatar` · `nxt-tag` · `nxt-timeline` · `nxt-form-field` · `nxt-empty-state` · `nxtButton` · `nxt-icon`
+`nxt-page-header` · `nxt-tabs` · `nxt-search` · `nxt-filter` · `nxt-card` · `nxt-avatar` · `nxt-tag` · `nxt-timeline` · `nxt-form-field` · `nxt-empty-state` · `nxt-alert` + `nxtLiveRegion` · `nxtButton` · `nxt-icon`
 
 ## Accessibility
 

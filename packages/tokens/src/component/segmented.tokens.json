@@ -45,6 +45,11 @@
         "$type": "dimension",
         "$value": "{semantic.size.control.sm}",
         "$description": "Chiều cao (sm)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn nhóm khi hiển thị (showLabel), như nhãn form field."
       }
     }
   }

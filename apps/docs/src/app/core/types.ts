@@ -24,6 +24,9 @@ export interface DocPage {
   toc: { id: string; text: string }[];
 }
 
+/** The slice of page metadata the side navigation needs; ships in the initial bundle (generated/nav.ts). */
+export type DocNavPage = Pick<DocPage, 'section' | 'sectionTitle' | 'group' | 'title' | 'path'>;
+
 export interface ExampleEntry {
   id: string;
   title: string;

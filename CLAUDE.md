@@ -57,7 +57,7 @@ packages/ui       @nxt/ui: styles/nxt.css + mỗi entry point một thư mục (
                   hành động: button (+ nxtIconButton), menu, segmented · nhập liệu: form-field, checkbox, search, filter
                   bố cục: layout · điều hướng: app-shell (shell, topbar, sidenav), page-header, tabs, pagination
                   dữ liệu: table (+ table-scroll, selection), card (+ stat), descriptions, tag (+ badge), avatar, progress, timeline, icon
-                  phản hồi/lớp phủ: tooltip, drawer, empty-state
+                  phản hồi/lớp phủ: tooltip, drawer, dialog (+ confirm), alert (+ live region), empty-state
 apps/docs         docs site: src/content/<section>/*.md, src/examples/**/*.example.ts, e2e/a11y.spec.ts
                   pattern: src/content/patterns/ (trang danh sách & danh mục: bố cục, quyết định, nghiên cứu)
                   mẫu màn hình thật (HRM): src/examples/templates/ (dashboard, danh mục, phê duyệt, quy trình duyệt, đăng nhập)

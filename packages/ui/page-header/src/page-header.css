@@ -18,9 +18,21 @@
     min-inline-size: 0;
   }
 
+  /* a[routerLink] and, for `navigable` items, a button that looks the same. Min 24px tall (WCAG 2.5.8). */
   .nxt-breadcrumb__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nxt-size-icon-lg);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--nxt-radius-control);
+    background: none;
     color: var(--nxt-page-header-crumb-text);
+    font: inherit;
+    text-align: start;
     text-decoration: none;
+    cursor: pointer;
   }
 
   .nxt-breadcrumb__link:hover {
@@ -28,7 +40,8 @@
     text-decoration: underline;
   }
 
-  .nxt-breadcrumb__current {
+  .nxt-breadcrumb__current,
+  .nxt-breadcrumb__text {
     color: var(--nxt-page-header-crumb-current-text);
   }
 
@@ -66,6 +79,12 @@
   .nxt-page-header__title {
     color: var(--nxt-page-header-title-text);
     font: var(--nxt-typography-heading-lg);
+  }
+
+  /* Programmatic focus target (focusTitle). The global :focus-visible ring applies, so it only shows when the
+     user is on the keyboard; the title is only as wide as its text, so the ring hugs the words. */
+  .nxt-page-header__title:focus-visible {
+    border-radius: var(--nxt-radius-control);
   }
 
   .nxt-page-header__description {

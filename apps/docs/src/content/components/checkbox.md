@@ -42,6 +42,16 @@ keywords:
 - `label` là bắt buộc. Nhãn bọc cả ô và chữ, nên bấm vào chữ cũng chọn được và vùng chạm luôn tối thiểu 24×24px.
 - Checkbox `disabled` không focus được: ghi lý do ngay trong nhãn hoặc bên cạnh, ví dụ "Zalo (chưa kết nối, liên hệ quản trị viên)".
 
+## Gợi ý dưới nhãn
+
+`hint` đặt một dòng chữ nhỏ dưới nhãn, cùng kiểu với gợi ý của [Form field](/components/form-field), để giải thích hệ quả hoặc điều kiện của lựa chọn mà không làm nhãn dài ra.
+
+::example{checkbox-hint}
+
+- Gợi ý nằm ngoài `<label>` và được nối vào ô bằng `aria-describedby`: screen reader đọc tên, trạng thái, rồi mới đến gợi ý. Bấm vào gợi ý không đổi trạng thái ô.
+- Nhãn nói **điều được chọn**, gợi ý nói **điều sẽ xảy ra**: nhãn "Được từ chối", gợi ý "Đơn kết thúc ngay, các bước sau không nhận được đơn."
+- Không dùng `hint` cho thông báo lỗi. Checkbox chưa có trạng thái lỗi (xem [Với Angular forms](#voi-angular-forms)).
+
 ## Chọn tất cả
 
 Ô cha ở trạng thái **indeterminate** khi chỉ một phần ô con được chọn; screen reader đọc là "chọn một phần" (mixed). Bấm ô cha khi đang indeterminate sẽ chọn tất cả, bấm lần nữa sẽ bỏ chọn tất cả.
@@ -106,6 +116,7 @@ Checkbox chưa nối được thông báo lỗi vào ô bên trong bằng `aria-
 - Dùng `<input type="checkbox">` native trong `<label>`, nên role, trạng thái `checked`/`mixed` và `disabled` do trình duyệt cung cấp.
 - `hideLabel` (cho cột chọn trong bảng) chỉ ẩn chữ khỏi mắt nhìn, nhãn vẫn được đọc. Nhãn phải nêu đối tượng: "Chọn Nguyễn Văn An", không chỉ "Chọn".
 - Màu ô đã chọn lấy từ `component.checkbox.accent` qua `accent-color`; vòng focus dùng `focus.ring.*`.
+- `hint` là mô tả (`aria-describedby`), không phải một phần của tên: tên vẫn là nhãn.
 
 ## Nội dung
 
@@ -115,6 +126,7 @@ Checkbox chưa nối được thông báo lỗi vào ô bên trong bằng `aria-
 | Email công ty (trong nhóm "Kênh nhận thông báo") | Bật thông báo qua email công ty |
 | Tôi xác nhận bảng công tháng 9 là chính xác | Đồng ý |
 | Chọn Nguyễn Văn An | Chọn |
+| Nhãn "Được từ chối", gợi ý "Đơn kết thúc ngay, các bước sau không nhận được đơn." | Nhãn "Được từ chối (đơn kết thúc ngay, các bước sau không nhận được đơn)" |
 
 ## API
 
@@ -127,3 +139,4 @@ Checkbox chưa nối được thông báo lỗi vào ô bên trong bằng `aria-
 ## Changelog
 
 - **0.1.0**: phát hành beta: model `checked`, `indeterminate`, `label` bắt buộc, `hideLabel`, `disabled`, `ControlValueAccessor` cho Reactive Forms và `ngModel`; output `toggled` (`{ checked, shiftKey }`) cho Shift chọn dải.
+- **Chưa phát hành**: input `hint`, gợi ý dưới nhãn nối bằng `aria-describedby`. Token mới `checkbox.hint-text`.

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, computed, inject, signal } from '@angular/core';
+import { NxtAlert, NxtAlertTone, NxtLiveRegion } from '@nxt/ui/alert';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
 import { NxtCheckbox } from '@nxt/ui/checkbox';
@@ -104,6 +105,8 @@ class CatalogView {
 
 interface Notice {
   text: string;
+  /** Default success. */
+  tone?: NxtAlertTone;
   undo?: () => void;
 }
 
@@ -112,6 +115,7 @@ interface Notice {
   selector: 'example-template-catalog',
   imports: [
     HrmFrame,
+    NxtAlert,
     NxtButton,
     NxtCard,
     NxtCheckbox,
@@ -121,6 +125,7 @@ interface Notice {
     NxtFill,
     NxtFormField,
     NxtInput,
+    NxtLiveRegion,
     NxtIcon,
     NxtMenu,
     NxtMenuItem,
@@ -155,12 +160,14 @@ interface Notice {
           </nxt-tabs>
         </nxt-page-header>
 
-        <div class="notice" role="status">
+        <div class="notice" nxtLiveRegion>
           @if (notice(); as n) {
-            <span>{{ n.text }}</span>
-            @if (n.undo) {
-              <button nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
-            }
+            <nxt-alert [tone]="n.tone ?? 'success'">
+              {{ n.text }}
+              @if (n.undo) {
+                <button nxtAlertActions nxtButton variant="ghost" size="sm" type="button" (click)="undo(n)">Hoàn tác</button>
+              }
+            </nxt-alert>
           }
         </div>
 
@@ -339,17 +346,6 @@ interface Notice {
   styles: `
     .stack {
       gap: var(--nxt-space-gap-lg);
-    }
-    .notice {
-      display: flex;
-      align-items: center;
-      gap: var(--nxt-space-gap-sm);
-      color: var(--nxt-color-text-success);
-      font: var(--nxt-typography-label-sm);
-    }
-    .notice:empty {
-      /* Out of the flow but still in the accessibility tree, so later messages are announced. */
-      position: absolute;
     }
     .bar {
       display: flex;
@@ -537,12 +533,12 @@ export class TemplateCatalogExample {
     const parts: string[] = [];
     if (removable.length) parts.push(`Đã xoá ${removable.length} ${v.def.noun}.`);
     if (blocked.length) parts.push(`${blocked.length} ${v.def.noun} đang được dùng nên chưa xoá; hãy chọn “Ngừng sử dụng”.`);
-    this.notice.set({ text: parts.join(' '), undo: removable.length ? () => v.items.set(before) : undefined });
+    this.notice.set({ text: parts.join(' '), tone: blocked.length ? 'warning' : 'success', undo: removable.length ? () => v.items.set(before) : undefined });
   }
 
   protected undo(n: Notice) {
     n.undo?.();
-    this.notice.set({ text: 'Đã hoàn tác.' });
+    this.notice.set({ text: 'Đã hoàn tác.', tone: 'info' });
   }
 
   /** Mouse convenience: a click anywhere on the row opens the detail, except on the checkbox and buttons. */

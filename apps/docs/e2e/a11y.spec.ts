@@ -14,6 +14,15 @@ const MODES = [
 ];
 
 async function axe(page: Page, include?: string) {
+  // Check the settled UI: an overlay still fading in has partial opacity, which axe reads as low contrast.
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
   let builder = new AxeBuilder({ page }).withTags(WCAG);
   if (include) builder = builder.include(include);
   const { violations } = await builder.analyze();
@@ -367,8 +376,10 @@ test.describe('templates', () => {
     await page.locator('docs-example-page[data-ready]').waitFor();
     await expect(page.getByRole('region', { name: 'Bảng quy trình duyệt' })).toBeVisible();
     await page.getByRole('button', { name: 'Nghỉ phép · toàn công ty', exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Nghỉ phép · toàn công ty' })).toBeFocused();
     const flow = page.getByRole('region', { name: 'Các bước duyệt' });
     await expect(flow).toHaveAttribute('tabindex', '0');
+    await expect(page.getByRole('list', { name: 'Đường đi của đơn' })).toContainText('Bỏ qua: Bước 2 · Trưởng phòng duyệt');
     const pageOverflow = await page.evaluate(() => {
       const main = document.querySelector<HTMLElement>('.nxt-app-shell__main')!;
       return main.scrollHeight - main.clientHeight;
@@ -395,14 +406,65 @@ test.describe('templates', () => {
     await expect(flow.getByRole('button', { name: /^Xoá bước \d$/ })).toHaveCount(4);
 
     await page.getByRole('button', { name: 'Quay lại danh sách' }).click();
-    const leave = page.getByRole('group', { name: 'Có thay đổi chưa lưu' });
+    const leave = page.getByRole('alertdialog', { name: 'Rời trang khi chưa lưu?' });
+    await expect(leave).toHaveAccessibleDescription(/Các thay đổi trong “Nghỉ phép · toàn công ty” sẽ mất/);
     await expect(leave.getByRole('button', { name: 'Lưu nháp' })).toBeFocused();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
     await page.keyboard.press('Escape');
     await expect(leave).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Quay lại danh sách' })).toBeFocused();
-    await page.getByRole('button', { name: 'Quay lại danh sách' }).click();
+    // The breadcrumb leads back to the list too, through the same guard.
+    await page.getByRole('navigation', { name: 'Đường dẫn trang' }).getByRole('button', { name: 'Quy trình duyệt' }).click();
     await leave.getByRole('button', { name: 'Bỏ thay đổi' }).click();
     await expect(page.getByRole('region', { name: 'Bảng quy trình duyệt' })).toBeVisible();
     await expect(page.getByRole('row', { name: /Nghỉ phép · toàn công ty/ })).toContainText('4');
+  });
+});
+
+test.describe('feedback', () => {
+  test('dialog: a destructive confirm starts on "Huỷ"; Escape cancels and returns focus', async ({ page }) => {
+    await page.goto('/examples/dialog-confirm');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const trigger = page.getByRole('button', { name: 'Xoá vĩnh viễn 3 hồ sơ' });
+    await trigger.click();
+    const dialog = page.getByRole('alertdialog', { name: 'Xoá vĩnh viễn 3 hồ sơ?' });
+    await expect(dialog).toHaveAccessibleDescription(/Không khôi phục được/);
+    await expect(dialog.getByRole('button', { name: 'Huỷ' })).toBeFocused();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await expect(page.getByRole('status')).toHaveText('Đã huỷ, chưa xoá hồ sơ nào.');
+  });
+
+  test('dialog: a short form is named by its title, validates on submit and focuses the field', async ({ page }) => {
+    await page.goto('/examples/dialog-form');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('button', { name: 'Từ chối đơn của Lê Minh Anh' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Từ chối đơn nghỉ phép' });
+    const reason = dialog.getByRole('textbox', { name: 'Lý do từ chối' });
+    await expect(reason).toBeFocused();
+    await dialog.getByRole('button', { name: 'Từ chối đơn' }).click();
+    await expect(reason).toHaveAttribute('aria-invalid', 'true');
+    await expect(reason).toBeFocused();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await reason.fill('Trùng lịch kiểm toán.');
+    await page.keyboard.press('Tab');
+    await dialog.getByRole('button', { name: 'Từ chối đơn' }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByRole('status')).toHaveText('Đã từ chối đơn. Lý do: Trùng lịch kiểm toán.');
+  });
+
+  test('alert: the result appears in a live region, with an undo that works', async ({ page }) => {
+    await page.goto('/examples/alert-live');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const region = page.getByRole('status');
+    await expect(region).toBeEmpty();
+    await page.getByRole('button', { name: 'Xoá 2 chức danh' }).click();
+    await expect(region).toContainText('Đã xoá 2 chức danh: Lái xe, Bảo vệ.');
+    await region.getByRole('button', { name: 'Hoàn tác' }).click();
+    await expect(region).toContainText('Đã hoàn tác');
+    await expect(page.getByText('Lái xe')).toBeVisible();
+    expect(await axe(page, '[data-example-root]')).toEqual([]);
   });
 });

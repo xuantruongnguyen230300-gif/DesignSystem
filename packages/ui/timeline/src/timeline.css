@@ -19,6 +19,10 @@
   .nxt-timeline__item[data-tone='danger'] { --_marker: var(--nxt-tag-danger-dot); }
   .nxt-timeline__item[data-tone='brand'] { --_marker: var(--nxt-tag-brand-dot); }
 
+  /* Skipped: after the tones so it wins over any tone. Shape (dashed ring, skip icon) carries the meaning,
+     the muted colour only supports it; "Bỏ qua: " is written before the title. */
+  .nxt-timeline__item[data-skipped] { --_marker: var(--nxt-timeline-marker-skipped); }
+
   /* Connector to the next item. */
   .nxt-timeline__item:not(:last-child)::before {
     content: '';
@@ -63,5 +67,14 @@
   .nxt-timeline__body {
     color: var(--nxt-color-text-default);
     font: var(--nxt-typography-body-sm);
+  }
+
+  .nxt-timeline__item[data-skipped] .nxt-timeline__marker {
+    border-style: dashed;
+  }
+
+  .nxt-timeline__item[data-skipped] .nxt-timeline__title,
+  .nxt-timeline__item[data-skipped] .nxt-timeline__body {
+    color: var(--nxt-timeline-skipped-text);
   }
 }

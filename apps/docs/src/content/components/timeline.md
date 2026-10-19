@@ -51,6 +51,17 @@ Mỗi mốc có `title` (bắt buộc), `time`, `icon` và nội dung phụ tron
 
 ::example{timeline-tones}
 
+## Bước bị bỏ qua
+
+Bước không áp dụng cho đơn này (điều kiện không thoả, chỉ dành cho loại đơn khác) dùng `skipped`, không dùng tone `neutral`: bước "chưa tới" và bước "bỏ qua" khác nhau, và người đọc cần biết đơn sẽ **không** đi qua bước đó.
+
+::example{timeline-skipped}
+
+- `skipped` không chỉ đổi màu: marker có **viền nét đứt** và icon bỏ qua (`player-skip-forward`, khi không truyền `icon`), chữ nhạt hơn. Bỏ màu đi (in đen trắng, chế độ tương phản cao) vẫn thấy nét đứt.
+- Component tự ghi **"Bỏ qua: "** trước tiêu đề (người nhìn và screen reader đều đọc được), vì marker chỉ là trang trí. Tiêu đề giữ tên bước ("Bước 2 · Giám đốc khối Kinh doanh").
+- Ghi **lý do** vào `time` hoặc thân mốc: "Chỉ áp dụng khi số ngày nghỉ > 3". Không viết lại chữ "Bỏ qua", component đã ghi.
+- Có `skipped` thì `tone` không còn tác dụng.
+
 ## Luồng hoạt động
 
 Timeline đặt trong card để làm "Lịch sử thay đổi" của trang chi tiết hoặc "Hoạt động gần đây" của dashboard. Hiện vài mục mới nhất trước, để người dùng chủ động xem thêm. Nút xem thêm đứng **ngoài** timeline, vì danh sách chỉ được chứa các mốc.
@@ -67,6 +78,7 @@ Timeline đặt trong card để làm "Lịch sử thay đổi" của trang chi 
 - `nxt-timeline` có `role="list"`, mỗi `nxt-timeline-item` có `role="listitem"`. Chỉ đặt `nxt-timeline-item` làm con trực tiếp của `nxt-timeline`.
 - Đặt `aria-label` cho timeline khi trang có nhiều danh sách: "Quy trình duyệt đơn nghỉ phép của Lê Minh Anh".
 - Marker và icon là trang trí (`aria-hidden`). Mỗi mốc được đọc theo thứ tự tiêu đề, thời gian, nội dung.
+- Mốc `skipped` được đọc "Bỏ qua: Bước 2 · Giám đốc khối Kinh doanh, Chỉ áp dụng khi số ngày nghỉ > 3, …". Chữ nhạt vẫn đạt tương phản 4.5:1, viền nét đứt đạt 3:1 ở cả sáng và tối.
 - Thêm mục mới (tải thêm, cập nhật realtime) thì báo bằng một vùng `role="status"` nằm ngoài timeline, ví dụ "Đã hiện thêm 3 hoạt động cũ hơn".
 
 ## Nội dung
@@ -78,6 +90,7 @@ Timeline đặt trong card để làm "Lịch sử thay đổi" của trang chi 
 | Quyết toán thuế bị trả lại, kèm việc cần làm và hạn | Lỗi |
 | 08:15 · 14/10/2026 | 2026-10-14T08:15 |
 | Trần Thị Mai cập nhật tài khoản nhận lương | Cập nhật bản ghi #4812 |
+| `skipped`, `time="Chỉ áp dụng khi số ngày nghỉ > 3"` | `icon="minus"`, `time="Bỏ qua"` (không giải thích vì sao) |
 
 ## API
 
@@ -90,3 +103,4 @@ Timeline đặt trong card để làm "Lịch sử thay đổi" của trang chi 
 ## Changelog
 
 - **0.1.0**: phát hành beta: `nxt-timeline` (role list) và `nxt-timeline-item` (title, time, icon, 5 tone).
+- **Chưa phát hành**: `skipped` cho bước bị bỏ qua: marker nét đứt, icon `player-skip-forward`, chữ nhạt, chữ "Bỏ qua: " trước tiêu đề. Token mới `marker-skipped`, `skipped-text`.

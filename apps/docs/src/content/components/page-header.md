@@ -68,16 +68,47 @@ Trang chi tiết có breadcrumb về danh sách, trạng thái của đối tư�
 - Breadcrumb ghi đúng tên trang trong sidenav. Mục cuối có thể là mã hoặc tên đối tượng ("DNP-0412", "Kế toán trưởng").
 - Breadcrumb tự xuống dòng khi hẹp. Không rút gọn bằng "…".
 
+## Đổi màn hình không qua router
+
+Có màn hình đổi nội dung ngay trong một component, không đổi route: danh sách và trình sửa của [Quy trình duyệt](/templates/workflow), danh sách và chi tiết trong một drawer. Page header có hai công cụ cho trường hợp này:
+
+- **Mục breadcrumb bấm được không cần router**: đặt `navigable: true` cho mục đó (không có `link`). Mục hiện như link nhưng là `<button>`; bấm thì `nxt-page-header` (hoặc `nxt-breadcrumb`) phát `navigate` kèm chính mục đó, và bạn tự đổi màn hình.
+- **`focusTitle()`**: đưa focus lên tiêu đề của màn hình mới. Tiêu đề có `tabindex="-1"`, nên Tab không dừng ở đó nhưng code đặt focus được.
+
+::example{page-header-views}
+
+```ts
+private readonly header = viewChild(NxtPageHeader);
+
+protected show(p: Position) {
+  this.open.set(p);
+  // Gọi sau khi màn hình mới đã render.
+  afterNextRender(() => this.header()?.focusTitle(), { injector: this.injector });
+}
+```
+
+```html
+<nxt-page-header [title]="p.name" [breadcrumb]="[{ label: 'Thiết lập' }, { label: 'Chức danh', navigable: true }, { label: p.name }]" (navigate)="back()" />
+```
+
+- Mở màn hình mới thì focus lên tiêu đề của nó: screen reader đọc "Kế toán trưởng, heading", và Tab tiếp theo đi từ đầu màn hình mới thay vì từ nút vừa biến mất.
+- Quay lại danh sách thì đưa focus về **đúng mục vừa mở**, không về tiêu đề danh sách, để người dùng không mất chỗ.
+- Có router thì dùng `link`: link mở được tab mới và gửi được cho người khác. `navigable` chỉ dành cho màn hình không có route.
+- Vòng focus trên tiêu đề chỉ hiện khi người dùng đang dùng bàn phím, ôm sát chữ. Bấm chuột rồi chuyển màn hình thì không có vòng.
+
 ## Accessibility
 
 | Phím | Hành vi |
 |------|---------|
-| <kbd>Tab</kbd> | Đi qua các link của breadcrumb, rồi các nút hành động |
-| <kbd>Enter</kbd> | Mở link breadcrumb |
+| <kbd>Tab</kbd> | Đi qua các link (và mục `navigable`) của breadcrumb, rồi các nút hành động. Tiêu đề không phải điểm dừng Tab |
+| <kbd>Enter</kbd> | Mở link breadcrumb; với mục `navigable`, phát `navigate` |
+| <kbd>Space</kbd> | Mục `navigable` (là nút): phát `navigate` |
 
 - Tiêu đề là `h1`, nên **mỗi trang chỉ có một** page header với `headingLevel` mặc định. Các ví dụ trên trang này dùng `headingLevel="2"` vì trang docs đã có `h1`.
 - Breadcrumb là landmark `navigation` chứa danh sách có thứ tự (`ol`). Tên mặc định là "Đường dẫn trang"; đặt `label` khi trang có nhiều breadcrumb. Page header hiện chưa cho đổi tên này.
 - Dấu `›` giữa các mục là icon `aria-hidden`, screen reader không đọc.
+- Link và nút của breadcrumb cao tối thiểu 24px (WCAG 2.5.8).
+- Tiêu đề có `tabindex="-1"` để `focusTitle()` đặt focus được khi đổi màn hình không qua router (WCAG 2.4.3).
 
 ## Nội dung
 
@@ -101,6 +132,13 @@ Trang chi tiết có breadcrumb về danh sách, trạng thái của đối tư�
 |--------|------|-------|
 | `label` | `string` | Tên trang |
 | `link` | `string` (tuỳ chọn) | Đường dẫn router. Bỏ qua ở mục cuối |
+| `navigable` | `boolean` (tuỳ chọn) | Không có router: mục hiện như link, bấm thì phát `navigate` với mục này. Bỏ qua khi có `link` và ở mục cuối |
+
+Method của `NxtPageHeader`:
+
+| Method | Mô tả |
+|--------|-------|
+| `focusTitle(options?: FocusOptions)` | Đưa focus lên tiêu đề. Gọi trong `afterNextRender` sau khi đổi màn hình |
 
 ## Token
 
@@ -109,3 +147,4 @@ Trang chi tiết có breadcrumb về danh sách, trạng thái của đối tư�
 ## Changelog
 
 - **0.1.0**: phát hành beta: tiêu đề `h1`/`h2`, mô tả, slot trạng thái và hành động, nội dung phía dưới, breadcrumb với `aria-current="page"`.
+- **Chưa phát hành**: mục breadcrumb `navigable` và output `navigate` (trên `nxt-breadcrumb` và `nxt-page-header`) cho màn hình đổi không qua router; tiêu đề `tabindex="-1"` và method `focusTitle()`; link breadcrumb cao tối thiểu 24px.

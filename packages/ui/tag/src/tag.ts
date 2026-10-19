@@ -10,25 +10,31 @@ import {
   input,
   isDevMode,
   numberAttribute,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
+import { NxtTooltip } from '@nxt/ui/tooltip';
 
 /** Status meaning is fixed across products: danger = error/destructive, success, warning, info. */
 export type NxtTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'brand';
 
 /**
  * Short status or category label. Status is never color-only: a dot or icon plus text.
+ * A label cut off with "…" shows its full text in a tooltip on hover (only when actually cut off);
+ * the full text is always in the DOM for screen readers. `wrap` breaks long labels onto lines instead.
  */
 @Component({
   selector: 'nxt-tag',
-  imports: [NxtIcon],
+  imports: [NxtIcon, NxtTooltip],
   template: `
     @if (icon(); as name) {
       <nxt-icon [name]="name" />
     } @else if (dot()) {
       <span class="nxt-tag__dot" aria-hidden="true"></span>
     }
-    <span class="nxt-tag__label"><ng-content /></span>
+    <!-- Tooltip text equals the label's own text, so the tooltip adds no aria-describedby (no double reading). -->
+    <span #label class="nxt-tag__label" [nxtTooltip]="clipped()" (mouseenter)="measure()"><ng-content /></span>
   `,
   styleUrl: './tag.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +43,7 @@ export type NxtTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'b
     class: 'nxt-tag',
     '[attr.data-tone]': 'tone()',
     '[attr.data-size]': 'size()',
+    '[attr.data-wrap]': 'wrap() || null',
   },
 })
 export class NxtTag {
@@ -46,6 +53,18 @@ export class NxtTag {
   /** Leading icon instead of a dot. */
   readonly icon = input<NxtIconName>();
   readonly size = input<'sm' | 'md'>('md');
+  /** Long labels wrap onto several lines within the parent's width instead of being cut off with "…". */
+  readonly wrap = input(false, { transform: booleanAttribute });
+
+  private readonly label = viewChild.required<ElementRef<HTMLElement>>('label');
+  /** Full label text while it is cut off, else '' (no tooltip). Measured when the pointer arrives. */
+  protected readonly clipped = signal('');
+
+  protected measure() {
+    const el = this.label().nativeElement;
+    const cut = !this.wrap() && el.scrollWidth > el.clientWidth;
+    this.clipped.set(cut ? (el.textContent ?? '').replace(/\s+/g, ' ').trim() : '');
+  }
 }
 
 /**

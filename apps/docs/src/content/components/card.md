@@ -61,6 +61,24 @@ Header là tuỳ chọn, gồm `title`, `subtitle` và slot `[nxtCardActions]` c
 
 ::example{card-table}
 
+## Tiêu đề làm tên cho nội dung
+
+Tiêu đề card có `id` cố định, đọc qua `headingId`. Dùng nó cho `aria-labelledby` của nội dung bên trong cần tên, thay vì chép lại tiêu đề vào `aria-label`. Ví dụ ở mục [Khoảng đệm](#khoang-dem): vùng cuộn của bảng lấy tên từ tiêu đề "Hợp đồng sắp hết hạn".
+
+```html
+<nxt-card #card title="Hợp đồng sắp hết hạn" padding="none">
+  <div role="region" tabindex="0" [attr.aria-labelledby]="card.headingId">…</div>
+</nxt-card>
+```
+
+`region` biến cả card thành một landmark có tên là tiêu đề (`role="region"` + `aria-labelledby`), để người dùng screen reader nhảy thẳng tới bằng phím landmark (<kbd>D</kbd> trong NVDA).
+
+::example{card-region}
+
+- Chỉ bật `region` cho vài khối chính của trang, như các widget dashboard. Mọi card đều là landmark thì danh sách landmark dài và vô dụng.
+- `region` cần `title`; card không có tiêu đề thì không thành landmark.
+- Tên landmark phải khác nhau trên cùng trang. Không bật `region` cho card mà bên trong đã có vùng cuộn mang cùng tên.
+
 ## Lấp đầy chiều cao
 
 `fill` cho card chiếm phần chiều cao còn lại của cha (một `nxtFill`, vùng nội dung app shell) và xếp nội dung theo cột, để một phần bên trong, thường là `nxt-table-scroll fill`, lấy hết chỗ còn lại và tự cuộn. Thanh công cụ và phân trang trong card đứng yên. Xem [Table › Lấp đầy màn hình](/components/table#lap-day-man-hinh).
@@ -89,7 +107,8 @@ Xu hướng không chỉ dựa vào màu. Icon mũi tên đi kèm chữ ẩn "T�
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Đi qua các phần tử tương tác trong card theo thứ tự trong code. Bản thân card không nhận focus |
 | <kbd>H</kbd> (phím tắt của screen reader) | Nhảy giữa các card nhờ tiêu đề là heading thật |
 
-- Card không có role. Không gắn `(click)` hay `tabindex` lên cả card.
+- Card không có role, trừ khi bật `region` (landmark có tên là tiêu đề). Không gắn `(click)` hay `tabindex` lên cả card.
+- Nội dung trong card cần tên (vùng cuộn, danh sách) dùng `[attr.aria-labelledby]="card.headingId"`, không chép lại tiêu đề.
 - Giữ `headingLevel` đúng dàn ý trang (WCAG 1.3.1, 2.4.6). Không chọn cấp heading để có chữ to hơn.
 - Nút trong `[nxtCardActions]` phải có tên đủ nghĩa khi đọc riêng. Nút hiện chữ "Sửa" thì đặt `aria-label="Sửa thông tin hợp đồng"`; tên bắt đầu bằng chữ hiển thị để khớp WCAG 2.5.3.
 - Stat được đọc theo thứ tự: nhãn, giá trị kèm đơn vị, "Tăng/Giảm/Không đổi", biến động, caption. Icon trong ô icon chỉ để trang trí (`aria-hidden`).
@@ -109,6 +128,12 @@ Xu hướng không chỉ dựa vào màu. Icon mũi tên đi kèm chữ ẩn "T�
 
 ::api{card}
 
+Thuộc tính công khai của `NxtCard`:
+
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `headingId` | `string` (chỉ đọc) | `id` của tiêu đề, cố định suốt vòng đời card (`nxt-card-{n}-title`). Đọc qua template ref: `#card` → `card.headingId` |
+
 ## Token
 
 ::tokens{component.card}
@@ -118,3 +143,4 @@ Xu hướng không chỉ dựa vào màu. Icon mũi tên đi kèm chữ ẩn "T�
 ## Changelog
 
 - **0.1.0**: phát hành beta: `nxt-card` (title, subtitle, headingLevel, padding, slot hành động và chân card), `nxt-stat` (trend và deltaTone tách riêng, chữ ẩn cho xu hướng).
+- **Chưa phát hành**: `headingId` (id cố định của tiêu đề, cho `aria-labelledby`) và input `region` (card thành landmark có tên).

@@ -125,6 +125,12 @@
     min-inline-size: 0;
   }
 
+  /* [nxtLiveRegion] (@nxt/ui/alert): when empty, out of the flow (no room, no flex/grid gap) but still in the
+     accessibility tree, so messages inserted later are announced. Never display: none. */
+  .nxt-live-region:empty {
+    position: absolute;
+  }
+
   /* Visually hidden but announced by screen readers. */
   .nxt-visually-hidden {
     position: absolute;

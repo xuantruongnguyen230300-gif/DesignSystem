@@ -30,7 +30,7 @@ keywords:
 - **Cần bấm, lọc hoặc xoá**: tag không tương tác. Dùng button, segmented control, hoặc chip bộ lọc (`nxt-filter-chips`, xem [Filter](/components/filter)).
 - **Thông báo cho cả trang**: dùng alert hoặc banner (đợt B).
 - **Giá trị số trong ô bảng**: ghi số trực tiếp, không bọc trong badge.
-- **Câu dài**: tag chỉ nên có 1–3 từ; phần dài hơn bị cắt bằng dấu "…".
+- **Câu dài**: tag chỉ nên có 1–3 từ. Nhãn dài hơn bị cắt bằng dấu "…" (xem [Nhãn dài](#nhan-dai)); câu giải thích thì đặt thành chữ thường cạnh tag.
 
 ## Tông
 
@@ -56,6 +56,22 @@ Chữ trong tag **luôn mang đủ nghĩa**, để người mù màu, người x
 - `size="sm"` cho hàng bảng và danh sách dày.
 
 ::example{tag-status}
+
+## Nhãn dài
+
+Một số tag mang giá trị dài không rút gọn được: phạm vi áp dụng, tên phòng ban, tên dự án. Tag có hai cách hiện, chọn theo chỗ đặt:
+
+| Chỗ đặt | Cách | Người dùng xem đủ chữ bằng |
+|---------|------|-----------------------------|
+| Ô bảng, hàng danh sách, toolbar: phải giữ một dòng | Mặc định: cắt "…" | Rê chuột lên nhãn bị cắt: tooltip hiện đủ chữ. Screen reader luôn đọc đủ chữ |
+| Màn chi tiết, drawer, card: chữ đầy đủ là thông tin cần đọc | `wrap` | Không cần làm gì: tag xuống dòng trong bề rộng của cột |
+
+::example{tag-long}
+
+- Tooltip chỉ hiện khi nhãn **thật sự bị cắt**. Nhãn vừa chỗ thì rê chuột không hiện gì.
+- Dấu "…" chỉ là CSS: chữ đầy đủ vẫn nằm trong trang, nên screen reader đọc đủ một lần, tooltip không đọc lặp lại.
+- Tag **không** nhận focus, kể cả khi bị cắt: một bảng 50 hàng sẽ thành 50 điểm dừng Tab chỉ để đọc chữ. Vì vậy người dùng bàn phím và cảm ứng không mở được tooltip. Chỉ để tag bị cắt ở chỗ mà giá trị đầy đủ có ở nơi khác, ví dụ màn chi tiết mở từ hàng đó, và ở màn chi tiết thì dùng `wrap`.
+- `wrap` đổi bo góc viên thuốc thành bo góc của control, để chữ nhiều dòng không lòi ra ngoài nền.
 
 ## Badge đếm
 
@@ -88,6 +104,7 @@ Badge không tự định vị. Đặt `position: absolute` cho badge ở góc n
 Tag và badge không tương tác: không có điểm dừng Tab và không có phím tắt.
 
 - Tag là chữ thường, không có role riêng; `dot` và `icon` có `aria-hidden`.
+- Nhãn bị cắt: chữ đầy đủ vẫn trong DOM; tooltip (chỉ khi bị cắt, khi rê chuột) không thêm `aria-describedby` nên không bị đọc hai lần. Tag không thêm điểm dừng Tab; nơi chữ đầy đủ là thông tin cần thiết dùng `wrap`.
 - Badge có `label` thì con số hiển thị bị ẩn khỏi screen reader và `label` được đọc thay.
 - Trong chế độ tương phản cao (forced colors), tag và badge có thêm viền để không lẫn vào nền.
 - Badge thay đổi không tự thông báo. Nếu người dùng cần biết ngay (có đơn mới), thông báo qua một vùng `role="status"` hoặc `LiveAnnouncer`.
@@ -101,6 +118,7 @@ Tag và badge không tương tác: không có điểm dừng Tab và không có 
 | Sắp hết hạn | !!! |
 | Từ chối, kèm tông `danger` | Chấm đỏ không có chữ |
 | `aria-label="Thông báo, 5 chưa đọc"` | `aria-label="Thông báo"` và badge 5 |
+| Màn chi tiết: `<nxt-tag wrap>` cho phạm vi áp dụng dài | Để phạm vi áp dụng bị cắt "…" ở màn chi tiết, nơi không còn chỗ nào khác hiện đủ |
 
 ## API
 
@@ -119,3 +137,4 @@ Tag và badge không tương tác: không có điểm dừng Tab và không có 
 ## Changelog
 
 - **0.1.0**: phát hành beta: `nxt-tag` với 6 tông, `dot`, `icon`, size `sm`/`md`; `nxt-badge` với `value`, `max` (99+), 3 tông, `dot`, `label` cho screen reader.
+- **Chưa phát hành**: nhãn tag bị cắt có tooltip chữ đầy đủ khi rê chuột (chỉ khi thật sự bị cắt); input `wrap` cho nhãn dài xuống dòng. Token mới `tag.radius-wrap`.

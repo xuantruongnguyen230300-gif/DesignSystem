@@ -86,3 +86,41 @@ describe('NxtCheckbox toggled', () => {
     ]);
   });
 });
+
+@Component({
+  imports: [NxtCheckbox],
+  template: `
+    <nxt-checkbox label="Được uỷ quyền cho người khác duyệt thay" hint="Người được uỷ quyền phải cùng phòng hoặc là cấp trên." />
+    <nxt-checkbox label="Được từ chối" />
+  `,
+})
+class Hinted {}
+
+describe('NxtCheckbox hint', () => {
+  it('describes the box with helper text that is not part of its name', () => {
+    const fixture = TestBed.createComponent(Hinted);
+    fixture.detectChanges();
+    const [withHint, without] = [...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('nxt-checkbox')];
+    const input = withHint.querySelector('input')!;
+    const hint = withHint.querySelector<HTMLElement>('.nxt-checkbox__hint')!;
+    expect(hint.textContent).toBe('Người được uỷ quyền phải cùng phòng hoặc là cấp trên.');
+    expect(hint.id).toMatch(/^nxt-checkbox-\d+-hint$/);
+    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    // Outside the <label>: the name stays the label text only.
+    expect(hint.closest('label')).toBeNull();
+    expect(input.closest('label')!.textContent!.trim()).toBe('Được uỷ quyền cho người khác duyệt thay');
+    // No hint → no description and no empty element.
+    expect(without.querySelector('.nxt-checkbox__hint')).toBeNull();
+    expect(without.querySelector('input')!.hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  it('gives every checkbox its own hint id', () => {
+    const fixture = TestBed.createComponent(Hinted);
+    fixture.detectChanges();
+    const again = TestBed.createComponent(Hinted);
+    again.detectChanges();
+    const a = (fixture.nativeElement as HTMLElement).querySelector('.nxt-checkbox__hint')!.id;
+    const b = (again.nativeElement as HTMLElement).querySelector('.nxt-checkbox__hint')!.id;
+    expect(a).not.toBe(b);
+  });
+});

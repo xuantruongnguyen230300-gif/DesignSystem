@@ -15,6 +15,11 @@
         "$type": "color",
         "$value": "{semantic.color.text.default}",
         "$description": "Chữ nhãn."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ gợi ý dưới nhãn, như hint của form field."
       }
     }
   }

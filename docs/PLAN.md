@@ -10,25 +10,24 @@
 | Giai đoạn | Trạng thái | Đã có |
 |-----------|-----------|-------|
 | 0. Nền móng | ✅ Xong | Workspace Angular 21 (zoneless, Vitest, ng-packagr), npm 11; CI GitHub Actions; hook Claude Code; ADR 001–009; 10 skill + 1 agent |
-| 1. Foundations & token | ✅ Xong | 589 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); nền sáng chỉnh lại để canvas xám tách khỏi surface trắng; brand mẫu `sample`; 430/430 lượt kiểm tương phản đạt; bộ icon Tabler chọn lọc 262 icon (ADR-003) |
-| 2. Core components | 🟡 Đang làm | Beta, có SPEC + docs + axe: Button/IconButton, Stack/Inline/Grid, Menu (+ nhóm radio), Segmented, Form field, Checkbox, Tag/Badge, Avatar, Tooltip, Drawer, Tabs (tab tràn vào "Xem thêm"), Page header/Breadcrumb, Pagination, **Search** (tìm không dấu), **Filter** (Bộ lọc + chip + `NxtFilterState`). Còn lại xem Roadmap |
-| 3. Dữ liệu & pattern | 🟡 Bắt đầu | Beta: App shell/Sidenav (rail, drawer mobile), Table (sắp xếp, chọn hàng, Shift chọn dải với `NxtSelection`, không bẻ dòng, `nxt-table-scroll` lấp đầy màn hình và cuộn trong lưới), Card/Stat (`fill`), **Descriptions** (nhãn – giá trị chỉ đọc), `nxtFill`, Progress, Timeline, Empty state. Pattern **Trang danh sách & danh mục** (bố cục chuẩn: Thêm mới, nhập/xuất Excel, tab trên toolbar, toolbar chỉ tìm kiếm + Bộ lọc). Mẫu màn hình HRM: Tổng quan, Danh mục (8 danh mục, nhập/xuất Excel, hoàn tác, lưới lấp đầy màn hình, drawer xem chi tiết có bản ghi trước/sau), Phê duyệt (lấp đầy khi màn rộng), **Quy trình duyệt** (danh sách + trình sửa bước, mô phỏng, phiên bản, cảnh báo rời trang), Đăng nhập |
+| 1. Foundations & token | ✅ Xong | 615 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); nền sáng chỉnh lại để canvas xám tách khỏi surface trắng; brand mẫu `sample`; 520/520 lượt kiểm tương phản đạt; bộ icon Tabler chọn lọc 263 icon (ADR-003) |
+| 2. Core components | 🟡 Đang làm | Beta, có SPEC + docs + axe: Button/IconButton, Stack/Inline/Grid, Menu (+ nhóm radio), Segmented (nhãn hiển thị), Form field, Checkbox (`hint`), Tag/Badge (tooltip khi bị cắt, `wrap`), Avatar, Tooltip, Drawer, **Dialog** (`confirm()` 2–3 lựa chọn), **Alert** (+ `nxtLiveRegion`), Tabs (tab tràn vào "Xem thêm"), Page header/Breadcrumb (mục bấm được, `focusTitle()`), Pagination, **Search** (tìm không dấu), **Filter** (Bộ lọc + chip + `NxtFilterState`). Còn lại xem Roadmap |
+| 3. Dữ liệu & pattern | 🟡 Bắt đầu | Beta: App shell/Sidenav (rail, drawer mobile), Table (sắp xếp, chọn hàng, Shift chọn dải với `NxtSelection`, không bẻ dòng, `nxt-table-scroll` lấp đầy màn hình và cuộn trong lưới), Card/Stat (`fill`, `headingId`, `region`), **Descriptions** (nhãn – giá trị chỉ đọc), `nxtFill`, Progress, Timeline (mốc `skipped`), Empty state. Pattern **Trang danh sách & danh mục** (bố cục chuẩn: Thêm mới, nhập/xuất Excel, tab trên toolbar, toolbar chỉ tìm kiếm + Bộ lọc). Mẫu màn hình HRM: Tổng quan, Danh mục (8 danh mục, nhập/xuất Excel, hoàn tác, lưới lấp đầy màn hình, drawer xem chi tiết có bản ghi trước/sau), Phê duyệt (lấp đầy khi màn rộng), **Quy trình duyệt** (danh sách + trình sửa bước, mô phỏng, phiên bản, cảnh báo rời trang), Đăng nhập |
 | 4 | ⏳ Chưa bắt đầu | |
 
 **Kiểm chứng ở thời điểm ghi:**
-- `npm run ds:check` sạch (589 token, 430/430 tương phản, 0 giá trị hard-code);
-- `npm test` 98/98 (17 file spec);
-- `npm run test:a11y` 388/388 (axe trên 94 example × sáng/tối/gọn, 43 trang × sáng/tối, 20 test bàn phím và hành vi, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm", lưới lấp đầy màn hình, drawer chi tiết; Phê duyệt lấp đầy; Quy trình duyệt: kiểm lỗi khi Áp dụng, tăng phiên bản, cảnh báo rời trang);
-- build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 593 kB (gần ngưỡng cảnh báo 600 kB, xem việc tiếp theo).
+- `npm run ds:check` sạch (615 token, 520/520 tương phản, 0 giá trị hard-code);
+- `npm test` 136/136 (23 file spec);
+- `npm run test:a11y` 425/425 (axe trên 104 example × sáng/tối/gọn, 45 trang × sáng/tối, 23 test bàn phím và hành vi; axe chờ animation kết thúc rồi mới kiểm, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm", lưới lấp đầy màn hình, drawer chi tiết; Phê duyệt lấp đầy; Quy trình duyệt: kiểm lỗi khi Áp dụng, tăng phiên bản, dialog rời trang, breadcrumb, focus tiêu đề, mốc "Bỏ qua"; Dialog xác nhận và form; Alert trong live region có hoàn tác);
+- build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 563 kB (chỉ mục tìm kiếm đã nạp lazy, trước đó 593 kB).
 
 **Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có trạng thái indeterminate).
 
 **Việc tiếp theo** (theo thứ tự):
 1. Chốt các ADR còn "Đề xuất": 002, 004, 006, 007; xác nhận ADR-003 (Tabler).
 2. Dọn §11 của các SPEC: thay primitive bằng semantic/component token, mở rộng detector để bắt lỗi này.
-3. Đợt còn lại: Link, Spinner, Skeleton, Radio, Switch, NumberInput (VND), Combobox, DatePicker, Dialog/Confirm, Toast/Alert.
-4. Nạp lazy chỉ mục tìm kiếm của docs (metadata + mục lục mọi trang đang ở bundle khởi tạo, 593/600 kB).
-5. Visual regression.
+3. Đợt còn lại: Link, Spinner, Skeleton, Radio, Switch, NumberInput (VND), Combobox, DatePicker, Popover, Toast; Drawer cảnh báo khi đóng còn thay đổi chưa lưu (dùng `confirm()`).
+4. Visual regression.
 
 ## Mục lục
 1. Trang tham chiếu đang có gì và NXT làm khác ở đâu

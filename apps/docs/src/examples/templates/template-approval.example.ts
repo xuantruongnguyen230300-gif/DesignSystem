@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
+import { NxtAlert, NxtLiveRegion } from '@nxt/ui/alert';
 import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtCard } from '@nxt/ui/card';
@@ -54,7 +55,7 @@ const REQUESTS: LeaveRequest[] = [
 /** Phê duyệt đơn từ — danh sách (↑/↓ để chuyển đơn) và chi tiết, quy trình, ý kiến */
 @Component({
   selector: 'example-template-approval',
-  imports: [HrmFrame, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtPageHeader, NxtCheckbox, NxtFilter, NxtFilterChips, NxtSearch, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
+  imports: [HrmFrame, NxtAlert, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtLiveRegion, NxtPageHeader, NxtCheckbox, NxtFilter, NxtFilterChips, NxtSearch, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Wide screens: list and detail fill the screen and scroll inside; narrow screens stack and the page scrolls. -->
@@ -68,7 +69,11 @@ const REQUESTS: LeaveRequest[] = [
           </nxt-tabs>
         </nxt-page-header>
 
-        <p class="status" role="status">{{ message() }}</p>
+        <div class="status" nxtLiveRegion>
+          @if (message()) {
+            <nxt-alert tone="success">{{ message() }}</nxt-alert>
+          }
+        </div>
 
         <div class="split">
           <nxt-card padding="none" class="list" [fill]="wide()">
@@ -214,14 +219,6 @@ const REQUESTS: LeaveRequest[] = [
     .detail__body:focus-visible {
       outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
       outline-offset: calc(-1 * var(--nxt-focus-ring-width));
-    }
-    .status {
-      color: var(--nxt-color-text-success);
-      font: var(--nxt-typography-label-sm);
-    }
-    .status:empty {
-      /* Out of the flow but still in the accessibility tree, so later messages are announced. */
-      position: absolute;
     }
     .split {
       display: grid;
@@ -395,7 +392,7 @@ const REQUESTS: LeaveRequest[] = [
 })
 export class TemplateApprovalExample {
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
-  /** Wide enough for list | detail side by side: fill the screen, each column scrolls inside. */
+  private readonly injector = inject(Injector);
   /**
    * Wide enough for list | detail side by side (the same 960px of the page's own width that switches the split
    * to two columns): then fill the screen and let each column scroll inside. Measured on the page, not the
@@ -499,7 +496,8 @@ export class TemplateApprovalExample {
   protected decide(r: LeaveRequest, status: Status) {
     if (status !== 'approved' && !this.comment().trim()) {
       this.commentError.set(status === 'rejected' ? 'Nhập lý do từ chối để người gửi biết.' : 'Nhập nội dung cần bổ sung để người gửi sửa lại.');
-      queueMicrotask(() => this.host.querySelector<HTMLElement>('textarea')?.focus());
+      // aria-invalid and the error text appear in the next render: focus after it.
+      afterNextRender(() => this.host.querySelector<HTMLElement>('textarea')?.focus(), { injector: this.injector });
       return;
     }
     const index = this.visible().findIndex((x) => x.id === r.id);
