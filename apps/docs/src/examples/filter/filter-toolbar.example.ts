@@ -4,9 +4,11 @@ import { NxtCard } from '@nxt/ui/card';
 import { NxtCheckbox } from '@nxt/ui/checkbox';
 import { NxtEmptyState } from '@nxt/ui/empty-state';
 import { NxtFilter, NxtFilterChip, NxtFilterChips, NxtFilterState } from '@nxt/ui/filter';
+import { NxtIcon } from '@nxt/ui/icon';
 import { NxtSearch, nxtMatches } from '@nxt/ui/search';
 import { NxtTable } from '@nxt/ui/table';
 import { NxtTag, NxtTone } from '@nxt/ui/tag';
+import { NxtTooltip } from '@nxt/ui/tooltip';
 
 type ContractType = 'Thử việc' | 'Xác định thời hạn' | 'Không xác định thời hạn';
 type Status = 'any' | 'active' | 'expiring' | 'ended';
@@ -43,7 +45,7 @@ const CONTRACTS: Contract[] = [
 /** Toolbar danh sách chuẩn: tìm kiếm + Bộ lọc, hàng chip, bảng và trạng thái không có kết quả */
 @Component({
   selector: 'example-filter-toolbar',
-  imports: [NxtButton, NxtCard, NxtCheckbox, NxtEmptyState, NxtFilter, NxtFilterChips, NxtSearch, NxtTable, NxtTag],
+  imports: [NxtButton, NxtCard, NxtCheckbox, NxtEmptyState, NxtFilter, NxtFilterChips, NxtIcon, NxtSearch, NxtTable, NxtTag, NxtTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nxt-card padding="none">
@@ -85,6 +87,12 @@ const CONTRACTS: Contract[] = [
             }
           </fieldset>
         </nxt-filter>
+        <div class="bar__actions">
+          <button nxtIconButton type="button" [attr.aria-label]="'Xuất ' + rows().length + ' hợp đồng ra Excel'" [nxtTooltip]="'Xuất ' + rows().length + ' hợp đồng ra Excel'">
+            <nxt-icon name="file-download" />
+          </button>
+          <button nxtButton variant="primary" type="button" aria-label="Thêm mới hợp đồng"><nxt-icon name="plus" />Thêm mới</button>
+        </div>
       </div>
 
       @if (chips().length) {
@@ -142,6 +150,12 @@ const CONTRACTS: Contract[] = [
     .bar__search {
       flex: 1 1 var(--nxt-layout-item-min-sm);
       max-inline-size: var(--nxt-size-400);
+    }
+    .bar__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--nxt-space-gap-sm);
+      margin-inline-start: auto;
     }
     .chips {
       padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);

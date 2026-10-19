@@ -78,15 +78,6 @@ export const HRM_NAV: NxtNavItem[] = [
             <span class="brand__org">Công ty CP NXT</span>
           </span>
         </div>
-        <div nxtSidenavFooter class="user">
-          <nxt-avatar name="Đặng Anh" size="sm" />
-          @if (!collapsed()) {
-            <span class="user__text">
-              <span class="user__name">Đặng Anh</span>
-              <span class="user__role">Trưởng phòng Nhân sự</span>
-            </span>
-          }
-        </div>
       </nxt-sidenav>
 
       <nxt-topbar>
@@ -144,8 +135,7 @@ export const HRM_NAV: NxtNavItem[] = [
       background: var(--nxt-color-bg-primary);
       color: var(--nxt-color-text-on-primary);
     }
-    .brand__text,
-    .user__text {
+    .brand__text {
       display: grid;
       min-inline-size: 0;
     }
@@ -153,27 +143,12 @@ export const HRM_NAV: NxtNavItem[] = [
       color: var(--nxt-color-text-strong);
       font: var(--nxt-typography-heading-sm);
     }
-    .brand__org,
-    .user__role {
+    .brand__org {
       overflow: hidden;
       color: var(--nxt-color-text-subtle);
       font: var(--nxt-typography-caption);
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    .user {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--nxt-space-gap-sm);
-      min-inline-size: 0;
-    }
-    .user:has(.user__text) {
-      justify-content: flex-start;
-    }
-    .user__name {
-      color: var(--nxt-color-text-strong);
-      font: var(--nxt-typography-label-sm);
     }
     .search nxt-form-field {
       inline-size: 100%;

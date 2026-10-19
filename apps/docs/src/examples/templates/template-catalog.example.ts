@@ -143,15 +143,6 @@ interface Notice {
           description="Danh mục dùng chung cho hồ sơ nhân viên, hợp đồng và chấm công."
           [breadcrumb]="[{ label: 'Thiết lập' }, { label: 'Danh mục tổ chức' }]"
         >
-          <ng-container ngProjectAs="[nxtPageActions]">
-            <button nxtIconButton type="button" [attr.aria-label]="importLabel()" [nxtTooltip]="importLabel()" (click)="openImport()">
-              <nxt-icon name="file-upload" />
-            </button>
-            <button nxtIconButton type="button" [attr.aria-label]="exportLabel()" [nxtTooltip]="exportLabel()" [disabled]="!view().rows().length" (click)="exportRows(view().rows())">
-              <nxt-icon name="file-download" />
-            </button>
-            <button nxtButton variant="primary" type="button" [attr.aria-label]="'Thêm mới ' + def().noun" (click)="openForm()"><nxt-icon name="plus" />Thêm mới</button>
-          </ng-container>
           <nxt-tabs label="Danh mục" [panels]="false" [value]="active()" (valueChange)="setCatalog($event!)">
             @for (v of views; track v.def.id) {
               <nxt-tab [value]="v.def.id" [label]="v.def.label" [count]="v.items().length" />
@@ -220,6 +211,18 @@ interface Notice {
                       </select>
                     </nxt-form-field>
                   </nxt-filter>
+                  <!-- Actions sit on the toolbar, inside the tab they act on (Carbon, SAP Fiori, M365): tools, then the primary action at the far right. -->
+                  <span class="bar__spacer"></span>
+                  <div class="bar__actions">
+                    <button nxtIconButton type="button" [attr.aria-label]="importLabel()" [nxtTooltip]="importLabel()" (click)="openImport()">
+                      <nxt-icon name="file-upload" />
+                    </button>
+                    <button nxtIconButton type="button" [attr.aria-label]="exportLabel()" [nxtTooltip]="exportLabel()" [disabled]="!v.rows().length" (click)="exportRows(v.rows())">
+                      <nxt-icon name="file-download" />
+                    </button>
+                    <span class="bar__divider" aria-hidden="true"></span>
+                    <button nxtButton variant="primary" type="button" [attr.aria-label]="'Thêm mới ' + def().noun" (click)="openForm()"><nxt-icon name="plus" />Thêm mới</button>
+                  </div>
                 </div>
                 @if (v.chips().length) {
                   <div class="chips">
@@ -362,6 +365,17 @@ interface Notice {
     }
     .bar__spacer {
       flex: 1;
+    }
+    .bar__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--nxt-space-gap-sm);
+      margin-inline-start: auto;
+    }
+    .bar__divider {
+      align-self: stretch;
+      margin-block: var(--nxt-space-inset-xs);
+      border-inline-start: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
     }
     .chips {
       padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);

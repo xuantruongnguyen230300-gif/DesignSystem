@@ -41,7 +41,7 @@ keywords:
 
 ## Trang danh sách
 
-Hành động của trang đặt bên phải tiêu đề, theo thứ tự: hành động phụ trước, hành động chính (`primary`) ở cuối. Khi hẹp, nhóm nút xuống dòng dưới tiêu đề.
+Page header của trang danh sách chỉ cho biết người dùng đang ở đâu: breadcrumb, tiêu đề, mô tả và tab. **Không** đặt Thêm mới, Nhập, Xuất ở đây: các nút đó tác động lên danh sách nên nằm trên thanh công cụ ngay trên bảng, trong phạm vi tab đang chọn (xem [Trang danh sách & danh mục](/patterns/list-page)).
 
 ::example{page-header-basic}
 
@@ -86,10 +86,9 @@ Trang chi tiết có breadcrumb về danh sách, trạng thái của đối tư�
 | Nhân viên | Quản lý danh sách nhân viên |
 | Đơn nghỉ phép DNP-0412 | Chi tiết đơn |
 | 1.284 hồ sơ đang làm việc · cập nhật 5 phút trước | Đây là trang quản lý nhân viên của công ty |
-| Thêm mới (nút tạo của trang danh sách; tiêu đề đã nói đối tượng) | Tạo bản ghi mới cho danh mục chức danh |
 
 - Tiêu đề trùng tên mục trong sidenav, hoặc là tên của đối tượng đang xem.
-- Hành động ở bên phải theo thứ tự: nút icon "Nhập … từ Excel", "Xuất … ra Excel" (có tooltip), rồi nút primary **"Thêm mới"**. Xem [Trang danh sách & danh mục](/patterns/list-page).
+- Slot hành động (`nxtPageActions`) dành cho **trang chi tiết** (Sửa, Gửi duyệt, Phê duyệt) và thao tác cấp trang không gắn với một danh sách; hành động phụ trước, `primary` ở cuối. Trang danh sách để trống slot này.
 - Mô tả không quá một dòng. Hướng dẫn dài đặt trong nội dung trang.
 
 ## API

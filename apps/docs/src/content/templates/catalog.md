@@ -30,9 +30,9 @@ Mẫu cho nhóm danh mục dùng chung: chức danh, cấp bậc, phòng ban, lo
 
 ## Cấu trúc
 
-- **Page header**: breadcrumb, tiêu đề "Danh mục tổ chức", hai nút icon nhập/xuất Excel, nút primary **Thêm mới**.
+- **Page header**: breadcrumb, tiêu đề "Danh mục tổ chức" và tab danh mục. Không có nút hành động.
 - **Tab**: mỗi danh mục một tab có số đếm. Tab nằm trên toolbar vì nó quyết định toolbar đang làm việc với danh mục nào. Mỗi tab nhớ riêng tìm kiếm, bộ lọc, sắp xếp, trang và lựa chọn.
-- **Toolbar**: chỉ có ô tìm kiếm và nút **Bộ lọc**. Mọi tiêu chí (trạng thái, nhóm, cấp bậc, cập nhật lần cuối) nằm trong panel lọc.
+- **Thanh công cụ**: bên trái ô tìm kiếm và nút **Bộ lọc** (mọi tiêu chí lọc nằm trong panel); bên phải hai nút icon nhập/xuất Excel, vạch ngăn, nút primary **Thêm mới** ngoài cùng.
 - **Chip bộ lọc** dưới toolbar khi đang lọc, cuối hàng "Xoá bộ lọc".
 - **Thanh hàng loạt** thay toolbar khi có hàng được chọn: Ngừng sử dụng, Dùng lại, Xuất, Xoá, Bỏ chọn, và "Chọn tất cả 29 chức danh" khi đã chọn hết trang.
 - **Bảng**: header dính, sắp xếp, cột số căn phải, ô không xuống dòng (bảng cuộn ngang trên màn hẹp).

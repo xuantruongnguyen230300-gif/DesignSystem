@@ -37,12 +37,12 @@ keywords:
 <nxt-app-shell>
   <nxt-sidenav [items]="nav" [(collapsed)]="navCollapsed" label="Điều hướng NXT HRM">
     <a nxtSidenavHeader routerLink="/">…logo…</a>
-    <div nxtSidenavFooter>…người dùng đang đăng nhập…</div>
   </nxt-sidenav>
 
   <nxt-topbar>
     <nxt-form-field nxtTopbarCenter label="Tìm kiếm trong NXT HRM" hideLabel size="sm">…</nxt-form-field>
     <button nxtTopbarEnd nxtIconButton variant="ghost" aria-label="Thông báo"><nxt-icon name="bell" /></button>
+    <button nxtTopbarEnd class="account" aria-label="Tài khoản: Đặng Anh" [nxtMenuTriggerFor]="account">…avatar…</button>
   </nxt-topbar>
 
   <router-outlet />
@@ -53,10 +53,10 @@ keywords:
 |------|--------|----------|
 | `[nxtSidenavHeader]` | Đầu sidenav, cạnh nút thu gọn | Logo, tên sản phẩm. Bị ẩn khi thu gọn |
 | `[nxtSidenavTop]` | Dưới header, trên danh sách mục | Nút tạo nhanh, chọn công ty hoặc chi nhánh |
-| `[nxtSidenavFooter]` | Cuối sidenav | Người dùng đang đăng nhập, phiên bản |
+| `[nxtSidenavFooter]` | Cuối sidenav | Mục phụ: phiên bản, chuyển đơn vị. **Không** đặt người dùng đăng nhập (đã có ở topbar) |
 | `[nxtTopbarStart]` | Bên trái thanh trên | Tên đơn vị đang làm việc |
 | `[nxtTopbarCenter]` | Giữa, bề rộng cố định, co lại khi hẹp | Ô tìm kiếm toàn cục |
-| `[nxtTopbarEnd]` | Bên phải, không bao giờ bị che | Trợ giúp, thông báo, menu tài khoản |
+| `[nxtTopbarEnd]` | Bên phải, không bao giờ bị che | Trợ giúp, thông báo, menu tài khoản (nơi **duy nhất** hiện người dùng đăng nhập) |
 | (mặc định) | Vùng nội dung | `<router-outlet />` |
 
 ::example{app-shell-basic}

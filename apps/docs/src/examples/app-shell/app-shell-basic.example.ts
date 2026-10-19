@@ -5,7 +5,9 @@ import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtIcon } from '@nxt/ui/icon';
+import { NxtMenu, NxtMenuItem, NxtMenuLabel, NxtMenuSeparator, NxtMenuTrigger } from '@nxt/ui/menu';
 import { NxtPageHeader } from '@nxt/ui/page-header';
+import { NxtSearch } from '@nxt/ui/search';
 import { NxtTag, NxtTone } from '@nxt/ui/tag';
 import { NxtTooltip } from '@nxt/ui/tooltip';
 
@@ -36,7 +38,25 @@ const ROWS: LeaveRow[] = [
 /** Khung ứng dụng: điều hướng, thanh trên cùng, vùng nội dung tự cuộn */
 @Component({
   selector: 'example-app-shell-basic',
-  imports: [NxtAppShell, NxtSidenav, NxtTopbar, NxtAvatar, NxtButton, NxtFormField, NxtInput, NxtIcon, NxtPageHeader, NxtTag, NxtTooltip],
+  imports: [
+    NxtAppShell,
+    NxtSidenav,
+    NxtTopbar,
+    NxtAvatar,
+    NxtButton,
+    NxtFormField,
+    NxtInput,
+    NxtIcon,
+    NxtMenu,
+    NxtMenuItem,
+    NxtMenuLabel,
+    NxtMenuSeparator,
+    NxtMenuTrigger,
+    NxtPageHeader,
+    NxtSearch,
+    NxtTag,
+    NxtTooltip,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="frame">
@@ -45,15 +65,6 @@ const ROWS: LeaveRow[] = [
           <div nxtSidenavHeader class="brand">
             <span class="brand__mark" aria-hidden="true"><nxt-icon name="users-group" /></span>
             <span class="brand__name">NXT HRM</span>
-          </div>
-          <div nxtSidenavFooter class="user">
-            <nxt-avatar name="Đặng Anh" size="sm" />
-            @if (!collapsed()) {
-              <span class="user__text">
-                <span class="user__name">Đặng Anh</span>
-                <span class="user__role">Trưởng phòng Nhân sự</span>
-              </span>
-            }
           </div>
         </nxt-sidenav>
 
@@ -68,15 +79,33 @@ const ROWS: LeaveRow[] = [
           <button nxtTopbarEnd nxtIconButton variant="ghost" aria-label="Thông báo" nxtTooltip="Thông báo" nxtTooltipPosition="bottom">
             <nxt-icon name="bell" />
           </button>
+          <!-- The signed-in user lives here only (top right, Windows / Microsoft 365 convention), not in the sidenav. -->
+          <button nxtTopbarEnd type="button" class="account" aria-label="Tài khoản: Đặng Anh" [nxtMenuTriggerFor]="account">
+            <nxt-avatar name="Đặng Anh" size="sm" />
+            <nxt-icon name="chevron-down" />
+          </button>
+          <ng-template #account>
+            <div nxtMenu>
+              <div nxtMenuLabel>Đặng Anh · Trưởng phòng Nhân sự</div>
+              <button nxtMenuItem><nxt-icon name="user" />Hồ sơ của tôi</button>
+              <div nxtMenuSeparator></div>
+              <button nxtMenuItem><nxt-icon name="logout" />Đăng xuất</button>
+            </div>
+          </ng-template>
         </nxt-topbar>
 
         <div class="page">
-          <nxt-page-header headingLevel="2" title="Đơn nghỉ phép" description="Tháng 10/2026 · phòng ban bạn quản lý">
-            <ng-container ngProjectAs="[nxtPageActions]">
-              <button nxtButton><nxt-icon name="download" />Xuất Excel</button>
-              <button nxtButton variant="primary"><nxt-icon name="plus" />Tạo đơn</button>
-            </ng-container>
-          </nxt-page-header>
+          <nxt-page-header headingLevel="2" title="Đơn nghỉ phép" description="Tháng 10/2026 · phòng ban bạn quản lý" />
+          <div class="list">
+            <!-- List actions sit on the toolbar above the data they act on, not in the page header. -->
+            <div class="toolbar">
+              <nxt-search class="toolbar__search" label="Tìm đơn nghỉ phép" placeholder="Tên hoặc mã đơn" size="sm" />
+              <span class="toolbar__spacer"></span>
+              <button nxtIconButton size="sm" type="button" aria-label="Xuất 10 đơn nghỉ phép ra Excel" nxtTooltip="Xuất 10 đơn nghỉ phép ra Excel">
+                <nxt-icon name="file-download" />
+              </button>
+              <button nxtButton size="sm" variant="primary" type="button" aria-label="Thêm mới đơn nghỉ phép"><nxt-icon name="plus" />Thêm mới</button>
+            </div>
           <ul class="rows" role="list">
             @for (r of rows; track r.id) {
               <li class="row">
@@ -88,6 +117,7 @@ const ROWS: LeaveRow[] = [
               </li>
             }
           </ul>
+          </div>
         </div>
       </nxt-app-shell>
     </div>
@@ -119,24 +149,46 @@ const ROWS: LeaveRow[] = [
       font: var(--nxt-typography-heading-sm);
       white-space: nowrap;
     }
-    .user {
-      display: flex;
+    .account {
+      --nxt-icon-size: var(--nxt-size-icon-sm);
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: var(--nxt-space-gap-xs);
+      min-block-size: var(--nxt-size-control-md);
+      padding-inline: var(--nxt-space-inset-xs);
+      border: 0;
+      border-radius: var(--nxt-radius-control);
+      background: transparent;
+      color: var(--nxt-color-icon-subtle);
+      cursor: pointer;
+    }
+    .account:hover {
+      background: var(--nxt-color-bg-surface-hover);
+    }
+    .account:focus-visible {
+      outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+      outline-offset: var(--nxt-focus-ring-offset);
+    }
+    .list {
+      border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
+      border-radius: var(--nxt-radius-container);
+      background: var(--nxt-color-bg-surface);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
       gap: var(--nxt-space-gap-sm);
+      padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
+      border-block-end: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
     }
-    .user:has(.user__text) {
-      justify-content: flex-start;
+    .toolbar__search {
+      flex: 1 1 var(--nxt-layout-item-min-sm);
+      max-inline-size: var(--nxt-size-400);
     }
-    .user__text {
-      display: grid;
-      min-inline-size: 0;
+    .toolbar__spacer {
+      flex: 1;
     }
-    .user__name {
-      color: var(--nxt-color-text-strong);
-      font: var(--nxt-typography-label-sm);
-    }
-    .user__role,
     .row__meta {
       overflow: hidden;
       color: var(--nxt-color-text-subtle);
@@ -153,9 +205,6 @@ const ROWS: LeaveRow[] = [
       margin: 0;
       padding: 0;
       list-style: none;
-      border: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
-      border-radius: var(--nxt-radius-container);
-      background: var(--nxt-color-bg-surface);
     }
     .row {
       display: flex;

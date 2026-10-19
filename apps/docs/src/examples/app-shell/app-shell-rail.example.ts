@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NxtAppShell, NxtNavItem, NxtSidenav, NxtTopbar } from '@nxt/ui/app-shell';
 import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtIcon } from '@nxt/ui/icon';
+import { NxtMenu, NxtMenuItem, NxtMenuLabel, NxtMenuTrigger } from '@nxt/ui/menu';
 import { NxtPageHeader } from '@nxt/ui/page-header';
 
 const LATER = 'Chưa có trong bản demo';
@@ -10,7 +11,7 @@ const LATER = 'Chưa có trong bản demo';
 /** Thu gọn thành thanh icon: tooltip và menu bên cạnh */
 @Component({
   selector: 'example-app-shell-rail',
-  imports: [NxtAppShell, NxtSidenav, NxtTopbar, NxtAvatar, NxtIcon, NxtPageHeader],
+  imports: [NxtAppShell, NxtSidenav, NxtTopbar, NxtAvatar, NxtIcon, NxtMenu, NxtMenuItem, NxtMenuLabel, NxtMenuTrigger, NxtPageHeader],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="frame">
@@ -20,16 +21,21 @@ const LATER = 'Chưa có trong bản demo';
             <span class="brand__mark" aria-hidden="true"><nxt-icon name="users-group" /></span>
             <span class="brand__name">NXT HRM</span>
           </div>
-          <div nxtSidenavFooter class="user">
-            <nxt-avatar name="Đặng Anh" size="sm" [label]="collapsed() ? 'Đặng Anh, Trưởng phòng Nhân sự' : undefined" />
-            @if (!collapsed()) {
-              <span class="user__name">Đặng Anh</span>
-            }
-          </div>
         </nxt-sidenav>
 
         <nxt-topbar>
           <span nxtTopbarStart class="product">Công ty CP NXT</span>
+          <!-- The signed-in user lives in the top bar only, so the rail never repeats it. -->
+          <button nxtTopbarEnd type="button" class="account" aria-label="Tài khoản: Đặng Anh" [nxtMenuTriggerFor]="account">
+            <nxt-avatar name="Đặng Anh" size="sm" />
+            <nxt-icon name="chevron-down" />
+          </button>
+          <ng-template #account>
+            <div nxtMenu>
+              <div nxtMenuLabel>Đặng Anh · Trưởng phòng Nhân sự</div>
+              <button nxtMenuItem><nxt-icon name="logout" />Đăng xuất</button>
+            </div>
+          </ng-template>
         </nxt-topbar>
 
         <div class="page">
@@ -68,18 +74,25 @@ const LATER = 'Chưa có trong bản demo';
       font: var(--nxt-typography-heading-sm);
       white-space: nowrap;
     }
-    .user {
-      display: flex;
+    .account {
+      --nxt-icon-size: var(--nxt-size-icon-sm);
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: var(--nxt-space-gap-sm);
+      gap: var(--nxt-space-gap-xs);
+      min-block-size: var(--nxt-size-control-md);
+      padding-inline: var(--nxt-space-inset-xs);
+      border: 0;
+      border-radius: var(--nxt-radius-control);
+      background: transparent;
+      color: var(--nxt-color-icon-subtle);
+      cursor: pointer;
     }
-    .user:has(.user__name) {
-      justify-content: flex-start;
+    .account:hover {
+      background: var(--nxt-color-bg-surface-hover);
     }
-    .user__name {
-      color: var(--nxt-color-text-strong);
-      font: var(--nxt-typography-label-sm);
+    .account:focus-visible {
+      outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+      outline-offset: var(--nxt-focus-ring-offset);
     }
     .product {
       color: var(--nxt-color-text-subtle);

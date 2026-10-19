@@ -27,9 +27,9 @@ Từ trên xuống, mỗi vùng một việc:
 
 | # | Vùng | Nội dung | Ghi chú |
 |---|------|----------|---------|
-| 1 | Page header | Breadcrumb, tiêu đề, mô tả ngắn | Bên phải: **Nhập từ Excel**, **Xuất ra Excel** (hai nút icon), **Thêm mới** (primary) |
+| 1 | Page header | Breadcrumb, tiêu đề, mô tả ngắn | **Không** có nút: header chỉ cho biết đang ở đâu và đứng yên khi đổi tab |
 | 2 | Tab (khi cần) | Các danh mục / phạm vi dữ liệu cùng nhóm, có số đếm | Nằm **trên** toolbar, vì tab quyết định toolbar đang làm việc với dữ liệu nào |
-| 3 | Toolbar | **Chỉ** ô tìm kiếm + nút **Bộ lọc** | Khi chọn hàng, thanh thao tác hàng loạt thay chỗ toolbar |
+| 3 | Thanh công cụ | Trái: ô tìm kiếm + nút **Bộ lọc**. Phải: **Nhập**, **Xuất** (hai nút icon), vạch ngăn, **Thêm mới** (primary) ngoài cùng | Khi chọn hàng, thanh thao tác hàng loạt thay chỗ thanh công cụ |
 | 4 | Chip bộ lọc | Mỗi tiêu chí đang áp dụng một chip, cuối hàng "Xoá bộ lọc" | Chỉ hiện khi đang lọc |
 | 5 | Bảng | Cột mã, tên (tiêu đề hàng), các cột riêng, trạng thái, ngày cập nhật, thao tác | Header dính, sắp xếp, chọn nhiều |
 | 6 | Phân trang | "Hiển thị 1–10 trong 29 chức danh", số dòng/trang | |
@@ -50,11 +50,32 @@ Nghiên cứu về bộ lọc (ví dụ [Baymard](https://baymard.com/learn/ecom
 
 ## Quyết định của NXT
 
-- **Toolbar chỉ có tìm kiếm + Bộ lọc.** Mọi tiêu chí lọc (trạng thái, nhóm, phòng ban, thời gian) nằm trong panel của `nxt-filter`, áp dụng bằng "Áp dụng". Toolbar không đổi hình dạng giữa các phân hệ, không tràn trên màn hẹp, và người dùng luôn biết chỗ để lọc. Nút luôn có chữ "Bộ lọc" kèm số tiêu chí đang áp dụng.
+- **Tìm và lọc chỉ gồm ô tìm kiếm + Bộ lọc** (bên trái thanh công cụ). Mọi tiêu chí lọc (trạng thái, nhóm, phòng ban, thời gian) nằm trong panel của `nxt-filter`, áp dụng bằng "Áp dụng". Toolbar không đổi hình dạng giữa các phân hệ, không tràn trên màn hẹp, và người dùng luôn biết chỗ để lọc. Nút luôn có chữ "Bộ lọc" kèm số tiêu chí đang áp dụng.
 - **Tìm kiếm áp dụng ngay**, không phân biệt dấu (`nxtMatches`): "ke toan" tìm ra "Kế toán". Esc xoá nội dung.
-- **"Thêm mới"** là nhãn chuẩn của nút tạo ở page header: tiêu đề trang hoặc tab đang chọn đã nói đối tượng. Screen reader đọc đầy đủ nhờ `aria-label="Thêm mới chức danh"`; drawer mở ra có tiêu đề "Thêm chức danh".
-- **Nhập / xuất Excel là hai nút icon** cạnh "Thêm mới": `file-upload` (mũi tên lên, "Nhập chức danh từ Excel") và `file-download` (mũi tên xuống, "Xuất 29 chức danh ra Excel"). Tooltip và tên truy cập ghi rõ đối tượng và số lượng sẽ xuất.
+- **"Thêm mới"** là nhãn chuẩn của nút tạo, đứng ngoài cùng bên phải thanh công cụ: tiêu đề trang hoặc tab đang chọn đã nói đối tượng. Screen reader đọc đầy đủ nhờ `aria-label="Thêm mới chức danh"`; drawer mở ra có tiêu đề "Thêm chức danh".
+- **Nhập / xuất Excel là hai nút icon** trên thanh công cụ, trước "Thêm mới": `file-upload` (mũi tên lên, "Nhập chức danh từ Excel") và `file-download` (mũi tên xuống, "Xuất 29 chức danh ra Excel"). Tooltip và tên truy cập ghi rõ đối tượng và số lượng sẽ xuất.
 - **Tab nằm trên toolbar**, ngay dưới tiêu đề. Dùng khi một nhóm danh mục liên quan dùng chung một màn (Chức danh, Cấp bậc, Phòng ban…). Mỗi tab giữ riêng ô tìm kiếm, bộ lọc, sắp xếp, trang và lựa chọn, nên chuyển qua lại không mất gì.
+
+## Nút hành động đặt ở đâu
+
+Có hai cách làm phổ biến:
+
+| Cách | Ai dùng | Hợp khi |
+|------|---------|---------|
+| Nút trên page header | [Shopify Polaris](https://shopify.dev/docs/apps/build/app-home/migrate-from-polaris-react/page) (primary + secondary actions của Page), Salesforce | Trang chỉ có **một** loại dữ liệu, không có tab |
+| Nút trên thanh công cụ ngay trên bảng | [IBM Carbon](https://carbondesignsystem.com/components/data-table/usage/) (toolbar chứa nút chính, tìm, lọc), [SAP Fiori](https://www.sap.com/design-system/fiori-design-web/v1-120/discover/frameworks/sap-fiori-elements/tables-and-lists/tables-toolbar) (Create, Export to Spreadsheet trên table toolbar), [SharePoint / Microsoft 365](https://learn.microsoft.com/en-us/sharepoint/dev/declarative-customization/view-commandbar-formatting) (command bar "New" trên danh sách), [Ant Design ProTable](https://github.com/ant-design/pro-table) (`toolBarRender`), VnResource (quy tắc Danh sách CRUD: header không có nút) | Phần mềm nghiệp vụ, trang có tab hoặc nhiều danh sách |
+
+NXT chọn **thanh công cụ** cho mọi trang danh sách, vì:
+
+- **Đúng phạm vi.** Nút nằm trong vùng dữ liệu nó tác động. Khi trang có tab, nút trên header đứng ngoài tab: đổi tab là "Thêm mới" âm thầm đổi đối tượng sẽ tạo.
+- **Gần chỗ nhìn.** Người dùng đang nhìn bảng và thanh tìm kiếm; "Xuất 7 chức danh đang lọc" đứng cạnh ô tìm và Bộ lọc nên phạm vi xuất hiển nhiên.
+- **Một quy tắc cho mọi trang.** Trang có tab hay không có tab, nút luôn ở cùng chỗ; header chỉ còn tiêu đề và tab, không nhảy khi đổi tab.
+
+Thứ tự trên thanh công cụ, từ trái sang phải: ô tìm kiếm, Bộ lọc, khoảng trống, Nhập, Xuất, vạch ngăn, **Thêm mới**. Màn hẹp thì nhóm nút xuống dòng; ô tìm kiếm và Thêm mới không bao giờ bị ẩn. Trang **chi tiết** một bản ghi thì khác: hành động (Sửa, Gửi duyệt, Phê duyệt) nằm trên page header của bản ghi đó.
+
+## Tài khoản người dùng
+
+Người dùng đang đăng nhập chỉ xuất hiện **một lần**, ở góc phải thanh trên cùng (avatar + menu: tên và chức vụ, Hồ sơ của tôi, Đăng xuất), giống Windows, Microsoft 365 và SAP Fiori. Không lặp lại ở chân menu trái; chân menu dành cho mục phụ như phiên bản hay chuyển đơn vị.
 
 ## Khi có nhiều tab
 

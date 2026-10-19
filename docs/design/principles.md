@@ -79,7 +79,7 @@ Skill `nxt-ui-review` và `nxt-a11y-audit` chấm theo danh sách này. Mỗi m�
 
 - Viết ngắn, chủ động, gọi đúng tên đối tượng: "Lưu hồ sơ", không viết "OK" hay "Xác nhận".
 - Nhãn nút là động từ, kèm đối tượng nếu cần: "Gửi duyệt", "Xoá 3 nhân viên".
-- Nút tạo ở page header của trang danh sách luôn là **"Thêm mới"**: tiêu đề trang hoặc tab đang chọn đã nói đối tượng, và nhãn giống nhau ở mọi phân hệ. Tên truy cập có thể đủ hơn (`aria-label="Thêm mới chức danh"`); tiêu đề drawer ghi rõ "Thêm chức danh". Màn có nhiều loại đối tượng tạo được thì ghi rõ từng nút.
+- Nút tạo của trang danh sách (ngoài cùng bên phải thanh công cụ, không đặt trên page header) luôn là **"Thêm mới"**: tiêu đề trang hoặc tab đang chọn đã nói đối tượng, và nhãn giống nhau ở mọi phân hệ. Tên truy cập có thể đủ hơn (`aria-label="Thêm mới chức danh"`); tiêu đề drawer ghi rõ "Thêm chức danh". Màn có nhiều loại đối tượng tạo được thì ghi rõ từng nút.
 - Thông báo lỗi trả lời ba câu hỏi: chuyện gì xảy ra, vì sao, làm gì tiếp. Ví dụ: "Không lưu được hợp đồng vì ngày kết thúc trước ngày bắt đầu. Hãy chọn lại ngày kết thúc."
 - Không đổ lỗi cho người dùng và không dùng mã lỗi kỹ thuật làm nội dung chính.
 - Dùng thống nhất thuật ngữ trong glossary của sản phẩm, ví dụ "nhân viên" chứ không lẫn với "người lao động", trừ khi luật yêu cầu.

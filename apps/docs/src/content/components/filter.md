@@ -92,7 +92,7 @@ protected readonly filters = new NxtFilterState({ status: 'all' as Status, depts
 
 ## Toolbar danh sách
 
-Toolbar chuẩn của NXT: ô tìm kiếm co giãn bên trái, nút "Bộ lọc" ngay sau. Hàng chip nằm dưới toolbar, trên bảng, và chỉ hiện khi đang lọc. Thử lọc "Trạng thái: Đã chấm dứt" rồi tìm "lan" để thấy trạng thái không có kết quả.
+Thanh công cụ chuẩn của NXT: ô tìm kiếm co giãn bên trái, nút "Bộ lọc" ngay sau; bên phải là nút công cụ (Xuất) và nút primary "Thêm mới" ngoài cùng. Hàng chip nằm dưới toolbar, trên bảng, và chỉ hiện khi đang lọc. Thử lọc "Trạng thái: Đã chấm dứt" rồi tìm "lan" để thấy trạng thái không có kết quả.
 
 ::example{filter-toolbar}
 

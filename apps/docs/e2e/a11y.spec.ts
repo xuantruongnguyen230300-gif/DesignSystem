@@ -195,6 +195,19 @@ test.describe('templates', () => {
     await expect(add).toBeFocused();
   });
 
+  test('catalog: list actions are on the toolbar, not the page header; the user appears once, top right', async ({ page }) => {
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const header = page.locator('nxt-page-header');
+    await expect(header.getByRole('button', { name: /Thêm mới|Nhập|Xuất/ })).toHaveCount(0);
+    const toolbar = page.locator('.bar');
+    await expect(toolbar.getByRole('button', { name: 'Thêm mới chức danh' })).toBeVisible();
+    await expect(toolbar.getByRole('button', { name: 'Nhập chức danh từ Excel' })).toBeVisible();
+    await expect(toolbar.getByRole('button', { name: /^Xuất \d+ chức danh/ })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Điều hướng NXT HRM' })).not.toContainText('Đặng Anh');
+    await expect(page.getByRole('button', { name: 'Tài khoản: Đặng Anh' })).toHaveCount(1);
+  });
+
   test('catalog: every filter lives in the "Bộ lọc" panel; applied filters become chips', async ({ page }) => {
     await page.goto('/examples/template-catalog');
     await page.locator('docs-example-page[data-ready]').waitFor();

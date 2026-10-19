@@ -16,9 +16,9 @@
 
 ## 1. List page (CRUD)
 - **Anatomy:**
-  - Page header: breadcrumb, tiêu đề + mô tả; bên phải: hai nút icon "Nhập … từ Excel" (`file-upload`) và "Xuất … ra Excel" (`file-download`) có tooltip, rồi nút primary **"Thêm mới"** (nhãn chuẩn ở mọi phân hệ; `aria-label="Thêm mới <đối tượng>"`).
+  - Page header: breadcrumb, tiêu đề + mô tả. **Không** đặt nút hành động của danh sách (Thêm mới, Nhập, Xuất) trên header.
   - Tab (khi một nhóm danh mục/phạm vi dùng chung màn): ngay dưới tiêu đề, **trên** toolbar; tab không vừa dồn vào "Xem thêm". Quá ~7 tab thì tách mục trong menu trái.
-  - Toolbar: **chỉ** `nxt-search` + `nxt-filter` ("Bộ lọc"). Không đặt select/segmented lọc nhanh, không đặt nút export trên toolbar. Chọn hàng thì thanh hàng loạt thay toolbar.
+  - Thanh công cụ ngay trên bảng: trái `nxt-search` + `nxt-filter` ("Bộ lọc"), không đặt select/segmented lọc nhanh; phải: nút icon "Nhập … từ Excel" (`file-upload`), "Xuất … ra Excel" (`file-download`) có tooltip, vạch ngăn, nút primary **"Thêm mới"** ngoài cùng (`aria-label="Thêm mới <đối tượng>"`). Màn hẹp thì nhóm nút xuống dòng; ô tìm và Thêm mới không bao giờ ẩn. Chọn hàng thì thanh hàng loạt thay thanh công cụ.
   - Bảng.
   - Phân trang hoặc virtual scroll.
 - Hành động trên từng dòng: tối đa 2 nút hiện sẵn, phần còn lại vào menu `⋯`. Hành động phá huỷ luôn nằm cuối menu và có màu danger.
@@ -97,6 +97,7 @@
 | Stale / offline | Thời điểm cập nhật cuối, nút làm mới |
 
 ## 10. App shell & điều hướng
+- Người dùng đăng nhập chỉ hiện **một lần**: avatar + menu tài khoản ở góc phải topbar. Không lặp ở chân sidenav.
 - Sidebar có hai trạng thái, mở 256px và thu gọn 72px (`semantic.layout.*`). Người dùng chọn trạng thái và hệ thống ghi nhớ.
 - Tối đa 2 cấp menu. Cấp thứ 3 chuyển thành tab trong trang.
 - Command palette `Ctrl+K`: tìm trang, bản ghi gần đây, hành động.

@@ -61,7 +61,7 @@ Icon đặt trước nhãn cho hành động, đặt sau nhãn cho hành động
 
 ## Trong bố cục thật
 
-Header của trang danh sách: một nút primary **"Thêm mới"**, cạnh đó là hai nút icon nhập/xuất Excel có tooltip. Bố cục đầy đủ ở pattern [Trang danh sách & danh mục](/patterns/list-page).
+Thanh công cụ của trang danh sách (ngay trên bảng): bên trái ô tìm kiếm và Bộ lọc, bên phải hai nút icon nhập/xuất Excel có tooltip, vạch ngăn, rồi nút primary **"Thêm mới"** ngoài cùng. Bố cục đầy đủ ở pattern [Trang danh sách & danh mục](/patterns/list-page).
 
 ::example{button-toolbar}
 
@@ -86,13 +86,13 @@ Header của trang danh sách: một nút primary **"Thêm mới"**, cạnh đó
 
 Nhãn nút là **động từ + đối tượng** khi đối tượng chưa rõ từ ngữ cảnh. Ngoại lệ duy nhất là nút tạo ở header trang.
 
-- **Nút tạo ở page header ghi "Thêm mới".** Tiêu đề trang hoặc tab đang chọn đã nói đối tượng ("Nhân viên", tab "Chức danh"), nên mọi trang danh sách dùng cùng một nhãn ở cùng một chỗ. Được đặt `aria-label="Thêm mới chức danh"` cho screen reader: tên truy cập **bắt đầu bằng** chữ đang hiện (WCAG 2.5.3, label in name), nên người dùng điều khiển bằng giọng nói vẫn gọi được "Thêm mới". Drawer mở ra có tiêu đề cụ thể: "Thêm chức danh".
+- **Nút tạo của trang danh sách ghi "Thêm mới"** và đứng ngoài cùng bên phải thanh công cụ. Tiêu đề trang hoặc tab đang chọn đã nói đối tượng ("Nhân viên", tab "Chức danh"), nên mọi trang danh sách dùng cùng một nhãn ở cùng một chỗ. Được đặt `aria-label="Thêm mới chức danh"` cho screen reader: tên truy cập **bắt đầu bằng** chữ đang hiện (WCAG 2.5.3, label in name), nên người dùng điều khiển bằng giọng nói vẫn gọi được "Thêm mới". Drawer mở ra có tiêu đề cụ thể: "Thêm chức danh".
 - **Giữ động từ + đối tượng** khi trên cùng một màn tạo được nhiều loại đối tượng ("Thêm người phụ thuộc", "Thêm quá trình công tác" trong hồ sơ nhân viên), cho nút submit ("Lưu", "Lưu hồ sơ", "Gửi duyệt"), và cho hành động phá huỷ, kèm số lượng ("Xoá 3 chức danh").
 - **Nhập/xuất Excel là hai nút icon** (`nxtIconButton`) đặt cạnh nút primary, có `aria-label` và tooltip ghi rõ đối tượng: `file-upload` "Nhập chức danh từ Excel", `file-download` "Xuất 29 chức danh ra Excel". Xuất đúng phạm vi đang xem, và nói rõ khi đang lọc: "Xuất 7 chức danh đang lọc ra Excel".
 
 | Nên | Không nên |
 |-----|-----------|
-| Thêm mới (page header, `aria-label="Thêm mới nhân viên"`) | Thêm nhân viên mới vào hệ thống |
+| Thêm mới (thanh công cụ, `aria-label="Thêm mới nhân viên"`) | Thêm nhân viên mới vào hệ thống |
 | Thêm người phụ thuộc (nhiều loại đối tượng trên một màn) | Thêm mới |
 | Gửi duyệt | OK |
 | Xoá 3 nhân viên | Xoá |
