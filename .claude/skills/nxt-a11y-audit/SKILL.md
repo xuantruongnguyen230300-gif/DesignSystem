@@ -36,14 +36,17 @@ npm run ds:tokens       # chạy mọi contrastPairs ở mọi mode × brand
 - Lỗi và helper text được liên kết bằng `aria-describedby`; trạng thái lỗi có `aria-invalid`.
 - Thay đổi động (toast, kết quả lọc, lưu xong) được announce qua `LiveAnnouncer` hoặc live region.
 
-### 4. Tự động trên bản render (khi `apps/docs` chạy được)
-Chạy test a11y Playwright cho example của component, ở light/dark × 3 density:
+### 4. Tự động trên bản render
+`apps/docs/e2e/a11y.spec.ts` tự chạy axe (`wcag2a/aa`, `wcag21a/aa`, `wcag22aa`) trên **mọi** example ở sáng/tối/gọn, trên mọi trang docs ở sáng/tối, kèm test bàn phím:
 ```bash
-npx playwright test --grep "@a11y <name>"
+npm run build                                   # cần bản build mới nhất
+npm run test:a11y -- -g "<example-id hoặc tên>" # lọc theo tên; bỏ -g để chạy hết
 ```
-Test dùng `@axe-core/playwright` với tag `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`. Chưa có test thì viết theo mẫu ở [references/wcag-checklist.md §Mẫu test](references/wcag-checklist.md).
+- Component chưa có example thì chưa được kiểm, nên phải viết example trước (skill `nxt-component-build` §6).
+- Thêm test hành vi riêng (focus trap, Esc, roving tabindex) vào `describe('keyboard')` trong cùng file.
+- Không chạy được thì ghi rõ "chưa chạy axe" và lý do.
 
-Không chạy được thì ghi rõ "chưa chạy axe" và lý do.
+axe không bắt được mọi lỗi. Ví dụ thực tế: nút tìm kiếm của docs mất tên truy cập trên mobile, vì nhãn bị `display:none`, nhưng axe ở viewport desktop vẫn báo đạt. Luôn kiểm cả viewport 390px.
 
 ### 5. Kiểm thủ công cần người
 Ghi các mục sau thành checklist cho user, **không** tự đánh dấu là đạt:

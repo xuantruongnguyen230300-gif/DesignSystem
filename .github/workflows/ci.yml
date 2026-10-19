@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Tokens · lint · build · unit · a11y
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm 10.8 has an arborist bug with this dependency graph (see docs/adr/009).
+      - run: npm install -g npm@11
+
+      - run: npm ci
+
+      - name: Design-system gate (tokens + hard-coded values)
+        run: npm run ds:check
+
+      - name: Build tokens, docs data, @nxt/ui and docs site
+        run: npm run build
+
+      - name: Unit tests (Vitest)
+        run: npm test
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Accessibility + keyboard tests (axe on every example × mode)
+        run: npm run test:a11y
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+      - name: Upload docs build
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-site
+          path: dist/docs/browser
+          retention-days: 7

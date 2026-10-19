@@ -99,6 +99,6 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/button/
 ## 10. Acceptance (Definition of Done)
 - [x] Mọi trạng thái ở §5 có trong docs example
 - [x] Unit test phủ keyboard map §6 và chặn kích hoạt khi disabled/loading
-- [ ] axe: 0 vi phạm ở light/dark × 3 density (Playwright, `npm run test:a11y`)
+- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-16)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)

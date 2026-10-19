@@ -12,8 +12,8 @@ argument-hint: "<component-name>"
 - Skill `angular-developer` ([angular/skills](https://github.com/angular/skills)) nếu đã cài, cho kiến thức Angular tổng quát. Không lặp lại kiến thức đó ở đây.
 
 ## Điều kiện tiên quyết
-- Repo phải có `angular.json` và `packages/ui/ng-package.json` (Phase 0 trong [docs/PLAN.md](../../../docs/PLAN.md)). Nếu chưa có thì báo user rằng workspace Angular chưa được dựng và dừng.
 - Các semantic token mà SPEC §7 cần phải tồn tại. Thiếu thì làm `nxt-tokens` trước.
+- Ví dụ mẫu đã đạt DoD: `packages/ui/button/` (Button) và `packages/ui/layout/` (Stack, Inline, Grid, Span). Đọc trước khi viết component mới.
 
 ## Quy trình
 
@@ -56,11 +56,16 @@ Viết `apps/docs/src/examples/<name>/*.example.ts`:
 
 ### 7. Kiểm tra cuối
 ```bash
-npm run ds:check            # tokens + hard-code
-npx ng test ui --watch=false
-npx ng build ui
+npm run ds:check        # tokens + hard-code (hook cũng chạy sau mỗi lần sửa file)
+npm test                # Vitest
+npm run build           # tokens → docs data → @nxt/ui → docs
+npm run test:a11y       # axe trên mọi example × sáng/tối/gọn + test bàn phím
 ```
-Chạy thêm `nxt-a11y-audit` cho component. Sau đó cập nhật SPEC §10 (đánh dấu từng mục) và docs (skill `nxt-docs-page`).
+Lưu ý:
+- Bẫy đã gặp ở Button: thuộc tính tĩnh (`<button nxtButton disabled>`) **vẫn nằm trên DOM** dù component có input cùng tên. Phải gỡ bằng host binding `'[attr.disabled]': 'null'`, và có unit test cho trường hợp attribute tĩnh.
+- Xem bản render thật: `node tools/docs/serve-static.mjs`, rồi mở `/examples/<id>?color=dark&density=compact`.
+
+Sau đó cập nhật SPEC §10 (đánh dấu từng mục) và docs (skill `nxt-docs-page`).
 
 ## Báo cáo
 - File đã tạo/sửa.

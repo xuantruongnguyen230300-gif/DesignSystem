@@ -47,11 +47,13 @@ Nếu thêm cặp màu chữ/nền hoặc viền/nền mới thì thêm cặp đ
 
 Kiểm nhanh một cặp: `npm run ds:contrast -- "<fg>" "<bg>"`.
 
-### 5. Validate
+### 5. Validate và build
 ```bash
-npm run ds:tokens          # đọc lỗi theo path, sửa đến khi 0 error
+npm run ds:tokens             # đọc lỗi theo path, sửa đến khi 0 error
 npm run ds:tokens -- --json   # khi cần xử lý tự động
+npm run tokens:build          # sinh packages/tokens/dist (CSS theo mode/brand, JS, JSON cho docs)
 ```
+Thang màu core sinh từ seed: sửa `packages/tokens/palettes.json` rồi chạy `npm run tokens:palettes`. Không sửa tay `src/primitive/color.tokens.json`.
 Bảng lỗi thường gặp và cách sửa: [references/validator-errors.md](references/validator-errors.md).
 
 ### 6. Báo cáo cho user

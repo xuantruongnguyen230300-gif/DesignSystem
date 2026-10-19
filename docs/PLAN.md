@@ -5,6 +5,28 @@
 > **Tham chiếu:** [vnrpromax.vercel.app/styleguide](https://vnrpromax.vercel.app/styleguide/hrm/layout/grid) chỉ dùng để học hỏi. NXT không dùng lại code hay thương hiệu của trang này.
 > Cập nhật: 2026-10-16
 
+## Trạng thái (2026-10-16)
+
+| Giai đoạn | Trạng thái | Đã có |
+|-----------|-----------|-------|
+| 0. Nền móng | ✅ Xong | Workspace Angular 21 (zoneless, Vitest, ng-packagr), npm 11; CI GitHub Actions; hook Claude Code; ADR 001–009; 10 skill + 1 agent |
+| 1. Foundations & token | ✅ Xong, còn icon | Khoảng 390 token (11 thang OKLCH, semantic sáng/tối, 3 mật độ, 2 motion, typography, layout); brand mẫu `sample`; engine build mode/brand lồng nhau; 400/400 phép kiểm tương phản đạt; docs Nền tảng đủ 6 trang. **Còn lại:** `@nxt/icons` (ADR-003) |
+| 2. Core components | 🟡 Bắt đầu | Button + layout primitives (Stack, Inline, Grid, Span) ở mức beta: SPEC, unit test 15/15, axe 0 vi phạm. Các đợt A–D còn lại xem §6 |
+| 3–4 | ⏳ Chưa bắt đầu | |
+
+**Kiểm chứng ở thời điểm ghi:**
+- `npm run ds:check` sạch;
+- `npm test` 15/15;
+- `npm run test:a11y` 90/90 (axe trên 18 example × 3 ngữ cảnh, 16 trang × sáng/tối, 4 test bàn phím);
+- build `@nxt/ui` và docs không cảnh báo.
+
+**Việc tiếp theo** (theo thứ tự):
+1. Chốt các ADR còn "Đề xuất": 002, 003, 004, 006, 007.
+2. `@nxt/icons`.
+3. Đợt A: IconButton, Link, Badge/Tag, StatusTag, Spinner, Skeleton, Tooltip.
+4. Đợt B (nhập liệu).
+5. Visual regression.
+
 ## Mục lục
 1. Trang tham chiếu đang có gì và NXT làm khác ở đâu
 2. "UX tốt hơn" nghĩa là gì: mục tiêu đo được
@@ -73,14 +95,15 @@ nxt-design/
 ├─ docs/             Kế hoạch, ADR, nguyên tắc thiết kế (đã có)
 └─ .claude/          Skill + agent cho AI (đã có)
 ```
-- **pnpm workspaces + Angular CLI multi-project** (`ng-packagr` cho thư viện). Chưa cần Nx; xem lại khi có từ 6 gói trở lên hoặc khi CI chậm.
+- **Angular CLI multi-project + một `package.json` gốc + npm 11** (`ng-packagr` cho thư viện). Kế hoạch ban đầu là pnpm; đã đổi vì npm 10.8 lỗi và pnpm chưa có sẵn, xem [ADR-009](adr/009-workspace.md). Chưa cần Nx; xem lại khi có từ 6 gói trở lên hoặc khi CI chậm.
 - **Node ≥ 20.19.** Angular 21 yêu cầu `^20.19 || ^22.12 || ^24`.
 
 ### 3.2 Pipeline token
 ```mermaid
 flowchart LR
-  A[DTCG JSON<br/>primitive / semantic / component<br/>+ mode + brands/*] -->|ds:tokens validate| B{Validator<br/>tier · mode · brand · contrast}
-  B -->|pass| C[Style Dictionary]
+  S[palettes.json<br/>seed OKLCH] -->|tokens:palettes| A
+  A[DTCG JSON<br/>primitive / semantic / component<br/>+ mode + brands/*] -->|ds:tokens validate| B{Validator<br/>tier · mode · brand · contrast<br/>· trục mode độc lập}
+  B -->|pass| C[tools/tokens/build.mjs<br/>ADR-008]
   C --> D[CSS vars --nxt-*<br/>:root · data-nxt-color · data-nxt-density · data-nxt-brand]
   C --> E[SCSS breakpoints]
   C --> F[TS constants]
@@ -216,6 +239,10 @@ flowchart LR
 ### 7.3 Tooling dùng chung (`tools/`, đã chạy thử)
 | Lệnh | Script | Làm gì |
 |------|--------|--------|
+| `npm run tokens:build` | `tools/tokens/build.mjs` | Sinh CSS theo mode/brand (khai báo lại phụ thuộc cho mode lồng nhau), SCSS breakpoint, JS, JSON cho docs |
+| `npm run tokens:palettes` | `tools/tokens/palette.mjs --config` | Sinh lại 11 thang màu core từ `packages/tokens/palettes.json` |
+| `npm run docs:generate` | `tools/docs/generate.mjs` | Đổi markdown thành HTML theo segment, lập danh mục example, trích API từ source, sinh `llms.txt`; báo lỗi nếu tham chiếu tới example/API không tồn tại |
+| (hook) | `tools/hooks/post-edit-check.mjs` | Sau mỗi Edit/Write của Claude Code: kiểm hard-code hoặc token của file vừa sửa; lỗi thì exit 2 |
 | `npm run ds:tokens` | `tools/tokens/validate.mjs` | Kiểm tier, tên, `$type`, alias, vòng lặp, độ phủ mode, brand chỉ override, va chạm CSS var, `$description`, deprecated, **tương phản ở mọi mode × brand** |
 | `npm run ds:palette -- --name x --seed "#hex"` | `tools/tokens/palette.mjs` | Sinh thang OKLCH 11 bước (gamut-map về sRGB) dạng DTCG, kèm bảng tương phản và gợi ý bước fill |
 | `npm run ds:contrast -- fg bg` | `tools/tokens/contrast.mjs` | Tương phản WCAG cho một cặp màu (hỗ trợ alpha) |
@@ -225,14 +252,15 @@ flowchart LR
 Các script không cần dependency nào và chạy được trên Node 20.
 
 ### 7.4 Bước tiếp theo cho bộ skill
-- **Hook:** sau khi Edit/Write file `.css` / `.scss` / `.html` / `.ts` trong `packages/`, tự chạy `check-hardcoded`, theo cách impeccable chạy detector qua hook. Thêm vào `.claude/settings.json` khi workspace Phase 0 đã có.
+- ✅ **Hook** (`.claude/settings.json`): sau Edit/Write file `.css` / `.scss` / `.html` / `.ts` trong `packages/` hoặc `apps/`, hook chạy `check-hardcoded`; sửa file token thì chạy validator. Đã kiểm đầu-cuối: ghi `#ff0000` thì hook chặn và trả lỗi về cho agent.
+- **Visual regression:** Playwright `toHaveScreenshot` trên example. Baseline phải chụp trên Linux (CI) để tránh lệch font giữa các hệ điều hành.
 - **Eval cho skill:** dùng `skill-creator` để chạy so sánh có skill và không có skill, và tối ưu description cho đúng lúc kích hoạt.
 - **Figma** (nếu team dùng): skill `nxt-figma-sync` qua Figma MCP (`get_variable_defs`), so sánh Figma Variables với token DTCG.
 - **Đóng gói `nxt-use`** vào `@nxt/ui` để repo sản phẩm cài một lần là có skill.
 
 ## 8. Quyết định cần chốt (ADR)
 
-Đặt tại `docs/adr/NNN-*.md`. Mỗi ADR có Bối cảnh, Phương án, Quyết định và Hệ quả.
+Đã ghi tại [docs/adr/](adr/README.md). ADR 001, 005, 008, 009 đã áp dụng trong code và chờ xác nhận; 002, 003, 004, 006, 007 còn ở trạng thái đề xuất. Bảng dưới là đề xuất ban đầu.
 
 | ADR | Câu hỏi | Đề xuất ban đầu |
 |-----|---------|-----------------|

@@ -152,19 +152,24 @@
       "$type": "dimension",
       "$description": "The only breakpoint scale in NXT. CSS vars cannot be used in @media — use @nxt/tokens/scss/breakpoints or container queries.",
       "sm": {
-        "$value": "640px"
+        "$value": "640px",
+        "$description": "Điện thoại ngang, cửa sổ rất hẹp."
       },
       "md": {
-        "$value": "768px"
+        "$value": "768px",
+        "$description": "Tablet; form chuyển 1 → 2 cột."
       },
       "lg": {
-        "$value": "1024px"
+        "$value": "1024px",
+        "$description": "Laptop nhỏ; sidebar app shell bắt đầu thu gọn."
       },
       "xl": {
-        "$value": "1280px"
+        "$value": "1280px",
+        "$description": "Desktop chuẩn; gutter 32px."
       },
       "2xl": {
-        "$value": "1536px"
+        "$value": "1536px",
+        "$description": "Màn hình rộng."
       }
     }
   }

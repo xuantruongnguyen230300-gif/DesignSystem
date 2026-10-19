@@ -18,6 +18,7 @@ import { NxtButton, NxtButtonType, NxtButtonVariant } from './button';
       </button>
     </form>
     <a nxtButton href="#ho-so" variant="ghost">Xem hồ sơ</a>
+    <button nxtButton id="static-disabled" disabled>Phê duyệt</button>
   `,
 })
 class Host {
@@ -86,6 +87,15 @@ describe('NxtButton', () => {
       expect(button.hasAttribute('disabled')).toBe(false);
       button.focus();
       expect(document.activeElement).toBe(button);
+    });
+
+    it('removes a static native disabled attribute so the button stays focusable', () => {
+      const { fixture } = setup();
+      const staticDisabled: HTMLButtonElement = fixture.nativeElement.querySelector('#static-disabled');
+      expect(staticDisabled.hasAttribute('disabled')).toBe(false);
+      expect(staticDisabled.getAttribute('aria-disabled')).toBe('true');
+      staticDisabled.focus();
+      expect(document.activeElement).toBe(staticDisabled);
     });
 
     it('blocks activation before consumer click listeners run', () => {

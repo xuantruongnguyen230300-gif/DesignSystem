@@ -43,6 +43,8 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
     '[attr.aria-disabled]': 'inactive() || null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.type]': 'isNativeButton ? type() : null',
+    // A static `disabled` attribute would stay on the DOM and make the native button unfocusable.
+    '[attr.disabled]': 'null',
   },
 })
 export class NxtButton {

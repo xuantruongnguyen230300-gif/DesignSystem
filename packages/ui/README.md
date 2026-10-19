@@ -15,4 +15,4 @@ import { NxtStack, NxtInline, NxtGrid, NxtSpan } from '@nxt/ui/layout';
 
 - Quy ước: [docs/design/component-conventions.md](../../docs/design/component-conventions.md)
 - Mỗi component có `SPEC.md` trong thư mục của nó. SPEC là nguồn sự thật về hành vi.
-- Build: `npx ng build ui` → `dist/ui`. Test: `npm test`.
+- Build: `npx ng build ui` → `dist/ui`. Test: `npm test` (unit) và `npm run test:a11y` (axe trên mọi example của docs).

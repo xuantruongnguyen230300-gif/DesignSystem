@@ -6,12 +6,14 @@
 
 - Nguồn token là **W3C Design Tokens (DTCG 2025.10)** JSON, nằm tại `packages/tokens/src/**/*.tokens.json`.
 - Màu ưu tiên viết bằng `oklch` (object `{ colorSpace, components, alpha, hex }`, trong đó `hex` dùng làm fallback). Dimension viết dạng `{ "value": 8, "unit": "px" }` hoặc chuỗi `"8px"`.
-- Build bằng Style Dictionary (v5+), sinh ra:
-  - `@nxt/tokens/css/*.css`: CSS custom properties `--nxt-*`, mỗi mode/brand là một selector.
-  - `@nxt/tokens/scss/_breakpoints.scss`: mixin breakpoint, vì CSS var không dùng được trong `@media`.
-  - `@nxt/tokens/js`: hằng số TS (charts, canvas, so sánh).
-  - `@nxt/tokens/json`: dữ liệu cho docs site và cho agent.
-- Kiểm tra bằng `npm run ds:tokens`, chạy trong CI và trước mỗi commit đụng tới token.
+- Thang màu primitive **sinh từ seed** trong `packages/tokens/palettes.json` bằng `npm run tokens:palettes`. Không sửa tay `src/primitive/color.tokens.json`.
+- Build bằng `npm run tokens:build` (`tools/tokens/build.mjs`, xem [ADR-008](../adr/008-token-build.md)) vào `packages/tokens/dist/`:
+  - `css/nxt.css`: `:root` và một khối cho mỗi mode. **Mỗi khối khai báo lại bao đóng phụ thuộc** của những token nó đổi, nên alias như `--nxt-button-bg` đúng ở mọi vùng lồng nhau.
+  - `css/brands/<product>.css` và `css/brands/all.css`.
+  - `scss/_breakpoints.scss`: mixin `nxt-up` / `nxt-down`, vì CSS var không dùng được trong `@media`.
+  - `js/index.js` + `.d.ts`: giá trị mặc định, `breakpoints`, `cssVar()`.
+  - `json/tokens.json`: mọi token kèm giá trị ở từng ngữ cảnh và kết quả tương phản, dùng cho docs.
+- Kiểm tra bằng `npm run ds:tokens`. Bước này chạy trong CI, trong hook của Claude Code khi sửa file token, và tự động trước khi build (build dừng nếu có lỗi).
 
 ## 2. Ba tầng (tier)
 
@@ -43,11 +45,12 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 
 | Category | Token |
 |----------|-------|
-| `color.bg` | `canvas`, `surface`, `surface-hover`, `surface-raised`, `subtle`, `muted`, `disabled`, `inverse`, `overlay`, `primary`, `primary-hover`, `primary-pressed`, `primary-subtle`, `danger`, `danger-hover`, `danger-subtle`, `success-subtle`, `warning-subtle`, `info-subtle` |
-| `color.text` | `default`, `strong`, `subtle`, `disabled`, `inverse`, `link`, `on-primary`, `on-danger`, `danger`, `success`, `warning`, `info` |
-| `color.border` | `default`, `subtle`, `strong`, `input`, `input-hover`, `danger`, `selected` |
-| `color.icon` | `default`, `subtle`, `disabled`, `primary`, `danger`, `success`, `warning`, `info` |
-| `color.data` | `1`…`8` (categorical), `sequential-*`, `diverging-*` cho chart |
+| `color.bg` | `canvas`, `surface`, `surface-hover`, `surface-raised`, `subtle`, `muted`, `disabled`, `inverse`, `overlay`, `primary`, `primary-hover`, `primary-pressed`, `primary-subtle`, `selected`, `selected-hover`, `danger`, `danger-hover`, `danger-pressed`, `danger-subtle`, `success-subtle`, `warning-subtle`, `info-subtle`, `transparent` |
+| `color.text` | `default`, `strong`, `subtle`, `disabled`, `inverse`, `link`, `link-hover`, `on-primary`, `on-danger`, `danger`, `success`, `warning`, `info` |
+| `color.border` | `default`, `subtle`, `strong`, `input`, `input-hover`, `danger`, `selected`, `transparent` |
+| `color.icon` | `default`, `subtle`, `disabled`, `inverse`, `primary`, `danger`, `success`, `warning`, `info` |
+| `color.data` | `1`…`8` (categorical). Thang `sequential-*` / `diverging-*` sẽ thêm khi có component chart |
+| `border-width` | `default`, `strong` |
 | `focus.ring` | `color`, `width`, `offset` |
 | `space.inset` | `xs`, `sm`, `md`, `lg` (padding bên trong control/container) |
 | `space.gap` | `xs`, `sm`, `md`, `lg`, `xl` (khoảng cách giữa phần tử) |
@@ -56,13 +59,15 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 | `size.row` | `sm`, `md`, `lg` (row height của table/list) |
 | `size.icon` | `sm`, `md`, `lg` |
 | `radius` | `control`, `container`, `overlay`, `pill` |
-| `typography` | `display`, `heading-lg`, `heading-md`, `heading-sm`, `body-md`, `body-sm`, `label-md`, `label-sm`, `caption`, `code` (composite `typography`) |
+| `typography` | `display`, `heading-lg`, `heading-md`, `heading-sm`, `body-lg`, `body-md`, `body-sm`, `label-md`, `label-sm`, `caption`, `code` (composite `typography`; lớp tiện ích `.nxt-text-<vai-trò>`) |
 | `font-family` | `sans`, `mono` |
 | `elevation` | `raised`, `overlay`, `modal` (shadow) |
 | `motion.duration` | `instant`, `fast`, `normal`, `slow` |
 | `motion.ease` | `standard`, `enter`, `exit` |
 | `z` | `base`, `sticky`, `dropdown`, `overlay`, `modal`, `toast`, `tooltip` |
-| `layout` | `container-max`, `sidebar-width`, `sidebar-width-collapsed`, `header-height` |
+| `layout` | `container-max`, `content-default`, `content-narrow`, `sidebar-width`, `sidebar-width-collapsed`, `header-height`, `gutter-sm/md/lg`, `item-min-sm/md/lg` |
+
+Tên CSS của primitive và semantic **không được trùng nhau**. Validator chặn trường hợp này; ví dụ thực tế là `primitive.font.family.sans` và `semantic.font-family.sans` cùng ra `--nxt-font-family-sans`. Vì vậy primitive đặt tên theo bản chất (`font.family.inter`), còn semantic đặt theo vai trò (`font-family.sans`).
 
 ## 4. Mode
 
@@ -75,6 +80,14 @@ Mode là các file cùng tên khác hậu tố: `<name>.<mode>.tokens.json`. Cá
 | `motion` | `full`, `reduced` | `semantic.motion.duration.*` (reduced = 0ms trừ fade ngắn) | `@media (prefers-reduced-motion: reduce)` + `[data-nxt-motion="reduced"]` |
 
 Một token đã nằm trong file mode thì không được định nghĩa lại trong file base.
+
+**Các trục độc lập nhau:** token của trục này không được phụ thuộc, dù gián tiếp, vào token của trục khác. Ví dụ, một token density không được alias tới token màu. Validator báo lỗi `mode axes must stay independent`. Luật này bảo đảm CSS sinh ra đúng ở mọi tổ hợp lồng nhau (tối + gọn + brand…).
+
+**Theo hệ điều hành:**
+- `data-nxt-color="auto"` theo `prefers-color-scheme`.
+- Motion **mặc định** theo `prefers-reduced-motion`; ép bằng `data-nxt-motion="full"` hoặc `"reduced"`.
+
+Mọi thuộc tính `data-nxt-*` dùng được trên bất kỳ phần tử nào, không chỉ `<html>`.
 
 ## 5. Brand cho từng sản phẩm
 
@@ -91,7 +104,7 @@ Một token đã nằm trong file mode thì không được định nghĩa lại
 
 ## 6. Tương phản tự động
 
-`packages/tokens/tokens.config.json → contrastPairs` liệt kê các cặp màu bắt buộc. Validator tính các cặp này ở **mọi** tổ hợp mode × brand.
+`packages/tokens/tokens.config.json → contrastPairs` liệt kê các cặp màu bắt buộc. Validator tính các cặp này ở **mọi** tổ hợp mode × brand. Hiện có 40 cặp × 10 ngữ cảnh = 400 phép kiểm. Dạng rút gọn của file:
 
 ```json
 {

@@ -2,21 +2,33 @@
 
 NXT Design là design system đa sản phẩm cho phần mềm nghiệp vụ, xây trên Angular 21, Angular CDK (headless) và token W3C DTCG.
 
-- **Kế hoạch:** [docs/PLAN.md](docs/PLAN.md)
-- **Nguyên tắc thiết kế:** [docs/design/principles.md](docs/design/principles.md)
-- **Kiến trúc token:** [docs/design/token-architecture.md](docs/design/token-architecture.md)
-- **Quy ước component:** [docs/design/component-conventions.md](docs/design/component-conventions.md)
-- **Hướng dẫn cho AI agent và danh mục skill:** [CLAUDE.md](CLAUDE.md)
+## Bắt đầu
 
-## Công cụ (Node ≥ 20.19, không cần cài dependency)
+Yêu cầu: Node ≥ 20.19 và **npm ≥ 11** (`npm i -g npm@11`; npm 10.8 lỗi khi cài, xem [ADR-009](docs/adr/009-workspace.md)).
 
 ```bash
-npm run ds:check                                   # validate token + bắt giá trị hard-code
-npm run ds:palette -- --name brand --seed "#2563EB"  # sinh thang màu OKLCH + bảng tương phản
-npm run ds:contrast -- "#6B7280" "#FFFFFF"           # tương phản WCAG
-npm run ds:new -- date-picker                        # tạo khung component
+npm install
+npm start             # docs tại http://localhost:4200 (token + dữ liệu docs tự sinh lại)
 ```
 
-## Trạng thái
+| Lệnh | Việc |
+|------|------|
+| `npm run build` | Token → dữ liệu docs → `@nxt/ui` → docs |
+| `npm test` | Unit test (Vitest) |
+| `npm run test:a11y` | axe + bàn phím trên mọi example và trang docs (Playwright, chạy sau `build`) |
+| `npm run ds:check` | Kiểm token (tier, mode, brand, 400 phép kiểm tương phản) và giá trị hard-code |
 
-Repo đang ở **Phase 0 (nền móng)**. Đã có kế hoạch, nguyên tắc thiết kế, bộ skill agent và tooling. Workspace Angular sẽ được dựng tiếp theo.
+## Có gì trong repo
+
+| Gói | Nội dung |
+|-----|----------|
+| [`@nxt/tokens`](packages/tokens) | Khoảng 390 token DTCG: thang màu OKLCH sinh từ seed, sáng/tối, 3 mức mật độ, motion, brand theo sản phẩm (ví dụ `sample`) |
+| [`@nxt/ui`](packages/ui) | Style nền + Button + layout primitives (Stack, Inline, Grid theo container query) |
+| [`apps/docs`](apps/docs) | Docs tiếng Việt: ví dụ chạy thật, bảng API và token sinh từ source, tìm kiếm <kbd>Ctrl K</kbd> không dấu, `llms.txt` |
+
+## Tài liệu
+
+- [Kế hoạch & trạng thái](docs/PLAN.md)
+- [Nguyên tắc thiết kế](docs/design/principles.md) · [Kiến trúc token](docs/design/token-architecture.md) · [Quy ước component](docs/design/component-conventions.md)
+- [ADR](docs/adr/README.md)
+- [Hướng dẫn cho AI agent và bộ skill](CLAUDE.md)

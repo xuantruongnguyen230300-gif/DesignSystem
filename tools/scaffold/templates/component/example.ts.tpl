@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Nxt{{Name}} } from '@nxt/ui/{{name}}';
 
-/** Docs example + a11y/visual-regression fixture. Keep realistic Vietnamese content. */
+/** {{title}} cơ bản */
 @Component({
-  selector: 'nxt-example-{{name}}-basic',
+  selector: 'example-{{name}}-basic',
   imports: [Nxt{{Name}}],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Docs example + a11y fixture: realistic Vietnamese content, no random data or current time.
   template: `<{{tag}}>Lưu thay đổi</{{tagClose}}>`,
 })
 export class {{Name}}BasicExample {}

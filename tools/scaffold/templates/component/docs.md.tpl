@@ -1,44 +1,50 @@
 ---
 title: {{title}}
-slug: components/{{name}}
+description: "TODO: 1 câu — component này giúp người dùng làm gì (dùng trong llms.txt và đầu trang)"
 status: draft
-category: ""          # actions | inputs | selection | data-display | feedback | overlays | navigation | layout
+group: "TODO: Hành động | Nhập liệu | Lựa chọn | Hiển thị dữ liệu | Phản hồi | Overlay | Điều hướng | Bố cục"
+order: 100
 package: "@nxt/ui/{{name}}"
-since: ""
-examples:
-  - {{name}}-basic
+keywords:
+  - {{name}}
 ---
 
 # {{title}}
 
-<!-- 1 câu: component này giúp người dùng làm gì. -->
-
 ## Khi nào dùng
+
 -
 
 ## Khi nào không dùng
+
 - Dùng … thay thế khi …
 
 ## Ví dụ
-<!-- Mỗi example là 1 file trong apps/docs/src/examples/{{name}}/ — cũng là fixture cho test a11y/visual. -->
-::example{{{name}}-basic}
 
-## Anatomy
+::example{{{name}}-basic}
 
 ## Hành vi & trạng thái
 
 ## Accessibility
+
 | Phím | Hành vi |
 |------|---------|
+| <kbd>Tab</kbd> | |
 
-## Nội dung (UX writing)
+## Nội dung
+
 | Nên | Không nên |
 |-----|-----------|
+| | |
 
 ## API
-<!-- Bảng API sinh từ packages/ui/{{name}} — không viết tay. -->
 
-## Tokens
-<!-- Bảng token sinh từ packages/tokens/src/component/{{name}}.tokens.json — không viết tay. -->
+::api{{{name}}}
+
+## Token
+
+::tokens{component.{{name}}}
 
 ## Changelog
+
+- **{{date}}**: bản nháp.

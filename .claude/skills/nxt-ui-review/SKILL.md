@@ -31,8 +31,13 @@ Với từng file, đối chiếu:
 - **Heuristic cho dữ liệu dày:** [references/heuristics.md](references/heuristics.md).
 - **UX writing** (principles §5): nhãn, thông báo lỗi, thuật ngữ.
 
-### 4. Xem bản render (nếu docs app chạy được)
-- Mở example ở light/dark × compact/comfortable, ở zoom 200% và ở chiều rộng 375px (dùng Playwright, hoặc trình duyệt nếu có công cụ).
+### 4. Xem bản render
+- `npm run build`, rồi `node tools/docs/serve-static.mjs` (cổng 4300).
+- Mở `/examples/<id>?color=dark&density=compact` hoặc trang docs. Chụp ảnh bằng Playwright (`page.screenshot`) và đọc ảnh, ở 1440px, 390px và zoom 200%.
+- Lỗi thực tế đã bắt được nhờ xem ảnh mà test tự động bỏ sót:
+  - cột bảng bị giá trị dài chiếm hết chỗ;
+  - tiêu đề example lấy nhầm JSDoc;
+  - nút mất tên truy cập trên mobile.
 - Không chạy được thì ghi rõ "chưa kiểm bản render" trong báo cáo, không đoán.
 
 ### 5. Second opinion (khi phạm vi lớn: ≥ 5 file hoặc một pattern)

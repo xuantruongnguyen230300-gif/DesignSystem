@@ -63,14 +63,16 @@ Hành vi bàn phím **phải** khớp WAI-ARIA APG của pattern ghi trong `SPEC
 
 ## 5. Test (Definition of Done)
 
-| Lớp | Công cụ | Bắt buộc |
-|-----|---------|----------|
-| Unit + keyboard map | Vitest + TestBed (`@angular/core/testing`), `@angular/cdk/testing` harness | Mọi dòng trong bảng Keyboard của SPEC |
-| A11y | Playwright + `@axe-core/playwright` trên trang example | 0 vi phạm ở light/dark × 3 density |
-| Visual regression | Playwright `toHaveScreenshot` trên example | Mỗi variant × state chính × light/dark |
-| Token/hard-code | `npm run ds:check` | Sạch |
+| Lớp | Công cụ | Lệnh | Bắt buộc |
+|-----|---------|------|----------|
+| Unit + keyboard map | Vitest + TestBed (`@angular/core/testing`) | `npm test` | Mọi dòng trong bảng Keyboard của SPEC |
+| A11y | Playwright + `@axe-core/playwright` (`apps/docs/e2e/a11y.spec.ts`), tự chạy trên **mọi** example | `npm run build && npm run test:a11y` | 0 vi phạm ở sáng/tối/gọn |
+| Visual regression | Playwright `toHaveScreenshot` | (chưa dựng, xem PLAN §7.4) | Mỗi variant × state chính × sáng/tối |
+| Token/hard-code | validator + detector (cũng chạy qua hook của Claude Code) | `npm run ds:check` | Sạch |
 
-Mỗi component nên có component harness (`Nxt<Name>Harness`) trong `packages/ui/<name>/testing`, để ứng dụng sản phẩm dùng trong test của họ.
+Thêm component vào test a11y chỉ cần tạo file example: test tự lấy danh sách từ `apps/docs/src/generated/examples.json`.
+
+Component tương tác nên có harness (`Nxt<Name>Harness`) trong `packages/ui/<name>/testing`, để ứng dụng sản phẩm dùng trong test của họ. Việc này sẽ làm từ đợt B, khi có control nhập liệu.
 
 ## 6. Trạng thái phát hành
 

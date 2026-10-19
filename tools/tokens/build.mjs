@@ -132,8 +132,11 @@ function textOf(ctx, p) {
 }
 const diff = (a, b, paths) => new Set([...paths].filter((p) => textOf(a, p) !== textOf(b, p)));
 
+// Keep source declaration order inside each tier (scales read 50→950, breakpoints sm→2xl).
+const declOrder = new Map();
+for (const t of allTokens) if (!declOrder.has(t.path)) declOrder.set(t.path, declOrder.size);
 const tierRank = (p) => TIER_ORDER.indexOf(p.split('.')[0]);
-const sortPaths = (ps) => [...ps].sort((a, b) => tierRank(a) - tierRank(b) || a.localeCompare(b, 'en', { numeric: true }));
+const sortPaths = (ps) => [...ps].sort((a, b) => tierRank(a) - tierRank(b) || (declOrder.get(a) ?? 0) - (declOrder.get(b) ?? 0));
 
 function block(selector, ctx, paths, extra = []) {
   if (!paths.size && !extra.length) return '';
@@ -264,6 +267,8 @@ fs.rmSync(outDir, { recursive: true, force: true });
 const written = [];
 written.push(write(`css/${config.prefix}.css`, coreCss));
 for (const [b, css] of Object.entries(brandCss)) written.push(write(`css/brands/${b}.css`, css));
+// Convenience bundle for apps (like the docs site) that switch between every product brand.
+written.push(write('css/brands/all.css', `${header}${Object.keys(brandCss).map((b) => `@import './${b}.css';`).join('\n')}\n`));
 
 const bpEntries = Object.entries(breakpoints);
 written.push(

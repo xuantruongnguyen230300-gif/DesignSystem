@@ -41,13 +41,13 @@ Token: thêm `semantic.color.bg.selected`; deprecate `semantic.color.bg.active` 
 ## 4. Release gate
 Chạy theo thứ tự và dừng ở bước đầu tiên lỗi:
 ```bash
-npm run ds:check                           # tokens + hard-code
-npx ng test ui --watch=false                # unit + keyboard
-npx ng build tokens && npx ng build ui      # build gói
-npx playwright test --grep @a11y            # axe mọi example
-npx playwright test --grep @visual          # visual regression
-npx ng build docs                           # docs build
+npm run ds:check        # tokens + hard-code
+npm test                # unit + keyboard (Vitest)
+npm run build           # tokens → docs data → @nxt/ui (dist/ui) → docs (dist/docs)
+npm run test:a11y       # axe mọi example × sáng/tối/gọn + test bàn phím
+# visual regression: chưa có hạ tầng (PLAN §7.4) — ghi "chưa áp dụng"
 ```
+CI (`.github/workflows/ci.yml`) chạy đúng chuỗi này trên mỗi PR.
 - Visual diff có thay đổi thì từng ảnh phải được xác nhận là **có chủ đích** và đã ghi trong changeset. Không cập nhật snapshot hàng loạt.
 - Bước nào chưa có hạ tầng (ví dụ chưa có Playwright) thì ghi "chưa áp dụng" trong báo cáo, không ghi "pass".
 

@@ -16,7 +16,8 @@ const strict = args.includes('--strict');
 const targets = args.filter((a) => !a.startsWith('--'));
 const roots = (targets.length ? targets : ['packages', 'apps']).filter((p) => fs.existsSync(p));
 
-const SKIP_DIRS = new Set(['node_modules', 'dist', '.angular', 'coverage', '.nx', 'out-tsc', 'tmp']);
+// `generated` holds build output from tools/docs/generate.mjs (rendered prose mentions "rgb()" etc.).
+const SKIP_DIRS = new Set(['node_modules', 'dist', '.angular', 'coverage', '.nx', 'out-tsc', 'tmp', 'generated']);
 const SKIP_PATHS = [`packages${path.sep}tokens`];
 const EXTS = new Set(['.css', '.scss', '.html', '.ts']);
 

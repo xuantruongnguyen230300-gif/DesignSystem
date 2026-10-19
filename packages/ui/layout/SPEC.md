@@ -68,6 +68,6 @@ Không áp dụng.
 ## 10. Acceptance (Definition of Done)
 - [x] Example cho stack, inline, grid 12 cột responsive, grid auto, grid trong vùng hẹp
 - [x] Unit test phản ánh input → data-attribute / custom property
-- [ ] axe: 0 vi phạm (Playwright, `npm run test:a11y`)
+- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-16)
 - [x] `npm run ds:check` sạch
 - [x] Docs page đủ mục

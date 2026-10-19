@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/hooks/post-edit-check.mjs",
+            "timeout": 30,
+            "statusMessage": "NXT: kiểm tra token & giá trị hard-code"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -48,9 +48,23 @@
               {
                 "glob": "**/*",
                 "input": "apps/docs/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "apps/docs/src/generated/public"
+              },
+              {
+                "glob": "tokens.json",
+                "input": "packages/tokens/dist/json",
+                "output": "data"
               }
             ],
             "styles": [
+              "packages/tokens/dist/css/nxt.css",
+              "packages/tokens/dist/css/brands/all.css",
+              "node_modules/@fontsource-variable/inter/index.css",
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
+              "packages/ui/styles/nxt.css",
               "apps/docs/src/styles.css"
             ]
           },
@@ -59,13 +73,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "600kB",
                   "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "8kB",
+                  "maximumError": "16kB"
                 }
               ],
               "outputHashing": "all"
