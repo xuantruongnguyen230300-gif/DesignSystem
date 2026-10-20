@@ -468,3 +468,63 @@ test.describe('feedback', () => {
     expect(await axe(page, '[data-example-root]')).toEqual([]);
   });
 });
+
+test.describe('grid fills the screen', () => {
+  /** Page (content area) scroll, the grid card's gap to the bottom of the content area, and the grid's own scroll. */
+  const sizes = (page: Page) =>
+    page.evaluate(() => {
+      const root = document.querySelector('example-hrm-frame')!;
+      const main = root.querySelector<HTMLElement>('.nxt-app-shell__main')!;
+      const card = root.querySelector<HTMLElement>('nxt-card')!;
+      const grid = root.querySelector<HTMLElement>('nxt-table-scroll');
+      const pad = parseFloat(getComputedStyle(root.querySelector('.page')!).paddingBlockEnd);
+      return {
+        pageX: main.scrollWidth - main.clientWidth,
+        pageY: main.scrollHeight - main.clientHeight,
+        bottomGap: Math.round(main.getBoundingClientRect().bottom - card.getBoundingClientRect().bottom - pad),
+        sideGap: Math.round(main.getBoundingClientRect().right - card.getBoundingClientRect().right - pad),
+        tableFillsGrid: grid ? grid.querySelector('table')!.getBoundingClientRect().width >= grid.clientWidth : true,
+        gridX: grid ? grid.scrollWidth - grid.clientWidth : 0,
+        gridY: grid ? grid.scrollHeight - grid.clientHeight : 0,
+        shellOverflow: root.querySelector('.nxt-app-shell')!.getBoundingClientRect().width - root.getBoundingClientRect().width,
+        mainDisplay: getComputedStyle(main).display,
+      };
+    });
+
+  test('catalog: with few rows or many, the grid reaches the bottom and both edges of the content area', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    for (const tab of [/^Chức danh/, /^Cấp bậc/, /^Ca làm việc/]) {
+      await page.getByRole('tab', { name: tab }).click();
+      const s = await sizes(page);
+      expect(s.pageY, `${tab}: page scroll`).toBeLessThanOrEqual(1);
+      expect(Math.abs(s.bottomGap), `${tab}: gap under the grid`).toBeLessThanOrEqual(1);
+      expect(Math.abs(s.sideGap), `${tab}: gap right of the grid`).toBeLessThanOrEqual(1);
+      expect(s.tableFillsGrid, `${tab}: table as wide as the grid`).toBe(true);
+    }
+  });
+
+  test('catalog on a phone: the page does not scroll sideways; the grid does', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const s = await sizes(page);
+    expect(s.pageX).toBeLessThanOrEqual(1);
+    expect(s.pageY).toBeLessThanOrEqual(1);
+    expect(s.gridX).toBeGreaterThan(100);
+    expect(Math.abs(s.bottomGap)).toBeLessThanOrEqual(1);
+  });
+
+  test('docs page: the catalog preview fits its frame and fills it (a nested shell keeps its own scroll mode)', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/templates/catalog');
+    await page.locator('docs-example example-hrm-frame nxt-table-scroll').waitFor();
+    const s = await sizes(page);
+    expect(s.mainDisplay).toBe('flex');
+    expect(s.shellOverflow).toBeLessThanOrEqual(1);
+    expect(s.pageY).toBeLessThanOrEqual(1);
+    expect(Math.abs(s.bottomGap)).toBeLessThanOrEqual(1);
+    expect(s.gridX).toBeGreaterThan(0);
+  });
+});

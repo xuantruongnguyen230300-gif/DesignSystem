@@ -18,7 +18,7 @@
 **Kiểm chứng ở thời điểm ghi:**
 - `npm run ds:check` sạch (615 token, 520/520 tương phản, 0 giá trị hard-code);
 - `npm test` 136/136 (23 file spec);
-- `npm run test:a11y` 425/425 (axe trên 104 example × sáng/tối/gọn, 45 trang × sáng/tối, 23 test bàn phím và hành vi; axe chờ animation kết thúc rồi mới kiểm, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm", lưới lấp đầy màn hình, drawer chi tiết; Phê duyệt lấp đầy; Quy trình duyệt: kiểm lỗi khi Áp dụng, tăng phiên bản, dialog rời trang, breadcrumb, focus tiêu đề, mốc "Bỏ qua"; Dialog xác nhận và form; Alert trong live region có hoàn tác);
+- `npm run test:a11y` 428/428 (axe trên 104 example × sáng/tối/gọn, 45 trang × sáng/tối, 26 test bàn phím và hành vi; lưới Danh mục lấp đầy vùng nội dung ở mọi tab, trên điện thoại và trong preview docs; axe chờ animation kết thúc rồi mới kiểm, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm", lưới lấp đầy màn hình, drawer chi tiết; Phê duyệt lấp đầy; Quy trình duyệt: kiểm lỗi khi Áp dụng, tăng phiên bản, dialog rời trang, breadcrumb, focus tiêu đề, mốc "Bỏ qua"; Dialog xác nhận và form; Alert trong live region có hoàn tác);
 - build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 563 kB (chỉ mục tìm kiếm đã nạp lazy, trước đó 593 kB).
 
 **Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có trạng thái indeterminate).

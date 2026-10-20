@@ -3,6 +3,8 @@
     position: relative;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
+    /* One row as tall as the shell: the sidenav and the content scroll inside it, never past it. */
+    grid-template-rows: minmax(0, 1fr);
     block-size: 100%;
     min-block-size: 0;
     overflow: hidden;
@@ -52,31 +54,34 @@
     outline: none;
   }
 
-  /* ---------- scroll="page": document scrolls, nav + top bar stick ---------- */
+  /* ---------- scroll="page": document scrolls, nav + top bar stick ----------
+     State selectors use child combinators: a shell nested in another (a docs preview, a configuration screen)
+     follows its own mode, not its ancestor's. */
   .nxt-app-shell[data-scroll='page'] {
+    grid-template-rows: auto;
     block-size: auto;
     min-block-size: 100dvh;
     overflow: visible;
   }
 
-  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__nav {
+  .nxt-app-shell[data-scroll='page'] > .nxt-app-shell__nav {
     position: sticky;
     inset-block-start: 0;
     align-self: start;
     block-size: 100dvh;
   }
 
-  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__frame {
+  .nxt-app-shell[data-scroll='page'] > .nxt-app-shell__frame {
     grid-template-rows: auto 1fr;
   }
 
-  .nxt-app-shell[data-scroll='page'] .nxt-topbar {
+  .nxt-app-shell[data-scroll='page'] > .nxt-app-shell__frame > .nxt-topbar {
     position: sticky;
     inset-block-start: 0;
     z-index: var(--nxt-z-sticky);
   }
 
-  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__main {
+  .nxt-app-shell[data-scroll='page'] > .nxt-app-shell__frame > .nxt-app-shell__main {
     display: block;
     overflow: visible;
   }
@@ -86,7 +91,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .nxt-app-shell[data-mobile] .nxt-app-shell__nav {
+  .nxt-app-shell[data-mobile] > .nxt-app-shell__nav {
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
@@ -98,7 +103,7 @@
       visibility 0s linear var(--nxt-motion-duration-slow);
   }
 
-  .nxt-app-shell[data-mobile] .nxt-app-shell__nav[data-open] {
+  .nxt-app-shell[data-mobile] > .nxt-app-shell__nav[data-open] {
     visibility: visible;
     transform: none;
     box-shadow: var(--nxt-elevation-modal);
@@ -112,8 +117,8 @@
     background: var(--nxt-app-shell-backdrop);
   }
 
-  .nxt-app-shell[data-mobile][data-scroll='page'] .nxt-app-shell__nav,
-  .nxt-app-shell[data-scroll='page'] .nxt-app-shell__backdrop {
+  .nxt-app-shell[data-mobile][data-scroll='page'] > .nxt-app-shell__nav,
+  .nxt-app-shell[data-scroll='page'] > .nxt-app-shell__backdrop {
     position: fixed;
     block-size: auto;
   }

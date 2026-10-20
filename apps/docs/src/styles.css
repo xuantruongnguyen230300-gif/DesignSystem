@@ -1026,8 +1026,10 @@ kbd {
   box-shadow: var(--nxt-elevation-raised);
 }
 
+/* A screen template previews at screen height (minus the docs top bar), so a list page shows its grid filling
+   the screen and scrolling inside, as in the product. */
 .docs-example--screen .docs-example__canvas {
-  block-size: 80vh;
+  block-size: calc(100dvh - var(--nxt-layout-header-height) - var(--nxt-space-section-sm));
   min-block-size: var(--nxt-size-560);
   padding: 0;
   overflow: hidden;
