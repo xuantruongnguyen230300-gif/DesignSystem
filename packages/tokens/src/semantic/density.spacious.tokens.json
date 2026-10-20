@@ -1,0 +1,92 @@
+{
+  "semantic": {
+    "size": {
+      "$type": "dimension",
+      "control": {
+        "sm": {
+          "$value": "{primitive.size.32}",
+          "$description": "Block-size của control cỡ sm (button, input, select)."
+        },
+        "md": {
+          "$value": "{primitive.size.40}",
+          "$description": "Block-size của control cỡ md (button, input, select)."
+        },
+        "lg": {
+          "$value": "{primitive.size.48}",
+          "$description": "Block-size của control cỡ lg (button, input, select)."
+        }
+      },
+      "row": {
+        "sm": {
+          "$value": "{primitive.size.40}",
+          "$description": "Chiều cao hàng cỡ sm (table, list)."
+        },
+        "md": {
+          "$value": "{primitive.size.48}",
+          "$description": "Chiều cao hàng cỡ md (table, list)."
+        },
+        "lg": {
+          "$value": "{primitive.size.56}",
+          "$description": "Chiều cao hàng cỡ lg (table, list)."
+        }
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "inset": {
+        "xs": {
+          "$value": "{primitive.space.1-5}",
+          "$description": "Padding bên trong control/container (xs)."
+        },
+        "sm": {
+          "$value": "{primitive.space.3}",
+          "$description": "Padding bên trong control/container (sm)."
+        },
+        "md": {
+          "$value": "{primitive.space.4}",
+          "$description": "Padding bên trong control/container (md)."
+        },
+        "lg": {
+          "$value": "{primitive.space.5}",
+          "$description": "Padding bên trong control/container (lg)."
+        }
+      },
+      "gap": {
+        "xs": {
+          "$value": "{primitive.space.1-5}",
+          "$description": "Khoảng cách giữa các phần tử (xs)."
+        },
+        "sm": {
+          "$value": "{primitive.space.3}",
+          "$description": "Khoảng cách giữa các phần tử (sm)."
+        },
+        "md": {
+          "$value": "{primitive.space.4}",
+          "$description": "Khoảng cách giữa các phần tử (md)."
+        },
+        "lg": {
+          "$value": "{primitive.space.5}",
+          "$description": "Khoảng cách giữa các phần tử (lg)."
+        },
+        "xl": {
+          "$value": "{primitive.space.8}",
+          "$description": "Khoảng cách giữa các phần tử (xl)."
+        }
+      },
+      "section": {
+        "sm": {
+          "$value": "{primitive.space.6}",
+          "$description": "Khoảng cách giữa các khối trang (sm)."
+        },
+        "md": {
+          "$value": "{primitive.space.8}",
+          "$description": "Khoảng cách giữa các khối trang (md)."
+        },
+        "lg": {
+          "$value": "{primitive.space.12}",
+          "$description": "Khoảng cách giữa các khối trang (lg)."
+        }
+      }
+    }
+  }
+}

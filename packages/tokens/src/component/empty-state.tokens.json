@@ -1,0 +1,26 @@
+{
+  "component": {
+    "empty-state": {
+      "icon-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền vòng icon minh hoạ."
+      },
+      "icon-color": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Màu icon minh hoạ."
+      },
+      "title-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Tiêu đề."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Mô tả."
+      }
+    }
+  }
+}

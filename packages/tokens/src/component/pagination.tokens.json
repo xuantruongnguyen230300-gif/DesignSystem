@@ -1,0 +1,41 @@
+{
+  "component": {
+    "pagination": {
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ tóm tắt."
+      },
+      "item-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ số trang."
+      },
+      "item-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền số trang khi hover."
+      },
+      "item-current-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền trang hiện tại."
+      },
+      "item-current-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ trang hiện tại."
+      },
+      "item-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Kích thước ô số trang."
+      },
+      "item-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc ô số trang."
+      }
+    }
+  }
+}

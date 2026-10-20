@@ -1,0 +1,47 @@
+@layer nxt.components {
+  /* Label, then the optional hint. Children keep their own width: a stretched label would let the box's
+     auto margins (centring it when the label is hidden) push the box away from its text. */
+  .nxt-checkbox {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    vertical-align: middle;
+  }
+
+  .nxt-checkbox__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+    min-block-size: var(--nxt-size-icon-lg);
+    min-inline-size: var(--nxt-size-icon-lg);
+    color: var(--nxt-checkbox-label-text);
+    font: var(--nxt-typography-body-md);
+    cursor: pointer;
+  }
+
+  .nxt-checkbox__input {
+    flex: none;
+    inline-size: var(--nxt-checkbox-size);
+    block-size: var(--nxt-checkbox-size);
+    margin: 0 auto;
+    accent-color: var(--nxt-checkbox-accent);
+    cursor: inherit;
+  }
+
+  .nxt-checkbox__input:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  .nxt-checkbox__label:has(:disabled) {
+    color: var(--nxt-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Same look as nxt-form-field's hint; indented to line up with the label text, not the box. */
+  .nxt-checkbox__hint {
+    padding-inline-start: calc(var(--nxt-checkbox-size) + var(--nxt-space-gap-sm));
+    color: var(--nxt-checkbox-hint-text);
+    font: var(--nxt-typography-caption);
+  }
+}

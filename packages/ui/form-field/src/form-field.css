@@ -1,0 +1,129 @@
+@layer nxt.components {
+  .nxt-form-field {
+    --_height: var(--nxt-form-field-control-height);
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--nxt-space-gap-xs);
+    min-inline-size: 0;
+  }
+
+  .nxt-form-field[data-size='sm'] {
+    --_height: var(--nxt-form-field-control-height-sm);
+  }
+
+  .nxt-form-field__label {
+    color: var(--nxt-form-field-label-text);
+    font: var(--nxt-typography-label-md);
+  }
+
+  .nxt-form-field__required {
+    margin-inline-start: var(--nxt-space-0-5);
+    color: var(--nxt-form-field-required-text);
+  }
+
+  .nxt-form-field__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+    min-block-size: var(--_height);
+    padding-inline: var(--nxt-space-inset-md);
+    border: var(--nxt-border-width-default) solid var(--nxt-form-field-control-border);
+    border-radius: var(--nxt-form-field-control-radius);
+    background: var(--nxt-form-field-control-bg);
+    color: var(--nxt-form-field-affix-color);
+    transition: border-color var(--nxt-motion-duration-fast) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-form-field__control:hover {
+    border-color: var(--nxt-form-field-control-border-hover);
+  }
+
+  .nxt-form-field__control:focus-within {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-border-width-default));
+  }
+
+  .nxt-form-field__control[data-invalid] {
+    border-color: var(--nxt-form-field-control-border-invalid);
+  }
+
+  .nxt-form-field__control:has(:disabled) {
+    background: var(--nxt-form-field-control-bg-disabled);
+    cursor: not-allowed;
+  }
+
+  .nxt-form-field__control[data-kind='textarea'] {
+    align-items: stretch;
+    padding-block: var(--nxt-space-inset-sm);
+  }
+
+  .nxt-input {
+    flex: 1;
+    inline-size: 100%;
+    min-inline-size: 0;
+    block-size: calc(var(--_height) - 2 * var(--nxt-border-width-default));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--nxt-form-field-control-text);
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-input::placeholder {
+    color: var(--nxt-form-field-control-placeholder);
+    opacity: 1;
+  }
+
+  .nxt-input:disabled {
+    color: var(--nxt-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  textarea.nxt-input {
+    block-size: auto;
+    min-block-size: calc(var(--_height) * 2.5);
+    resize: vertical;
+  }
+
+  select.nxt-input {
+    padding-inline-end: var(--nxt-space-inset-lg);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .nxt-form-field__chevron {
+    position: absolute;
+    inset-inline-end: var(--nxt-space-inset-md);
+    pointer-events: none;
+  }
+
+  .nxt-form-field__hint,
+  .nxt-form-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--nxt-space-1);
+    font: var(--nxt-typography-caption);
+  }
+
+  .nxt-form-field__hint {
+    color: var(--nxt-form-field-hint-text);
+  }
+
+  .nxt-form-field__error {
+    color: var(--nxt-form-field-error-text);
+  }
+
+  .nxt-form-field__error > .nxt-icon {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-form-field__control {
+      border-color: CanvasText;
+    }
+  }
+}

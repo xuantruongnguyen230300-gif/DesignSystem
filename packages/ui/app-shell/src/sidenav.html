@@ -1,0 +1,141 @@
+<nav class="nxt-sidenav__nav" [attr.aria-label]="label()">
+  <div class="nxt-sidenav__header">
+    <div class="nxt-sidenav__brand"><ng-content select="[nxtSidenavHeader]" /></div>
+    @if (mobile()) {
+      <!-- In the mobile drawer the rail makes no sense: the same spot closes the drawer (touch screen-reader users have no Escape). -->
+      <button type="button" class="nxt-sidenav__toggle" [attr.aria-label]="closeLabel" (click)="closeDrawer()">
+        <nxt-icon name="x" />
+      </button>
+    } @else if (collapsible()) {
+      <button
+        type="button"
+        class="nxt-sidenav__toggle"
+        [attr.aria-label]="rail() ? expandLabel : collapseLabel"
+        [attr.aria-expanded]="!rail()"
+        [nxtTooltip]="rail() ? expandLabel : collapseLabel"
+        nxtTooltipPosition="end"
+        (click)="toggleCollapsed()"
+      >
+        <nxt-icon [name]="rail() ? 'layout-sidebar-left-expand' : 'layout-sidebar-left-collapse'" />
+      </button>
+    }
+  </div>
+
+  <ng-content select="[nxtSidenavTop]" />
+
+  <div class="nxt-sidenav__body">
+    <ul class="nxt-sidenav__list" role="list">
+      @for (item of items(); track $index; let i = $index) {
+        <ng-container *ngTemplateOutlet="node; context: { $implicit: item, depth: 0, id: 'g' + i }" />
+      }
+    </ul>
+  </div>
+
+  <div class="nxt-sidenav__footer"><ng-content select="[nxtSidenavFooter]" /></div>
+</nav>
+
+<ng-template #node let-item let-depth="depth" let-id="id">
+  @if (item.heading) {
+    @if (rail()) {
+      <!-- Purely visual in the rail: a list may only contain list items, so no role="separator" here. -->
+      <li class="nxt-sidenav__divider" aria-hidden="true"></li>
+    } @else {
+      <li class="nxt-sidenav__heading" [attr.data-depth]="depth">{{ item.label }}</li>
+    }
+  } @else if (item.children?.length) {
+    <li class="nxt-sidenav__group" [attr.data-depth]="depth">
+      @if (rail() && depth === 0) {
+        <button
+          type="button"
+          class="nxt-sidenav__item"
+          [class.has-active]="hasActive(item)"
+          [nxtMenuTriggerFor]="flyout"
+          [nxtMenuPosition]="flyoutPositions"
+          [nxtTooltip]="item.label"
+          nxtTooltipPosition="end"
+        >
+          <nxt-icon class="nxt-sidenav__icon" [name]="item.icon ?? 'point'" />
+          <span class="nxt-sidenav__label">{{ item.label }}</span>
+          @if (item.badge != null) {
+            <span class="nxt-sidenav__badge">{{ item.badge }}</span>
+          }
+        </button>
+        <ng-template #flyout>
+          <div nxtMenu class="nxt-sidenav__flyout">
+            <div nxtMenuLabel>{{ item.label }}</div>
+            @for (child of flatten(item.children); track $index) {
+              @if (child.heading) {
+                <div nxtMenuSeparator></div>
+                <div nxtMenuLabel>{{ child.label }}</div>
+              } @else if (child.disabled) {
+                <a nxtMenuItem [disabled]="true">{{ child.label }}</a>
+              } @else {
+                <a nxtMenuItem [routerLink]="child.link" routerLinkActive="is-active" ariaCurrentWhenActive="page">{{ child.label }}</a>
+              }
+            }
+          </div>
+        </ng-template>
+      } @else {
+        <button
+          type="button"
+          class="nxt-sidenav__item"
+          [class.has-active]="hasActive(item)"
+          [attr.aria-expanded]="isOpen(id, item)"
+          [attr.aria-controls]="uid + id"
+          (click)="toggleGroup(id, item)"
+        >
+          @if (item.icon) {
+            <nxt-icon class="nxt-sidenav__icon" [name]="item.icon" />
+          }
+          <span class="nxt-sidenav__label">{{ item.label }}</span>
+          @if (item.badge != null) {
+            <span class="nxt-sidenav__badge">{{ item.badge }}</span>
+          }
+          <nxt-icon class="nxt-sidenav__chevron" name="chevron-down" />
+        </button>
+        <ul class="nxt-sidenav__sublist" role="list" [id]="uid + id" [hidden]="!isOpen(id, item)">
+          @for (child of item.children; track $index; let j = $index) {
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1, id: id + '-' + j }" />
+          }
+        </ul>
+      }
+    </li>
+  } @else if (item.disabled) {
+    <li [attr.data-depth]="depth">
+      <span
+        class="nxt-sidenav__item is-disabled"
+        role="link"
+        aria-disabled="true"
+        tabindex="0"
+        [nxtTooltip]="disabledTooltip(item, depth)"
+        nxtTooltipPosition="end"
+      >
+        @if (item.icon) {
+          <nxt-icon class="nxt-sidenav__icon" [name]="item.icon" />
+        }
+        <span class="nxt-sidenav__label">{{ item.label }}</span>
+      </span>
+    </li>
+  } @else {
+    <li [attr.data-depth]="depth">
+      <a
+        class="nxt-sidenav__item"
+        [routerLink]="item.link"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+        ariaCurrentWhenActive="page"
+        [nxtTooltip]="item.label"
+        [nxtTooltipDisabled]="!rail() || depth > 0"
+        nxtTooltipPosition="end"
+      >
+        @if (item.icon) {
+          <nxt-icon class="nxt-sidenav__icon" [name]="item.icon" />
+        }
+        <span class="nxt-sidenav__label">{{ item.label }}</span>
+        @if (item.badge != null) {
+          <span class="nxt-sidenav__badge">{{ item.badge }}</span>
+        }
+      </a>
+    </li>
+  }
+</ng-template>

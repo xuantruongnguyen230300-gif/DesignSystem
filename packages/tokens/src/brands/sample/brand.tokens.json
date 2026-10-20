@@ -1,0 +1,142 @@
+{
+  "primitive": {
+    "color": {
+      "$type": "color",
+      "brand": {
+        "50": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.971,
+              0.0057,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#F1F7F6"
+          }
+        },
+        "100": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.936,
+              0.0131,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#E1EDEB"
+          }
+        },
+        "200": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.885,
+              0.0241,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#C8DFDC"
+          }
+        },
+        "300": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.808,
+              0.0429,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#A2CAC5"
+          }
+        },
+        "400": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.704,
+              0.0673,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#6DAEA7"
+          }
+        },
+        "500": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.623,
+              0.0873,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#3C9891"
+          }
+        },
+        "600": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.52,
+              0.0904,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#007973"
+          }
+        },
+        "700": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.488,
+              0.0849,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#006F69"
+          }
+        },
+        "800": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.424,
+              0.0737,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#005B56"
+          }
+        },
+        "900": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.379,
+              0.0596,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#0F4C48"
+          }
+        },
+        "950": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.282,
+              0.0371,
+              188
+            ],
+            "alpha": 1,
+            "hex": "#102F2D"
+          }
+        },
+        "$description": "Brand mẫu (teal) — minh hoạ cách một sản phẩm override thang brand. Sinh bằng: npm run ds:palette -- --name brand --seed \"oklch(0.52 0.1 188)\""
+      }
+    }
+  }
+}

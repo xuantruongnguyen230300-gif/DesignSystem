@@ -1,0 +1,36 @@
+{
+  "component": {
+    "drawer": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền drawer."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Đường kẻ header/footer."
+      },
+      "backdrop": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.overlay}",
+        "$description": "Lớp phủ phía sau."
+      },
+      "width-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.drawer.sm}",
+        "$description": "Bề rộng drawer sm."
+      },
+      "width-md": {
+        "$type": "dimension",
+        "$value": "{semantic.size.drawer.md}",
+        "$description": "Bề rộng drawer md (form mặc định)."
+      },
+      "width-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.size.drawer.lg}",
+        "$description": "Bề rộng drawer lg."
+      }
+    }
+  }
+}

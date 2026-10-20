@@ -1,0 +1,98 @@
+@layer nxt.components {
+  .nxt-tag {
+    --_bg: var(--nxt-tag-neutral-bg);
+    --_text: var(--nxt-tag-neutral-text);
+    --_dot: var(--nxt-tag-neutral-dot);
+    --_height: var(--nxt-tag-height);
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-xs);
+    max-inline-size: 100%;
+    min-block-size: var(--_height);
+    padding-inline: var(--nxt-space-inset-sm);
+    border-radius: var(--nxt-tag-radius);
+    background: var(--_bg);
+    color: var(--_text);
+    font: var(--nxt-typography-label-sm);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .nxt-tag[data-size='sm'] {
+    --_height: var(--nxt-tag-height-sm);
+    padding-inline: var(--nxt-space-inset-xs);
+  }
+
+  .nxt-tag[data-tone='info'] { --_bg: var(--nxt-tag-info-bg); --_text: var(--nxt-tag-info-text); --_dot: var(--nxt-tag-info-dot); }
+  .nxt-tag[data-tone='success'] { --_bg: var(--nxt-tag-success-bg); --_text: var(--nxt-tag-success-text); --_dot: var(--nxt-tag-success-dot); }
+  .nxt-tag[data-tone='warning'] { --_bg: var(--nxt-tag-warning-bg); --_text: var(--nxt-tag-warning-text); --_dot: var(--nxt-tag-warning-dot); }
+  .nxt-tag[data-tone='danger'] { --_bg: var(--nxt-tag-danger-bg); --_text: var(--nxt-tag-danger-text); --_dot: var(--nxt-tag-danger-dot); }
+  .nxt-tag[data-tone='brand'] { --_bg: var(--nxt-tag-brand-bg); --_text: var(--nxt-tag-brand-text); --_dot: var(--nxt-tag-brand-dot); }
+
+  .nxt-tag > .nxt-icon {
+    color: var(--_dot);
+  }
+
+  .nxt-tag__dot {
+    flex: none;
+    inline-size: var(--nxt-space-1-5);
+    block-size: var(--nxt-space-1-5);
+    border-radius: var(--nxt-radius-pill);
+    background: var(--_dot);
+  }
+
+  /* Cut off with "…" by CSS only: the full text stays in the DOM (screen readers), and a tooltip shows it on hover. */
+  .nxt-tag__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* wrap: several lines within the parent's width, nothing cut off. A pill radius would push the corner
+     glyphs of the first and last lines outside the background, so the radius becomes the control radius. */
+  .nxt-tag[data-wrap] {
+    /* One line stays exactly as tall as a normal tag; each extra line adds one line-height. */
+    padding-block: calc((var(--_height) - 1lh) / 2);
+    border-radius: var(--nxt-tag-radius-wrap);
+    white-space: normal;
+  }
+
+  .nxt-tag[data-wrap] .nxt-tag__label {
+    overflow: visible;
+    overflow-wrap: anywhere;
+  }
+
+  .nxt-badge {
+    --_bg: var(--nxt-badge-bg);
+    --_text: var(--nxt-badge-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--nxt-badge-height);
+    block-size: var(--nxt-badge-height);
+    padding-inline: var(--nxt-space-inset-xs);
+    border-radius: var(--nxt-badge-radius);
+    background: var(--_bg);
+    color: var(--_text);
+    font: var(--nxt-typography-label-sm);
+    font-variant-numeric: tabular-nums;
+    vertical-align: middle;
+  }
+
+  .nxt-badge[data-tone='neutral'] { --_bg: var(--nxt-badge-neutral-bg); --_text: var(--nxt-badge-neutral-text); }
+  .nxt-badge[data-tone='brand'] { --_bg: var(--nxt-badge-brand-bg); --_text: var(--nxt-badge-brand-text); }
+
+  .nxt-badge[data-dot] {
+    min-inline-size: 0;
+    inline-size: var(--nxt-space-2);
+    block-size: var(--nxt-space-2);
+    padding: 0;
+  }
+
+  @media (forced-colors: active) {
+    .nxt-tag,
+    .nxt-badge {
+      border: 1px solid CanvasText;
+    }
+  }
+}

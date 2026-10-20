@@ -1,0 +1,292 @@
+@layer nxt.components {
+  .nxt-sidenav {
+    --nxt-icon-size: var(--nxt-size-icon-md);
+    --_pad: var(--nxt-space-inset-sm);
+    --_icon: var(--nxt-size-icon-md);
+    --_gap: var(--nxt-space-gap-md);
+    display: flex;
+    flex: none;
+    inline-size: var(--nxt-sidenav-width);
+    block-size: 100%;
+    min-block-size: 0;
+    border-inline-end: var(--nxt-border-width-default) solid var(--nxt-sidenav-border);
+    background: var(--nxt-sidenav-bg);
+    transition: inline-size var(--nxt-motion-duration-normal) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-sidenav[data-rail] {
+    inline-size: var(--nxt-sidenav-width-collapsed);
+  }
+
+  .nxt-sidenav__nav {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    min-block-size: 0;
+  }
+
+  /* ---------- header ---------- */
+  .nxt-sidenav__header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nxt-space-gap-sm);
+    min-block-size: var(--nxt-topbar-height);
+    padding-inline: var(--nxt-space-inset-md) var(--nxt-space-inset-sm);
+    border-block-end: var(--nxt-border-width-default) solid var(--nxt-sidenav-border);
+  }
+
+  .nxt-sidenav__brand {
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+    overflow: hidden;
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__header {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__brand {
+    display: none;
+  }
+
+  .nxt-sidenav__toggle {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--nxt-sidenav-subitem-height);
+    block-size: var(--nxt-sidenav-subitem-height);
+    border: 0;
+    border-radius: var(--nxt-sidenav-item-radius);
+    background: transparent;
+    color: var(--nxt-sidenav-item-icon);
+    cursor: pointer;
+  }
+
+  .nxt-sidenav__toggle:hover {
+    background: var(--nxt-sidenav-item-bg-hover);
+    color: var(--nxt-sidenav-item-text);
+  }
+
+  .nxt-sidenav__toggle:focus-visible,
+  .nxt-sidenav__item:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-focus-ring-width));
+  }
+
+  /* ---------- body ---------- */
+  .nxt-sidenav__body {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--nxt-space-inset-sm) var(--_pad) var(--nxt-space-section-sm);
+    scrollbar-width: thin;
+  }
+
+  .nxt-sidenav__list,
+  .nxt-sidenav__sublist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nxt-sidenav__list > li + li {
+    margin-block-start: var(--nxt-space-0-5);
+  }
+
+  .nxt-sidenav__heading {
+    padding: var(--nxt-space-section-sm) var(--_pad) var(--nxt-space-gap-xs);
+    color: var(--nxt-sidenav-heading-text);
+    font: var(--nxt-typography-label-sm);
+  }
+
+  .nxt-sidenav__list > .nxt-sidenav__heading:first-child {
+    padding-block-start: var(--nxt-space-gap-xs);
+  }
+
+  .nxt-sidenav__divider {
+    margin: var(--nxt-space-gap-sm) var(--_pad);
+    border-block-start: var(--nxt-border-width-default) solid var(--nxt-sidenav-border);
+  }
+
+  /* ---------- items ---------- */
+  .nxt-sidenav__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--_gap);
+    inline-size: 100%;
+    min-block-size: var(--nxt-sidenav-item-height);
+    padding-inline: var(--_pad);
+    border: 0;
+    border-radius: var(--nxt-sidenav-item-radius);
+    background: transparent;
+    color: var(--nxt-sidenav-item-text);
+    font: var(--nxt-typography-label-md);
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--nxt-motion-duration-fast) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-sidenav__item:hover {
+    background: var(--nxt-sidenav-item-bg-hover);
+    color: var(--nxt-sidenav-item-text);
+  }
+
+  .nxt-sidenav__icon {
+    color: var(--nxt-sidenav-item-icon);
+  }
+
+  .nxt-sidenav__label {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nxt-sidenav__chevron {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    color: var(--nxt-sidenav-item-icon);
+    transition: transform var(--nxt-motion-duration-fast) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-sidenav__item[aria-expanded='true'] .nxt-sidenav__chevron {
+    transform: rotate(180deg);
+  }
+
+  .nxt-sidenav__badge {
+    flex: none;
+    min-inline-size: var(--nxt-size-icon-md);
+    padding-inline: var(--nxt-space-inset-xs);
+    border-radius: var(--nxt-radius-pill);
+    background: var(--nxt-badge-brand-bg);
+    color: var(--nxt-badge-brand-text);
+    font: var(--nxt-typography-label-sm);
+    text-align: center;
+  }
+
+  /* Current page, and groups that contain it. */
+  .nxt-sidenav__item.is-active {
+    background: var(--nxt-sidenav-item-active-bg);
+    color: var(--nxt-sidenav-item-active-text);
+  }
+
+  .nxt-sidenav__item.is-active .nxt-sidenav__icon,
+  .nxt-sidenav__item.has-active .nxt-sidenav__icon {
+    color: var(--nxt-sidenav-item-active-icon);
+  }
+
+  .nxt-sidenav__item.has-active {
+    color: var(--nxt-sidenav-item-active-text);
+  }
+
+  .nxt-sidenav__item.is-disabled {
+    color: var(--nxt-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .nxt-sidenav__item.is-disabled:hover {
+    background: transparent;
+    color: var(--nxt-color-text-disabled);
+  }
+
+  .nxt-sidenav__item.is-disabled .nxt-sidenav__icon {
+    color: var(--nxt-color-icon-disabled);
+  }
+
+  /* ---------- hierarchy: children sit on a guide line aligned with the parent icon ---------- */
+  .nxt-sidenav__sublist {
+    margin-block: var(--nxt-space-0-5);
+    margin-inline-start: calc(var(--_pad) + var(--_icon) / 2);
+    border-inline-start: var(--nxt-border-width-default) solid var(--nxt-sidenav-guide);
+  }
+
+  .nxt-sidenav__sublist .nxt-sidenav__item {
+    min-block-size: var(--nxt-sidenav-subitem-height);
+    padding-inline-start: calc(var(--_icon) / 2 + var(--_gap) - var(--nxt-border-width-default));
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-sidenav__sublist .nxt-sidenav__item.is-active {
+    font: var(--nxt-typography-label-md);
+  }
+
+  .nxt-sidenav__sublist .nxt-sidenav__item.is-active::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--nxt-space-1);
+    inset-inline-start: calc(-1 * var(--nxt-border-width-default));
+    inline-size: var(--nxt-border-width-strong);
+    border-radius: var(--nxt-radius-pill);
+    background: var(--nxt-sidenav-indicator);
+  }
+
+  .nxt-sidenav__sublist .nxt-sidenav__heading {
+    padding: var(--nxt-space-gap-sm) var(--_gap) var(--nxt-space-0-5);
+  }
+
+  .nxt-sidenav__sublist .nxt-sidenav__sublist {
+    margin-inline-start: var(--_gap);
+  }
+
+  /* ---------- icon rail ---------- */
+  .nxt-sidenav[data-rail] .nxt-sidenav__body {
+    padding-inline: var(--nxt-space-inset-sm);
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__item {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__chevron {
+    display: none;
+  }
+
+  .nxt-sidenav[data-rail] .nxt-sidenav__badge {
+    position: absolute;
+    inset-block-start: var(--nxt-space-1);
+    inset-inline-end: var(--nxt-space-1);
+    min-inline-size: 0;
+    inline-size: var(--nxt-space-2);
+    block-size: var(--nxt-space-2);
+    padding: 0;
+    overflow: hidden;
+    color: transparent;
+  }
+
+  .nxt-sidenav__flyout .is-active {
+    color: var(--nxt-sidenav-item-active-text);
+    font: var(--nxt-typography-label-md);
+  }
+
+  /* ---------- footer ---------- */
+  .nxt-sidenav__footer:not(:empty) {
+    flex: none;
+    padding: var(--nxt-space-inset-sm);
+    border-block-start: var(--nxt-border-width-default) solid var(--nxt-sidenav-border);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-sidenav__item.is-active {
+      outline: var(--nxt-border-width-default) solid Highlight;
+    }
+  }
+}

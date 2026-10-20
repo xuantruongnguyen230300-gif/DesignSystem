@@ -1,0 +1,182 @@
+{
+  "primitive": {
+    "space": {
+      "0": {
+        "$value": "0px"
+      },
+      "1": {
+        "$value": "4px"
+      },
+      "2": {
+        "$value": "8px"
+      },
+      "3": {
+        "$value": "12px"
+      },
+      "4": {
+        "$value": "16px"
+      },
+      "5": {
+        "$value": "20px"
+      },
+      "6": {
+        "$value": "24px"
+      },
+      "8": {
+        "$value": "32px"
+      },
+      "10": {
+        "$value": "40px"
+      },
+      "12": {
+        "$value": "48px"
+      },
+      "16": {
+        "$value": "64px"
+      },
+      "$type": "dimension",
+      "$description": "4px base grid (2px half-steps for dense controls).",
+      "0-5": {
+        "$value": "2px"
+      },
+      "1-5": {
+        "$value": "6px"
+      },
+      "2-5": {
+        "$value": "10px"
+      }
+    },
+    "size": {
+      "12": {
+        "$value": "12px"
+      },
+      "14": {
+        "$value": "14px"
+      },
+      "16": {
+        "$value": "16px"
+      },
+      "20": {
+        "$value": "20px"
+      },
+      "24": {
+        "$value": "24px"
+      },
+      "28": {
+        "$value": "28px"
+      },
+      "32": {
+        "$value": "32px"
+      },
+      "36": {
+        "$value": "36px"
+      },
+      "40": {
+        "$value": "40px"
+      },
+      "48": {
+        "$value": "48px"
+      },
+      "56": {
+        "$value": "56px"
+      },
+      "64": {
+        "$value": "64px"
+      },
+      "72": {
+        "$value": "72px"
+      },
+      "160": {
+        "$value": "160px"
+      },
+      "240": {
+        "$value": "240px"
+      },
+      "256": {
+        "$value": "256px"
+      },
+      "320": {
+        "$value": "320px"
+      },
+      "400": {
+        "$value": "400px"
+      },
+      "480": {
+        "$value": "480px"
+      },
+      "560": {
+        "$value": "560px"
+      },
+      "720": {
+        "$value": "720px"
+      },
+      "1280": {
+        "$value": "1280px"
+      },
+      "1440": {
+        "$value": "1440px"
+      },
+      "$type": "dimension"
+    },
+    "radius": {
+      "$type": "dimension",
+      "none": {
+        "$value": "0px"
+      },
+      "xs": {
+        "$value": "2px"
+      },
+      "sm": {
+        "$value": "4px"
+      },
+      "md": {
+        "$value": "6px"
+      },
+      "lg": {
+        "$value": "8px"
+      },
+      "xl": {
+        "$value": "12px"
+      },
+      "2xl": {
+        "$value": "16px"
+      },
+      "full": {
+        "$value": "9999px"
+      }
+    },
+    "border-width": {
+      "1": {
+        "$value": "1px"
+      },
+      "2": {
+        "$value": "2px"
+      },
+      "$type": "dimension"
+    },
+    "breakpoint": {
+      "$type": "dimension",
+      "$description": "The only breakpoint scale in NXT. CSS vars cannot be used in @media — use @nxt/tokens/scss/breakpoints or container queries.",
+      "sm": {
+        "$value": "640px",
+        "$description": "Điện thoại ngang, cửa sổ rất hẹp."
+      },
+      "md": {
+        "$value": "768px",
+        "$description": "Tablet; form chuyển 1 → 2 cột."
+      },
+      "lg": {
+        "$value": "1024px",
+        "$description": "Laptop nhỏ; sidebar app shell bắt đầu thu gọn."
+      },
+      "xl": {
+        "$value": "1280px",
+        "$description": "Desktop chuẩn; gutter 32px."
+      },
+      "2xl": {
+        "$value": "1536px",
+        "$description": "Màn hình rộng."
+      }
+    }
+  }
+}

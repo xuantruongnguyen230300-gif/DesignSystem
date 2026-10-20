@@ -1,0 +1,56 @@
+{
+  "component": {
+    "segmented": {
+      "track-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền rãnh chứa các lựa chọn."
+      },
+      "track-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền rãnh."
+      },
+      "item-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ/icon lựa chọn chưa chọn."
+      },
+      "item-text-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ/icon khi hover."
+      },
+      "selected-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền lựa chọn đang chọn."
+      },
+      "selected-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ/icon lựa chọn đang chọn."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc rãnh và lựa chọn."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao (md)."
+      },
+      "height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao (sm)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn nhóm khi hiển thị (showLabel), như nhãn form field."
+      }
+    }
+  }
+}

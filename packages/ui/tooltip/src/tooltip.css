@@ -1,0 +1,29 @@
+@layer nxt.components {
+  .nxt-tooltip-pane {
+    pointer-events: auto;
+  }
+
+  .nxt-tooltip {
+    display: block;
+    max-inline-size: var(--nxt-tooltip-max-width);
+    padding: var(--nxt-space-inset-xs) var(--nxt-space-inset-sm);
+    border-radius: var(--nxt-tooltip-radius);
+    background: var(--nxt-tooltip-bg);
+    color: var(--nxt-tooltip-text);
+    font: var(--nxt-typography-caption);
+    box-shadow: var(--nxt-elevation-overlay);
+    animation: nxt-tooltip-in var(--nxt-motion-duration-fast) var(--nxt-motion-ease-enter);
+  }
+
+  @keyframes nxt-tooltip-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nxt-tooltip {
+      border: 1px solid CanvasText;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "component": {
+    "menu": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền menu nổi."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền menu."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.overlay}",
+        "$description": "Bo góc menu."
+      },
+      "item-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ mục menu."
+      },
+      "item-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền mục khi hover/focus."
+      },
+      "item-danger-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Chữ mục phá huỷ."
+      },
+      "item-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao mục."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ nhãn nhóm trong menu."
+      },
+      "min-width": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.item-min-sm}",
+        "$description": "Bề rộng tối thiểu."
+      }
+    }
+  }
+}

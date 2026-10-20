@@ -1,0 +1,55 @@
+@if (bare()) {
+  <router-outlet />
+} @else {
+  <nxt-app-shell class="docs-shell" scroll="page">
+    <nxt-sidenav [items]="nav" [(collapsed)]="collapsed" label="Điều hướng tài liệu">
+      <a nxtSidenavHeader class="docs-logo" routerLink="/" aria-label="NXT Design, trang chủ">
+        <span class="docs-logo__mark" aria-hidden="true">N</span>
+        <span class="docs-logo__text">
+          <span class="docs-logo__name">NXT Design</span>
+          <span class="docs-logo__version">v{{ version }} · beta</span>
+        </span>
+      </a>
+    </nxt-sidenav>
+
+    <nxt-topbar>
+      <docs-search nxtTopbarCenter />
+      <div nxtTopbarEnd class="docs-topbar-end">
+        <nxt-segmented label="Chế độ màu" size="sm" iconOnly [options]="colorOptions" [value]="theme.color()" (valueChange)="theme.color.set($event!)" />
+        <button
+          nxtIconButton
+          variant="ghost"
+          type="button"
+          aria-label="Tuỳ chỉnh hiển thị"
+          nxtTooltip="Tuỳ chỉnh hiển thị"
+          nxtTooltipPosition="bottom"
+          [nxtMenuTriggerFor]="display"
+        >
+          <nxt-icon name="adjustments-horizontal" />
+        </button>
+        <ng-template #display>
+          <div nxtMenu>
+            <div nxtMenuLabel>Mật độ hiển thị</div>
+            <div nxtMenuGroup label="Mật độ hiển thị">
+              @for (d of densityOptions; track d.value) {
+                <button nxtMenuItemRadio [checked]="theme.density() === d.value" (triggered)="theme.density.set(d.value)">{{ d.label }}</button>
+              }
+            </div>
+            <div nxtMenuSeparator></div>
+            <div nxtMenuLabel>Brand sản phẩm</div>
+            <div nxtMenuGroup label="Brand sản phẩm">
+              <button nxtMenuItemRadio [checked]="theme.brand() === ''" (triggered)="theme.brand.set('')">NXT (mặc định)</button>
+              @for (b of brands; track b) {
+                <button nxtMenuItemRadio [checked]="theme.brand() === b" (triggered)="theme.brand.set(b)">{{ b }}</button>
+              }
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </nxt-topbar>
+
+    <div class="docs-content">
+      <router-outlet />
+    </div>
+  </nxt-app-shell>
+}

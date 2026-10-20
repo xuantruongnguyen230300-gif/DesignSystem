@@ -1,0 +1,25 @@
+{
+  "semantic": {
+    "motion": {
+      "duration": {
+        "$type": "duration",
+        "instant": {
+          "$value": "{primitive.duration.0}",
+          "$description": "Không chuyển động."
+        },
+        "fast": {
+          "$value": "{primitive.duration.100}",
+          "$description": "Phản hồi nhỏ: hover, đổi màu."
+        },
+        "normal": {
+          "$value": "{primitive.duration.200}",
+          "$description": "Mở/đóng phần tử nhỏ: dropdown, tooltip."
+        },
+        "slow": {
+          "$value": "{primitive.duration.300}",
+          "$description": "Mở/đóng phần tử lớn: dialog, drawer."
+        }
+      }
+    }
+  }
+}

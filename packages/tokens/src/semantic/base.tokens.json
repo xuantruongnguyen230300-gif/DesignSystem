@@ -1,0 +1,326 @@
+{
+  "semantic": {
+    "font-family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": "{primitive.font.family.inter}",
+        "$description": "Font giao diện. Brand slot (chỉ font đủ glyph tiếng Việt)."
+      },
+      "mono": {
+        "$value": "{primitive.font.family.jetbrains-mono}",
+        "$description": "Mã, số liệu cần căn cột cố định."
+      }
+    },
+    "typography": {
+      "$type": "typography",
+      "display": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontSize": "{primitive.font.size.30}",
+          "lineHeight": 1.2667
+        },
+        "$description": "Tiêu đề trang chào/landing (register Welcome). Không dùng trong màn hình Operate."
+      },
+      "heading-lg": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontSize": "{primitive.font.size.24}",
+          "lineHeight": 1.3333
+        },
+        "$description": "Tiêu đề trang (page header)."
+      },
+      "heading-md": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontSize": "{primitive.font.size.20}",
+          "lineHeight": 1.4
+        },
+        "$description": "Tiêu đề section, tiêu đề dialog."
+      },
+      "heading-sm": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontSize": "{primitive.font.size.16}",
+          "lineHeight": 1.5
+        },
+        "$description": "Tiêu đề card, nhóm field."
+      },
+      "body-lg": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "fontSize": "{primitive.font.size.16}",
+          "lineHeight": 1.5
+        },
+        "$description": "Văn bản đọc dài (register Read)."
+      },
+      "body-md": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "fontSize": "{primitive.font.size.14}",
+          "lineHeight": 1.4286
+        },
+        "$description": "Văn bản mặc định của giao diện."
+      },
+      "body-sm": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "fontSize": "{primitive.font.size.13}",
+          "lineHeight": 1.3846
+        },
+        "$description": "Ô bảng dữ liệu dày, mô tả phụ."
+      },
+      "label-md": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.medium}",
+          "fontSize": "{primitive.font.size.14}",
+          "lineHeight": 1.4286
+        },
+        "$description": "Nhãn control: button, tab, label của field."
+      },
+      "label-sm": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.medium}",
+          "fontSize": "{primitive.font.size.12}",
+          "lineHeight": 1.3333
+        },
+        "$description": "Nhãn control cỡ nhỏ, header cột bảng."
+      },
+      "caption": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.sans}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "fontSize": "{primitive.font.size.12}",
+          "lineHeight": 1.3333
+        },
+        "$description": "Chú thích, helper text, timestamp. Cỡ chữ nhỏ nhất của NXT."
+      },
+      "code": {
+        "$value": {
+          "fontFamily": "{semantic.font-family.mono}",
+          "fontWeight": "{primitive.font.weight.regular}",
+          "fontSize": "{primitive.font.size.13}",
+          "lineHeight": 1.5385
+        },
+        "$description": "Mã, token, đường dẫn."
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "control": {
+        "$value": "{primitive.radius.md}",
+        "$description": "Góc bo của button, input, select, tag."
+      },
+      "container": {
+        "$value": "{primitive.radius.lg}",
+        "$description": "Góc bo của card, panel, bảng."
+      },
+      "overlay": {
+        "$value": "{primitive.radius.xl}",
+        "$description": "Góc bo của dialog, popover, menu."
+      },
+      "pill": {
+        "$value": "{primitive.radius.full}",
+        "$description": "Badge đếm, avatar, switch."
+      }
+    },
+    "border-width": {
+      "$type": "dimension",
+      "default": {
+        "$value": "{primitive.border-width.1}",
+        "$description": "Viền chuẩn."
+      },
+      "strong": {
+        "$value": "{primitive.border-width.2}",
+        "$description": "Viền nhấn: trạng thái selected, indicator của tab."
+      }
+    },
+    "focus": {
+      "ring": {
+        "$type": "dimension",
+        "width": {
+          "$value": "{primitive.border-width.2}",
+          "$description": "Độ dày vòng focus (WCAG 2.4.7 / 2.4.13)."
+        },
+        "offset": {
+          "$value": "{primitive.space.0-5}",
+          "$description": "Khoảng cách vòng focus tới phần tử."
+        }
+      }
+    },
+    "size": {
+      "icon": {
+        "$type": "dimension",
+        "sm": {
+          "$value": "{primitive.size.16}",
+          "$description": "Icon trong control md/sm, trong bảng."
+        },
+        "md": {
+          "$value": "{primitive.size.20}",
+          "$description": "Icon độc lập, icon trong control lg."
+        },
+        "lg": {
+          "$value": "{primitive.size.24}",
+          "$description": "Icon minh hoạ trong empty state nhỏ, alert có tiêu đề."
+        },
+        "stroke": {
+          "$type": "number",
+          "$value": 1.75,
+          "$description": "Độ dày nét icon outline (Tabler mặc định 2; 1.75 rõ hơn ở cỡ 16–20px)."
+        }
+      },
+      "popover": {
+        "$type": "dimension",
+        "md": {
+          "$value": "{primitive.size.400}",
+          "$description": "Bề rộng tối đa của panel nổi neo vào một nút: bộ lọc, chọn nhanh. Co lại theo màn hình."
+        }
+      },
+      "drawer": {
+        "$type": "dimension",
+        "sm": {
+          "$value": "{primitive.size.400}",
+          "$description": "Drawer hẹp: chi tiết nhanh, bộ lọc nâng cao."
+        },
+        "md": {
+          "$value": "{primitive.size.560}",
+          "$description": "Drawer mặc định: form thêm/sửa bản ghi."
+        },
+        "lg": {
+          "$value": "{primitive.size.720}",
+          "$description": "Drawer rộng: form nhiều section, xem chi tiết đầy đủ."
+        }
+      },
+      "dialog": {
+        "$type": "dimension",
+        "sm": {
+          "$value": "{primitive.size.400}",
+          "$description": "Dialog xác nhận: một câu hỏi, một đoạn hậu quả, 2–3 nút."
+        },
+        "md": {
+          "$value": "{primitive.size.560}",
+          "$description": "Dialog có form rất ngắn (1–3 trường), ví dụ nhập lý do."
+        },
+        "lg": {
+          "$value": "{primitive.size.720}",
+          "$description": "Dialog có bảng nhỏ hoặc nội dung dài; cân nhắc drawer trước."
+        }
+      }
+    },
+    "motion": {
+      "ease": {
+        "$type": "cubicBezier",
+        "standard": {
+          "$value": "{primitive.ease.standard}",
+          "$description": "Chuyển trạng thái tại chỗ."
+        },
+        "enter": {
+          "$value": "{primitive.ease.decelerate}",
+          "$description": "Phần tử xuất hiện."
+        },
+        "exit": {
+          "$value": "{primitive.ease.accelerate}",
+          "$description": "Phần tử biến mất."
+        }
+      }
+    },
+    "z": {
+      "$type": "number",
+      "base": {
+        "$value": 0,
+        "$description": "Nội dung thường."
+      },
+      "sticky": {
+        "$value": 100,
+        "$description": "Header/cột sticky, action bar."
+      },
+      "dropdown": {
+        "$value": 1000,
+        "$description": "Dropdown, select panel, menu."
+      },
+      "overlay": {
+        "$value": 1100,
+        "$description": "Drawer và lớp phủ."
+      },
+      "modal": {
+        "$value": 1200,
+        "$description": "Dialog."
+      },
+      "toast": {
+        "$value": 1300,
+        "$description": "Toast, thông báo."
+      },
+      "tooltip": {
+        "$value": 1400,
+        "$description": "Tooltip (luôn trên cùng)."
+      }
+    },
+    "layout": {
+      "$type": "dimension",
+      "container-max": {
+        "$value": "{primitive.size.1440}",
+        "$description": "Độ rộng tối đa của nội dung trang (trừ trang bảng full-width)."
+      },
+      "content-default": {
+        "$value": "{primitive.size.1280}",
+        "$description": "Trang chi tiết, form 2 cột."
+      },
+      "content-narrow": {
+        "$value": "{primitive.size.720}",
+        "$description": "Form 1 cột, nội dung đọc."
+      },
+      "sidebar-width": {
+        "$value": "{primitive.size.256}",
+        "$description": "Sidebar app shell khi mở."
+      },
+      "sidebar-width-collapsed": {
+        "$value": "{primitive.size.72}",
+        "$description": "Sidebar app shell khi thu gọn."
+      },
+      "header-height": {
+        "$value": "{primitive.size.56}",
+        "$description": "Top bar app shell."
+      },
+      "header-search-width": {
+        "$value": "{primitive.size.480}",
+        "$description": "Bề rộng tối đa của ô tìm kiếm giữa top bar (kiểu Windows / Microsoft 365)."
+      },
+      "scroll-region-min": {
+        "$value": "{primitive.size.240}",
+        "$description": "Chiều cao tối thiểu của một vùng cuộn lấp đầy màn hình (bảng, danh sách). Màn thấp hơn mức này thì cả trang cuộn."
+      },
+      "gutter-sm": {
+        "$value": "{primitive.space.4}",
+        "$description": "Gutter lưới 12 cột khi < md."
+      },
+      "gutter-md": {
+        "$value": "{primitive.space.6}",
+        "$description": "Gutter lưới 12 cột từ md đến lg."
+      },
+      "gutter-lg": {
+        "$value": "{primitive.space.8}",
+        "$description": "Gutter lưới 12 cột từ xl."
+      },
+      "item-min-sm": {
+        "$value": "{primitive.size.160}",
+        "$description": "Bề rộng tối thiểu của item trong lưới auto-fill (thẻ nhỏ)."
+      },
+      "item-min-md": {
+        "$value": "{primitive.size.240}",
+        "$description": "Bề rộng tối thiểu của item trong lưới auto-fill (mặc định)."
+      },
+      "item-min-lg": {
+        "$value": "{primitive.size.320}",
+        "$description": "Bề rộng tối thiểu của item trong lưới auto-fill (thẻ lớn)."
+      }
+    }
+  }
+}

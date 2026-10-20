@@ -1,0 +1,106 @@
+@layer nxt.components {
+  .nxt-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nxt-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: var(--nxt-typography-body-sm);
+  }
+
+  .nxt-breadcrumb__item {
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nxt-space-1);
+    min-inline-size: 0;
+  }
+
+  /* a[routerLink] and, for `navigable` items, a button that looks the same. Min 24px tall (WCAG 2.5.8). */
+  .nxt-breadcrumb__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nxt-size-icon-lg);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--nxt-radius-control);
+    background: none;
+    color: var(--nxt-page-header-crumb-text);
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nxt-breadcrumb__link:hover {
+    color: var(--nxt-page-header-crumb-current-text);
+    text-decoration: underline;
+  }
+
+  .nxt-breadcrumb__current,
+  .nxt-breadcrumb__text {
+    color: var(--nxt-page-header-crumb-current-text);
+  }
+
+  .nxt-breadcrumb__sep {
+    color: var(--nxt-page-header-crumb-text);
+  }
+
+  .nxt-page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nxt-space-gap-sm);
+  }
+
+  .nxt-page-header__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--nxt-space-gap-md);
+  }
+
+  .nxt-page-header__titles {
+    display: grid;
+    gap: var(--nxt-space-gap-xs);
+    min-inline-size: 0;
+  }
+
+  .nxt-page-header__title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+  }
+
+  .nxt-page-header__title {
+    color: var(--nxt-page-header-title-text);
+    font: var(--nxt-typography-heading-lg);
+  }
+
+  /* Programmatic focus target (focusTitle). The global :focus-visible ring applies, so it only shows when the
+     user is on the keyboard; the title is only as wide as its text, so the ring hugs the words. */
+  .nxt-page-header__title:focus-visible {
+    border-radius: var(--nxt-radius-control);
+  }
+
+  .nxt-page-header__description {
+    max-inline-size: 75ch;
+    color: var(--nxt-page-header-description-text);
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-page-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+  }
+
+  .nxt-page-header__actions:empty {
+    display: none;
+  }
+}

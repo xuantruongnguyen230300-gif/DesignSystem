@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="vi" data-nxt-color="auto" data-nxt-density="comfortable">
+  <head>
+    <meta charset="utf-8" />
+    <title>NXT Design</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="NXT Design — design system đa sản phẩm cho phần mềm nghiệp vụ: Angular 21, CDK, token W3C DTCG." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      // Apply the saved/URL theme before first paint (no light→dark flash). Mirrors app/core/theme.ts.
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('nxt-docs-theme') || '{}');
+          var q = new URLSearchParams(location.search);
+          var r = document.documentElement;
+          var c = q.get('color') || s.color;
+          var d = q.get('density') || s.density;
+          var b = q.get('brand') || s.brand;
+          if (c) r.setAttribute('data-nxt-color', c);
+          if (d) r.setAttribute('data-nxt-density', d);
+          if (b) r.setAttribute('data-nxt-brand', b);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <docs-root></docs-root>
+  </body>
+</html>

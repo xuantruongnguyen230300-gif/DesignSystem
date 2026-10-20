@@ -1,0 +1,32 @@
+@layer nxt.components {
+  .nxt-avatar {
+    --_size: var(--nxt-avatar-size-md);
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    overflow: hidden;
+    border: var(--nxt-border-width-default) solid var(--nxt-avatar-border);
+    border-radius: var(--nxt-avatar-radius);
+    font: var(--nxt-typography-label-sm);
+    vertical-align: middle;
+    user-select: none;
+  }
+
+  .nxt-avatar[data-size='sm'] { --_size: var(--nxt-avatar-size-sm); font-size: var(--nxt-font-size-12); }
+  .nxt-avatar[data-size='lg'] { --_size: var(--nxt-avatar-size-lg); font: var(--nxt-typography-label-md); }
+
+  .nxt-avatar[data-tone='1'] { background: var(--nxt-avatar-tone-1-bg); color: var(--nxt-avatar-tone-1-text); }
+  .nxt-avatar[data-tone='2'] { background: var(--nxt-avatar-tone-2-bg); color: var(--nxt-avatar-tone-2-text); }
+  .nxt-avatar[data-tone='3'] { background: var(--nxt-avatar-tone-3-bg); color: var(--nxt-avatar-tone-3-text); }
+  .nxt-avatar[data-tone='4'] { background: var(--nxt-avatar-tone-4-bg); color: var(--nxt-avatar-tone-4-text); }
+  .nxt-avatar[data-tone='5'] { background: var(--nxt-avatar-tone-5-bg); color: var(--nxt-avatar-tone-5-text); }
+  .nxt-avatar[data-tone='6'] { background: var(--nxt-avatar-tone-6-bg); color: var(--nxt-avatar-tone-6-text); }
+
+  .nxt-avatar > img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}

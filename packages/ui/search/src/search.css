@@ -1,0 +1,94 @@
+@layer nxt.components {
+  .nxt-search {
+    --_height: var(--nxt-search-height);
+    --nxt-icon-size: var(--nxt-size-icon-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--nxt-space-gap-xs);
+    min-inline-size: 0;
+  }
+
+  .nxt-search[data-size='sm'] {
+    --_height: var(--nxt-search-height-sm);
+  }
+
+  .nxt-search__label {
+    color: var(--nxt-search-text);
+    font: var(--nxt-typography-label-md);
+  }
+
+  .nxt-search__control {
+    display: flex;
+    align-items: center;
+    gap: var(--nxt-space-gap-sm);
+    min-block-size: var(--_height);
+    padding-inline: var(--nxt-space-inset-md) var(--nxt-space-inset-xs);
+    border: var(--nxt-border-width-default) solid var(--nxt-search-border);
+    border-radius: var(--nxt-search-radius);
+    background: var(--nxt-search-bg);
+    color: var(--nxt-search-icon);
+    transition: border-color var(--nxt-motion-duration-fast) var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-search__control:hover {
+    border-color: var(--nxt-search-border-hover);
+  }
+
+  .nxt-search__control:focus-within {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: calc(-1 * var(--nxt-border-width-default));
+  }
+
+  .nxt-search__icon {
+    flex: none;
+  }
+
+  .nxt-search__input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: calc(var(--_height) - 2 * var(--nxt-border-width-default));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--nxt-search-text);
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-search__input::placeholder {
+    color: var(--nxt-search-placeholder);
+    opacity: 1;
+  }
+
+  /* One consistent clear button instead of the browser's own. */
+  .nxt-search__input::-webkit-search-cancel-button,
+  .nxt-search__input::-webkit-search-decoration {
+    appearance: none;
+  }
+
+  .nxt-search__clear {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--nxt-size-control-sm);
+    block-size: var(--nxt-size-control-sm);
+    min-inline-size: var(--nxt-size-control-sm);
+    padding: 0;
+    border: 0;
+    border-radius: var(--nxt-search-radius);
+    background: transparent;
+    color: var(--nxt-search-icon);
+    cursor: pointer;
+  }
+
+  .nxt-search__clear:hover {
+    color: var(--nxt-search-text);
+  }
+
+  @media (forced-colors: active) {
+    .nxt-search__control {
+      border-color: CanvasText;
+    }
+  }
+}

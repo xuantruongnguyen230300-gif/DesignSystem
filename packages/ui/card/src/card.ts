@@ -1,0 +1,139 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostAttributeToken,
+  ViewEncapsulation,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
+import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
+
+let nextId = 0;
+
+/**
+ * Surface that groups related content on the app canvas (dashboard widget, form section, list panel).
+ * Optional header: title, subtitle and actions (`[nxtCardActions]`). Do not nest cards in cards.
+ * The title has a stable id (`headingId`) for `aria-labelledby`; `region` makes the card a named landmark.
+ */
+@Component({
+  selector: 'nxt-card',
+  template: `
+    @if (title()) {
+      <div class="nxt-card__header">
+        <div class="nxt-card__titles">
+          @switch (headingLevel()) {
+            @case (3) {
+              <h3 class="nxt-card__title" [id]="headingId">{{ title() }}</h3>
+            }
+            @case (4) {
+              <h4 class="nxt-card__title" [id]="headingId">{{ title() }}</h4>
+            }
+            @default {
+              <h2 class="nxt-card__title" [id]="headingId">{{ title() }}</h2>
+            }
+          }
+          @if (subtitle()) {
+            <p class="nxt-card__subtitle">{{ subtitle() }}</p>
+          }
+        </div>
+        <div class="nxt-card__actions"><ng-content select="[nxtCardActions]" /></div>
+      </div>
+    }
+    <div class="nxt-card__body"><ng-content /></div>
+    <ng-content select="[nxtCardFooter]" />
+  `,
+  styleUrl: './card.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'nxt-card',
+    '[attr.data-padding]': 'padding()',
+    '[attr.data-fill]': 'fill() || null',
+    '[attr.title]': 'null',
+    // Keep a role / aria-labelledby the app wrote on the host itself when `region` is off.
+    '[attr.role]': 'isRegion() ? "region" : hostRole',
+    '[attr.aria-labelledby]': 'isRegion() ? headingId : hostLabelledBy',
+  },
+})
+export class NxtCard {
+  readonly title = input<string>();
+  readonly subtitle = input<string>();
+  /** Heading level of the title — keep the page outline correct (h1 = page title). */
+  readonly headingLevel = input(2, { transform: numberAttribute });
+  /** `none` for edge-to-edge content such as tables. */
+  readonly padding = input<'none' | 'md' | 'lg'>('md');
+  /** Take the free height of a flex-column parent (`nxtFill`); the body then stacks its children in a column. */
+  readonly fill = input(false, { transform: booleanAttribute });
+  /**
+   * Named landmark (`role="region"`, labelled by the title) for the few key blocks screen-reader users jump to,
+   * e.g. a dashboard widget. Needs `title`. The name must be unique on the page.
+   */
+  readonly region = input(false, { transform: booleanAttribute });
+
+  /**
+   * Stable id of the title, for `aria-labelledby` on content inside the card:
+   * `<nxt-card #card title="…">` → `[attr.aria-labelledby]="card.headingId"`.
+   */
+  readonly headingId = `nxt-card-${nextId++}-title`;
+  protected readonly isRegion = computed(() => this.region() && !!this.title());
+  protected readonly hostRole = inject(new HostAttributeToken('role'), { optional: true });
+  protected readonly hostLabelledBy = inject(new HostAttributeToken('aria-labelledby'), { optional: true });
+}
+
+/**
+ * Key metric: label, value, trend vs. a previous period. Trend tone is explicit because "up" is not
+ * always good (headcount up = neutral, turnover up = negative).
+ */
+@Component({
+  selector: 'nxt-stat',
+  imports: [NxtIcon],
+  template: `
+    @if (icon(); as name) {
+      <span class="nxt-stat__icon" aria-hidden="true"><nxt-icon [name]="name" /></span>
+    }
+    <div class="nxt-stat__body">
+      <p class="nxt-stat__label">{{ label() }}</p>
+      <p class="nxt-stat__value">
+        {{ value() }}
+        @if (unit()) {
+          <span class="nxt-stat__unit">{{ unit() }}</span>
+        }
+      </p>
+      @if (delta()) {
+        <p class="nxt-stat__delta" [attr.data-tone]="deltaTone()">
+          <nxt-icon [name]="trendIcon()" />
+          <span class="nxt-visually-hidden">{{ trendText() }}</span>
+          <span>{{ delta() }}</span>
+          @if (caption()) {
+            <span class="nxt-stat__caption">{{ caption() }}</span>
+          }
+        </p>
+      }
+    </div>
+  `,
+  styleUrl: './card.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'nxt-stat' },
+})
+export class NxtStat {
+  readonly label = input.required<string>();
+  /** Pre-formatted value (vi-VN), e.g. "1.284". */
+  readonly value = input.required<string>();
+  readonly unit = input<string>();
+  readonly icon = input<NxtIconName>();
+  /** Pre-formatted change, e.g. "2,1%". */
+  readonly delta = input<string>();
+  readonly trend = input<'up' | 'down' | 'flat'>('flat');
+  readonly deltaTone = input<'positive' | 'negative' | 'neutral'>('neutral');
+  /** e.g. "so với tháng trước". */
+  readonly caption = input<string>();
+
+  protected readonly trendIcon = computed<NxtIconName>(() =>
+    this.trend() === 'up' ? 'trending-up' : this.trend() === 'down' ? 'trending-down' : 'minus',
+  );
+  protected readonly trendText = computed(() => (this.trend() === 'up' ? 'Tăng' : this.trend() === 'down' ? 'Giảm' : 'Không đổi'));
+}

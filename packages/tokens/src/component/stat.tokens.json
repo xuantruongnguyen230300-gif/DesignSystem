@@ -1,0 +1,46 @@
+{
+  "component": {
+    "stat": {
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Nhãn chỉ số."
+      },
+      "value-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Giá trị chỉ số."
+      },
+      "positive-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.success}",
+        "$description": "Biến động tích cực."
+      },
+      "negative-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Biến động tiêu cực."
+      },
+      "neutral-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Biến động trung tính."
+      },
+      "icon-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary-subtle}",
+        "$description": "Nền ô icon."
+      },
+      "icon-color": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.primary}",
+        "$description": "Màu icon."
+      },
+      "icon-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Bo góc ô icon."
+      }
+    }
+  }
+}

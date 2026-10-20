@@ -1,0 +1,67 @@
+@layer nxt.components {
+  .nxt-alert {
+    --nxt-icon-size: var(--nxt-size-icon-md);
+    --_bg: var(--nxt-alert-bg-info);
+    --_icon: var(--nxt-alert-icon-info);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--nxt-space-gap-xs) var(--nxt-space-gap-sm);
+    padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
+    border: var(--nxt-border-width-default) solid var(--nxt-alert-border);
+    border-radius: var(--nxt-radius-container);
+    background: var(--_bg);
+    color: var(--nxt-alert-text);
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-alert[data-tone='success'] {
+    --_bg: var(--nxt-alert-bg-success);
+    --_icon: var(--nxt-alert-icon-success);
+  }
+
+  .nxt-alert[data-tone='warning'] {
+    --_bg: var(--nxt-alert-bg-warning);
+    --_icon: var(--nxt-alert-icon-warning);
+  }
+
+  .nxt-alert[data-tone='danger'] {
+    --_bg: var(--nxt-alert-bg-danger);
+    --_icon: var(--nxt-alert-icon-danger);
+  }
+
+  .nxt-alert__icon {
+    flex: none;
+    /* Optical centre on the first line of text. */
+    margin-block-start: calc((1lh - var(--nxt-size-icon-md)) / 2);
+    color: var(--_icon);
+  }
+
+  /* Text takes the line; the actions follow when there is room and wrap below when there is not. */
+  .nxt-alert__content {
+    flex: 1 1 var(--nxt-layout-item-min-sm);
+    min-inline-size: 0;
+  }
+
+  .nxt-alert__title {
+    color: var(--nxt-alert-title);
+    font: var(--nxt-typography-label-md);
+  }
+
+  .nxt-alert__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nxt-space-gap-xs);
+    margin-block: calc(-1 * var(--nxt-space-gap-xs));
+  }
+
+  .nxt-alert__actions:empty {
+    display: none;
+  }
+
+  .nxt-alert__close {
+    flex: none;
+    margin-block: calc(-1 * var(--nxt-space-gap-xs));
+  }
+}

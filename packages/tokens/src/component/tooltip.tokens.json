@@ -1,0 +1,26 @@
+{
+  "component": {
+    "tooltip": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.inverse}",
+        "$description": "Nền tooltip."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.inverse}",
+        "$description": "Chữ tooltip."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc tooltip."
+      },
+      "max-width": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.item-min-lg}",
+        "$description": "Bề rộng tối đa trước khi xuống dòng."
+      }
+    }
+  }
+}

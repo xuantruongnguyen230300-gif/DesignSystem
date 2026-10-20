@@ -1,0 +1,26 @@
+{
+  "component": {
+    "checkbox": {
+      "accent": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Màu ô đã chọn (accent-color)."
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.sm}",
+        "$description": "Kích thước ô (hit area mở rộng bằng label)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ nhãn."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ gợi ý dưới nhãn, như hint của form field."
+      }
+    }
+  }
+}

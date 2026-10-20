@@ -1,0 +1,111 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": "4829bf34-472e-4d70-9330-319625c4cab0"
+  },
+  "newProjectRoot": "packages",
+  "projects": {
+    "ui": {
+      "projectType": "library",
+      "root": "packages/ui",
+      "sourceRoot": "packages/ui",
+      "prefix": "nxt",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "packages/ui/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "docs": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/docs",
+      "sourceRoot": "apps/docs/src",
+      "prefix": "docs",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "apps/docs/src/main.ts",
+            "tsConfig": "apps/docs/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/docs/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "apps/docs/src/generated/public"
+              },
+              {
+                "glob": "tokens.json",
+                "input": "packages/tokens/dist/json",
+                "output": "data"
+              }
+            ],
+            "styles": [
+              "packages/tokens/dist/css/nxt.css",
+              "packages/tokens/dist/css/brands/all.css",
+              "node_modules/@fontsource-variable/inter/index.css",
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
+              "packages/ui/styles/nxt.css",
+              "apps/docs/src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "600kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kB",
+                  "maximumError": "16kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "docs:build:production"
+            },
+            "development": {
+              "buildTarget": "docs:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  }
+}

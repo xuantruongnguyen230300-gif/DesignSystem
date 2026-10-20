@@ -1,0 +1,51 @@
+{
+  "component": {
+    "search": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền ô tìm kiếm."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ đang gõ."
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý khi ô trống."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền ô (≥ 3:1 với nền)."
+      },
+      "border-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input-hover}",
+        "$description": "Viền khi hover."
+      },
+      "icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon kính lúp và nút xoá."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc, giống ô nhập của form-field."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao cỡ md (theo density)."
+      },
+      "height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao cỡ sm."
+      }
+    }
+  }
+}

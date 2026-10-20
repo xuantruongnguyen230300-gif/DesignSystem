@@ -1,0 +1,92 @@
+@layer nxt.components {
+  .nxt-dialog-backdrop {
+    background: var(--nxt-dialog-backdrop);
+  }
+
+  /* Centred by the CDK; never wider than the screen minus the page gutter. */
+  .nxt-dialog-pane {
+    inline-size: min(calc(100vw - 2 * var(--nxt-layout-gutter-md)), var(--nxt-dialog-width-md));
+  }
+
+  .nxt-dialog-pane--sm { inline-size: min(calc(100vw - 2 * var(--nxt-layout-gutter-md)), var(--nxt-dialog-width-sm)); }
+  .nxt-dialog-pane--lg { inline-size: min(calc(100vw - 2 * var(--nxt-layout-gutter-md)), var(--nxt-dialog-width-lg)); }
+
+  .nxt-dialog-pane .cdk-dialog-container {
+    display: block;
+    inline-size: 100%;
+    outline: none;
+    animation: nxt-dialog-in var(--nxt-motion-duration-normal) var(--nxt-motion-ease-enter);
+  }
+
+  @keyframes nxt-dialog-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  .nxt-confirm-dialog {
+    display: block;
+  }
+
+  .nxt-dialog {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    max-block-size: calc(100dvh - 2 * var(--nxt-layout-gutter-md));
+    border: var(--nxt-border-width-default) solid var(--nxt-dialog-border);
+    border-radius: var(--nxt-dialog-radius);
+    background: var(--nxt-dialog-bg);
+    color: var(--nxt-color-text-default);
+    box-shadow: var(--nxt-elevation-modal);
+  }
+
+  .nxt-dialog__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--nxt-space-gap-md);
+    padding: var(--nxt-space-inset-lg) var(--nxt-space-inset-lg) var(--nxt-space-inset-sm);
+  }
+
+  .nxt-dialog__titles {
+    display: grid;
+    gap: var(--nxt-space-gap-xs);
+    min-inline-size: 0;
+  }
+
+  .nxt-dialog__title {
+    color: var(--nxt-color-text-strong);
+    font: var(--nxt-typography-heading-md);
+  }
+
+  .nxt-dialog__description {
+    color: var(--nxt-color-text-default);
+    font: var(--nxt-typography-body-md);
+  }
+
+  .nxt-dialog__body {
+    overflow-y: auto;
+    padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-lg);
+  }
+
+  .nxt-dialog__body:empty {
+    display: none;
+  }
+
+  .nxt-dialog__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--nxt-space-gap-sm);
+    padding: var(--nxt-space-inset-md) var(--nxt-space-inset-lg) var(--nxt-space-inset-lg);
+  }
+
+  .nxt-dialog__footer:empty {
+    display: none;
+  }
+
+  /* A third, different choice ("Bỏ thay đổi") sits apart from cancel/confirm. */
+  .nxt-dialog__footer [nxtDialogStart] {
+    margin-inline-end: auto;
+  }
+}

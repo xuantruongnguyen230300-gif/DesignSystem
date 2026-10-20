@@ -1,0 +1,35 @@
+@layer nxt.components {
+  .nxt-descriptions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nxt-layout-item-min-sm)), 1fr));
+    gap: var(--nxt-space-gap-md) var(--nxt-space-gap-lg);
+    margin: 0;
+  }
+
+  .nxt-descriptions[data-columns='1'] { grid-template-columns: minmax(0, 1fr); }
+  .nxt-descriptions[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nxt-descriptions[data-columns='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .nxt-descriptions__item {
+    display: grid;
+    align-content: start;
+    gap: var(--nxt-space-gap-xs);
+    min-inline-size: 0;
+  }
+
+  .nxt-descriptions__item[data-full] {
+    grid-column: 1 / -1;
+  }
+
+  .nxt-descriptions__label {
+    color: var(--nxt-descriptions-label-text);
+    font: var(--nxt-typography-label-sm);
+  }
+
+  .nxt-descriptions__value {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--nxt-descriptions-value-text);
+    font: var(--nxt-typography-body-md);
+  }
+}

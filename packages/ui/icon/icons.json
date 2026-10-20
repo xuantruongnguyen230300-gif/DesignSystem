@@ -1,0 +1,47 @@
+{
+  "$description": "Curated Tabler outline icons shipped in @nxt/ui/icon. Add a name, then run: npm run icons:build. Browse names at https://tabler.io/icons",
+  "source": "@tabler/icons/tabler-nodes-outline.json",
+  "icons": {
+    "navigation": [
+      "home", "layout-dashboard", "menu-2", "dots", "dots-vertical", "chevron-down", "chevron-up", "chevron-left", "chevron-right",
+      "chevrons-left", "chevrons-right", "arrow-left", "arrow-right", "arrow-up", "arrow-down", "arrow-up-right", "arrow-down-right",
+      "arrow-back-up", "external-link", "layout-sidebar-left-collapse", "layout-sidebar-left-expand", "grid-dots", "apps", "selector",
+      "corner-down-left", "map-2", "compass"
+    ],
+    "actions": [
+      "plus", "minus", "pencil", "edit", "trash", "copy", "download", "upload", "file-export", "file-import", "file-upload", "file-download", "file-spreadsheet", "refresh", "filter",
+      "filter-off", "adjustments-horizontal", "search", "x", "check", "checks", "settings", "printer", "share", "send", "eye",
+      "eye-off", "lock", "lock-open", "link", "unlink", "logout", "login", "player-play", "player-pause", "archive", "restore",
+      "history", "sort-ascending", "sort-descending", "arrows-sort", "columns-3", "table", "layout-list", "layout-grid",
+      "maximize", "minimize", "zoom-in", "paperclip", "cloud-upload", "clipboard-copy", "star", "star-off", "pin", "bookmark",
+      "flag", "ban", "arrows-exchange", "transfer", "replace", "device-floppy", "message-plus", "arrow-bar-to-down"
+    ],
+    "status": [
+      "circle-check", "circle-x", "alert-circle", "alert-triangle", "info-circle", "help-circle", "clock", "hourglass", "loader-2",
+      "progress", "progress-check", "circle-dot", "point", "circle", "square", "square-check", "shield-check", "shield-lock",
+      "bell", "bell-ringing", "trending-up", "trending-down", "minus-vertical", "player-skip-forward"
+    ],
+    "people": [
+      "user", "users", "user-plus", "user-minus", "user-check", "user-x", "user-circle", "user-search", "users-group", "id-badge-2",
+      "address-book", "user-star", "user-shield", "mood-smile", "hand-stop"
+    ],
+    "hr": [
+      "briefcase", "building", "building-community", "building-skyscraper", "sitemap", "hierarchy-2", "calendar", "calendar-event",
+      "calendar-time", "calendar-check", "calendar-stats", "calendar-off", "clock-hour-4", "clock-pause", "alarm", "file", "file-text",
+      "file-description", "file-certificate", "file-invoice", "file-check", "file-search", "files", "folder", "folder-open",
+      "certificate", "school", "award", "medal", "gift", "cake", "coin", "cash", "cash-banknote", "wallet", "receipt", "report-money",
+      "report-analytics", "chart-bar", "chart-line", "chart-pie", "chart-donut", "chart-arrows-vertical", "target", "checklist",
+      "clipboard-check", "clipboard-list", "clipboard-text", "list-check", "list-details", "heart-handshake", "plane", "plane-departure",
+      "map-pin", "phone", "mail", "message", "messages", "inbox", "beach", "stethoscope", "heartbeat", "umbrella", "scale", "gavel",
+      "car", "bus", "home-2", "key", "fingerprint", "world", "id", "license", "signature", "rubber-stamp", "notes", "note", "news",
+      "speakerphone", "tool", "tools", "barcode", "qrcode", "database", "server", "cloud", "tag", "tags", "stack-2", "packages",
+      "puzzle", "bulb", "rocket", "brain", "ladder", "trophy", "chart-candle", "timeline", "route", "arrows-split"
+    ],
+    "design-system": [
+      "palette", "typography", "spacing-vertical", "box-margin", "components", "template", "layers-subtract", "layout",
+      "layout-columns", "layout-rows", "border-radius", "shadow", "wand", "color-swatch", "brush", "accessible", "keyboard",
+      "book", "book-2", "code", "brand-github", "robot", "sparkles", "sun", "moon", "device-desktop", "device-mobile", "language",
+      "contrast", "ruler-2", "click", "focus-2", "atom", "box"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "component": {
+    "descriptions": {
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Nhãn (dt) của một mục."
+      },
+      "value-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Giá trị (dd) của một mục."
+      }
+    }
+  }
+}

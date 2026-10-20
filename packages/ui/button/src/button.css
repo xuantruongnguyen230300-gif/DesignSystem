@@ -1,0 +1,166 @@
+/* Button — only --nxt-button-* tokens plus global focus/motion tokens.
+   Variants/sizes/states are data-/aria- attributes set by the host bindings. */
+@layer nxt.components {
+  .nxt-button {
+    --_bg: var(--nxt-button-secondary-bg);
+    --_bg-hover: var(--nxt-button-secondary-bg-hover);
+    --_bg-pressed: var(--nxt-button-secondary-bg-pressed);
+    --_text: var(--nxt-button-secondary-text);
+    --_border: var(--nxt-button-secondary-border);
+    --_height: var(--nxt-button-height-md);
+    --_padding: var(--nxt-button-padding-inline-md);
+    /* Nested <nxt-icon> picks this up. */
+    --nxt-icon-size: var(--nxt-button-icon-size);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nxt-button-gap);
+    min-block-size: var(--_height);
+    padding-block: 0;
+    padding-inline: var(--_padding);
+    border: var(--nxt-button-border-width) solid var(--_border);
+    border-radius: var(--nxt-button-radius);
+    background-color: var(--_bg);
+    color: var(--_text);
+    font: var(--nxt-button-font);
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    transition-property: background-color, border-color, color;
+    transition-duration: var(--nxt-motion-duration-fast);
+    transition-timing-function: var(--nxt-motion-ease-standard);
+  }
+
+  .nxt-button[data-variant='primary'] {
+    --_bg: var(--nxt-button-primary-bg);
+    --_bg-hover: var(--nxt-button-primary-bg-hover);
+    --_bg-pressed: var(--nxt-button-primary-bg-pressed);
+    --_text: var(--nxt-button-primary-text);
+    --_border: var(--nxt-button-primary-border);
+  }
+
+  .nxt-button[data-variant='ghost'] {
+    --_bg: var(--nxt-button-ghost-bg);
+    --_bg-hover: var(--nxt-button-ghost-bg-hover);
+    --_bg-pressed: var(--nxt-button-ghost-bg-pressed);
+    --_text: var(--nxt-button-ghost-text);
+    --_border: var(--nxt-button-ghost-border);
+  }
+
+  .nxt-button[data-variant='danger'] {
+    --_bg: var(--nxt-button-danger-bg);
+    --_bg-hover: var(--nxt-button-danger-bg-hover);
+    --_bg-pressed: var(--nxt-button-danger-bg-pressed);
+    --_text: var(--nxt-button-danger-text);
+    --_border: var(--nxt-button-danger-border);
+  }
+
+  .nxt-button[data-size='sm'] {
+    --_height: var(--nxt-button-height-sm);
+    --_padding: var(--nxt-button-padding-inline-sm);
+    font: var(--nxt-button-font-sm);
+  }
+
+  .nxt-button[data-size='lg'] {
+    --_height: var(--nxt-button-height-lg);
+    --_padding: var(--nxt-button-padding-inline-lg);
+  }
+
+  /* Icon-only: square, same height as text buttons of the same size. */
+  .nxt-button[data-icon-only] {
+    inline-size: var(--_height);
+    padding-inline: 0;
+  }
+
+  @media (hover: hover) {
+    .nxt-button:hover:not([aria-disabled='true']) {
+      background-color: var(--_bg-hover);
+      color: var(--_text);
+    }
+  }
+
+  .nxt-button:active:not([aria-disabled='true']) {
+    background-color: var(--_bg-pressed);
+  }
+
+  .nxt-button:focus-visible {
+    outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
+    outline-offset: var(--nxt-focus-ring-offset);
+  }
+
+  /* Disabled stays focusable (aria-disabled); loading keeps the variant colors. */
+  .nxt-button[aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  .nxt-button[aria-disabled='true']:not([data-loading]) {
+    --_bg: var(--nxt-button-disabled-bg);
+    --_text: var(--nxt-button-disabled-text);
+    --_border: var(--nxt-button-disabled-border);
+  }
+
+  .nxt-button[data-variant='ghost'][aria-disabled='true']:not([data-loading]) {
+    --_bg: var(--nxt-button-ghost-bg);
+  }
+
+  .nxt-button[data-loading] {
+    cursor: progress;
+  }
+
+  .nxt-button__content {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+  }
+
+  /* Label stays in the accessibility tree while loading — hide it visually only. */
+  .nxt-button[data-loading] .nxt-button__content {
+    opacity: 0;
+  }
+
+  .nxt-button svg {
+    flex: none;
+    inline-size: var(--nxt-button-icon-size);
+    block-size: var(--nxt-button-icon-size);
+  }
+
+  .nxt-button__spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    inline-size: var(--nxt-button-icon-size);
+    block-size: var(--nxt-button-icon-size);
+    border: var(--nxt-button-spinner-width) solid currentColor;
+    border-inline-end-color: transparent;
+    border-radius: var(--nxt-button-spinner-radius);
+    animation: nxt-button-spin 700ms linear infinite;
+  }
+
+  @keyframes nxt-button-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Progress feedback is essential: slow it down instead of removing it. */
+  @media (prefers-reduced-motion: reduce) {
+    .nxt-button__spinner {
+      animation-duration: 1600ms;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nxt-button {
+      border-color: ButtonText;
+    }
+
+    .nxt-button[aria-disabled='true'] {
+      color: GrayText;
+      border-color: GrayText;
+    }
+  }
+}

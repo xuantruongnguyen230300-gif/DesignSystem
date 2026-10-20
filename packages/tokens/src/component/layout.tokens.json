@@ -1,0 +1,54 @@
+{
+  "component": {
+    "flow": {
+      "$type": "dimension",
+      "gap-xs": {
+        "$value": "{semantic.space.gap.xs}",
+        "$description": "Khoảng cách xs giữa các phần tử của stack/inline/grid."
+      },
+      "gap-sm": {
+        "$value": "{semantic.space.gap.sm}",
+        "$description": "Khoảng cách sm."
+      },
+      "gap-md": {
+        "$value": "{semantic.space.gap.md}",
+        "$description": "Khoảng cách md (mặc định của stack)."
+      },
+      "gap-lg": {
+        "$value": "{semantic.space.gap.lg}",
+        "$description": "Khoảng cách lg."
+      },
+      "gap-xl": {
+        "$value": "{semantic.space.gap.xl}",
+        "$description": "Khoảng cách xl."
+      }
+    },
+    "grid": {
+      "$type": "dimension",
+      "gutter-sm": {
+        "$value": "{semantic.layout.gutter-sm}",
+        "$description": "Gutter của grid khi lưới hẹp hơn 768px."
+      },
+      "gutter-md": {
+        "$value": "{semantic.layout.gutter-md}",
+        "$description": "Gutter của grid từ 768px đến dưới 1280px."
+      },
+      "gutter-lg": {
+        "$value": "{semantic.layout.gutter-lg}",
+        "$description": "Gutter của grid từ 1280px."
+      },
+      "item-min-sm": {
+        "$value": "{semantic.layout.item-min-sm}",
+        "$description": "Bề rộng tối thiểu item khi columns=auto, minItem=sm."
+      },
+      "item-min-md": {
+        "$value": "{semantic.layout.item-min-md}",
+        "$description": "Bề rộng tối thiểu item khi columns=auto, minItem=md."
+      },
+      "item-min-lg": {
+        "$value": "{semantic.layout.item-min-lg}",
+        "$description": "Bề rộng tối thiểu item khi columns=auto, minItem=lg."
+      }
+    }
+  }
+}
