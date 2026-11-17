@@ -1,0 +1,53 @@
+name: Verify published
+
+# Installs the latest published @nxt packages the way a stranger does, from the REAL GitHub Packages: the .npmrc and the
+# alias command of the README, then builds an Angular app with them, runs it in a browser and runs axe
+# (`npm run consumer:smoke:published`). It proves the packages resolve, install and work after a release, and it keeps proving it.
+#   after every Publish run · weekly · when this check itself changes (push to main) · on demand (Run workflow)
+
+on:
+  workflow_run:
+    workflows: [Publish]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-published.yml'
+      - 'tools/consumer/**'
+      - 'tools/release/**'
+  schedule:
+    - cron: '17 3 * * 1' # Mondays 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  verify:
+    name: Install the published packages and run an app
+    # after a Publish run, only when that run succeeded
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm 10.8 has an arborist bug with this dependency graph (see docs/adr/009).
+      - run: npm install -g npm@11
+
+      # Only for Angular, rxjs and Playwright: the NXT packages come from GitHub Packages, not from this checkout.
+      - run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Install the published packages and run an app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run consumer:smoke:published

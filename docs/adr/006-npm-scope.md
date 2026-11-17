@@ -13,6 +13,8 @@ Code dùng scope `@nxt/*` (`@nxt/tokens`, `@nxt/ui`). Trên npmjs.com, scope `@n
 - `tools/release/stage.mjs` (lệnh `npm run release:prepare`) chép hai gói ra `dist/publish/{ui,tokens}` rồi chỉ sửa bản chép: đổi tên, đổi peer `tokens` sang tên thật và đánh dấu **tuỳ chọn** (không tự cài thêm bản thứ hai của tokens bên cạnh alias), thêm `publishConfig`, `LICENSE`, và `NOTICE` (Tabler Icons, MIT) cho gói ui. `dist/ui` không bị đổi.
 - Phát hành bằng `.github/workflows/publish.yml` khi đẩy thẻ `v<phiên bản>`; trước đó `npm run release:check` bảo đảm hai gói, `NXT_UI_VERSION`, peer và CHANGELOG cùng phiên bản.
 - `npm run consumer:smoke:registry` chạy lệnh cài ở trên bằng npm thật trên một registry cục bộ, build và chạy một app Angular với gói đã cài. Bước này nằm trong `ci.yml` và `publish.yml`.
+- `npm run consumer:smoke:published` làm cùng việc nhưng cài từ **GitHub Packages thật** bằng đúng `.npmrc` trong README (cần `GITHUB_TOKEN` có `read:packages`). `.github/workflows/verify-published.yml` chạy nó sau mỗi lần phát hành, hằng tuần và khi file kiểm tra đổi, nên việc "người ngoài cài được" được kiểm lại liên tục chứ không chỉ một lần.
+- Đã phát hành 0.1.0, 0.1.1, 0.1.2 (hai bản sau chỉ sửa README vì trang gói chỉ đổi README khi có phiên bản mới).
 
 ## Hệ quả
 - Người ngoài vẫn cần một token đọc (`read:packages`) vì GitHub Packages bắt đăng nhập cả với gói công khai; đây là cái giá của việc dùng GitHub Packages thay cho npmjs.com. Muốn bỏ bước token thì phát hành thêm lên npmjs.com (cần giữ được một scope trên npmjs.com, và cần `NPM_TOKEN` trong workflow).
