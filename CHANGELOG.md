@@ -2,6 +2,10 @@
 
 Hai gói `@nxt/ui` và `@nxt/tokens` phát hành cùng một số phiên bản ([semver](https://semver.org/lang/vi/)). Thẻ phát hành có dạng `v<phiên bản>`; workflow `.github/workflows/publish.yml` chỉ chạy khi thẻ khớp phiên bản trong `package.json` (`npm run release:check`).
 
+## 0.1.2
+
+Mở rộng README của `@nxt/ui` thành hướng dẫn cài đặt đầy đủ cho một dự án Angular khác (không đổi code): tạo token, đặt biến môi trường (bash và PowerShell), `.npmrc`, cài bằng alias, `app.config.ts`, cập nhật phiên bản, CI và bảng lỗi thường gặp.
+
 ## 0.1.1
 
 Sửa tài liệu đi kèm gói (không đổi code): README của hai gói và README gốc nay tự đủ các bước cài đặt, và nói rõ lệnh `npm install @<tài-khoản>/ui` mà trang gói của GitHub gợi ý **không dùng được**, phải cài bằng alias.
