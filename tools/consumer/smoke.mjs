@@ -187,6 +187,11 @@ w(
   'src/styles.css',
   "@import '@nxt/tokens/css/core.css';\n@import '@nxt/ui/styles/nxt.css';\nbody { margin: 0; padding: 24px; background: var(--nxt-color-bg-canvas); color: var(--nxt-color-text-default); font: var(--nxt-typography-body-md); }\n",
 );
+// The quick start of packages/ui/README.md is built and shown in this app, so the README example cannot rot: it must compile with
+// strictTemplates against the installed package and pass axe like everything else.
+const quickstart = fs.readFileSync(path.join(repo, 'packages/ui/README.md'), 'utf8').match(/```ts quickstart\r?\n([\s\S]*?)```/)?.[1];
+if (!quickstart) fail('packages/ui/README.md has no "```ts quickstart" code block.');
+w('src/quickstart.ts', quickstart);
 w(
   'src/main.ts',
   `import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
@@ -197,22 +202,24 @@ import { NxtProgress } from '@nxt/ui/progress';
 import { NxtSlider } from '@nxt/ui/slider';
 import { NxtStepper } from '@nxt/ui/stepper';
 import { NxtTag } from '@nxt/ui/tag';
+import { Quickstart } from './quickstart';
 
 @Component({
   selector: 'app-root',
-  imports: [NxtButton, NxtTag, NxtStepper, NxtSlider, NxtProgress],
+  imports: [NxtButton, NxtTag, NxtStepper, NxtSlider, NxtProgress, Quickstart],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: \`
     <main>
       <h1>Xin chào NXT</h1>
       <p>Đã bấm {{ clicks() }} lần</p>
-      <button nxtButton variant="primary" type="button" (click)="clicks.set(clicks() + 1)">Lưu hồ sơ</button>
+      <button nxtButton variant="primary" type="button" (click)="clicks.set(clicks() + 1)">Lưu thiết lập</button>
       <button nxtButton type="button">Huỷ</button>
       <button nxtButton variant="secondary" type="button" (click)="theme.setPrimary('#0F766E')">Đổi sang xanh ngọc</button>
       <nxt-tag tone="success">Đang sử dụng</nxt-tag>
       <nxt-stepper label="Số ngày phép" [min]="0" [max]="30" [value]="12" />
       <nxt-slider label="Âm lượng" [min]="0" [max]="100" [value]="40" />
       <nxt-progress label="Tiến độ" [value]="60" />
+      <app-quickstart />
     </main>
   \`,
 })
@@ -256,14 +263,14 @@ const errors = [];
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
 page.on('pageerror', (e) => errors.push(String(e)));
 await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' });
-await page.getByRole('button', { name: 'Lưu hồ sơ' }).click();
+await page.getByRole('button', { name: 'Lưu thiết lập' }).click();
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 const token = (name) => page.evaluate((n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim().toUpperCase(), name);
 const settled = async () => {
   await page.mouse.move(0, 0); // leave the hover state, then let the color transition finish
   await page.waitForTimeout(600);
 };
-const buttonBg = () => page.getByRole('button', { name: 'Lưu hồ sơ' }).evaluate((el) => getComputedStyle(el).backgroundColor);
+const buttonBg = () => page.getByRole('button', { name: 'Lưu thiết lập' }).evaluate((el) => getComputedStyle(el).backgroundColor);
 const rgbOf = (h) => `rgb(${[1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)).join(', ')})`;
 
 // the scale the SHIPPED command-line tool makes for the same seeds (run from the installed package, like a product would)
@@ -276,9 +283,10 @@ const checks = {
   'button click works (signals)': (await page.getByText('Đã bấm 1 lần').count()) === 1,
   'provideNxt set data-nxt-density': (await page.evaluate(() => document.documentElement.getAttribute('data-nxt-density'))) === 'comfortable',
   'tokens loaded (CSS variable)': (await token('--nxt-color-bg-primary')) !== '',
-  'component styles applied (primary button is filled)': (await page.getByRole('button', { name: 'Lưu hồ sơ' }).evaluate((el) => getComputedStyle(el).backgroundColor)) !== 'rgba(0, 0, 0, 0)',
+  'component styles applied (primary button is filled)': (await page.getByRole('button', { name: 'Lưu thiết lập' }).evaluate((el) => getComputedStyle(el).backgroundColor)) !== 'rgba(0, 0, 0, 0)',
   'stepper is a spinbutton': (await page.getByRole('spinbutton').count()) >= 1,
   'slider has role slider': (await page.getByRole('slider').count()) >= 1,
+  'README quick start renders (form, button, table)': (await page.getByRole('textbox', { name: /Họ và tên/ }).count()) === 1 && (await page.getByRole('table', { name: 'Nhân viên phòng Kế toán' }).count()) === 1,
   'no console errors': errors.length === 0,
 };
 const axeOf = async (label) => {

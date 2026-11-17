@@ -20,7 +20,7 @@
     "docs:generate": "node tools/docs/generate.mjs",
     "ds:tokens": "node tools/tokens/validate.mjs",
     "ds:hardcoded": "node tools/lint/check-hardcoded.mjs",
-    "ds:check": "node tools/tokens/validate.mjs && node tools/lint/check-hardcoded.mjs && node tools/tokens/wire-component-tokens.mjs --check",
+    "ds:check": "node tools/tokens/validate.mjs && node tools/lint/check-hardcoded.mjs && node tools/tokens/wire-component-tokens.mjs --check && node tools/docs/readme-catalog.mjs --check",
     "ds:palette": "node tools/tokens/palette.mjs",
     "ds:contrast": "node tools/tokens/contrast.mjs",
     "ds:new": "node tools/scaffold/component.mjs",
@@ -30,7 +30,8 @@
     "consumer:smoke": "node tools/consumer/smoke.mjs",
     "release:check": "node tools/release/check-version.mjs",
     "consumer:smoke:registry": "node tools/consumer/smoke.mjs --from-registry",
-    "consumer:smoke:published": "node tools/consumer/smoke.mjs --from-published"
+    "consumer:smoke:published": "node tools/consumer/smoke.mjs --from-published",
+    "readme:catalog": "node tools/docs/readme-catalog.mjs"
   },
   "dependencies": {
     "@angular/cdk": "^21.2.0",

@@ -17,13 +17,17 @@ Quyết định: [ADR-006](adr/006-npm-scope.md). GitHub Packages của tài kho
 | `consumer:smoke:registry`: `npm install @nxt/ui@npm:@<owner>/ui …` thật trên registry cục bộ, build và chạy app | Có, 14/14; chạy trong `ci.yml` và `publish.yml` |
 | `.github/workflows/publish.yml`: chạy khi đẩy thẻ `v*`, có chế độ chạy thử (`--dry-run`), bỏ qua phiên bản đã phát hành | Đã chạy trên GitHub: v0.1.0, v0.1.1, v0.1.2 đều thành công (kể cả bước kiểm cài đặt trên Linux) |
 | `.github/workflows/verify-published.yml`: cài gói đã phát hành từ GitHub Packages thật bằng đúng `.npmrc` và lệnh alias của README, build app, chạy trình duyệt + axe (`npm run consumer:smoke:published`) | Chạy sau mỗi lần phát hành, hằng tuần, và khi file kiểm tra đổi |
-| README tự đủ hướng dẫn (token, biến môi trường bash/PowerShell, `.npmrc`, alias, `app.config.ts`, CI, lỗi thường gặp) trong README gốc, `@nxt/ui`, `@nxt/tokens` và trang Cài đặt | Có; trang gói công khai đang hiển thị README 0.1.2 |
+| README tự đủ hướng dẫn (token, biến môi trường bash/PowerShell, `.npmrc`, alias, `app.config.ts`, CI, lỗi thường gặp) trong README gốc, `@nxt/ui`, `@nxt/tokens` và trang Cài đặt | Có; trang gói hiển thị bản README của 0.1.2, bản mới hơn sẽ lên ở lần phát hành sau |
+| README của `@nxt/ui` làm tài liệu chính khi chưa có web docs: "Bắt đầu nhanh" (form, nút, bảng), cấu hình `provideNxt`, token trong CSS, chỉnh một component, khả năng tiếp cận, hiệu năng, phạm vi hỗ trợ | Có; đoạn "Bắt đầu nhanh" được lấy nguyên từ README, biên dịch (`strictTemplates`) và chạy axe trong `consumer:smoke` |
+| Danh mục 40 entry point trong README sinh từ repo (`npm run readme:catalog`, mô tả lấy từ trang docs, liên kết tới `SPEC.md`) | Có; `ds:check` fail khi danh mục lệch, nên thêm hay bỏ component mà quên sinh lại là CI đỏ |
 
 **Phát hiện khi làm:** 39 file trong gói `@nxt/ui` đã build tự import nhau bằng `@nxt/ui/<entry>`, nên đổi tên gói theo scope (cách `release:prepare` làm trước đây) làm hỏng gói; cách "ánh xạ paths" trong docs cũ chưa từng được kiểm. Đã thay bằng cài qua alias và kiểm bằng npm thật.
 
 **Kiểm chứng (2026-11-17, đã chạy thật):** `ds:check` 0 lỗi; unit 587/587; `npm run build` thành công (bundle khởi tạo docs 587,93 kB); `size:check` đạt; `release:check` đạt; `consumer:smoke` 14/14 (gói đóng tarball) và `consumer:smoke:registry` 14/14 (cài qua alias từ registry cục bộ); `npm publish --dry-run` cả hai gói đúng tên, đúng registry, có LICENSE/NOTICE.
 
 **Đã phát hành (2026-11-17):** `@xuantruongnguyen230300-gif/ui` và `/tokens` các bản 0.1.0, 0.1.1, 0.1.2 trên GitHub Packages; trang gói mở được khi chưa đăng nhập (công khai) và hiển thị README. GitHub tự gợi ý lệnh `npm install @<tài-khoản>/ui` trên trang gói, lệnh đó không dùng được (phải qua alias), nên README nói rõ điều này ở ngay đầu phần cài đặt.
+
+**Quyết định (2026-11-17):** không làm web docs công khai; tài liệu nằm trong README và `SPEC.md` trên GitHub (chủ sản phẩm chọn). Nếu đổi ý: build docs dưới `/<repo>/` đã thử được cục bộ (10/10 kiểm tra), chỉ cần thêm workflow GitHub Pages và bật Pages trong Settings.
 
 **Chưa làm / chưa kiểm:** cài thật từ GitHub Packages bằng token của một người ngoài (`verify-published.yml` thử bằng `GITHUB_TOKEN` của Actions, bản thân cách thử đó đã chạy được tới bước GitHub từ chối token giả bằng 401); pnpm và yarn với cú pháp alias; SSR (không có `@angular/ssr`, `@angular/platform-server` trong repo, thêm cần dependency); Angular 22 (peer khai `>=21 <23`, chỉ thử 21.2); `ng add @nxt/ui`; Inter.
 
