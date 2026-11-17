@@ -1,0 +1,106 @@
+{
+  "component": {
+    "slider": {
+      "hit-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao vùng chạm của thanh theo mật độ (gọn 28 · vừa 36 · rộng 46): ở mật độ rộng (cảm ứng) đạt 44px."
+      },
+      "track-height": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.xs}",
+        "$description": "Độ dày rãnh theo mật độ (gọn 2 · vừa 4 · rộng 6)."
+      },
+      "thumb-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.lg}",
+        "$description": "Đường kính tay kéo (24px), không đổi theo mật độ."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn rãnh, phần tô và tay kéo."
+      },
+      "track-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input-hover}",
+        "$description": "Rãnh chưa tô: màu đủ đậm để thấy phạm vi của thanh (≥ 3:1 với nền ở mọi mode)."
+      },
+      "fill-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Phần rãnh đã tô, từ đầu thanh tới tay kéo."
+      },
+      "thumb-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Nền tay kéo: trắng ở mọi mode, đổ bóng mềm elevation.raised."
+      },
+      "thumb-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền tay kéo màu nhấn: ranh giới của tay kéo đạt ≥ 3:1 với nền (bóng đổ không tính là ranh giới)."
+      },
+      "thumb-border-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary-hover}",
+        "$description": "Viền tay kéo khi hover."
+      },
+      "track-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Rãnh khi vô hiệu."
+      },
+      "fill-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.disabled}",
+        "$description": "Phần tô khi vô hiệu: vẫn thấy vị trí."
+      },
+      "thumb-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền tay kéo khi vô hiệu."
+      },
+      "thumb-border-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.disabled}",
+        "$description": "Viền tay kéo khi vô hiệu."
+      },
+      "fill-bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Phần tô khi chỉ đọc: trung tính, không mời kéo."
+      },
+      "thumb-bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền tay kéo khi chỉ đọc."
+      },
+      "thumb-border-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Viền tay kéo khi chỉ đọc (≥ 3:1 với nền)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn của thanh."
+      },
+      "value-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Giá trị hiện tại ở cuối hàng nhãn."
+      },
+      "end-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Nhãn chữ và icon ở hai đầu thanh."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý dưới thanh, như hint của form field."
+      }
+    }
+  }
+}

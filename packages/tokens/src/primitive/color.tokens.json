@@ -145,7 +145,7 @@
             "components": [
               0.971,
               0.0114,
-              262
+              257
             ],
             "alpha": 1,
             "hex": "#F1F6FD"
@@ -157,10 +157,10 @@
             "components": [
               0.936,
               0.0262,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#E0EAFC"
+            "hex": "#DFEBFC"
           }
         },
         "200": {
@@ -169,10 +169,10 @@
             "components": [
               0.885,
               0.0482,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#C8DAFA"
+            "hex": "#C5DBF9"
           }
         },
         "300": {
@@ -181,10 +181,10 @@
             "components": [
               0.808,
               0.0858,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#A2C1F8"
+            "hex": "#9DC3F8"
           }
         },
         "400": {
@@ -193,10 +193,10 @@
             "components": [
               0.704,
               0.1346,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#719EF3"
+            "hex": "#67A1F2"
           }
         },
         "500": {
@@ -205,22 +205,22 @@
             "components": [
               0.623,
               0.1746,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#4982EF"
+            "hex": "#3785EE"
           }
         },
         "600": {
           "$value": {
             "colorSpace": "oklch",
             "components": [
-              0.546,
-              0.2,
-              262
+              0.55,
+              0.1952,
+              257
             ],
             "alpha": 1,
-            "hex": "#2766E2"
+            "hex": "#006CE0"
           }
         },
         "700": {
@@ -228,11 +228,11 @@
             "colorSpace": "oklch",
             "components": [
               0.488,
-              0.1984,
-              262
+              0.1732,
+              257
             ],
             "alpha": 1,
-            "hex": "#1654CD"
+            "hex": "#005BBF"
           }
         },
         "800": {
@@ -240,11 +240,11 @@
             "colorSpace": "oklch",
             "components": [
               0.424,
-              0.1624,
-              262
+              0.1505,
+              257
             ],
             "alpha": 1,
-            "hex": "#1546A5"
+            "hex": "#004A9E"
           }
         },
         "900": {
@@ -253,10 +253,10 @@
             "components": [
               0.379,
               0.1192,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#1C3E80"
+            "hex": "#0E4080"
           }
         },
         "950": {
@@ -265,13 +265,13 @@
             "components": [
               0.282,
               0.0742,
-              262
+              257
             ],
             "alpha": 1,
-            "hex": "#14284E"
+            "hex": "#0E294D"
           }
         },
-        "$description": "NXT core brand (cobalt). Products override this scale in src/brands/<product>/."
+        "$description": "NXT core brand (xanh kiểu Apple, chữ trắng đạt 4.5:1). Sản phẩm override trong src/brands/<product>/."
       },
       "blue": {
         "50": {

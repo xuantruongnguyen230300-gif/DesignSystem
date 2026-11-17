@@ -24,10 +24,10 @@ keywords:
 
 ## Khi nào không dùng
 
-- **Hơn 5 lựa chọn, hoặc nhãn dài**: dùng select.
-- **Bật/tắt một thứ**: dùng switch hoặc [Checkbox](/components/checkbox).
+- **Hơn 5 lựa chọn, hoặc nhãn dài**: dùng [Radio group](/components/radio-group) (dọc) hoặc select.
+- **Bật/tắt một thứ**: dùng [Switch](/components/switch) hoặc [Checkbox](/components/checkbox).
 - **Chuyển giữa các phần nội dung khác nhau** (Thông tin chung, Hợp đồng, Tài liệu): dùng [Tabs](/components/tabs).
-- **Trường trong form cần báo lỗi hoặc khoá**: dùng radio group có nhãn hiển thị. Segmented chưa có trạng thái lỗi và trạng thái khoá. Lựa chọn luôn có sẵn giá trị mặc định ("Cách duyệt") thì đặt được trong form, với `showLabel`.
+- **Trường trong form cần báo lỗi, bắt buộc chọn hoặc chỉ đọc**: dùng [Radio group](/components/radio-group). Segmented không có trạng thái lỗi / chỉ đọc. Lựa chọn luôn có sẵn giá trị mặc định ("Cách duyệt") thì đặt được trong form, với `showLabel`.
 - **Kích hoạt hành động**: dùng [Button](/components/button). Segmented chỉ đổi một giá trị.
 
 ## Lựa chọn
@@ -60,6 +60,14 @@ Mặc định `label` chỉ dành cho screen reader, vì ngữ cảnh xung quanh
 - `showLabel` hiện chính `<legend>` của nhóm, không thêm nhãn thứ hai, nên tên nhóm chỉ được đọc một lần. Đừng tự đặt một `<span aria-hidden>` làm nhãn cạnh segmented.
 - Nhãn là danh từ ngắn như nhãn form field: "Cách duyệt", "Kỳ báo cáo".
 
+## Khoá và Angular forms
+
+Khoá **một lựa chọn** bằng `disabled: true` trong `options` (dữ liệu năm chỉ có sau khi khoá sổ), hoặc khoá **cả nhóm** bằng `disabled` / `control.disable()`. Lựa chọn bị khoá bị bỏ qua khi dùng mũi tên; lựa chọn đang chọn mà bị khoá vẫn giữ nền nổi để người dùng thấy giá trị.
+
+::example{segmented-forms}
+
+`NxtSegmented` implement `ControlValueAccessor`: dùng `formControlName`, `[formControl]` hoặc `[(ngModel)]` thay cho `[(value)]`. Control được đánh dấu touched khi focus rời khỏi nhóm.
+
 ## Lọc nhanh một danh sách
 
 Segmented hợp với bộ lọc **một chiều** đặt ngay trên danh sách. Component không tự thông báo kết quả: đặt số kết quả trong một phần tử `role="status"` để người dùng screen reader biết danh sách đã đổi.
@@ -82,12 +90,13 @@ Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở 
 | Phím | Hành vi |
 |------|---------|
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Vào nhóm tại lựa chọn đang chọn, hoặc ra khỏi nhóm. Cả nhóm chỉ là một điểm dừng Tab |
-| <kbd>→</kbd> / <kbd>↓</kbd> | Chọn lựa chọn kế tiếp, vòng lại ở cuối |
-| <kbd>←</kbd> / <kbd>↑</kbd> | Chọn lựa chọn trước đó |
+| <kbd>→</kbd> / <kbd>↓</kbd> | Chọn lựa chọn kế tiếp, vòng lại ở cuối, bỏ qua lựa chọn bị khoá |
+| <kbd>←</kbd> / <kbd>↑</kbd> | Chọn lựa chọn trước đó, bỏ qua lựa chọn bị khoá |
 | <kbd>Space</kbd> | Chọn lựa chọn đang focus (khi chưa chọn) |
 
 - `label` là bắt buộc. Screen reader đọc tên nhóm, nhãn của lựa chọn, trạng thái đã chọn và vị trí ("2 trên 4").
 - Mỗi segmented có `name` riêng, nên nhiều nhóm trên cùng trang không ảnh hưởng nhau.
+- Mũi tên **chọn ngay** (hành vi radio native, WAI-ARIA APG), vì lựa chọn của segmented có hiệu lực ngay và rẻ để đổi lại. Khoá dùng `disabled` native: screen reader đọc là không dùng được.
 - Vòng focus nằm trên lựa chọn đang focus, dùng `focus.ring.*`. Ở chế độ tương phản cao (forced colors), lựa chọn đang chọn có viền `Highlight`.
 
 ## Nội dung
@@ -112,6 +121,7 @@ Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở 
 | `value` | `T` | Giá trị gán vào `value` khi chọn |
 | `label` | `string` | Nhãn hiển thị (hoặc tooltip khi `iconOnly`) |
 | `icon` | `NxtIconName` (tuỳ chọn) | Icon đặt trước nhãn |
+| `disabled` | `boolean` (tuỳ chọn) | Khoá riêng lựa chọn này |
 
 ## Token
 
@@ -120,4 +130,5 @@ Segmented dùng `<input type="radio">` native trong `<fieldset>`. `label` trở 
 ## Changelog
 
 - **0.1.0**: phát hành beta: radio native trong `fieldset`, 2 size, icon, chế độ `iconOnly` với tooltip, `value` two-way có kiểu.
+- **Chưa phát hành**: `disabled` cho cả nhóm và `NxtSegmentedOption.disabled` cho từng lựa chọn; `ControlValueAccessor`. Token mới `segmented.item-text-disabled`.
 - **Chưa phát hành**: `showLabel` hiện nhãn nhóm như nhãn form field (vẫn là `legend`). Rãnh tách thành `.nxt-segmented__track` bên trong `fieldset`. Token mới `segmented.label-text`.

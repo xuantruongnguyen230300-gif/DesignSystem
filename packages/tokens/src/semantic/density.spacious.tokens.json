@@ -4,29 +4,29 @@
       "$type": "dimension",
       "control": {
         "sm": {
-          "$value": "{primitive.size.32}",
+          "$value": "{primitive.size.40}",
           "$description": "Block-size của control cỡ sm (button, input, select)."
         },
         "md": {
-          "$value": "{primitive.size.40}",
+          "$value": "{primitive.size.46}",
           "$description": "Block-size của control cỡ md (button, input, select)."
         },
         "lg": {
-          "$value": "{primitive.size.48}",
+          "$value": "{primitive.size.54}",
           "$description": "Block-size của control cỡ lg (button, input, select)."
         }
       },
       "row": {
         "sm": {
-          "$value": "{primitive.size.40}",
+          "$value": "{primitive.size.48}",
           "$description": "Chiều cao hàng cỡ sm (table, list)."
         },
         "md": {
-          "$value": "{primitive.size.48}",
+          "$value": "{primitive.size.56}",
           "$description": "Chiều cao hàng cỡ md (table, list)."
         },
         "lg": {
-          "$value": "{primitive.size.56}",
+          "$value": "{primitive.size.64}",
           "$description": "Chiều cao hàng cỡ lg (table, list)."
         }
       }

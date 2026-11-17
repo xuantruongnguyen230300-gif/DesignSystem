@@ -2,7 +2,7 @@
 component: page-header
 status: beta
 owner: "NXT core"
-updated: 2026-10-19
+updated: 2026-11-06
 apg-pattern: breadcrumb
 ---
 
@@ -12,7 +12,7 @@ Entry `@nxt/ui/page-header` gồm `nxt-page-header` (vùng tiêu đề trang) v�
 
 ## 1. Mục đích
 - **Vấn đề người dùng giải quyết:** biết mình đang ở trang nào, nằm ở đâu trong cây trang, trạng thái của đối tượng đang xem, và hành động chính của trang nằm ở đâu, cùng một vị trí trên mọi màn hình.
-- **Khi nào dùng:** đầu mỗi trang trong `nxt-app-shell`; breadcrumb cho trang sâu từ hai cấp trở lên.
+- **Khi nào dùng:** đầu mỗi trang trong `nxt-app-shell`; breadcrumb cho trang sâu từ hai cấp trở lên. Ứng dụng nghiệp vụ đặt `placement="topbar"` để tiêu đề nằm trên thanh trên cùng, cùng hàng với tài khoản, nhường chỗ cho lưới dữ liệu.
 - **Khi nào KHÔNG dùng:**
   - Tiêu đề của một khối trong trang: dùng tiêu đề của `nxt-card` hoặc heading thường.
   - Tiêu đề drawer / dialog: `nxt-drawer` có header riêng.
@@ -26,9 +26,10 @@ Entry `@nxt/ui/page-header` gồm `nxt-page-header` (vùng tiêu đề trang) v�
 |---|---------|----------|---------|
 | 1 | Host `nxt-page-header` | ✓ | Cột dọc |
 | 2 | Breadcrumb | — | Chỉ render khi `breadcrumb` không rỗng |
+| 2b | Nút quay lại `[nxtPageBack]` | — | Icon button ghost `arrow-left` ngay trước tiêu đề, có `aria-label` + tooltip; cho màn chi tiết / trình sửa mở từ danh sách |
 | 3 | Tiêu đề `h1` / `h2` | ✓ | Theo `headingLevel`; `tabindex="-1"` để nhận focus bằng code (`focusTitle()`), không nằm trong thứ tự Tab |
 | 4 | Meta `[nxtPageMeta]` | — | Cùng dòng với tiêu đề, ví dụ `nxt-tag` trạng thái |
-| 5 | Mô tả | — | Khi có `description`; tối đa 75ch |
+| 5 | Mô tả | — | Khi có `description`; tối đa 75ch. Không hiện khi page header nằm trên topbar |
 | 6 | Hành động `[nxtPageActions]` | — | Bên phải, xuống dòng khi hẹp; ẩn khi rỗng |
 | 7 | Nội dung mặc định | — | Dưới hàng tiêu đề, ví dụ `nxt-tabs` |
 
@@ -52,6 +53,8 @@ Selector: `nxt-page-header`, `nxt-breadcrumb`. Export type `NxtBreadcrumbItem` =
 | `nxt-page-header` input | `description` | `string` | `undefined` | Một câu mô tả phạm vi trang |
 | `nxt-page-header` input | `breadcrumb` | `NxtBreadcrumbItem[]` | `[]` | Rỗng thì không có breadcrumb |
 | `nxt-page-header` input | `headingLevel` | `number` (`numberAttribute`) | `1` | `2` → `h2`; giá trị khác → `h1` |
+| `nxt-page-header` input | `placement` | `'content' | 'topbar'` | `'content'` | `topbar`: trong `nxt-app-shell`, từ 1024px trở lên, breadcrumb + nút quay lại + tiêu đề + meta + hành động hiện ở đầu `nxt-topbar`; mô tả không hiện; nội dung mặc định (tabs) ở lại trong trang. Ngoài shell hoặc dưới 1024px: như `content` |
+| `nxt-page-header` content | `[nxtPageBack]` | icon button | | Nút quay lại trước tiêu đề |
 | `nxt-page-header` content | `[nxtPageMeta]` | `nxt-tag`, text | | Trạng thái / meta cạnh tiêu đề |
 | `nxt-page-header` content | `[nxtPageActions]` | nút, menu | | Hành động của trang, tối đa 1 nút primary |
 | `nxt-page-header` content | (default) | bất kỳ | | Nội dung dưới tiêu đề (tabs) |
@@ -72,12 +75,13 @@ Selector: `nxt-page-header`, `nxt-breadcrumb`. Export type `NxtBreadcrumbItem` =
 Item cuối luôn là trang hiện tại: không bao giờ là link hay nút, dù có `link` / `navigable`. `nxt-page-header` không chuyển `label` cho breadcrumb bên trong.
 
 ## 4. Variants & sizes
-Không có variant hay size. Tiêu đề dùng `typography.heading-lg` (24px).
+Không có variant hay size. Tiêu đề dùng `typography.heading-lg` (24px); trên topbar dùng `typography.heading-md` (20px), breadcrumb dùng `typography.caption`.
 
 | Cách dùng | Cấu hình |
 |-----------|----------|
 | Trang danh sách cấp một | `title` + `[nxtPageActions]` ("Thêm nhân viên") |
 | Trang chi tiết | `breadcrumb` + `title` + `[nxtPageMeta]` (tag trạng thái) + `[nxtPageActions]` + tabs trong nội dung mặc định |
+| Trang trong ứng dụng có shell | Thêm `placement="topbar"`; trình sửa mở từ danh sách thêm `[nxtPageBack]` |
 
 ## 5. States
 | Rest | Hover | Focus-visible | Active/Pressed | Selected | Disabled | Loading | Error | Read-only | Empty |
@@ -109,13 +113,25 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/
 | `description-text` | `color.text.subtle` |
 | `crumb-text` | `color.text.subtle` (link và dấu phân cách) |
 | `crumb-current-text` | `color.text.default` (trang hiện tại, link khi hover) |
+| `divider` | `color.border.subtle` (vạch ngăn hành động của trang với hành động toàn cục, chỉ khi ở topbar) |
 
-Dùng thẳng semantic: `space.gap.{xs,sm,md}`, `size.icon.{sm,lg}` (lg: chiều cao tối thiểu của link / nút breadcrumb), `radius.control` (hình vòng focus của link, nút và tiêu đề), `typography.{heading-lg,body-md,body-sm}`.
+Dùng thẳng semantic: `space.gap.{xs,sm,md}`, `size.icon.{sm,md,lg}` (lg: chiều cao tối thiểu của link / nút breadcrumb; md: trên topbar), `radius.control` (hình vòng focus của link, nút và tiêu đề), `border-width.default`, `focus.ring.width`, `typography.{heading-lg,heading-md,body-md,body-sm,caption}`.
 
 ## 8. Density, responsive, i18n
 - Khoảng cách theo density; cỡ chữ tiêu đề không đổi.
 - Hàng tiêu đề và hành động xuống dòng khi hẹp (`flex-wrap`): hành động rơi xuống dưới tiêu đề. Breadcrumb dài cũng xuống dòng, không cắt.
 - Tiêu đề tiếng Việt `heading-lg` (24 / 32px) đủ chỗ cho dấu chồng; tiêu đề dài tự xuống dòng.
+- **Trên topbar** (`placement="topbar"`, ≥ 1024px): hai dòng trong 56px, breadcrumb (caption) trên tiêu đề (`heading-md`, 20 / 28px); hành động ở cuối, sau đó là vạch `divider` rồi tới hành động toàn cục của topbar. Không xuống dòng:
+  - breadcrumb: mục cha giữ đủ tên, chỉ mục hiện tại (đã lặp ở tiêu đề) rút gọn "…";
+  - tiêu đề được ưu tiên chỗ, chỉ rút gọn "…" khi riêng nó đã dài hơn dòng (đủ chữ vẫn nằm trong DOM, screen reader đọc đủ);
+  - meta không vừa thì ẩn trọn (không bao giờ hiện nửa tag), nên **meta không được chứa phần tử focus được**;
+  - dưới 1024px (topbar có nút ☰), page header tự về lại đầu trang, có mô tả nếu có.
+- Shell được tìm theo DOM (`nxtShellStateOf`, tổ tiên `nxt-app-shell` gần nhất), không theo DI, nên page header nằm trong một component layout bọc shell (`<app-layout><page /></app-layout>`) hoặc trong preview docs vẫn lên đúng topbar. Lần render đầu chưa biết shell nên page header `topbar` chưa render ở đâu (không nhảy chỗ); SSR không render page header `topbar`.
+- **Ý nghĩa của `placement="topbar"` (theo SAP Fiori Dynamic Page):** page header trên topbar là **hàng tiêu đề thu gọn vĩnh viễn** của Dynamic Page. Fiori chia đầu trang thành hàng tiêu đề (luôn hiện: tiêu đề, breadcrumb, thông tin chính, hành động) và header nội dung (co lại khi cuộn). NXT gộp hàng tiêu đề vào topbar ở trạng thái thu gọn, không co giãn, nên tiêu đề và hành động không bao giờ mất khi cuộn. Hệ quả:
+  - topbar không có header nội dung: phụ đề, avatar, nhóm nhãn–giá trị, KPI và thông báo cấp đối tượng nằm ở **đầu vùng nội dung**, trong `[nxtObjectPageHeader]` của `nxt-object-page` (`@nxt/ui/object-page`), và co lại khi cuộn ở đó;
+  - trang danh sách không có header nội dung (bộ lọc ở thanh công cụ, chip bên dưới), đúng với trường hợp "header tĩnh" của Fiori;
+  - `[nxtPageActions]` chỉ giữ hành động không kết thúc (Sửa, Xuất, ⋯). Hành động kết thúc (Lưu, Tạo, Gửi duyệt) ở thanh chân dính đáy của trang (`[nxtObjectPageFooter]`), vì dưới 1024px page header về lại trong trang và cuộn mất.
+  Xem `packages/ui/object-page/SPEC.md` và pattern "Trang chi tiết đối tượng".
 
 ## 9. Content guidelines
 - Tiêu đề là danh từ cụ thể: "Danh sách nhân viên", "Hồ sơ Nguyễn Văn An". Trang chi tiết dùng tên đối tượng.
@@ -126,7 +142,8 @@ Dùng thẳng semantic: `space.gap.{xs,sm,md}`, `size.icon.{sm,lg}` (lg: chiều
 ## 10. Acceptance (Definition of Done)
 - [ ] Trang danh sách, trang chi tiết có breadcrumb + meta + tabs, hành động xuống dòng khi hẹp có trong docs example
 - [x] Unit test: breadcrumb (link, chữ thường, `navigable` → nút phát `navigate`, item cuối `aria-current` không bao giờ là link/nút), page header chuyển tiếp `navigate`, tiêu đề `tabindex="-1"` và `focusTitle()` với `headingLevel` 1 và 2
-- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
+- [x] Unit test `placement="topbar"`: lên topbar trong shell, mô tả không hiện, tabs ở lại trong trang, về trang khi mobile / ngoài shell, rời topbar khi bị huỷ, `focusTitle()` ở topbar, `[nxtPageBack]` đứng trước tiêu đề
+- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-11-06, 430/430)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
 
@@ -135,6 +152,13 @@ Dùng thẳng semantic: `space.gap.{xs,sm,md}`, `size.icon.{sm,lg}` (lg: chiều
 - `src/page-header.ts`: `link` chỉ nhận `routerLink` dạng chuỗi, bắt buộc có Router; không truyền được `href` ngoài, query params. Ứng dụng không có router dùng `navigable` + `navigate`.
 - `src/page-header.ts:57`: `headingLevel` ngoài 1/2 lặng lẽ thành `h1`.
 - `src/page-header.css:6`, `:17`: gap dùng primitive `--nxt-space-1`.
+
+### Bổ sung (2026-11-06, Object page)
+- Chỉ thêm văn bản, không đổi code: ghi ở §8 rằng `placement="topbar"` là hàng tiêu đề thu gọn vĩnh viễn của Dynamic Page (SAP Fiori), header nội dung nằm ở `nxt-object-page`, hành động kết thúc nằm ở thanh chân của trang.
+
+### Bổ sung (2026-11-06)
+- **Page header trên topbar.** Input `placement` (`content` | `topbar`) và slot `[nxtPageBack]`. Theo yêu cầu chủ sản phẩm: bỏ ô tìm kiếm giữa topbar, đưa breadcrumb + tiêu đề lên cùng hàng với tài khoản, bỏ mô tả, để lưới dữ liệu có thêm chỗ (khoảng 130px trên màn danh sách). Cách làm: phần đầu là một `ng-template` render đúng một nơi, hoặc trong trang hoặc trong `nxt-topbar` (qua `NxtShellState.pageHeader`); host còn lại `display: contents` để tabs nhập vào bố cục trang. `focusTitle()` vẫn đưa focus lên tiêu đề ở topbar. Tham chiếu: Ant Design PageHeader (nút quay lại trước tiêu đề), app bar của Material / Fluent (tiêu đề trang ở thanh trên).
+- Hàng tiêu đề tách thành `[nxtPageBack]` + nhóm `tiêu đề + meta` (`.nxt-page-header__title-group`); ở trong trang hiển thị như cũ.
 
 ### Bổ sung (2026-10-19)
 - **Breadcrumb bấm được không qua router.** Trường `navigable` của `NxtBreadcrumbItem` và output `navigate` (trên `nxt-breadcrumb`, `nxt-page-header` chuyển tiếp). Phát hiện ở template Quy trình duyệt: danh sách và trình sửa là hai màn hình đổi bằng `@if`, không có route, nên item "Quy trình duyệt" trong breadcrumb của trình sửa không bấm được. Item có `link` vẫn là `a[routerLink]` như cũ; item cuối vẫn là `aria-current="page"`, không bao giờ bấm được. Chọn một cờ trên item (không phải input cấp breadcrumb) vì trong cùng breadcrumb có item là nhóm không có trang ("Thiết lập") đứng cạnh item bấm được.

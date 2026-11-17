@@ -88,7 +88,7 @@ APG: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/ (áp dụng trong ph
 | `panel-width` | `size.popover.md` (bề rộng tối đa, co theo màn hình) |
 | `active-border`, `active-text` | `color.border.selected`, `color.text.link` |
 | `count-bg`, `count-text` | `color.bg.primary`, `color.text.on-primary` |
-| `chip-bg`, `chip-text`, `chip-border`, `chip-radius` | `color.bg.selected`, `color.text.default`, `color.border.selected`, `radius.pill` |
+| `chip-bg`, `chip-text`, `chip-border`, `chip-radius` | `color.bg.selected`, `color.text.link` (≥ 4.5:1, cặp `text.link` / `bg.selected` có sẵn), `color.border.transparent` (chip không viền kiểu iOS: nền accent nhạt + chữ accent tách lớp), `radius.pill` |
 
 ## 8. Density, responsive, i18n
 - Panel rộng tối đa `panel-width`, không vượt quá màn hình trừ gutter; trên màn hẹp chiếm gần hết bề ngang.

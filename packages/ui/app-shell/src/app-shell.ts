@@ -7,6 +7,7 @@ import {
   DestroyRef,
   ElementRef,
   Injectable,
+  TemplateRef,
   ViewEncapsulation,
   afterNextRender,
   booleanAttribute,
@@ -53,6 +54,8 @@ const EXACT: IsActiveMatchOptions = { ...SUBSET, paths: 'exact' };
 export class NxtShellState {
   readonly mobile = signal(false);
   readonly mobileOpen = signal(false);
+  /** Page title area rendered at the start of the top bar (`nxt-page-header placement="topbar"`). */
+  readonly pageHeader = signal<TemplateRef<unknown> | null>(null);
   returnFocus: HTMLElement | null = null;
   open(trigger?: HTMLElement | null) {
     this.returnFocus = trigger ?? null;
@@ -64,6 +67,19 @@ export class NxtShellState {
 }
 
 let nextId = 0;
+
+/** Shell host element → its state. Resolved through the DOM, not DI: see `nxtShellStateOf`. */
+const SHELLS = new WeakMap<Element, NxtShellState>();
+
+/**
+ * State of the app shell that visually contains `el` (nearest `nxt-app-shell` ancestor), or `null`.
+ * DI cannot answer this: content projected through a layout wrapper (`<app-layout><page /></app-layout>`)
+ * injects from where it is declared, so it would miss the wrapper's shell or reach an outer one (docs preview).
+ */
+export function nxtShellStateOf(el: Element): NxtShellState | null {
+  const shell = el.parentElement?.closest('.nxt-app-shell');
+  return (shell && SHELLS.get(shell)) || null;
+}
 
 /**
  * Application frame: side navigation + top bar + scrolling content.
@@ -122,6 +138,7 @@ export class NxtAppShell {
   protected readonly mainId = `nxt-main-${nextId++}`;
 
   constructor() {
+    SHELLS.set(this.host, this.state);
     const destroyRef = inject(DestroyRef);
     inject(BreakpointObserver)
       .observe(MOBILE_QUERY)
@@ -161,18 +178,26 @@ export class NxtAppShell {
   }
 }
 
-/** Top bar of the shell. Shows a menu button for the navigation drawer below 1024px. */
+/**
+ * Top bar of the shell. Shows a menu button for the navigation drawer below 1024px.
+ * A page header with `placement="topbar"` renders at its start, after `[nxtTopbarStart]`.
+ */
 @Component({
   selector: 'nxt-topbar',
-  imports: [NxtButton, NxtIcon],
+  imports: [NgTemplateOutlet, NxtButton, NxtIcon],
   template: `
-    <header class="nxt-topbar__bar">
+    <header class="nxt-topbar__bar" [attr.data-page-header]="state?.pageHeader() ? '' : null">
       @if (state?.mobile()) {
         <button nxtIconButton variant="ghost" type="button" aria-label="Mở menu điều hướng" [attr.aria-expanded]="state?.mobileOpen()" (click)="state?.open($any($event.currentTarget))">
           <nxt-icon name="menu-2" />
         </button>
       }
-      <div class="nxt-topbar__start"><ng-content select="[nxtTopbarStart]" /></div>
+      <div class="nxt-topbar__start">
+        <ng-content select="[nxtTopbarStart]" />
+        @if (state?.pageHeader(); as header) {
+          <ng-container [ngTemplateOutlet]="header" />
+        }
+      </div>
       <div class="nxt-topbar__center"><ng-content select="[nxtTopbarCenter]" /></div>
       <div class="nxt-topbar__end"><ng-content select="[nxtTopbarEnd]" /></div>
     </header>

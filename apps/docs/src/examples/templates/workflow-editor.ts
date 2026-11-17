@@ -25,6 +25,7 @@ import { NxtGrid, NxtSpan } from '@nxt/ui/layout';
 import { NxtBreadcrumbItem, NxtPageHeader } from '@nxt/ui/page-header';
 import { NxtTag } from '@nxt/ui/tag';
 import { NxtTimeline, NxtTimelineItem } from '@nxt/ui/timeline';
+import { NxtTooltip } from '@nxt/ui/tooltip';
 import {
   BLOCKS,
   COMPANY,
@@ -97,20 +98,23 @@ interface Problem {
     NxtTag,
     NxtTimeline,
     NxtTimelineItem,
+    NxtTooltip,
     WorkflowFlow,
     WorkflowStepForm,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.nxt-fill]': 'wide()', '[class.is-wide]': 'wide()' },
   template: `
-    <nxt-page-header [title]="title()" [breadcrumb]="breadcrumb()" (navigate)="requestLeave()" description="Ai duyệt, theo thứ tự nào, trong bao lâu, và khi nào thì bỏ qua một bước.">
+    <nxt-page-header placement="topbar" [title]="title()" [breadcrumb]="breadcrumb()" (navigate)="requestLeave()">
+      <button nxtPageBack nxtIconButton variant="ghost" type="button" data-back aria-label="Quay lại danh sách" nxtTooltip="Quay lại danh sách" nxtTooltipPosition="bottom" (click)="requestLeave()">
+        <nxt-icon name="arrow-left" />
+      </button>
       <nxt-tag nxtPageMeta dot [tone]="status().tone">{{ status().label }}</nxt-tag>
       <span nxtPageMeta class="meta">{{ versionText() }}</span>
       @if (dirty()) {
         <nxt-tag nxtPageMeta tone="info" icon="pencil">Có thay đổi chưa lưu</nxt-tag>
       }
       <ng-container ngProjectAs="[nxtPageActions]">
-        <button nxtButton variant="ghost" type="button" data-back (click)="requestLeave()"><nxt-icon name="arrow-left" />Quay lại danh sách</button>
         <button nxtButton type="button" (click)="saveDraft()"><nxt-icon name="device-floppy" />Lưu nháp</button>
         <button nxtButton variant="primary" type="button" (click)="apply()"><nxt-icon name="check" />Áp dụng</button>
       </ng-container>
@@ -672,6 +676,7 @@ export class WorkflowEditor {
         message: `Các thay đổi trong “${this.title()}” sẽ mất. Lưu nháp để giữ lại mà chưa áp dụng.`,
         confirmLabel: 'Lưu nháp',
         alternateLabel: 'Bỏ thay đổi',
+        alternateTone: 'danger',
         cancelLabel: 'Ở lại',
       })
       .subscribe((answer) => {

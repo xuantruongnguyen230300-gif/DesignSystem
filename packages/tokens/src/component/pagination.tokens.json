@@ -18,23 +18,33 @@
       },
       "item-current-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.selected}",
-        "$description": "Nền trang hiện tại."
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Nền trang hiện tại: vòng tròn accent đặc."
       },
       "item-current-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.strong}",
-        "$description": "Chữ trang hiện tại."
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Chữ trang hiện tại (≥ 4.5:1 với bg.primary)."
       },
       "item-size": {
         "$type": "dimension",
         "$value": "{semantic.size.control.md}",
         "$description": "Kích thước ô số trang."
       },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Vùng chạm tối thiểu của ô số trang khi thiết bị trỏ chính là ngón tay (pointer: coarse); ô nhìn thấy giữ nguyên; riêng ô chọn số dòng (select native) cao lên bằng giá trị này. Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
       "item-radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.control}",
-        "$description": "Bo góc ô số trang."
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo nút trang: tròn khi nút vuông (kiểu C)."
+      },
+      "item-current-shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.raised}",
+        "$description": "Bóng trung tính của trang hiện tại (không tô theo accent để brand nào cũng đúng)."
       }
     }
   }

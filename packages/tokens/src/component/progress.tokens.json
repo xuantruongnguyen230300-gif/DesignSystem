@@ -30,6 +30,26 @@
         "$type": "dimension",
         "$value": "{semantic.radius.pill}",
         "$description": "Bo góc."
+      },
+      "circle-size-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Đường kính vòng tiến độ cỡ sm, ngang control sm (theo density: gọn 24 · vừa 32 · rộng 40)."
+      },
+      "circle-size-md": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Đường kính vòng tiến độ cỡ md, ngang control lg (theo density: gọn 32 · vừa 40 · rộng 54)."
+      },
+      "circle-size-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.size.row.lg}",
+        "$description": "Đường kính vòng tiến độ cỡ lg, ngang hàng cỡ lg (theo density: gọn 40 · vừa 48 · rộng 64)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ nhãn giữa vòng tiến độ: không theo tông, để luôn đạt tương phản trên nền trang."
       }
     }
   }

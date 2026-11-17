@@ -3,8 +3,8 @@
     "font-family": {
       "$type": "fontFamily",
       "sans": {
-        "$value": "{primitive.font.family.inter}",
-        "$description": "Font giao diện. Brand slot (chỉ font đủ glyph tiếng Việt)."
+        "$value": "{primitive.font.family.system}",
+        "$description": "Font giao diện: font hệ thống (SF Pro trên thiết bị Apple, Segoe UI/Roboto nơi khác; đủ glyph tiếng Việt). Brand slot."
       },
       "mono": {
         "$value": "{primitive.font.family.jetbrains-mono}",
@@ -116,16 +116,16 @@
     "radius": {
       "$type": "dimension",
       "control": {
-        "$value": "{primitive.radius.md}",
-        "$description": "Góc bo của button, input, select, tag."
+        "$value": "{primitive.radius.xl}",
+        "$description": "Góc bo của input, select, mục menu (12px, theo HeroUI). Nút, tag, segmented dùng pill."
       },
       "container": {
-        "$value": "{primitive.radius.lg}",
-        "$description": "Góc bo của card, panel, bảng."
+        "$value": "{primitive.radius.xl}",
+        "$description": "Góc bo của card, panel, bảng: 12px (grouped list kiểu iOS)."
       },
       "overlay": {
-        "$value": "{primitive.radius.xl}",
-        "$description": "Góc bo của dialog, popover, menu."
+        "$value": "{primitive.radius.20}",
+        "$description": "Góc bo của dialog, popover, menu (20px)."
       },
       "pill": {
         "$value": "{primitive.radius.full}",
@@ -213,6 +213,11 @@
           "$value": "{primitive.size.720}",
           "$description": "Dialog có bảng nhỏ hoặc nội dung dài; cân nhắc drawer trước."
         }
+      },
+      "touch-target": {
+        "$value": "{primitive.size.44}",
+        "$description": "Vùng chạm tối thiểu trên thiết bị cảm ứng (pointer: coarse), không đổi theo mật độ: 44px theo Apple HIG (44×44pt).",
+        "$type": "dimension"
       }
     },
     "motion": {

@@ -16,6 +16,21 @@
         "$value": "{semantic.radius.overlay}",
         "$description": "Bo góc menu."
       },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.sm}",
+        "$description": "Đệm panel, đủ rộng để mục bo 14px lồng đều trong panel bo 32px."
+      },
+      "item-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc mục menu."
+      },
+      "item-padding-inline": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.md}",
+        "$description": "Padding ngang mục và nhãn nhóm."
+      },
       "item-text": {
         "$type": "color",
         "$value": "{semantic.color.text.default}",
@@ -23,8 +38,8 @@
       },
       "item-bg-hover": {
         "$type": "color",
-        "$value": "{semantic.color.bg.surface-hover}",
-        "$description": "Nền mục khi hover/focus."
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền mục khi hover/focus (nền nhạt tông accent như mục đang chọn của mockup; bg.surface-hover trùng nền menu ở dark nên không dùng được)."
       },
       "item-danger-text": {
         "$type": "color",

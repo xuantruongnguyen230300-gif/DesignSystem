@@ -14,7 +14,9 @@
       "eye-off", "lock", "lock-open", "link", "unlink", "logout", "login", "player-play", "player-pause", "archive", "restore",
       "history", "sort-ascending", "sort-descending", "arrows-sort", "columns-3", "table", "layout-list", "layout-grid",
       "maximize", "minimize", "zoom-in", "paperclip", "cloud-upload", "clipboard-copy", "star", "star-off", "pin", "bookmark",
-      "flag", "ban", "arrows-exchange", "transfer", "replace", "device-floppy", "message-plus", "arrow-bar-to-down"
+      "flag", "ban", "arrows-exchange", "transfer", "replace", "device-floppy", "message-plus", "arrow-bar-to-down",
+      "arrow-bar-to-up", "columns", "adjustments", "bookmarks", "grip-vertical", "layout-sidebar-right", "pinned", "message-report",
+      "calendar-week"
     ],
     "status": [
       "circle-check", "circle-x", "alert-circle", "alert-triangle", "info-circle", "help-circle", "clock", "hourglass", "loader-2",

@@ -92,7 +92,7 @@ APG: https://www.w3.org/WAI/ARIA/apg/patterns/alert/
 |-------|----------------|
 | `bg-info`, `bg-success`, `bg-warning`, `bg-danger` | `color.bg.{info,success,warning,danger}-subtle` |
 | `icon-info`, `icon-success`, `icon-warning`, `icon-danger` | `color.icon.{info,success,warning,danger}` |
-| `border` | `color.border.subtle` |
+| `border` | `color.border.transparent` (kiểu C: không viền, tách bằng nền tone; chỉ hiện ở forced-colors) |
 | `text` | `color.text.default` |
 | `title` | `color.text.strong` |
 

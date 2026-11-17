@@ -39,6 +39,13 @@ jobs:
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps chromium
 
+      - name: Versions agree (packages, NXT_UI_VERSION, peer range, CHANGELOG)
+        run: npm run release:check
+
+      # A stranger's install: staged packages, real `npm install @nxt/ui@npm:@<owner>/ui` from a throw-away registry, build, run.
+      - name: Install check (consumer app from a registry)
+        run: npm run consumer:smoke:registry
+
       - name: Accessibility + keyboard tests (axe on every example × mode)
         run: npm run test:a11y
 

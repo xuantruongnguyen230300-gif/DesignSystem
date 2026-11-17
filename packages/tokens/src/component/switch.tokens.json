@@ -1,0 +1,81 @@
+{
+  "component": {
+    "switch": {
+      "track-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Rãnh khi tắt: là ranh giới của control nên dùng màu viền nhập liệu (≥ 3:1 với nền)."
+      },
+      "track-bg-checked": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.success}",
+        "$description": "Skin iOS: switch bật màu xanh lá."
+      },
+      "track-bg-checked-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.success-hover}",
+        "$description": "Giữ màu xanh lá khi hover."
+      },
+      "track-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Rãnh khi vô hiệu (bật hoặc tắt)."
+      },
+      "track-bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Rãnh khi chỉ đọc (bật hoặc tắt): trung tính, không mời bấm."
+      },
+      "track-border-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền rãnh khi chỉ đọc."
+      },
+      "thumb-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Tay gạt: tương phản với rãnh tắt (border.input) và rãnh bật (bg.primary) ở mọi mode."
+      },
+      "thumb-bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.text.disabled}",
+        "$description": "Tay gạt khi vô hiệu: vẫn thấy vị trí bật/tắt."
+      },
+      "thumb-bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Tay gạt khi chỉ đọc (≥ 3:1 với bg.muted)."
+      },
+      "track-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao rãnh theo mật độ (gọn 24 · vừa 32 · rộng 40); bề rộng theo tỉ lệ iOS 51:31, tay gạt cách mép một viền nhấn."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Vùng chạm tối thiểu của nút switch khi thiết bị trỏ chính là ngón tay (pointer: coarse); rãnh nhìn thấy giữ nguyên. Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn rãnh và tay gạt."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn thiết lập."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý dưới nhãn, như hint của form field."
+      },
+      "state-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ trạng thái \"Bật\"/\"Tắt\" sau switch."
+      }
+    }
+  }
+}

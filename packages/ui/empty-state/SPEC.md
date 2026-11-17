@@ -23,7 +23,7 @@ apg-pattern: "none (presentational)"
 | # | Phần tử | Bắt buộc | Ghi chú |
 |---|---------|----------|---------|
 | 1 | Host `nxt-empty-state` | ✓ | Cột căn giữa, `text-align: center` |
-| 2 | Vòng icon `.nxt-empty-state__icon` | ✓ | `nxt-icon` 24px trong vòng tròn; `aria-hidden="true"` |
+| 2 | Vòng icon `.nxt-empty-state__icon` | ✓ | `nxt-icon` 24px trong ô bo vuông tông thương hiệu nhạt; `aria-hidden="true"` |
 | 3 | Tiêu đề `h2` / `h3` | ✓ | Theo `headingLevel` |
 | 4 | Mô tả `p` | — | Chỉ render khi có `description`; tối đa 48ch |
 | 5 | Vùng hành động `[nxtEmptyActions]` | — | Ẩn (`:empty`) khi không có nội dung chiếu vào |
@@ -76,15 +76,15 @@ APG pattern: không áp dụng.
 
 | Token | Alias semantic |
 |-------|----------------|
-| `icon-bg` | `color.bg.muted` |
-| `icon-color` | `color.icon.subtle` |
+| `icon-bg` | `color.bg.primary-subtle` (kiểu C: ô icon tông thương hiệu nhạt) |
+| `icon-color` | `color.text.link` (cặp `text.link`/`bg.primary-subtle` đã có trong `contrastPairs`) |
 | `title-text` | `color.text.strong` |
 | `text` | `color.text.subtle` |
 
-Dùng thẳng semantic: `space.gap.{xs,sm}`, `space.section.{sm,lg}`, `space.inset.lg`, `size.icon.lg`, `size.control.lg` (vòng icon), `radius.pill`, `typography.heading-sm`, `typography.body-md`.
+Dùng thẳng semantic: `space.gap.{xs,sm}`, `space.section.{sm,lg}`, `space.inset.lg`, `size.icon.lg`, `size.control.lg` (ô icon = 2 × control-lg, theo density), `radius.container` (ô icon bo vuông), `typography.heading-sm`, `typography.body-md`.
 
 ## 8. Density, responsive, i18n
-- Padding và gap theo density. Vòng icon theo `size.control.lg` (40 / 32 / 48px).
+- Padding và gap theo density. Ô icon cao gấp đôi `size.control.lg` (64 / 88 / 108px theo gọn / vừa / rộng).
 - Nút trong vùng hành động tự xuống dòng (`flex-wrap`) và căn giữa khi vùng hẹp.
 - Mô tả giới hạn 48ch để dễ đọc; tiếng Việt có dấu dùng line-height của `body-md` nên không bị cắt.
 

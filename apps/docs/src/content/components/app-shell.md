@@ -39,8 +39,8 @@ keywords:
     <a nxtSidenavHeader routerLink="/">…logo…</a>
   </nxt-sidenav>
 
+  <!-- Tiêu đề trang: mỗi trang đặt <nxt-page-header placement="topbar">, nó hiện ở đầu thanh này. -->
   <nxt-topbar>
-    <nxt-form-field nxtTopbarCenter label="Tìm kiếm trong NXT HRM" hideLabel size="sm">…</nxt-form-field>
     <button nxtTopbarEnd nxtIconButton variant="ghost" aria-label="Thông báo"><nxt-icon name="bell" /></button>
     <button nxtTopbarEnd class="account" aria-label="Tài khoản: Đặng Anh" [nxtMenuTriggerFor]="account">…avatar…</button>
   </nxt-topbar>
@@ -55,7 +55,8 @@ keywords:
 | `[nxtSidenavTop]` | Dưới header, trên danh sách mục | Nút tạo nhanh, chọn công ty hoặc chi nhánh |
 | `[nxtSidenavFooter]` | Cuối sidenav | Mục phụ: phiên bản, chuyển đơn vị. **Không** đặt người dùng đăng nhập (đã có ở topbar) |
 | `[nxtTopbarStart]` | Bên trái thanh trên | Tên đơn vị đang làm việc |
-| `[nxtTopbarCenter]` | Giữa, bề rộng cố định, co lại khi hẹp | Ô tìm kiếm toàn cục |
+| `[nxtTopbarCenter]` | Giữa, bề rộng cố định, co lại khi hẹp | Ô tìm kiếm toàn cục, khi sản phẩm thật sự cần. Không dùng cùng page header trên topbar |
+| (tự động) page header | Đầu thanh trên, giãn hết chỗ trống | [Page header](/components/page-header) với `placement="topbar"`: breadcrumb, tiêu đề, trạng thái và hành động của trang, cùng hàng với tài khoản (từ 1024px) |
 | `[nxtTopbarEnd]` | Bên phải, không bao giờ bị che | Trợ giúp, thông báo, menu tài khoản (nơi **duy nhất** hiện người dùng đăng nhập) |
 | (mặc định) | Vùng nội dung | `<router-outlet />` |
 
@@ -189,5 +190,7 @@ export class EmployeeListPage {
 ::tokens{component.topbar}
 
 ## Changelog
+
+- **Chưa phát hành**: thanh trên nhận page header của trang (`NxtShellState.pageHeader`); hàm `nxtShellStateOf(el)` tìm shell theo DOM. Các mẫu HRM bỏ ô tìm kiếm giữa thanh trên, tiêu đề trang lên thanh trên.
 
 - **0.1.0**: phát hành beta: shell với 2 chế độ cuộn, sidenav nhiều cấp có tiêu đề nhóm, số đếm, mục khoá có lý do, thu gọn thành thanh icon có tooltip và menu bên cạnh, ngăn kéo modal dưới 1024px, thanh trên 3 vùng, tự bỏ `main` khi lồng.

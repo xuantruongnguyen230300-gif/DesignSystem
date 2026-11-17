@@ -1,0 +1,171 @@
+{
+  "component": {
+    "combobox": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền combobox đứng riêng: đặc, hơi xám (kiểu iOS)."
+      },
+      "bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền khung khi bị khoá."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ đang gõ / nhãn giá trị đã chọn."
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Placeholder khi ô trống."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền khung khi đứng một mình (≥ 3:1 với nền)."
+      },
+      "border-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input-hover}",
+        "$description": "Viền khung khi hover."
+      },
+      "border-focus": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền khung riêng khi đang focus (accent; vòng focus 2px đè lên)."
+      },
+      "bg-focus": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền khung riêng khi đang focus."
+      },
+      "focus-halo": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected-hover}",
+        "$description": "Vòng mờ quanh khung riêng khi focus (tĩnh, không animate)."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc khung, giống ô nhập của form-field."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao khung cỡ md (theo density)."
+      },
+      "height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao khung cỡ sm."
+      },
+      "icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon nút mở danh sách, nút xoá, nút value help."
+      },
+      "popup-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền popup danh sách."
+      },
+      "popup-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền popup danh sách."
+      },
+      "popup-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.overlay}",
+        "$description": "Bo góc popup danh sách."
+      },
+      "option-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao tối thiểu một lựa chọn (theo density)."
+      },
+      "option-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn lựa chọn."
+      },
+      "option-description": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Mô tả phụ của lựa chọn (mã, viết tắt), căn cuối."
+      },
+      "option-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền lựa chọn khi hover và khi đang được tô (mục đang tô có thêm vòng focus)."
+      },
+      "option-check": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.primary}",
+        "$description": "Dấu ✓ ở lựa chọn đang là giá trị (chọn một)."
+      },
+      "check-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền ô check trong lựa chọn (chọn nhiều)."
+      },
+      "check-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Nền ô check đã chọn."
+      },
+      "check-mark": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Dấu check trong ô đã chọn."
+      },
+      "match-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Đoạn chữ khớp với chữ đang gõ (kèm chữ đậm hơn)."
+      },
+      "group-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Tiêu đề nhóm lựa chọn (không tương tác)."
+      },
+      "message-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Dòng \"Đang tải…\" / \"Không có kết quả phù hợp\"."
+      },
+      "token-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền token giá trị đã chọn (chọn nhiều), giống chip bộ lọc."
+      },
+      "token-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected-hover}",
+        "$description": "Nền nút bỏ token khi hover."
+      },
+      "token-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ chip giá trị (đạt 4.5:1 cả trên bg.selected-hover khi hover nút ×)."
+      },
+      "token-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Chip giá trị không viền (nền accent nhạt tách lớp)."
+      },
+      "token-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn token."
+      },
+      "button-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Nền nút (xoá, mở danh sách) khi hover: đậm hơn nền field (bg.muted) một bậc để vẫn thấy; icon.subtle trên nền này đạt 3.5:1 (sáng) / 4.0:1 (tối)."
+      }
+    }
+  }
+}

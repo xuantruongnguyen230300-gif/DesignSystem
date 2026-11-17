@@ -13,11 +13,15 @@
         },
         "normal": {
           "$value": "{primitive.duration.200}",
-          "$description": "Mở/đóng phần tử nhỏ: dropdown, tooltip."
+          "$description": "Mở/đóng phần tử vừa: dialog mở, sidenav thu gọn, popover, dropdown lớn."
         },
         "slow": {
           "$value": "{primitive.duration.300}",
-          "$description": "Mở/đóng phần tử lớn: dialog, drawer."
+          "$description": "Mở/đóng phần tử lớn hoặc di chuyển xa: drawer, sidenav ở màn hẹp, thanh progress."
+        },
+        "loop": {
+          "$value": "{primitive.duration.700}",
+          "$description": "Một vòng của chuyển động lặp chỉ báo đang chờ: spinner, sóng của skeleton."
         }
       }
     }

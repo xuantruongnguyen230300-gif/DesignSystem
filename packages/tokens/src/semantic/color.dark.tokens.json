@@ -27,6 +27,10 @@
           "$value": "{primitive.color.neutral.800}",
           "$description": "Nền nhấn nhẹ: tag trung tính, track của switch/progress."
         },
+        "placeholder": {
+          "$value": "{primitive.color.neutral.800}",
+          "$description": "Khối giữ chỗ khi đang tải (skeleton, hàng bảng giữ chỗ). Khác canvas và surface để thấy được ở cả nền trang lẫn trong thẻ."
+        },
         "disabled": {
           "$value": "{primitive.color.neutral.800}",
           "$description": "Nền control bị vô hiệu."
@@ -94,6 +98,14 @@
         "transparent": {
           "$value": "{primitive.color.transparent}",
           "$description": "Không có nền (nút ghost, vùng trong suốt)."
+        },
+        "success": {
+          "$value": "{primitive.color.green.600}",
+          "$description": "Nền trạng thái thành công/bật (switch bật): xanh lá đủ tương phản với tay gạt trắng."
+        },
+        "success-hover": {
+          "$value": "{primitive.color.green.700}",
+          "$description": "Nền success khi hover."
         }
       },
       "text": {
@@ -164,16 +176,28 @@
           "$description": "Viền cần nhấn mạnh hơn default."
         },
         "input": {
-          "$value": "{primitive.color.neutral.500}",
-          "$description": "Viền control nhập liệu (≥ 3:1, WCAG 1.4.11)."
+          "$value": "{primitive.color.neutral.700}",
+          "$description": "Viền control nhập liệu: mềm, kiểu iOS. Ngoại lệ có chủ đích của WCAG 1.4.11, xem ADR-012."
         },
         "input-hover": {
-          "$value": "{primitive.color.neutral.400}",
+          "$value": "{primitive.color.neutral.500}",
           "$description": "Viền control nhập liệu khi hover."
         },
         "danger": {
           "$value": "{primitive.color.red.400}",
           "$description": "Viền control có lỗi."
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.400}",
+          "$description": "Viền control ở trạng thái cảnh báo: giá trị hợp lệ nhưng cần xem lại, không chặn lưu."
+        },
+        "success": {
+          "$value": "{primitive.color.green.400}",
+          "$description": "Viền control ở trạng thái thành công: chỉ khi hệ thống vừa xác nhận giá trị, không tô cho mọi trường hợp lệ."
+        },
+        "info": {
+          "$value": "{primitive.color.blue.400}",
+          "$description": "Viền control ở trạng thái thông tin: giá trị do hệ thống đề xuất hoặc cần lưu ý."
         },
         "selected": {
           "$value": "{primitive.color.brand.400}",
@@ -255,6 +279,121 @@
           "$value": "{primitive.color.green.400}",
           "$description": "Màu chuỗi dữ liệu thứ 8 (categorical). Không dùng cho trạng thái."
         }
+      },
+      "indication": {
+        "1": {
+          "bg": {
+            "$value": "{primitive.color.blue.900}",
+            "$description": "Nền nhạt của màu chỉ thị 1 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.blue.200}",
+            "$description": "Chữ trên nền màu chỉ thị 1 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.blue.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 1 trên nền surface (≥ 3:1)."
+          }
+        },
+        "2": {
+          "bg": {
+            "$value": "{primitive.color.teal.900}",
+            "$description": "Nền nhạt của màu chỉ thị 2 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.teal.200}",
+            "$description": "Chữ trên nền màu chỉ thị 2 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.teal.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 2 trên nền surface (≥ 3:1)."
+          }
+        },
+        "3": {
+          "bg": {
+            "$value": "{primitive.color.purple.900}",
+            "$description": "Nền nhạt của màu chỉ thị 3 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.purple.200}",
+            "$description": "Chữ trên nền màu chỉ thị 3 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.purple.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 3 trên nền surface (≥ 3:1)."
+          }
+        },
+        "4": {
+          "bg": {
+            "$value": "{primitive.color.pink.900}",
+            "$description": "Nền nhạt của màu chỉ thị 4 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.pink.200}",
+            "$description": "Chữ trên nền màu chỉ thị 4 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.pink.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 4 trên nền surface (≥ 3:1)."
+          }
+        },
+        "5": {
+          "bg": {
+            "$value": "{primitive.color.orange.900}",
+            "$description": "Nền nhạt của màu chỉ thị 5 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.orange.200}",
+            "$description": "Chữ trên nền màu chỉ thị 5 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.orange.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 5 trên nền surface (≥ 3:1)."
+          }
+        },
+        "6": {
+          "bg": {
+            "$value": "{primitive.color.cyan.900}",
+            "$description": "Nền nhạt của màu chỉ thị 6 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.cyan.200}",
+            "$description": "Chữ trên nền màu chỉ thị 6 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.cyan.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 6 trên nền surface (≥ 3:1)."
+          }
+        },
+        "7": {
+          "bg": {
+            "$value": "{primitive.color.green.900}",
+            "$description": "Nền nhạt của màu chỉ thị 7 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.green.200}",
+            "$description": "Chữ trên nền màu chỉ thị 7 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.green.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 7 trên nền surface (≥ 3:1)."
+          }
+        },
+        "8": {
+          "bg": {
+            "$value": "{primitive.color.neutral.900}",
+            "$description": "Nền nhạt của màu chỉ thị 8 (tag phân loại, avatar chữ cái)."
+          },
+          "text": {
+            "$value": "{primitive.color.neutral.200}",
+            "$description": "Chữ trên nền màu chỉ thị 8 (≥ 4.5:1 với bg của nó)."
+          },
+          "solid": {
+            "$value": "{primitive.color.neutral.400}",
+            "$description": "Chấm, viền hoặc icon của màu chỉ thị 8 trên nền surface (≥ 3:1)."
+          }
+        },
+        "$description": "Màu chỉ thị (indication) để phân loại, không mang nghĩa trạng thái: nhóm, loại hợp đồng, phòng ban, avatar chữ cái. Nghĩa do sản phẩm gán; luôn đi kèm chữ. Không dùng thay màu status."
       }
     },
     "focus": {
@@ -269,7 +408,7 @@
     "elevation": {
       "$type": "shadow",
       "raised": {
-        "$value": "{primitive.shadow.dark-1}",
+        "$value": "{primitive.shadow.dark-surface}",
         "$description": "Phần tử nhô nhẹ: card kéo được, header sticky."
       },
       "overlay": {
@@ -279,6 +418,14 @@
       "modal": {
         "$value": "{primitive.shadow.dark-3}",
         "$description": "Dialog, drawer."
+      },
+      "card": {
+        "$value": "{primitive.shadow.dark-surface}",
+        "$description": "Bề mặt (card, ô nhập, alert): bóng ba lớp rất mỏng như HeroUI, không viền."
+      },
+      "none": {
+        "$value": "{primitive.shadow.none}",
+        "$description": "Không bóng: thanh điều hướng phẳng."
       }
     }
   }

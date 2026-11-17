@@ -19,7 +19,7 @@ apg-pattern: "none (presentational)"
 ## 2. Anatomy
 | # | Phần tử | Bắt buộc | Ghi chú |
 |---|---------|----------|---------|
-| 1 | Host `nxt-avatar` | ✓ | Hình tròn (`radius.pill`), viền mảnh `border-subtle` |
+| 1 | Host `nxt-avatar` | ✓ | Hình tròn (`radius.pill`), không viền nhìn thấy (viền `border-transparent` giữ chỗ cho `forced-colors`); màu tông là màu chỉ thị, không có gradient |
 | 2 | Ảnh `img` | — | Chỉ render khi có `src` và ảnh chưa lỗi; `alt` = `label` hoặc `""` |
 | 3 | Chữ cái `.nxt-avatar__initials` | — | Thay cho ảnh; `aria-hidden="true"` |
 | 4 | Tên ẩn `.nxt-visually-hidden` | — | Chỉ có khi dùng chữ cái **và** có `label` |
@@ -72,13 +72,13 @@ APG pattern: không áp dụng (phần tử trình bày, không nhận focus).
 | `size-sm` | `size.icon.lg` |
 | `size-md`, `size-lg` | `size.control.md`, `size.control.lg` |
 | `radius` | `radius.pill` |
-| `border` | `color.border.subtle` |
-| `tone-1-bg` / `-text` | `color.bg.primary-subtle` / `color.text.link` |
-| `tone-2-bg` / `-text` | `color.bg.info-subtle` / `color.text.info` |
-| `tone-3-bg` / `-text` | `color.bg.success-subtle` / `color.text.success` |
-| `tone-4-bg` / `-text` | `color.bg.warning-subtle` / `color.text.warning` |
-| `tone-5-bg` / `-text` | `color.bg.danger-subtle` / `color.text.danger` |
-| `tone-6-bg` / `-text` | `color.bg.muted` / `color.text.default` |
+| `border` | `color.border.transparent` |
+| `tone-1-bg` / `-text` | `color.indication.1.bg` / `color.indication.1.text` |
+| `tone-2-bg` / `-text` | `color.indication.2.bg` / `color.indication.2.text` |
+| `tone-3-bg` / `-text` | `color.indication.3.bg` / `color.indication.3.text` |
+| `tone-4-bg` / `-text` | `color.indication.4.bg` / `color.indication.4.text` |
+| `tone-5-bg` / `-text` | `color.indication.5.bg` / `color.indication.5.text` |
+| `tone-6-bg` / `-text` | `color.indication.6.bg` / `color.indication.6.text` |
 
 Dùng thẳng semantic: `border-width.default`, `typography.label-sm`, `typography.label-md`.
 
@@ -86,7 +86,7 @@ Dùng thẳng semantic: `border-width.default`, `typography.label-sm`, `typograp
 - `md`/`lg` theo density; `sm` cố định 24px để vẫn đọc được 2 chữ cái.
 - Ảnh `object-fit: cover`, không méo khi ảnh không vuông.
 - Tiếng Việt: chữ cái giữ dấu và chữ Đ ("ĐA"); viết hoa bằng `toLocaleUpperCase('vi')`. Lấy họ + tên (từ đầu và từ cuối), không lấy tên đệm.
-- Tông màu chỉ để phân biệt, không mang nghĩa trạng thái (tông "danger" không có nghĩa là lỗi).
+- Tông màu chỉ để phân biệt, không mang nghĩa trạng thái. Từ 2026-11-06 tông 1–6 lấy từ bảng màu chỉ thị `semantic.color.indication.*` (theo SAP Fiori: màu chỉ thị tách khỏi màu trạng thái), không còn mượn màu success/warning/danger.
 
 ## 9. Content guidelines
 - `name` là họ tên đầy đủ như trong hồ sơ, không viết tắt: "Nguyễn Thị Ngọc Diệp".

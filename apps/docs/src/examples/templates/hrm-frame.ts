@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input, signal } f
 import { NxtAppShell, NxtNavItem, NxtSidenav, NxtTopbar } from '@nxt/ui/app-shell';
 import { NxtAvatar } from '@nxt/ui/avatar';
 import { NxtButton } from '@nxt/ui/button';
-import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtIcon } from '@nxt/ui/icon';
 import { NxtMenu, NxtMenuItem, NxtMenuLabel, NxtMenuSeparator, NxtMenuTrigger } from '@nxt/ui/menu';
 import { NxtBadge } from '@nxt/ui/tag';
@@ -20,7 +19,7 @@ export const HRM_NAV: NxtNavItem[] = [
     icon: 'users',
     children: [
       { label: 'Danh sách nhân viên', disabled: true, hint: DEMO },
-      { label: 'Hồ sơ nhân viên', disabled: true, hint: DEMO },
+      { label: 'Hồ sơ nhân viên', link: '/templates/object' },
       { label: 'Hợp đồng lao động', disabled: true, hint: DEMO },
       { label: 'Sơ đồ tổ chức', disabled: true, hint: DEMO },
     ],
@@ -49,7 +48,7 @@ export const HRM_NAV: NxtNavItem[] = [
   { label: 'Cấu hình hệ thống', icon: 'settings', disabled: true, hint: DEMO },
 ];
 
-/** Shared frame of the HRM templates: app shell, product navigation, header search, account menu. */
+/** Shared frame of the HRM templates: app shell, product navigation, top bar (page header + account menu). */
 @Component({
   selector: 'example-hrm-frame',
   imports: [
@@ -59,8 +58,6 @@ export const HRM_NAV: NxtNavItem[] = [
     NxtAvatar,
     NxtBadge,
     NxtButton,
-    NxtFormField,
-    NxtInput,
     NxtIcon,
     NxtMenu,
     NxtMenuItem,
@@ -81,13 +78,8 @@ export const HRM_NAV: NxtNavItem[] = [
         </div>
       </nxt-sidenav>
 
+      <!-- Each page puts its header here (nxt-page-header placement="topbar"): title on the left, account on the right. -->
       <nxt-topbar>
-        <div nxtTopbarCenter class="search">
-          <nxt-form-field label="Tìm kiếm trong NXT HRM" hideLabel size="sm">
-            <nxt-icon nxtPrefix name="search" />
-            <input nxtInput type="search" placeholder="Tìm kiếm" />
-          </nxt-form-field>
-        </div>
         <div nxtTopbarEnd class="actions">
           <button nxtIconButton variant="ghost" type="button" aria-label="Trợ giúp" nxtTooltip="Trợ giúp" nxtTooltipPosition="bottom">
             <nxt-icon name="help-circle" />
@@ -151,9 +143,6 @@ export const HRM_NAV: NxtNavItem[] = [
       font: var(--nxt-typography-caption);
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    .search nxt-form-field {
-      inline-size: 100%;
     }
     .actions {
       display: flex;

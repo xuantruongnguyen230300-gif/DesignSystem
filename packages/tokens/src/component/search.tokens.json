@@ -3,8 +3,8 @@
     "search": {
       "bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.surface}",
-        "$description": "Nền ô tìm kiếm."
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền ô tìm kiếm: đặc, hơi xám (kiểu iOS); ranh giới 1px vẫn đạt 3:1."
       },
       "text": {
         "$type": "color",
@@ -26,6 +26,21 @@
         "$value": "{semantic.color.border.input-hover}",
         "$description": "Viền khi hover."
       },
+      "border-focus": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền khi đang focus (accent; vòng focus 2px đè lên)."
+      },
+      "bg-focus": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền khi đang focus."
+      },
+      "focus-halo": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected-hover}",
+        "$description": "Vòng mờ quanh ô khi focus (tĩnh, không animate)."
+      },
       "icon": {
         "$type": "color",
         "$value": "{semantic.color.icon.subtle}",
@@ -33,8 +48,8 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.control}",
-        "$description": "Bo góc, giống ô nhập của form-field."
+        "$value": "{semantic.radius.pill}",
+        "$description": "Viên thuốc."
       },
       "height": {
         "$type": "dimension",

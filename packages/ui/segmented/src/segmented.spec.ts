@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NxtSegmented, NxtSegmentedOption } from './segmented';
 
 type Theme = 'light' | 'dark' | 'auto';
@@ -101,5 +102,74 @@ describe('NxtSegmented showLabel', () => {
     expect(host.textContent!.match(/Cách duyệt/g)).toHaveLength(1);
     expect(host.querySelectorAll('[aria-hidden="true"]:not(svg)')).toHaveLength(0);
     expect(host.querySelectorAll('.nxt-segmented__track input[type="radio"]')).toHaveLength(2);
+  });
+});
+
+@Component({
+  imports: [NxtSegmented, ReactiveFormsModule],
+  template: `
+    <nxt-segmented label="Loại đơn" [options]="types" [formControl]="type" />
+    <nxt-segmented label="Kỳ báo cáo" [options]="periods" value="month" [disabled]="locked()" />
+    <button type="button">Sau</button>
+  `,
+})
+class Disabled {
+  readonly locked = signal(false);
+  readonly type = new FormControl<'leave' | 'overtime' | 'trip'>('leave', { nonNullable: true });
+  readonly types: NxtSegmentedOption<'leave' | 'overtime' | 'trip'>[] = [
+    { value: 'leave', label: 'Nghỉ phép' },
+    { value: 'overtime', label: 'Tăng ca' },
+    { value: 'trip', label: 'Công tác', disabled: true },
+  ];
+  readonly periods: NxtSegmentedOption[] = [
+    { value: 'month', label: 'Tháng' },
+    { value: 'quarter', label: 'Quý' },
+  ];
+}
+
+describe('NxtSegmented disabled + forms', () => {
+  function setup() {
+    const fixture = TestBed.createComponent(Disabled);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const groups = [...el.querySelectorAll<HTMLElement>('nxt-segmented')];
+    const radios = (g: number) => [...groups[g].querySelectorAll<HTMLInputElement>('input[type="radio"]')];
+    return { fixture, host: fixture.componentInstance, el, groups, radios };
+  }
+
+  it('disables a single option, leaving the others usable', () => {
+    const { groups, radios } = setup();
+    expect(radios(0).map((r) => r.disabled)).toEqual([false, false, true]);
+    expect(groups[0].querySelector('fieldset')!.disabled).toBe(false);
+    expect(groups[0].hasAttribute('data-disabled')).toBe(false);
+  });
+
+  it('disables the whole group through the fieldset', async () => {
+    const { fixture, host, groups, radios } = setup();
+    host.locked.set(true);
+    await fixture.whenStable();
+    expect(groups[1].querySelector('fieldset')!.disabled).toBe(true);
+    expect(groups[1].hasAttribute('data-disabled')).toBe(true);
+    expect(radios(1).every((r) => r.matches(':disabled'))).toBe(true);
+    // The selection stays visible while locked.
+    expect(radios(1)[0].checked).toBe(true);
+  });
+
+  it('works as a form control: writes, reads, disables and marks touched', async () => {
+    const { fixture, host, el, groups, radios } = setup();
+    expect(radios(0).map((r) => r.checked)).toEqual([true, false, false]);
+    // User picks "Tăng ca", the form puts "Nghỉ phép" back before the next render.
+    radios(0)[1].click();
+    expect(host.type.value).toBe('overtime');
+    host.type.setValue('leave');
+    await fixture.whenStable();
+    expect(radios(0)[0].checked).toBe(true);
+    expect(host.type.touched).toBe(false);
+    radios(0)[0].dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: el.querySelector('button') }));
+    expect(host.type.touched).toBe(true);
+    host.type.disable();
+    await fixture.whenStable();
+    expect(groups[0].querySelector('fieldset')!.disabled).toBe(true);
+    expect(groups[0].hasAttribute('data-disabled')).toBe(true);
   });
 });

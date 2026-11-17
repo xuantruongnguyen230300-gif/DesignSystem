@@ -15,6 +15,19 @@ import { fold } from '../core/tokens-data';
 import type { SearchItem } from './search-index';
 
 /**
+ * Lower is better: title starts with the query, title contains it, a keyword is the query, a keyword starts with it,
+ * then any other match (description, table of contents). "nut" → Button (keyword "nut") before a page that only says "nút".
+ */
+function matchScore(item: SearchItem, q: string): number {
+  const title = fold(item.title);
+  if (title.startsWith(q)) return 0;
+  if (title.includes(q)) return 1;
+  if (item.terms?.includes(q)) return 2;
+  if (item.terms?.some((t) => t.startsWith(q))) return 3;
+  return 4;
+}
+
+/**
  * Header search in the Windows / Microsoft 365 style: a search box in the top bar with results
  * dropping down beneath it (not a centered macOS-style palette). Ctrl+K focuses it.
  * Combobox + listbox, diacritic-insensitive ("nut" finds "Nút").
@@ -119,7 +132,7 @@ export class DocsSearch {
     const words = q.split(/\s+/);
     return index
       .filter((i) => words.every((w) => i.haystack.includes(w)))
-      .map((i) => ({ i, score: i.rank * 10 + (fold(i.title).startsWith(q) ? 0 : fold(i.title).includes(q) ? 1 : 2) }))
+      .map((i) => ({ i, score: i.rank * 10 + matchScore(i, q) }))
       .sort((a, b) => a.score - b.score)
       .slice(0, 10)
       .map((x) => x.i);

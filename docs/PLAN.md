@@ -3,7 +3,84 @@
 > **Phạm vi:** design system dùng chung cho nhiều sản phẩm phần mềm nghiệp vụ (HRM và các sản phẩm khác).
 > **Stack:** Angular 21 standalone, Angular CDK/Aria headless, token W3C DTCG.
 > **Tham chiếu:** [vnrpromax.vercel.app/styleguide](https://vnrpromax.vercel.app/styleguide/hrm/layout/grid) chỉ dùng để học hỏi. NXT không dùng lại code hay thương hiệu của trang này.
-> Cập nhật: 2026-10-16
+> Cập nhật: 2026-11-06
+
+## Phát hành cho người ngoài dùng (2026-11-17)
+
+Quyết định: [ADR-006](adr/006-npm-scope.md). GitHub Packages của tài khoản chứa repo, công khai, MIT; người dùng cài bằng npm alias để giữ tên `@nxt/*`.
+
+| Việc | Trạng thái |
+|------|-----------|
+| `LICENSE` (MIT), `NOTICE` (Tabler Icons), `CHANGELOG.md`, README của `@nxt/tokens` | Có |
+| `release:prepare` (`tools/release/stage.mjs`): chép ra `dist/publish/{ui,tokens}`, đổi tên theo scope, peer tokens thành tuỳ chọn, thêm LICENSE/NOTICE | Có; `dist/ui` không bị đổi |
+| `release:check`: phiên bản hai gói, `NXT_UI_VERSION`, peer, CHANGELOG, thẻ | Có, chạy trong `ci.yml` và `publish.yml` |
+| `consumer:smoke:registry`: `npm install @nxt/ui@npm:@<owner>/ui …` thật trên registry cục bộ, build và chạy app | Có, 14/14; chạy trong `ci.yml` và `publish.yml` |
+| `.github/workflows/publish.yml`: chạy khi đẩy thẻ `v*`, có chế độ chạy thử (`--dry-run`) | Đã viết, **chưa chạy trên GitHub** |
+
+**Phát hiện khi làm:** 39 file trong gói `@nxt/ui` đã build tự import nhau bằng `@nxt/ui/<entry>`, nên đổi tên gói theo scope (cách `release:prepare` làm trước đây) làm hỏng gói; cách "ánh xạ paths" trong docs cũ chưa từng được kiểm. Đã thay bằng cài qua alias và kiểm bằng npm thật.
+
+**Kiểm chứng (2026-11-17, đã chạy thật):** `ds:check` 0 lỗi; unit 587/587; `npm run build` thành công (bundle khởi tạo docs 587,93 kB); `size:check` đạt; `release:check` đạt; `consumer:smoke` 14/14 (gói đóng tarball) và `consumer:smoke:registry` 14/14 (cài qua alias từ registry cục bộ); `npm publish --dry-run` cả hai gói đúng tên, đúng registry, có LICENSE/NOTICE.
+
+**Chưa làm / chưa kiểm:** chạy `publish.yml` thật trên GitHub; công khai gói trên GitHub (gói thừa hưởng quyền của repo, repo phải công khai); pnpm và yarn với cú pháp alias; SSR (không có `@angular/ssr`, `@angular/platform-server` trong repo, thêm cần dependency); Angular 22 (peer khai `>=21 <23`, chỉ thử 21.2); `ng add @nxt/ui`; Inter.
+
+## Dự án dùng NXT tự đổi màu thương hiệu (2026-11-17)
+
+Quyết định: [ADR-015](adr/015-consumer-theming.md). Trang hướng dẫn: [Theming](../apps/docs/src/content/getting-started/theming.md).
+
+| Cách | Dùng khi |
+|------|----------|
+| `provideNxt({ primary: '#0f766e' })`, đổi lúc chạy bằng `NxtTheme.setPrimary()` / `resetPrimary()` | Mặc định cho mọi dự án; không build lại, chạy được với CSP nghiêm |
+| `npx nxt-palette "#0f766e" > brand.css` (gói `@nxt/tokens`) | Muốn CSS tĩnh, không tính lúc chạy |
+| File brand trong repo NXT | Vùng con khác màu, hoặc sản phẩm nằm trong repo |
+
+**Kiểm chứng (2026-11-17, đã chạy thật):** `ds:check` 0 lỗi (1120/1120 tương phản, 0 hard-code); unit 587/587 (43 file; thêm test đối chiếu 12 màu với `ds:palette` và quét hơn 1000 màu gốc: chữ trắng trên nút, link sáng/tối đều ≥ 4,5:1); `npm run build` thành công (bundle khởi tạo docs vẫn 587,93 kB); `size:check` đạt sau khi nâng ngưỡng `nxt-ui.mjs` 837 → 5780 B gzip (phần sinh thang màu; app mẫu tăng khoảng 5 KB JS chưa nén); `consumer:smoke` 14/14 (app ngoài repo cài gói đã đóng, `provideNxt({ primary })` và `setPrimary` đều đổi màu đúng thang của `nxt-palette` trong gói, axe sạch ở cả hai màu); `test:a11y` 660/660.
+
+**Giới hạn:** chỉ đổi cho cả ứng dụng (vùng con khác màu cần brand); màu gốc sáng cho nút đậm hơn màu đã nhập (bậc 600); thang tự làm chỉ được cảnh báo ở chế độ dev, không được bảo đảm tương phản.
+
+## Đợt đổi diện mạo kiểu iOS "kiểu C" (2026-11-16)
+
+Thiết kế: [docs/superpowers/specs/2026-11-16-ios-refactor-design.md](superpowers/specs/2026-11-16-ios-refactor-design.md), kế hoạch: [docs/superpowers/plans/2026-11-16-ios-refactor.md](superpowers/plans/2026-11-16-ios-refactor.md), quyết định: [ADR-012](adr/012-ios-visual-language.md).
+
+| Nhóm | Đã làm |
+|------|--------|
+| Token lõi | Bo góc control 14 / container 28 / overlay 32 / pill; bóng mềm hai lớp (`shadow.2`, `shadow.3`, bản tối) và `elevation.card`; control md theo mật độ gọn 28 · vừa 36 · rộng 46px |
+| Component | Toàn bộ nhóm hành động, nhập liệu, phản hồi/lớp phủ, dữ liệu, điều hướng/khuôn trang chỉ đổi diện mạo qua token component (và CSS khi token không đủ); API, hành vi, keyboard map không đổi |
+| Lưới / toolbar | Giữ nguyên chuỗi `nxtFill`, header dính, cột cố định, thao tác hàng, chọn dải; card bo 28px cắt gọn bằng `overflow: clip` |
+| Hiệu năng | Build token sinh `core.css` + một file token cho mỗi component (`dist/css/components/<tên>.css`); mỗi `styleUrl` của component nạp đúng token của nó (`tools/tokens/wire-component-tokens.mjs`); cổng kích thước `npm run size:check` |
+| Cài là dùng | `provideNxt()` (một dòng, mọi tuỳ chọn không bắt buộc); peer `>=21 <23`; `npm run release:prepare` chuẩn bị tên gói theo scope GitHub; trang Cài đặt cập nhật |
+
+**Số đo trước → sau (đã chạy thật):**
+
+| Chỉ số | Trước | Sau |
+|--------|-------|-----|
+| `nxt.css` gộp (raw / gzip) | 124.771 B / 10.730 B | 128.9 KB / 10.3 KB (thêm token mới) |
+| Lõi `core.css` (raw / gzip) | không có | 34.3 KB / 4.3 KB |
+| Token riêng một component (gzip, lớn nhất) | không có | 0.7 KB (button) |
+| Docs: CSS khởi tạo | 154.08 kB | 72.58 kB |
+| Docs: bundle khởi tạo | 652.49 kB (vượt ngân sách 600 kB) | 586.82 kB (không còn cảnh báo) |
+| Unit test | 446 / 446 (37 file) | 449 / 449 (38 file) |
+| `npm run ds:check` | 833 token, 1020/1020 cặp tương phản, 0 hard-code | 884 token, 1020/1020, 0 hard-code, mọi CSS component đã nạp token của nó |
+| axe + e2e (`test:a11y`) | 625 / 625 (ghi trong PLAN trước) | 625 / 625 (chạy lại sau đợt này; lần chạy đầu có 4 lỗi tương phản chữ hậu tố ô nhập, đã sửa bằng `form-field.affix-color` → `text.subtle`) |
+
+**Chưa làm / cần test thủ công:** xem trực tiếp trên trình duyệt 6 mẫu màn hình HRM (chưa dựng lại riêng, chúng thừa hưởng diện mạo qua token); app tiêu thụ mẫu cài từ `npm pack` và việc dùng bí danh `@nxt/*` với gói theo scope GitHub chưa được kiểm chứng; `bg.muted-hover`, `bg.success`, các cặp tương phản bổ sung (xem báo cáo) chưa thêm; hover của combobox/calendar ở chế độ tối khó nhìn (có từ trước).
+
+## Đợt cải thiện theo SAP Fiori (2026-11-06)
+
+Hành vi và khuôn trang theo SAP Fiori for Web 1.154, giao diện giữ của NXT ([ADR-011](adr/011-sap-fiori-behaviour.md)). CoreAndSkill sẽ sửa component theo NXT sau đợt này.
+
+| Nhóm | Đã thêm / sửa (beta, có SPEC + docs + unit test + axe) |
+|------|------|
+| Token | `color.border.{warning,success,info}`, màu chỉ thị `color.indication.1–8` (avatar chuyển sang), `color.bg.placeholder`, `motion.duration.loop`; 833 token, 1020 cặp tương phản |
+| Nhập liệu | Form field: trạng thái giá trị cảnh báo / thông tin / thành công, chỉ đọc, bộ đếm, ô số; Checkbox (+ nhóm, lỗi, chỉ đọc); **Radio group**, **Switch**; Segmented (disabled, CVA); **Calendar**, **Date picker / Date range picker** (vi-VN); **Combobox** (một / nhiều, lọc không dấu, tìm phía server); **Value help** (danh mục lớn, trong dialog hoặc một bước trong drawer) |
+| Phản hồi & lớp phủ | **Popover**, **Toast** (một hành động), **Action bar** (Lưu/Huỷ dính đáy + danh sách thông báo dẫn tới trường lỗi), Dialog `notify()`, Drawer `canClose`, Button `pressed` |
+| Dữ liệu | Table: tô sáng hàng, hàng đang mở, cột ghim, đang tải, tuỳ biến cột; **View manager** (chế độ xem đã lưu); **Skeleton** + `nxtDeferredLoading`; Card theo Overview Page; **Format** (`@nxt/ui/format`, vi-VN) |
+| Khuôn trang | **Object page**; pattern Chọn khuôn trang, Trang chi tiết đối tượng, Form nhập liệu, Thông báo & phản hồi, Vị trí hành động; trang danh sách theo List Report / Worklist |
+| Foundation | Trạng thái, Cách viết, Định dạng (mới); Màu, Chuyển động, Mật độ, Chữ (cập nhật) |
+| Mẫu HRM | **Hồ sơ nhân viên** (mới); Danh mục, Quy trình duyệt, Phê duyệt, Tổng quan làm lại |
+
+**Kiểm chứng (2026-11-06):** `npm run ds:check` sạch (833 token, 1020/1020 tương phản, 0 hard-code); `npm test` 446/446 (37 file spec); `npm run build` thành công (cảnh báo ngân sách CSS khởi tạo của docs, xem dưới); `npm run test:a11y` 625/625 (axe trên 153 example × sáng/tối/gọn, 64 trang × sáng/tối, kèm e2e mới: Object Page lưu có lỗi → danh sách thông báo → focus trường; Cài đặt bảng; Date picker Alt+↓; Combobox; Drawer chặn đóng khi chưa lưu).
+
+**Việc tiếp theo cho CoreAndSkill dùng NXT:** cơ chế cấp chuỗi dịch tập trung (`provideNxtTexts`), lớp ghi đè token cho preset PrimeNG, chốt các điểm vênh (cỡ control, bo góc thẻ, breakpoint, bộ icon); menu tràn "⋯" cho hành động trên topbar; token `layout.page-margin-*`; tách CSS token theo entry point (CSS khởi tạo của docs đã vượt ngân sách 600 kB thô, 10 kB nén).
 
 ## Trạng thái (2026-10-19)
 
@@ -21,7 +98,7 @@
 - `npm run test:a11y` 428/428 (axe trên 104 example × sáng/tối/gọn, 45 trang × sáng/tối, 26 test bàn phím và hành vi; lưới Danh mục lấp đầy vùng nội dung ở mọi tab, trên điện thoại và trong preview docs; axe chờ animation kết thúc rồi mới kiểm, gồm các luồng Danh mục: bộ lọc + chip, Shift chọn dải, xoá có hoàn tác, nhập CSV, xuất file, tab "Xem thêm", lưới lấp đầy màn hình, drawer chi tiết; Phê duyệt lấp đầy; Quy trình duyệt: kiểm lỗi khi Áp dụng, tăng phiên bản, dialog rời trang, breadcrumb, focus tiêu đề, mốc "Bỏ qua"; Dialog xác nhận và form; Alert trong live region có hoàn tác);
 - build `@nxt/ui` và docs không cảnh báo; bundle khởi tạo docs 563 kB (chỉ mục tìm kiếm đã nạp lazy, trước đó 593 kB).
 
-**Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có trạng thái indeterminate).
+**Việc còn mở đã biết:** mỗi `packages/ui/<entry>/SPEC.md` có mục §11 "Việc còn mở" (ví dụ: CSS component còn dùng thẳng primitive `--nxt-space-*`, chuỗi giao diện chưa cho override, progress chưa có `max`, chỉ hiểu thang 0–100).
 
 **Việc tiếp theo** (theo thứ tự):
 1. Chốt các ADR còn "Đề xuất": 002, 004, 006, 007; xác nhận ADR-003 (Tabler).
@@ -262,7 +339,7 @@ Các script không cần dependency nào và chạy được trên Node 20.
 
 ## 8. Quyết định cần chốt (ADR)
 
-Đã ghi tại [docs/adr/](adr/README.md). ADR 001, 005, 008, 009 đã áp dụng trong code và chờ xác nhận; 002, 003, 004, 006, 007 còn ở trạng thái đề xuất. Bảng dưới là đề xuất ban đầu.
+Đã ghi tại [docs/adr/](adr/README.md). ADR 005, 008, 009, 010 đã áp dụng trong code và chờ xác nhận (010 thay 001: font mặc định chuyển sang Plus Jakarta Sans); 002, 003, 004, 006, 007 còn ở trạng thái đề xuất. Bảng dưới là đề xuất ban đầu.
 
 | ADR | Câu hỏi | Đề xuất ban đầu |
 |-----|---------|-----------------|

@@ -80,7 +80,7 @@ APG pattern: không áp dụng; dùng ngữ nghĩa danh sách.
 
 | Token | Alias semantic |
 |-------|----------------|
-| `line` | `color.border.default` |
+| `line` | `color.border.default` (đường nối dày `border-width.strong`, đầu bo tròn) |
 | `marker-bg` | `color.bg.surface` |
 | `marker-border` | `color.border.strong` (tone `neutral`) |
 | `title-text` | `color.text.strong` |

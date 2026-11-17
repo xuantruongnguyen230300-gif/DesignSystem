@@ -3,29 +3,95 @@
     "font": {
       "family": {
         "$type": "fontFamily",
-        "inter": {
-          "$value": ["Inter Variable", "Inter", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
-          "$description": "Inter: full Vietnamese coverage + tabular numerals."
+        "plus-jakarta-sans": {
+          "$value": [
+            "Plus Jakarta Sans Variable",
+            "Plus Jakarta Sans",
+            "Segoe UI",
+            "Roboto",
+            "Helvetica Neue",
+            "Arial",
+            "sans-serif"
+          ],
+          "$description": "Plus Jakarta Sans: đủ glyph và dấu chồng tiếng Việt, có tabular-nums, bản variable 200–800 (ADR-010)."
         },
-        "jetbrains-mono": { "$value": ["JetBrains Mono", "Cascadia Code", "SFMono-Regular", "Consolas", "Liberation Mono", "monospace"] }
+        "inter": {
+          "$value": [
+            "Inter Variable",
+            "Inter",
+            "Segoe UI",
+            "Roboto",
+            "Helvetica Neue",
+            "Arial",
+            "sans-serif"
+          ],
+          "$description": "Inter: đủ glyph tiếng Việt + tabular-nums. Font mặc định trước ADR-010; sản phẩm vẫn chọn được qua brand slot."
+        },
+        "jetbrains-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "Cascadia Code",
+            "SFMono-Regular",
+            "Consolas",
+            "Liberation Mono",
+            "monospace"
+          ]
+        },
+        "system": {
+          "$value": [
+            "-apple-system",
+            "BlinkMacSystemFont",
+            "SF Pro Text",
+            "Segoe UI",
+            "Roboto",
+            "Helvetica Neue",
+            "Arial",
+            "sans-serif"
+          ],
+          "$description": "Font hệ thống: SF Pro trên Apple, rơi về font mặc định của hệ điều hành (ADR-014)."
+        }
       },
       "size": {
-        "$type": "dimension",
-        "12": { "$value": "12px" },
-        "13": { "$value": "13px" },
-        "14": { "$value": "14px" },
-        "16": { "$value": "16px" },
-        "18": { "$value": "18px" },
-        "20": { "$value": "20px" },
-        "24": { "$value": "24px" },
-        "30": { "$value": "30px" }
+        "12": {
+          "$value": "12px"
+        },
+        "13": {
+          "$value": "13px"
+        },
+        "14": {
+          "$value": "14px"
+        },
+        "16": {
+          "$value": "16px"
+        },
+        "18": {
+          "$value": "18px"
+        },
+        "20": {
+          "$value": "20px"
+        },
+        "24": {
+          "$value": "24px"
+        },
+        "30": {
+          "$value": "30px"
+        },
+        "$type": "dimension"
       },
       "weight": {
         "$type": "fontWeight",
-        "regular": { "$value": 400 },
-        "medium": { "$value": 500 },
-        "semibold": { "$value": 600 },
-        "bold": { "$value": 700 }
+        "regular": {
+          "$value": 400
+        },
+        "medium": {
+          "$value": 500
+        },
+        "semibold": {
+          "$value": 600
+        },
+        "bold": {
+          "$value": 700
+        }
       }
     }
   }

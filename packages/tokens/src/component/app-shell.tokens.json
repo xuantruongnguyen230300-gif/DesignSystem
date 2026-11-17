@@ -10,6 +10,11 @@
         "$type": "color",
         "$value": "{semantic.color.bg.overlay}",
         "$description": "Lớp phủ phía sau ngăn điều hướng trên màn hình hẹp."
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.gap.md}",
+        "$description": "Khoảng hở nổi quanh và giữa sidenav, topbar, vùng nội dung (kiểu C: các khối nổi trên nền canvas). Theo density."
       }
     }
   }

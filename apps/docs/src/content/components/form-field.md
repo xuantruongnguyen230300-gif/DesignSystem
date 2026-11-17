@@ -1,6 +1,6 @@
 ---
 title: Form field
-description: Nhãn, ô nhập, gợi ý và thông báo lỗi trong một khối, tự nối id, aria-describedby, aria-invalid và aria-required cho control.
+description: Nhãn, ô nhập, gợi ý và trạng thái giá trị (lỗi, cảnh báo, thông tin, thành công) trong một khối; có chế độ chỉ đọc cho form hỗn hợp và tự nối id, aria-describedby, aria-invalid, aria-required.
 status: beta
 group: Nhập liệu
 order: 5
@@ -17,6 +17,11 @@ keywords:
   - bieu mau
   - loi
   - kiem tra
+  - canh bao
+  - chi doc
+  - readonly
+  - trang thai gia tri
+  - dem ky tu
 ---
 
 # Form field
@@ -25,16 +30,19 @@ keywords:
 
 ## Khi nào dùng
 
-- Mọi ô nhập chữ, số, ngày, email, mật khẩu trong form.
+- Mọi ô nhập chữ, số, email, mật khẩu trong form.
+- Khung cho control ghép có ô nhập bên trong: [Date picker](/components/date-picker) (`nxt-date-picker`, `nxt-date-range-picker`), [Combobox](/components/combobox), ô có [Value help](/components/value-help). Đặt control đó **trong** `nxt-form-field` để có nhãn, `*`, trạng thái giá trị và chỉ đọc như mọi trường.
 - Danh sách chọn ngắn, khoảng dưới 15 lựa chọn và không cần tìm: `select[nxtInput]`.
 - Ô tìm kiếm và bộ lọc trên thanh công cụ (size `sm`).
 
 ## Khi nào không dùng
 
-- **Bật/tắt, chọn nhiều**: dùng [Checkbox](/components/checkbox).
-- **Chọn một trong 2–5 giá trị luôn hiển thị**: dùng segmented control hoặc radio.
-- **Danh sách dài, cần tìm, chọn nhiều**: dùng combobox (đợt B). `select` native không tìm được theo kiểu gõ không dấu.
-- **Chỉ hiển thị giá trị**: dùng danh sách mô tả `dl`, không dùng input `readonly` hay `disabled` để trình bày dữ liệu.
+- **Chọn nhiều, xác nhận có/không**: dùng [Checkbox](/components/checkbox).
+- **Chọn một trong 3–8 phương án trong form**: dùng [Radio group](/components/radio-group). Đổi chế độ xem 2–5 lựa chọn: [Segmented](/components/segmented).
+- **Bật/tắt có hiệu lực ngay**: dùng [Switch](/components/switch).
+- **Ngày tháng**: không dùng `input[nxtInput][type="date"]` (định dạng theo trình duyệt, có máy hiện tháng trước ngày); dùng [Date picker](/components/date-picker) trong field.
+- **Danh sách dài, cần tìm, chọn nhiều**: dùng [Combobox](/components/combobox) hoặc [Value help](/components/value-help) trong field. `select` native không tìm được theo kiểu gõ không dấu.
+- **Chỉ hiển thị giá trị** (trang chi tiết, chế độ xem): dùng [Descriptions](/components/descriptions). `readonly` chỉ dành cho trường không sửa được **trong một form đang sửa**.
 
 ## Cấu trúc cơ bản
 
@@ -53,19 +61,53 @@ Field tự gắn lên control:
 | Thuộc tính | Giá trị |
 |------------|---------|
 | `id` | Sinh tự động, nối với `<label for>` |
-| `aria-describedby` | Trỏ tới lỗi nếu có, nếu không thì tới gợi ý |
-| `aria-invalid` | `true` khi `error` khác rỗng |
-| `aria-required` | `true` khi có `required` |
+| `aria-describedby` | Thông điệp trạng thái, rồi gợi ý, rồi bộ đếm, rồi id bạn tự đặt |
+| `aria-invalid` | `true` khi `error` khác rỗng (chỉ lỗi, không cho cảnh báo) |
+| `aria-required` | `true` khi có `required` và không `readonly` |
 
-Field quản lý `id` và `aria-describedby` của control: giá trị bạn tự đặt lên control sẽ bị ghi đè. Mỗi field chỉ chứa **một** control `nxtInput`.
+`id` và `aria-describedby` **tĩnh** bạn tự đặt lên control được giữ: `<input nxtInput id="ma-nv" aria-describedby="ghi-chu">` thì nhãn trỏ tới `ma-nv` và `ghi-chu` được nối vào cuối danh sách mô tả. Giá trị bind động (`[attr.aria-describedby]`) vẫn bị field ghi đè. Mỗi field chỉ chứa **một** control `nxtInput`.
 
 ## Gợi ý và lỗi
 
 - `hint` mô tả định dạng hoặc lý do cần thông tin. Gợi ý giúp người dùng nhập đúng ngay từ đầu.
-- `error` khác rỗng thì viền control đổi sang màu lỗi, control có `aria-invalid="true"`, và **lỗi thay chỗ gợi ý**: gợi ý bị ẩn và `aria-describedby` chuyển sang lỗi. Nếu thông tin trong gợi ý vẫn cần khi có lỗi, nhắc lại nó trong thông báo lỗi.
+- `error` khác rỗng thì viền control đổi sang màu lỗi, control có `aria-invalid="true"`, và lỗi hiện **ngay dưới control, phía trên gợi ý**. Gợi ý **vẫn giữ nguyên**, nên người dùng còn thấy định dạng đúng ngay lúc cần sửa; screen reader đọc lỗi trước, rồi gợi ý.
 - Thông báo lỗi nói **sai ở đâu và sửa thế nào**, không chỉ "Không hợp lệ". Lỗi luôn có icon đi kèm chữ.
 
 ::example{form-field-hint-error}
+
+## Trạng thái giá trị
+
+Ngoài lỗi, field có ba trạng thái giá trị khác. Mỗi lúc chỉ hiện **một** trạng thái, theo thứ tự ưu tiên lỗi > cảnh báo > thông tin > thành công, nên bạn bind thẳng từng nguồn (`[error]` từ validator, `[warning]` từ luật nghiệp vụ) mà không phải tự gộp.
+
+| Trạng thái | Input | Khi nào | Chặn lưu | Viền (token) |
+|------------|-------|---------|----------|--------------|
+| Lỗi | `error` | Giá trị sai hoặc thiếu, phải sửa mới lưu được | **Có** | `form-field.control-border-invalid` → `border.danger` |
+| Cảnh báo | `warning` | Hợp lệ nhưng bất thường, có thể gây lỗi về sau | Không | `form-field.control-border-warning` → `border.warning` |
+| Thông tin | `info` | Hệ thống đề xuất / tự điền giá trị, hoặc điều cần lưu ý | Không | `form-field.control-border-info` → `border.info` |
+| Thành công | `success` | Hệ thống **vừa** xác nhận giá trị (đối chiếu máy chủ) | Không | `form-field.control-border-success` → `border.success` |
+| (không) | | Trước khi kiểm tra, **và sau khi kiểm tra đạt** | — | `form-field.control-border` → `border.input` |
+
+::example{form-field-value-states}
+
+- **Không tô xanh mọi trường đã hợp lệ.** Trường nhập đúng trở về trạng thái thường; `success` chỉ dành cho lúc hệ thống vừa kiểm tra xong một giá trị khó (mã số thuế, trùng mã).
+- Mọi thông điệp có icon riêng và chữ; cảnh báo, thông tin, thành công có thêm chữ ẩn "Cảnh báo:", "Thông tin:", "Thành công:" để screen reader phân biệt với gợi ý. Đổi các chữ này (đa ngôn ngữ) bằng `statusLabels`.
+- Cảnh báo không chặn lưu và không đưa vào tóm tắt lỗi đầu form.
+
+## Chỉ đọc
+
+`readonly` dùng cho trường **không sửa được trong một form đang sửa** (form hỗn hợp), ví dụ mã nhân viên khi sửa hồ sơ. Trường chỉ đọc vẫn nằm trong thứ tự Tab, đọc rõ và copy được; nền trong suốt, viền nhạt, không có `*` và không có chevron.
+
+::example{form-field-readonly}
+
+| | Chỉ đọc (`readonly`) | Bị khoá (`disabled`) |
+|---|---|---|
+| Khi nào | Trường không sửa được ở bước này, người dùng vẫn cần đọc / copy | Chưa đủ điều kiện để nhập, và cách mở lại là hiển nhiên |
+| Tab | Dừng được | Bị bỏ qua |
+| Tương phản chữ | Đủ (`text.strong`) | Mờ (`text.disabled`) |
+| Ghi lý do | Trong `hint` | Trong `hint` |
+
+- `input` / `textarea` nhận thuộc tính `readonly` native. `select` không có `readonly` native, nên field đặt `aria-readonly` và chặn phím / chuột đổi giá trị.
+- Trường **không bao giờ** sửa được (trang chi tiết, chế độ xem) thì hiển thị bằng [Descriptions](/components/descriptions), không dùng form chỉ đọc. Xem [Form nhập liệu](/patterns/form).
 
 ## Tiền tố và hậu tố
 
@@ -81,7 +123,13 @@ Thêm attribute `nxtPrefix` hoặc `nxtSuffix` vào phần tử con để đặt
 
 `select[nxtInput]` có chevron tự động. `textarea[nxtInput]` cao tối thiểu bằng 2,5 lần chiều cao control và kéo giãn được theo chiều dọc. Control `disabled` có nền riêng và không focus được, nên ghi lý do trong `hint`.
 
+Đặt `maxlength` trên control (khớp giới hạn của máy chủ) và `counter` trên field để hiện bộ đếm "26/300" ở cuối dòng dưới control. Screen reader đọc câu đầy đủ "Đã nhập 26 trên 300 ký tự" khi focus vào trường, không đọc mỗi lần gõ phím; đổi câu này bằng `counterText`.
+
 ::example{form-field-textarea-select}
+
+## Số tiền và số lượng
+
+Thêm `numeric` vào `nxtInput` cho số tiền, số lượng, số giờ: chữ số căn cuối và cùng độ rộng (`tabular-nums`) để dễ so sánh. Đơn vị đặt ở `nxtSuffix` và nhắc trong nhãn ("Lương cơ bản (đồng/tháng)"). Không dùng `numeric` cho mã, số điện thoại, số CCCD: đó là chuỗi ký tự, căn đầu như chữ.
 
 ## Kiểm tra khi gửi
 
@@ -130,10 +178,12 @@ protected submit(event: Event) {
 | <kbd>Space</kbd> / <kbd>Enter</kbd> trên nút hậu tố | Kích hoạt nút (bật/tắt hiện mật khẩu) |
 | <kbd>↑</kbd> / <kbd>↓</kbd> trên select | Đổi lựa chọn |
 | <kbd>Alt</kbd>+<kbd>↓</kbd> trên select | Mở danh sách lựa chọn (Windows) |
+| Phím đổi giá trị trên select `readonly` | Bị chặn; <kbd>Tab</kbd> và phím tắt trình duyệt vẫn chạy |
 
 - Nhãn là `<label for>` thật: bấm vào nhãn sẽ đưa focus vào control.
 - Vòng focus bọc cả khung control (`:focus-within`), kể cả khi focus đang ở nút hậu tố.
-- Lỗi có icon và chữ, không chỉ đổi màu viền.
+- Mọi trạng thái giá trị có icon và chữ, không chỉ đổi màu viền. Chỉ lỗi đặt `aria-invalid`.
+- Trường chỉ đọc vẫn nhận focus; `input` / `textarea` báo "chỉ đọc" qua `readonly` native, `select` qua `aria-readonly`.
 - Placeholder dùng màu `text.subtle` nên vẫn đọc được, nhưng không thay được nhãn.
 
 ## Nội dung
@@ -145,6 +195,8 @@ protected submit(event: Event) {
 | Email chưa đúng định dạng. Ví dụ: lan.pham@congty.vn | Email không hợp lệ |
 | Số CCCD gồm 12 chữ số, bạn đã nhập 11. | Sai định dạng |
 | Chọn phòng ban | -- Chọn -- |
+| Cảnh báo: "Ngày 02/09/2026 là ngày lễ, ngày này không tính vào phép năm." | Cảnh báo: "Ngày không hợp lệ!" |
+| Thành công: "Đã đối chiếu với cơ quan thuế." (chỉ sau khi kiểm tra máy chủ) | Viền xanh cho mọi trường đã nhập đúng |
 
 ## API
 
@@ -156,4 +208,5 @@ protected submit(event: Event) {
 
 ## Changelog
 
+- **Chưa phát hành**: trạng thái giá trị `warning` / `info` / `success` (+ `statusLabels`), `readonly`, bộ đếm `counter` / `counterText`, `nxtInput numeric`. Gợi ý **không còn bị lỗi thay chỗ**: lỗi đứng trên gợi ý, cả hai trong `aria-describedby`. `id` và `aria-describedby` tĩnh của control được giữ. Token mới `form-field.{warning,info,success}-text`, `counter-text`, `control-bg-readonly`, `control-border-{warning,info,success,readonly}`.
 - **0.1.0**: phát hành beta: `nxt-form-field` và `nxtInput` cho input, textarea, select; `label`, `hint`, `error`, `required`, `hideLabel`, size `sm`/`md`; slot `nxtPrefix`/`nxtSuffix`; chevron cho select; tự nối `id`, `aria-describedby`, `aria-invalid`, `aria-required`.

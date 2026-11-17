@@ -74,8 +74,17 @@
       "40": {
         "$value": "40px"
       },
+      "44": {
+        "$value": "44px"
+      },
+      "46": {
+        "$value": "46px"
+      },
       "48": {
         "$value": "48px"
+      },
+      "54": {
+        "$value": "54px"
       },
       "56": {
         "$value": "56px"
@@ -119,6 +128,18 @@
       "$type": "dimension"
     },
     "radius": {
+      "14": {
+        "$value": "14px"
+      },
+      "20": {
+        "$value": "20px"
+      },
+      "28": {
+        "$value": "28px"
+      },
+      "32": {
+        "$value": "32px"
+      },
       "$type": "dimension",
       "none": {
         "$value": "0px"

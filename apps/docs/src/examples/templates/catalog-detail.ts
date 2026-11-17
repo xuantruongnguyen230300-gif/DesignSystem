@@ -14,6 +14,8 @@ export interface CatalogDetailData {
   /** The rows as the user sees them (search, filters, sort), to move to the previous / next record. */
   rows: CatalogItem[];
   index: number;
+  /** Called when the user moves to another record, so the list marks that row as the open one (aria-current). */
+  onMove?: (item: CatalogItem) => void;
 }
 
 export interface CatalogDetailResult {
@@ -125,7 +127,9 @@ export class CatalogDetail {
 
   protected move(step: number) {
     const next = this.index() + step;
-    if (next >= 0 && next < this.data.rows.length) this.index.set(next);
+    if (next < 0 || next >= this.data.rows.length) return;
+    this.index.set(next);
+    this.data.onMove?.(this.item());
   }
 
   protected onKey(event: KeyboardEvent) {

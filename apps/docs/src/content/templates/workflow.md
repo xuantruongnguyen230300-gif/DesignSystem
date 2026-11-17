@@ -27,7 +27,8 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 
 ## Thử nhanh
 
-- Gõ "tam ung" (không dấu) vào ô tìm kiếm; mở **Bộ lọc**, chọn Trạng thái "Bản nháp" rồi **Áp dụng**.
+- Gõ "tam ung" (không dấu) vào ô tìm kiếm; mở **Bộ lọc**, chọn Trạng thái "Bản nháp" rồi **Áp dụng**: nút **Chế độ xem** hiện "Đã sửa".
+- Mở **Chế độ xem**, chọn "Nghỉ phép đang áp dụng" (chế độ xem đã lưu sẵn); bấm icon **Cài đặt bảng** để hiện cột "Người cập nhật" hoặc đổi thứ tự cột.
 - Mở "Nghỉ phép · toàn công ty". Ở **Mô phỏng**, đổi Số ngày nghỉ từ 2 lên 5: bước "Trưởng phòng duyệt" chuyển từ "Bỏ qua" sang có trong đường đi, tổng thời hạn cập nhật ngay.
 - Chọn bước 3, đổi **Người duyệt** sang "Người cụ thể" nhưng không chọn người, rồi bấm **Áp dụng**: focus nhảy vào ô cần sửa, bước 3 được đánh dấu "Bước 3 cần chọn người duyệt".
 - Chọn người, bấm **Áp dụng**: phiên bản tăng lên 4, thông báo "Đơn đang chờ duyệt vẫn đi theo phiên bản 3".
@@ -38,13 +39,15 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 
 **Danh sách**
 
-- **Page header**: breadcrumb Thiết lập › Quy trình duyệt, tiêu đề, mô tả. Không có nút.
-- **Thanh công cụ**: ô tìm kiếm (tên quy trình, loại đơn, phạm vi) và **Bộ lọc** (Trạng thái, Loại đơn) bên trái; **Thêm mới** bên phải. Chip bộ lọc bên dưới khi đang lọc.
-- **Bảng**: Tên quy trình (mở trình sửa, bấm cả hàng cũng được), Loại đơn, Phạm vi áp dụng, Số bước, Tổng thời hạn, Trạng thái, Phiên bản ("v3 · có bản nháp"), Cập nhật; cuối hàng là **Sửa** và menu ⋯ (Nhân bản, Ngừng áp dụng / Áp dụng lại, Xoá).
+- **Page header** (trên thanh trên cùng): breadcrumb Thiết lập › Quy trình duyệt, tiêu đề. Không có nút, không có mô tả.
+- **Hàng tiêu đề danh sách**: [Chế độ xem](/components/view-manager) đang dùng ("Tiêu chuẩn", "Đã sửa" khi lệch) và số quy trình đang hiện.
+- **Thanh công cụ**: ô tìm kiếm (tên quy trình, loại đơn, phạm vi) và **Bộ lọc** (Trạng thái, Loại đơn) bên trái; **Cài đặt bảng** (chọn cột), vạch ngăn, **Thêm mới** bên phải. Chip bộ lọc bên dưới khi đang lọc.
+- **Bảng**: Tên quy trình (cố định khi cuộn ngang; mở trình sửa, bấm cả hàng cũng được), Loại đơn, Phạm vi áp dụng, Số bước, Tổng thời hạn, Trạng thái, Phiên bản ("v3 · có bản nháp"), Cập nhật; "Người cập nhật" ẩn trong mặc định. Quy trình đang áp dụng có bản nháp chưa áp dụng được tô sáng `warning` (chữ "có bản nháp" trong cột Phiên bản). Khi hover hoặc Tab tới một hàng, **Sửa** và menu ⋯ (Nhân bản, Ngừng áp dụng / Áp dụng lại, Xoá) hiện ở mép phải phần đang thấy của hàng; <kbd>Esc</kbd> ẩn đi. Các thao tác này cũng có trong trình sửa (đường thứ hai luôn nhìn thấy).
+- **Sau khi lưu**: quay lại danh sách, quy trình vừa lưu đứng **đầu bảng**, tô sáng `info` kèm "Mới thêm" / "Vừa sửa", tới lần sắp xếp, tìm kiếm hoặc lọc sau.
 
 **Trình sửa**
 
-- **Page header**: breadcrumb tới tên quy trình, trạng thái, phiên bản, nhãn "Có thay đổi chưa lưu"; hành động **Quay lại danh sách**, **Lưu nháp**, **Áp dụng** (primary).
+- **Page header** (trên thanh trên cùng, luôn thấy khi cuộn): nút ← **Quay lại danh sách** trước tiêu đề, breadcrumb tới tên quy trình, trạng thái, phiên bản, nhãn "Có thay đổi chưa lưu" (ẩn trọn khi không đủ chỗ); hành động **Lưu nháp**, **Áp dụng** (primary).
 - **Thông tin chung** (`dl nxtDescriptions`): Loại đơn, Phạm vi áp dụng, Phiên bản đang áp dụng, Cập nhật; "Sửa thông tin chung" mở ba trường tại chỗ.
 - **Các bước duyệt** (cột trái): Người gửi đơn → các bước theo thứ tự → Hoàn tất. Mỗi bước là một nút chọn, ghi số thứ tự, tên, người duyệt, cách duyệt, thời hạn và hành động khi quá hạn, chip điều kiện ("Chỉ khi số ngày nghỉ > 3"). Bên cạnh có Đưa lên, Đưa xuống, Xoá; giữa các bước là **Thêm bước**.
 - **Thiết lập bước N** (cột phải): Tên bước, Người duyệt (Quản lý trực tiếp, Trưởng phòng, Giám đốc khối, Phòng Nhân sự, Người cụ thể), Cách duyệt (Một người là đủ / Tất cả cùng duyệt), Thời hạn xử lý và Khi quá hạn, Điều kiện, Quyền của người duyệt.
@@ -61,11 +64,12 @@ Màn có hai phần: **danh sách quy trình** theo đúng [Trang danh sách & d
 - **Lỗi kiểm khi bấm "Áp dụng"**, không chặn người dùng giữa chừng. Lỗi nằm cạnh trường, focus vào trường lỗi đầu tiên, và bước có lỗi được đánh dấu bằng chữ trong danh sách ("Bước 3 cần chọn người duyệt"), không chỉ bằng viền đỏ.
 - **Rời trang khi còn thay đổi chưa lưu** mở [Dialog](/components/dialog) xác nhận với ba lựa chọn: Lưu nháp (focus sẵn), Bỏ thay đổi, Ở lại (<kbd>Esc</kbd>). "Thêm mới" và "Nhân bản" chỉ tạo bản ghi khi người dùng lưu, nên mở ra rồi quay lại không để lại bản nháp rác.
 - **Tên bước tự đặt theo người duyệt** ("Trưởng phòng duyệt") cho đến khi người dùng tự gõ tên khác.
+- **Chế độ xem gói cả cột**: một chế độ xem lưu tìm kiếm, bộ lọc, sắp xếp và cột; quản trị viên chuyển giữa "Nghỉ phép đang áp dụng" và danh sách đầy đủ bằng một cú bấm.
 - **Bố cục theo bề rộng của chính trình sửa**: đủ rộng thì hai cột lấp đầy màn hình và mỗi cột tự cuộn; hẹp thì xếp chồng và cả trang cuộn.
 
 ## Components dùng
 
-`nxt-page-header` (`nxtPageMeta`, `nxtPageActions`) · `nxt-search` · `nxt-filter` + `nxt-filter-chips` + `NxtFilterState` · `table[nxtTable]` + `nxtSortHeader` + `nxt-table-scroll` · `nxt-card` · `nxtFill` · `nxt-grid` + `nxtSpan` · `dl[nxtDescriptions]` · `nxt-form-field` + `nxtInput` · `nxt-segmented` · `nxt-checkbox` · `nxt-timeline` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-empty-state` · `nxt-alert` + `nxtLiveRegion` · `NxtDialog.confirm()` · `nxtIconButton` + `nxtTooltip`
+`nxt-page-header` (`placement="topbar"`, `nxtPageBack`, `nxtPageMeta`, `nxtPageActions`) · `nxt-view-manager` + `NxtViews` · `nxt-search` · `nxt-filter` + `nxt-filter-chips` + `NxtFilterState` · `table[nxtTable]` + `nxtSortHeader` + `nxtRowActions` + `nxt-table-scroll` + `NxtColumnsState` + `[nxtTableColumnsFor]` · `nxt-card` · `nxtFill` · `nxt-grid` + `nxtSpan` · `dl[nxtDescriptions]` · `nxt-form-field` + `nxtInput` · `nxt-segmented` · `nxt-checkbox` · `nxt-timeline` · `nxt-tag` · `nxtMenuTriggerFor` · `nxt-empty-state` · `nxt-alert` + `nxtLiveRegion` · `NxtDialog.confirm()` · `nxtIconButton` + `nxtTooltip`
 
 ## Accessibility
 

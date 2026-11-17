@@ -6,15 +6,15 @@
         "$value": "{semantic.color.bg.surface}",
         "$description": "Nền card."
       },
-      "border": {
+      "bg-hover": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
-        "$description": "Viền card."
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền card bấm được (clickable) khi rê chuột."
       },
       "radius": {
         "$type": "dimension",
         "$value": "{semantic.radius.container}",
-        "$description": "Bo góc card."
+        "$description": "Bo góc card (kiểu C: 28px)."
       },
       "title-text": {
         "$type": "color",
@@ -25,6 +25,61 @@
         "$type": "color",
         "$value": "{semantic.color.text.subtle}",
         "$description": "Chữ mô tả card."
+      },
+      "count-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ bộ đếm \"5/12\" ở header."
+      },
+      "link-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ liên kết \"Xem tất cả\" ở chân card."
+      },
+      "link-text-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link-hover}",
+        "$description": "Chữ liên kết \"Xem tất cả\" khi rê chuột."
+      },
+      "divider": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Đường kẻ ngăn chân \"Xem tất cả\" với thân card."
+      },
+      "state-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ của trạng thái rỗng / lỗi trong card."
+      },
+      "state-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon của trạng thái rỗng."
+      },
+      "error-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Icon của trạng thái lỗi."
+      },
+      "skeleton-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Thanh giữ chỗ (skeleton) khi card đang tải."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.none}",
+        "$description": "Skin iOS: card phẳng trên nền xám hệ thống."
+      },
+      "skeleton-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc thanh giữ chỗ (skeleton) trong card."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Card không viền: tách khỏi nền bằng nền trắng và bóng bề mặt (HeroUI). Forced-colors vẫn vẽ viền."
       }
     }
   }

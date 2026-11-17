@@ -19,7 +19,7 @@ apg-pattern: none (native input type="search", landmark do trang quyết định
 ## 2. Anatomy
 | # | Phần tử | Bắt buộc | Ghi chú |
 |---|---------|----------|---------|
-| 1 | Khung | ✓ | Cùng chiều cao, viền và bo góc với ô nhập của form-field |
+| 1 | Khung | ✓ | Cùng chiều cao, viền và nền đặc với ô nhập của form-field; bo viên thuốc (`radius.pill`) |
 | 2 | Icon kính lúp | ✓ | `aria-hidden`, chỉ là gợi ý thị giác |
 | 3 | `input type="search"` | ✓ | Có nhãn thật (`label`), mặc định ẩn bằng `nxt-visually-hidden` |
 | 4 | Nút xoá | — | Chỉ hiện khi có nội dung; tên "Xoá nội dung tìm kiếm" |
@@ -53,7 +53,7 @@ Không có variant màu. Bề rộng do layout cha quyết định (trong toolba
 ## 5. States
 | Rest | Hover | Focus-visible | Active | Selected | Disabled | Loading | Error | Read-only | Empty |
 |------|-------|---------------|--------|----------|----------|---------|-------|-----------|-------|
-| ✓ | ✓ viền đậm hơn | ✓ ring token | — | — | — (ẩn hoặc giải thích thay vì khoá) | — (trang hiện tiến trình) | — | — | ✓ placeholder, không có nút xoá |
+| ✓ | ✓ viền đậm hơn | ✓ viền accent 2px + vòng mờ `focus-halo`, nền `bg.surface` | — | — | — (ẩn hoặc giải thích thay vì khoá) | — (trang hiện tiến trình) | — | — | ✓ placeholder, không có nút xoá |
 
 ## 6. Keyboard & ARIA
 | Phím | Hành vi |
@@ -72,11 +72,14 @@ Không có variant màu. Bề rộng do layout cha quyết định (trong toolba
 
 | Token | Alias semantic |
 |-------|----------------|
-| `bg` | `color.bg.surface` |
+| `bg` | `color.bg.muted` |
+| `bg-focus` | `color.bg.surface` |
+| `border-focus` | `color.border.selected` |
+| `focus-halo` | `color.bg.selected-hover` (vòng mờ 4px, tĩnh) |
 | `text`, `placeholder` | `color.text.strong`, `color.text.subtle` |
 | `border`, `border-hover` | `color.border.input`, `color.border.input-hover` |
 | `icon` | `color.icon.subtle` |
-| `radius` | `radius.control` |
+| `radius` | `radius.pill` |
 | `height`, `height-sm` | `size.control.md`, `size.control.sm` |
 
 ## 8. Density, responsive, i18n

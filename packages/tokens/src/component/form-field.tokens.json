@@ -11,10 +11,30 @@
         "$value": "{semantic.color.text.subtle}",
         "$description": "Gợi ý dưới field."
       },
+      "counter-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Bộ đếm ký tự dưới textarea."
+      },
       "error-text": {
         "$type": "color",
         "$value": "{semantic.color.text.danger}",
         "$description": "Thông báo lỗi."
+      },
+      "warning-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.warning}",
+        "$description": "Thông điệp cảnh báo: giá trị hợp lệ nhưng cần xem lại, không chặn lưu."
+      },
+      "info-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.info}",
+        "$description": "Thông điệp thông tin: giá trị do hệ thống đề xuất hoặc cần lưu ý."
+      },
+      "success-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.success}",
+        "$description": "Thông điệp thành công: hệ thống vừa xác nhận giá trị."
       },
       "required-text": {
         "$type": "color",
@@ -23,13 +43,38 @@
       },
       "control-bg": {
         "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền control: đặc, hơi xám trên card (kiểu iOS); ranh giới 1px vẫn đạt 3:1."
+      },
+      "control-bg-focus": {
+        "$type": "color",
         "$value": "{semantic.color.bg.surface}",
-        "$description": "Nền control."
+        "$description": "Nền control khi đang focus: nổi lên thành bề mặt trắng."
+      },
+      "control-bg-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.danger-subtle}",
+        "$description": "Nền control có lỗi (nền nhạt + viền đỏ)."
+      },
+      "control-bg-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.warning-subtle}",
+        "$description": "Nền control ở trạng thái cảnh báo (nền nhạt + viền cam)."
+      },
+      "focus-halo": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected-hover}",
+        "$description": "Vòng mờ quanh control khi focus (phụ; vòng focus chính vẫn là semantic.focus.ring)."
       },
       "control-bg-disabled": {
         "$type": "color",
         "$value": "{semantic.color.bg.disabled}",
         "$description": "Nền control khi vô hiệu."
+      },
+      "control-bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.transparent}",
+        "$description": "Nền control chỉ đọc: không có nền nhập, để lộ nền của form."
       },
       "control-text": {
         "$type": "color",
@@ -43,8 +88,18 @@
       },
       "control-border": {
         "$type": "color",
-        "$value": "{semantic.color.border.input}",
-        "$description": "Viền control (≥ 3:1)."
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Skin iOS: ô nhập nền xám, không viền."
+      },
+      "control-border-focus": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Viền control khi đang focus (accent, dày 2px nhờ vòng focus)."
+      },
+      "control-border-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền nhạt của control vô hiệu."
       },
       "control-border-hover": {
         "$type": "color",
@@ -55,6 +110,26 @@
         "$type": "color",
         "$value": "{semantic.color.border.danger}",
         "$description": "Viền control có lỗi."
+      },
+      "control-border-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.border.warning}",
+        "$description": "Viền control ở trạng thái cảnh báo."
+      },
+      "control-border-info": {
+        "$type": "color",
+        "$value": "{semantic.color.border.info}",
+        "$description": "Viền control ở trạng thái thông tin."
+      },
+      "control-border-success": {
+        "$type": "color",
+        "$value": "{semantic.color.border.success}",
+        "$description": "Viền control ở trạng thái thành công (hệ thống vừa xác nhận)."
+      },
+      "control-border-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền nhạt của control chỉ đọc: khác control sửa được (border.input)."
       },
       "control-radius": {
         "$type": "dimension",
@@ -73,8 +148,8 @@
       },
       "affix-color": {
         "$type": "color",
-        "$value": "{semantic.color.icon.subtle}",
-        "$description": "Icon tiền tố/hậu tố."
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Icon và chữ tiền tố/hậu tố (đơn vị như \"giờ\", \"₫\"): dùng màu chữ phụ để chữ đạt 4.5:1 trên nền ô nhập."
       }
     }
   }

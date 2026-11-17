@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, afterNextRender, inject, signal } from '@angular/core';
 import { NxtButton } from '@nxt/ui/button';
+import { NxtDatePicker } from '@nxt/ui/date-picker';
 import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtGrid, NxtInline, NxtSpan, NxtStack } from '@nxt/ui/layout';
 
@@ -13,7 +14,7 @@ interface Errors {
 /** Kiểm tra khi gửi: lỗi hiện tại chỗ, focus về trường lỗi đầu tiên */
 @Component({
   selector: 'example-form-field-validation',
-  imports: [NxtButton, NxtFormField, NxtInput, NxtGrid, NxtInline, NxtSpan, NxtStack],
+  imports: [NxtButton, NxtDatePicker, NxtFormField, NxtInput, NxtGrid, NxtInline, NxtSpan, NxtStack],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <form novalidate (submit)="submit($event)">
@@ -35,7 +36,7 @@ interface Errors {
             </select>
           </nxt-form-field>
           <nxt-form-field label="Ngày vào làm" required hint="Ngày bắt đầu tính thâm niên." [error]="errors().start" [nxtSpan]="{ base: 12, md: 6 }">
-            <input nxtInput type="date" [value]="start()" (input)="start.set(text($event)); revalidate()" />
+            <nxt-date-picker today="2026-11-06" [value]="start()" (valueChange)="start.set($event); revalidate()" />
           </nxt-form-field>
         </nxt-grid>
         <nxt-inline>
@@ -55,7 +56,8 @@ export class FormFieldValidationExample {
   protected readonly name = signal('');
   protected readonly email = signal('lan.pham@');
   protected readonly dept = signal('');
-  protected readonly start = signal('');
+  /** ISO yyyy-MM-dd from the date picker; null while empty or not yet a date. */
+  protected readonly start = signal<string | null>(null);
   protected readonly errors = signal<Errors>({});
   protected readonly message = signal('');
   /** Validate on submit first; after that, re-validate as the user fixes each field. */
@@ -89,7 +91,7 @@ export class FormFieldValidationExample {
     this.name.set('');
     this.email.set('');
     this.dept.set('');
-    this.start.set('');
+    this.start.set(null);
     this.errors.set({});
     this.message.set('');
   }

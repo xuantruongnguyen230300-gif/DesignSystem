@@ -207,7 +207,8 @@ test.describe('templates', () => {
   test('catalog: list actions are on the toolbar, not the page header; the user appears once, top right', async ({ page }) => {
     await page.goto('/examples/template-catalog');
     await page.locator('docs-example-page[data-ready]').waitFor();
-    const header = page.locator('nxt-page-header');
+    // The page header renders in the top bar (placement="topbar"): check both places.
+    const header = page.locator('nxt-page-header, .nxt-page-header__head');
     await expect(header.getByRole('button', { name: /Thêm mới|Nhập|Xuất/ })).toHaveCount(0);
     const toolbar = page.locator('.bar');
     await expect(toolbar.getByRole('button', { name: 'Thêm mới chức danh' })).toBeVisible();
@@ -215,6 +216,78 @@ test.describe('templates', () => {
     await expect(toolbar.getByRole('button', { name: /^Xuất \d+ chức danh/ })).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'Điều hướng NXT HRM' })).not.toContainText('Đặng Anh');
     await expect(page.getByRole('button', { name: 'Tài khoản: Đặng Anh' })).toHaveCount(1);
+  });
+
+  test('HRM templates: the page title sits in the top bar, on one row with the account; no search, no description', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/examples/template-workflow');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const topbar = page.locator('.nxt-topbar');
+    const title = topbar.getByRole('heading', { level: 1, name: 'Quy trình duyệt' });
+    await expect(title).toBeVisible();
+    await expect(topbar.getByRole('navigation', { name: 'Đường dẫn trang' })).toContainText('Thiết lập');
+    await expect(topbar.getByRole('searchbox')).toHaveCount(0);
+    await expect(page.getByText('Ai duyệt từng loại đơn')).toHaveCount(0);
+    await expect(page.locator('.nxt-app-shell__main').getByRole('heading', { level: 1 })).toHaveCount(0);
+    const [t, a] = await Promise.all([title.boundingBox(), page.getByRole('button', { name: 'Tài khoản: Đặng Anh' }).boundingBox()]);
+    expect(t!.y + t!.height).toBeGreaterThan(a!.y);
+    expect(t!.y).toBeLessThan(a!.y + a!.height);
+
+    // Below 1024px the top bar holds the menu button; the header goes back into the page.
+    await page.setViewportSize({ width: 900, height: 800 });
+    await expect(page.locator('.nxt-app-shell__main').getByRole('heading', { level: 1, name: 'Quy trình duyệt' })).toBeVisible();
+    await expect(topbar.getByRole('heading')).toHaveCount(0);
+  });
+
+  test('workflow editor: back button before the title in the top bar; the title wins over meta when space is short', async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await page.goto('/examples/template-workflow');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('button', { name: 'Công tác · quy trình 2025', exact: true }).click();
+    const topbar = page.locator('.nxt-topbar');
+    const title = topbar.getByRole('heading', { level: 1, name: 'Công tác · quy trình 2025' });
+    await expect(title).toBeFocused();
+    const back = topbar.getByRole('button', { name: 'Quay lại danh sách' });
+    const [b, t] = await Promise.all([back.boundingBox(), title.boundingBox()]);
+    expect(b!.x + b!.width).toBeLessThanOrEqual(t!.x);
+    // Not cut: the title shows in full at 1024px.
+    expect(await title.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+    await expect(topbar.getByRole('button', { name: 'Áp dụng' })).toBeVisible();
+  });
+
+  test('row actions: shown on hover at the visible end of the row, no sideways scrolling; Tab shows them, Escape hides them', async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 700 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const region = page.getByRole('region', { name: 'Bảng chức danh' });
+    // The grid is wider than the screen: the old last column was off-screen.
+    expect(await region.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
+    const row = region.locator('tbody tr').nth(2);
+    const bar = row.locator('.nxt-row-actions__bar');
+    await page.mouse.move(1, 1);
+    await expect(bar).toHaveCSS('opacity', '0');
+
+    await row.locator('th[scope="row"]').hover();
+    await expect(bar).toHaveCSS('opacity', '1');
+    const [edit, view] = await Promise.all([row.getByRole('button', { name: /^Sửa / }).boundingBox(), region.boundingBox()]);
+    expect(edit!.x + edit!.width).toBeLessThanOrEqual(view!.x + view!.width);
+    expect(edit!.x).toBeGreaterThanOrEqual(view!.x);
+    expect(await region.evaluate((el) => el.scrollLeft)).toBe(0);
+
+    // WCAG 1.4.13: dismissible without moving the pointer; back once the pointer leaves the row.
+    await page.keyboard.press('Escape');
+    await expect(bar).toHaveCSS('opacity', '0');
+    await page.mouse.move(1, 1);
+    await row.locator('th[scope="row"]').hover();
+    await expect(bar).toHaveCSS('opacity', '1');
+
+    // Keyboard: focus on a row action shows that row's bar.
+    await page.mouse.move(1, 1);
+    const other = region.locator('tbody tr').nth(4);
+    await other.getByRole('button', { name: /^Sửa / }).focus();
+    await expect(other.locator('.nxt-row-actions__bar')).toHaveCSS('opacity', '1');
+    // The column header is still there for screen readers.
+    await expect(region.getByRole('columnheader', { name: 'Thao tác' })).toHaveCount(1);
   });
 
   test('catalog: the grid fills the screen and scrolls inside; the page itself does not scroll', async ({ page }) => {
@@ -455,6 +528,17 @@ test.describe('feedback', () => {
     await expect(page.getByRole('status')).toHaveText('Đã từ chối đơn. Lý do: Trùng lịch kiểm toán.');
   });
 
+  test('drawer: closing with unsaved changes asks first (Escape included)', async ({ page }) => {
+    await page.goto('/examples/drawer-unsaved');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('button', { name: 'Sửa thông tin liên hệ' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Sửa thông tin liên hệ' });
+    await drawer.getByRole('textbox', { name: 'Điện thoại di động' }).fill('0988 000 111');
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('alertdialog', { name: 'Rời khỏi biểu mẫu khi chưa lưu?' })).toBeVisible();
+    await expect(drawer).toBeVisible();
+  });
+
   test('alert: the result appears in a live region, with an undo that works', async ({ page }) => {
     await page.goto('/examples/alert-live');
     await page.locator('docs-example-page[data-ready]').waitFor();
@@ -526,5 +610,96 @@ test.describe('grid fills the screen', () => {
     expect(s.pageY).toBeLessThanOrEqual(1);
     expect(Math.abs(s.bottomGap)).toBeLessThanOrEqual(1);
     expect(s.gridX).toBeGreaterThan(0);
+  });
+});
+
+test.describe('SAP Fiori patterns', () => {
+  test('object page: saving with several errors opens the message list; a message focuses its field', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/examples/template-object');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await page.getByRole('button', { name: 'Sửa', exact: true }).click();
+    await page.locator('[data-field="name"]').fill('');
+    const phone = page.locator('[data-field="phone"]');
+    await phone.fill('12');
+    await page.getByRole('button', { name: 'Lưu', exact: true }).click();
+    const bar = page.getByRole('region', { name: 'Thao tác hồ sơ' });
+    await expect(bar.getByRole('button', { name: /Thông báo: 2 lỗi/ })).toBeVisible();
+    const list = page.getByRole('dialog', { name: /Thông báo/ });
+    await expect(list).toBeVisible();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await list.getByRole('button', { name: /Số điện thoại gồm 10–11 chữ số/ }).click();
+    await expect(phone).toBeFocused();
+    await expect(phone).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('list report: "Cài đặt bảng" hides a column', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/examples/template-catalog');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    await expect(page.getByRole('columnheader', { name: /Nhóm/ })).toHaveCount(1);
+    await page.getByRole('button', { name: 'Cài đặt bảng' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Cài đặt bảng' });
+    await dialog.getByRole('checkbox', { name: 'Nhóm', exact: true }).uncheck();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await dialog.getByRole('button', { name: 'Áp dụng' }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByRole('columnheader', { name: /Nhóm/ })).toHaveCount(0);
+  });
+
+  test('table: a resizable column changes width by keyboard and by dragging, and resets on Enter', async ({ page }) => {
+    await page.goto('/examples/table-resizable');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const handle = page.getByRole('separator', { name: /Đổi độ rộng cột/ }).first();
+    const header = page.getByRole('columnheader').first();
+    await expect(handle).toHaveAttribute('aria-valuenow', /^[0-9]+$/);
+    const w0 = Number(await handle.getAttribute('aria-valuenow'));
+    await handle.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(handle).toHaveAttribute('aria-valuenow', String(w0 + 8));
+    await page.keyboard.press('Shift+ArrowRight');
+    await expect(handle).toHaveAttribute('aria-valuenow', String(w0 + 8 + 32));
+    // dragging moves the same value by the pointer distance
+    const box = (await handle.boundingBox())!;
+    const before = Number(await handle.getAttribute('aria-valuenow'));
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2, { steps: 5 });
+    await page.mouse.up();
+    const after = Number(await handle.getAttribute('aria-valuenow'));
+    expect(after).toBeGreaterThan(before + 20);
+    expect(Math.round((await header.boundingBox())!.width)).toBe(after);
+    // Enter resets to the default width
+    await handle.focus();
+    await page.keyboard.press('Enter');
+    await expect(handle).toHaveAttribute('aria-valuenow', String(w0));
+  });
+
+  test('date picker: Alt+↓ opens the calendar, Enter picks a day and focus returns to the field', async ({ page }) => {
+    await page.goto('/examples/date-picker-basic');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const input = page.getByRole('textbox', { name: 'Ngày sinh' });
+    await input.focus();
+    await page.keyboard.press('Alt+ArrowDown');
+    await expect(page.getByRole('grid')).toBeVisible();
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('grid')).toHaveCount(0);
+    await expect(input).toBeFocused();
+    await expect(input).toHaveValue(/^\d{2}\/\d{2}\/\d{4}$/);
+  });
+
+  test('combobox: ↓ opens the list with an active option, Enter selects it', async ({ page }) => {
+    await page.goto('/examples/combobox-basic');
+    await page.locator('docs-example-page[data-ready]').waitFor();
+    const box = page.getByRole('combobox', { name: 'Phòng ban' });
+    await box.focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(box).toHaveAttribute('aria-expanded', 'true');
+    await expect(box).toHaveAttribute('aria-activedescendant', /.+/);
+    expect(await axe(page, '.cdk-overlay-container')).toEqual([]);
+    await page.keyboard.press('Enter');
+    await expect(box).toHaveAttribute('aria-expanded', 'false');
+    await expect(box).not.toHaveValue('');
   });
 });

@@ -2,7 +2,7 @@
 component: tabs
 status: beta
 owner: "NXT core"
-updated: 2026-10-19
+updated: 2026-11-16
 apg-pattern: tabs
 ---
 
@@ -23,7 +23,7 @@ apg-pattern: tabs
 | 1 | Host `nxt-tabs` | ✓ | |
 | 2 | Tab list `.nxt-tabs__list` | ✓ | `role="tablist"`; không làm trang rộng ra: tab không vừa được ẩn và liệt kê trong "Xem thêm" |
 | 3 | Tab `button.nxt-tabs__tab` | ✓ | `role="tab"`; icon (tuỳ chọn) + nhãn + số đếm (tuỳ chọn) |
-| 4 | Chỉ báo chọn | ✓ | `::after` dày `border-width.strong` dưới tab đang chọn |
+| 4 | Chỉ báo chọn | ✓ | `::after` màu accent dày `tabs.indicator-height` (= `border-width.strong`), hai đầu bo tròn (`radius.pill`), ôm sát chữ (lề trong = padding của tab) |
 | 5 | Số đếm `.nxt-tabs__count` | — | Viên số; đổi sang tông brand khi tab được chọn |
 | 6 | Tab panel `.nxt-tabs__panel` | — | `role="tabpanel"`, chỉ có khi `panels`; chỉ render nội dung của tab đang chọn |
 | 7 | `nxt-tab` | ✓ | Khai báo một tab; nội dung nằm trong `ng-template`, chỉ gắn vào panel khi được chọn |
@@ -58,7 +58,7 @@ Một kích thước: chiều cao tối thiểu `size.control.lg` (40 / 32 / 48p
 ## 5. States
 | Rest | Hover | Focus-visible | Active/Pressed | Selected | Disabled | Loading | Error | Read-only | Empty |
 |------|-------|---------------|----------------|----------|----------|---------|-------|-----------|-------|
-| ✓ | ✓ chữ `text.default` | ✓ ring token (tab và panel) | — | ✓ chữ `text.strong` + chỉ báo + số đếm tông brand | ✓ native `disabled`, mờ 50% | — | — | — | — (panel rỗng do nơi dùng đặt `nxt-empty-state`) |
+| ✓ | ✓ chữ `text.default` | ✓ ring token (tab và panel) | — | ✓ chữ `text.link` (accent) + chỉ báo + số đếm tông brand | ✓ native `disabled`, mờ 50% | — | — | — | — (panel rỗng do nơi dùng đặt `nxt-empty-state`) |
 
 ## 6. Keyboard & ARIA
 APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/tabs/ (kích hoạt tự động, hướng ngang)
@@ -87,15 +87,18 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/tabs/ (kích hoạt tự �
 |-------|----------------|
 | `text` | `color.text.subtle` |
 | `text-hover` | `color.text.default` |
-| `text-selected` | `color.text.strong` |
+| `text-selected` | `color.text.link` (cặp `text.link` / `surface` và `canvas` ≥ 4.5:1 có trong `contrastPairs`) |
 | `indicator` | `color.border.selected` |
-| `border` | `color.border.default` |
+| `border` | `color.border.subtle` (đường kẻ mảnh dưới danh sách tab) |
+| `indicator-height` | `border-width.strong` |
 | `height` | `size.control.lg` |
+| `touch-target` | `size.row.md` (tạm, xem §8 Density / touch) |
 
-Số đếm mượn token của badge: `--nxt-badge-height`, `--nxt-badge-radius`, `--nxt-badge-neutral-{bg,text}`, `--nxt-badge-brand-{bg,text}`. Dùng thẳng semantic: `space.gap.{xs,md,lg}`, `space.inset.xs`, `size.icon.sm`, `border-width.{default,strong}`, `radius.{pill,control}`, `typography.{label-md,label-sm}`, `focus.ring.*`. Cặp `border.selected` / `surface` (3:1) có trong `contrastPairs`.
+Số đếm mượn token của badge: `--nxt-badge-height`, `--nxt-badge-radius`, `--nxt-badge-neutral-{bg,text}`, `--nxt-badge-brand-{bg,text}`. Dùng thẳng semantic: `space.gap.{xs,lg}`, `space.inset.{xs,sm}`, `size.icon.sm`, `border-width.{default,strong}`, `radius.{pill,control}`, `typography.{label-md,label-sm}`, `focus.ring.*`. Cặp `border.selected` / `surface` (3:1) có trong `contrastPairs`.
 
 ## 8. Density, responsive, i18n
 - Chiều cao tab và khoảng cách giữa tab theo density.
+- **Density / touch (Apple HIG: vùng chạm ≥ 44×44pt).** Trên thiết bị có `@media (pointer: coarse)`, mỗi tab (và nút "Xem thêm") có `min-block-size` bằng giá trị lớn hơn giữa `height` và `touch-target`, nên thanh tab cao tối thiểu 44px ở comfortable. Không dùng pseudo-element như nút: `tablist` có `overflow: hidden` (cần cho việc đo "Xem thêm") nên sẽ cắt phần nới ra ngoài thanh, và `::after` của tab đang dành cho vạch chỉ báo. Chiều ngang đã đủ nhờ đệm hai bên và chữ. Không có rule nào cho `pointer: fine`. Token `touch-target` tạm alias `size.row.md` (44px ở comfortable, 56px ở spacious, 32px ở compact); cần token `semantic.size.touch-target` (44px, không đổi theo density), khi có chỉ việc đổi alias (xem Button §8).
 - Tab không xuống dòng và không bị cắt chữ. Khi bề ngang không đủ (đo bằng `ResizeObserver`), tab ở cuối được dồn vào menu "Xem thêm" (priority-plus, theo PatternFly / ServiceNow); tab đang chọn luôn hiện. Phím mũi tên chỉ đi qua các tab đang hiện; chọn từ menu thì tab đó hiện ra và nhận focus.
 - Nhãn `label-md` (14 / 20px) đủ chỗ cho dấu chồng tiếng Việt. Số đếm dùng `tabular-nums`, định dạng `vi` do nơi dùng truyền vào.
 

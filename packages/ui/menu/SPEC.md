@@ -55,12 +55,12 @@ Mọi hành vi (overlay, focus, phím) đến từ `@angular/cdk/menu` qua `host
 | `nxtMenuItem tone="danger"` | Hành động phá huỷ, đặt cuối menu sau separator: "Xoá nhân viên" | Cảnh báo không phá huỷ |
 | `nxtMenuItemRadio` | Chọn đúng một tuỳ chọn có hiệu lực ngay: mật độ, thứ tự | Lựa chọn cần lưu bằng form |
 
-Item cao `size.control.md` (32 / 28 / 40px); menu rộng tối thiểu 160px (`layout.item-min-sm`).
+Item cao `size.control.md` (36 / 28 / 46px); menu rộng tối thiểu 160px (`layout.item-min-sm`).
 
 ## 5. States
 | Rest | Hover | Focus-visible | Active/Pressed | Selected | Disabled | Loading | Error | Read-only | Empty |
 |------|-------|---------------|----------------|----------|----------|---------|-------|-----------|-------|
-| ✓ | ✓ nền `surface-hover` | ✓ nền `surface-hover` + ring token | — | ✓ radio `aria-checked="true"`: dấu check | ✓ `aria-disabled`, mờ 50%, vẫn focus được | — | — | — | — (không mở menu rỗng) |
+| ✓ | ✓ nền `bg.selected` (nhạt, tông accent) | ✓ nền `bg.selected` + ring token | — | ✓ radio `aria-checked="true"`: dấu check | ✓ `aria-disabled`, mờ 50%, vẫn focus được | — | — | — | — (không mở menu rỗng) |
 
 Panel xuất hiện bằng fade + trượt nhẹ (`motion.duration.fast`); motion `reduced` đưa về 0.
 
@@ -93,9 +93,12 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/ (menu: https:
 |-------|----------------|
 | `bg` | `color.bg.surface-raised` |
 | `border` | `color.border.default` |
-| `radius` | `radius.overlay` |
+| `radius` | `radius.overlay` (panel bo 32px, kiểu C) |
+| `padding` | `space.inset.sm` |
+| `item-radius` | `radius.control` (mục bo 14px) |
+| `item-padding-inline` | `space.inset.md` |
 | `item-text` | `color.text.default` |
-| `item-bg-hover` | `color.bg.surface-hover` |
+| `item-bg-hover` | `color.bg.selected` (`bg.surface-hover` trùng nền menu ở dark) |
 | `item-danger-text` | `color.text.danger` |
 | `item-height` | `size.control.md` |
 | `label-text` | `color.text.subtle` |

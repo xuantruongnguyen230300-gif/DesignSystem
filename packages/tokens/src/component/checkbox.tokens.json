@@ -6,20 +6,80 @@
         "$value": "{semantic.color.bg.primary}",
         "$description": "Màu ô đã chọn (accent-color)."
       },
+      "accent-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Màu ô đã chọn khi chỉ đọc: trung tính, không mời bấm (≥ 3:1)."
+      },
       "size": {
         "$type": "dimension",
-        "$value": "{semantic.size.icon.sm}",
-        "$description": "Kích thước ô (hit area mở rộng bằng label)."
+        "$value": "{semantic.size.icon.md}",
+        "$description": "Kích thước ô (hit area mở rộng bằng label). Hộp tự vẽ (appearance: none), 20px."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Skin iOS: ô chọn tròn."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Chiều cao tối thiểu của hàng checkbox (nhãn bấm được) khi thiết bị trỏ chính là ngón tay (pointer: coarse). Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền hộp chưa chọn (≥ 3:1)."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền hộp chưa chọn."
+      },
+      "mark": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Dấu check / gạch ngang trên nền accent."
+      },
+      "bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền hộp khi vô hiệu."
+      },
+      "border-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.disabled}",
+        "$description": "Viền hộp (và nền khi đã chọn) khi vô hiệu."
       },
       "label-text": {
         "$type": "color",
         "$value": "{semantic.color.text.default}",
         "$description": "Chữ nhãn."
       },
+      "group-label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn nhóm (legend), như nhãn form field."
+      },
       "hint-text": {
         "$type": "color",
         "$value": "{semantic.color.text.subtle}",
         "$description": "Chữ gợi ý dưới nhãn, như hint của form field."
+      },
+      "error-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Thông điệp lỗi của ô hoặc của nhóm."
+      },
+      "required-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Dấu bắt buộc."
+      },
+      "border-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.border.danger}",
+        "$description": "Viền lỗi quanh ô (outline) khi ô hoặc nhóm có lỗi."
       }
     }
   }

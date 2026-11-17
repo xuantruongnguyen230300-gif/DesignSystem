@@ -20,8 +20,8 @@ NXT phục vụ nhiều sản phẩm cùng lúc. Một thay đổi nhỏ trong t
 
 Không chắc thì chọn mức **cao hơn**.
 
-## 2. Changeset
-Dùng [Changesets](https://github.com/changesets/changesets): `npx changeset`. Mỗi PR có một changeset, viết bằng tiếng Việt, hướng tới người dùng sản phẩm:
+## 2. Changelog (và changeset khi đã cài)
+Hiện dùng `CHANGELOG.md` ở gốc repo (một mục `## <phiên bản>` cho mỗi lần phát hành; `npm run release:check` đòi mục này). Changesets chưa được cài (thêm thì cần dependency, hỏi chủ repo trước). Khi dùng [Changesets](https://github.com/changesets/changesets) (`npx changeset`), mỗi PR có một changeset, viết bằng tiếng Việt, hướng tới người dùng sản phẩm:
 ```md
 ---
 '@nxt/ui': minor
@@ -57,5 +57,14 @@ CI (`.github/workflows/ci.yml`) chạy đúng chuỗi này trên mỗi PR.
 - Kết quả từng bước gate (lệnh thật đã chạy).
 - Breaking changes và migration guide (link). Nếu có thay đổi giao diện thì nêu sản phẩm nào cần kiểm lại.
 - Việc sau phát hành: thông báo cho các team sản phẩm, cập nhật trang Changelog trên docs.
+
+## 6. Cách phát hành (GitHub Packages)
+Quyết định ở [ADR-006](../../../docs/adr/006-npm-scope.md). Các bước, dừng ở bước đầu tiên lỗi:
+1. Tăng phiên bản đồng loạt: `packages/ui/package.json`, `packages/tokens/package.json`, peer `@nxt/tokens` của ui, `NXT_UI_VERSION` trong `packages/ui/src/public-api.ts`, và thêm mục `## <phiên bản>` vào `CHANGELOG.md`.
+2. `npm run release:check` (thêm `-- v<phiên bản>` để kiểm cả thẻ).
+3. Release gate §4, rồi `npm run build`, `npm run release:prepare` (ra `dist/publish/`), `npm run consumer:smoke:registry`.
+4. Commit, đẩy thẻ `v<phiên bản>`: workflow `publish.yml` chạy lại các kiểm tra rồi `npm publish`. Chạy tay (Actions → Publish → Run workflow, không tick `publish`) để thử mà không phát hành.
+
+Người dùng cài bằng alias `@nxt/ui@npm:@<tài-khoản>/ui` (xem trang Cài đặt của docs).
 
 Không tự `npm publish` hay push tag khi user chưa xác nhận rõ.

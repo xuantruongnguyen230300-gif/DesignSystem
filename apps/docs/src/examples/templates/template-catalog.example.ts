@@ -13,10 +13,22 @@ import { NxtPageHeader } from '@nxt/ui/page-header';
 import { NxtPagination } from '@nxt/ui/pagination';
 import { NxtSearch, nxtMatches } from '@nxt/ui/search';
 import { NxtFill } from '@nxt/ui/layout';
-import { NxtSelection, NxtSort, NxtSortHeader, NxtSortState, NxtTable, NxtTableScroll } from '@nxt/ui/table';
+import {
+  NxtColumnsState,
+  NxtRowActions,
+  NxtRowHighlight,
+  NxtSelection,
+  NxtSort,
+  NxtSortHeader,
+  NxtSortState,
+  NxtTable,
+  NxtTableColumnsTrigger,
+  NxtTableScroll,
+} from '@nxt/ui/table';
 import { NxtTab, NxtTabs } from '@nxt/ui/tabs';
 import { NxtTag } from '@nxt/ui/tag';
 import { NxtTooltip } from '@nxt/ui/tooltip';
+import { NxtMemoryViewStore, NxtViewData, NxtViews, nxtViewTargets } from '@nxt/ui/view-manager';
 import { CATALOGS, CatalogDef, CatalogField, CatalogItem, TODAY, dateKey, daysBetween, formatValue, usageOf } from './catalog-data';
 import { download, fileDate, itemsToRows, toCsv } from './catalog-csv';
 import { CatalogDetail, CatalogDetailData, CatalogDetailResult } from './catalog-detail';
@@ -25,6 +37,7 @@ import { CatalogImport, CatalogImportData } from './catalog-import';
 import { HrmFrame } from './hrm-frame';
 
 type FilterValues = Record<string, string | string[]>;
+type Mark = 'added' | 'edited';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'Tất cả' },
@@ -38,6 +51,19 @@ const UPDATED_OPTIONS = [
   { value: '365', label: '12 tháng qua' },
 ];
 
+/** Views the user saved earlier (a product loads them from its server). */
+const SAVED_VIEWS: Record<string, NxtViewData<FilterValues>> = {
+  'chuc-danh': {
+    views: [
+      {
+        id: 'quan-ly',
+        name: 'Nhóm Quản lý đang sử dụng',
+        state: { query: '', filters: { status: 'active', updated: 'any', group: ['Quản lý'], level: [] }, sort: { active: 'name', direction: 'asc' }, pageSize: 10 },
+      },
+    ],
+  },
+};
+
 /** One catalog tab: its data and everything the user set on it (kept when switching tabs). */
 class CatalogView {
   readonly items: WritableSignal<CatalogItem[]>;
@@ -48,40 +74,83 @@ class CatalogView {
   readonly pageSize = signal(10);
   readonly selection = new NxtSelection<string>();
   readonly filterFields: CatalogField[];
+  readonly columns: NxtColumnsState;
+  readonly views: NxtViews<FilterValues>;
+  /** Rows saved in this session, newest first: shown at the top and highlighted until the next sort, search or filter. */
+  readonly recent = signal<{ code: string; mark: Mark }[]>([]);
+  /** Rows edited out of the current filters: kept (highlighted) until the next search or filter. */
+  readonly stale = signal<ReadonlySet<string>>(new Set());
+  /** The row shown in the detail drawer or being edited (aria-current). */
+  readonly openCode = signal<string | null>(null);
+  /** Read by screen readers after the results change. */
+  readonly note = signal('');
+  private readonly fieldMap: ReadonlyMap<string, CatalogField>;
 
   constructor(readonly def: CatalogDef) {
     this.items = signal(def.items);
     this.filterFields = def.fields.filter((f) => f.filter);
+    this.fieldMap = new Map(def.fields.map((f) => [f.key, f]));
     this.filters = new NxtFilterState<FilterValues>({
       status: 'all',
       updated: 'any',
       ...Object.fromEntries(this.filterFields.map((f) => [f.key, [] as string[]])),
     });
+    // Identifier first and locked (always shown, pinned while scrolling sideways); the description is optional.
+    this.columns = new NxtColumnsState([
+      { key: 'name', label: 'Tên', locked: true },
+      { key: 'code', label: 'Mã', locked: true },
+      ...def.fields.map((f) => ({ key: f.key, label: f.label })),
+      { key: 'status', label: 'Trạng thái' },
+      { key: 'updated', label: 'Cập nhật' },
+      { key: 'description', label: 'Mô tả', hidden: true },
+    ]);
+    const targets = nxtViewTargets<FilterValues>({ query: this.query, filters: this.filters, sort: this.sort, columns: this.columns, pageSize: this.pageSize, page: this.page });
+    this.views = new NxtViews<FilterValues>({
+      current: targets.current,
+      apply: (state) => {
+        targets.apply(state);
+        this.resultsChanged();
+      },
+      store: new NxtMemoryViewStore<FilterValues>(SAVED_VIEWS[def.id] ?? null),
+    });
+  }
+
+  field(key: string): CatalogField | undefined {
+    return this.fieldMap.get(key);
+  }
+
+  /** Matches the search and the applied filters. */
+  matches(r: CatalogItem): boolean {
+    const f = this.filters.applied();
+    return (
+      nxtMatches(this.query(), r.code, r.name, r.description, ...Object.values(r.extra)) &&
+      (f['status'] === 'all' || r.active === (f['status'] === 'active')) &&
+      (f['updated'] === 'any' || daysBetween(r.updated, TODAY) <= Number(f['updated'])) &&
+      this.filterFields.every((field) => {
+        const chosen = f[field.key] as string[];
+        return !chosen.length || chosen.includes(String(r.extra[field.key]));
+      })
+    );
   }
 
   readonly rows = computed(() => {
-    const q = this.query();
-    const f = this.filters.applied();
-    const filtered = this.items().filter(
-      (r) =>
-        nxtMatches(q, r.code, r.name, r.description, ...Object.values(r.extra)) &&
-        (f['status'] === 'all' || r.active === (f['status'] === 'active')) &&
-        (f['updated'] === 'any' || daysBetween(r.updated, TODAY) <= Number(f['updated'])) &&
-        this.filterFields.every((field) => {
-          const chosen = f[field.key] as string[];
-          return !chosen.length || chosen.includes(String(r.extra[field.key]));
-        }),
-    );
+    const stale = this.stale();
+    const filtered = this.items().filter((r) => stale.has(r.code) || this.matches(r));
     const { active, direction } = this.sort();
-    if (!direction) return filtered;
     const dir = direction === 'asc' ? 1 : -1;
     const value = (r: CatalogItem): string | number =>
       active === 'name' ? r.name : active === 'updated' ? dateKey(r.updated) : active === 'code' ? r.code : (r.extra[active] ?? '');
-    return [...filtered].sort((a, b) => {
-      const x = value(a);
-      const y = value(b);
-      return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'vi')) * dir;
-    });
+    const sorted = !direction
+      ? filtered
+      : [...filtered].sort((a, b) => {
+          const x = value(a);
+          const y = value(b);
+          return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'vi')) * dir;
+        });
+    const recent = this.recent().map((x) => x.code);
+    if (!recent.length) return sorted;
+    const top = recent.map((c) => sorted.find((r) => r.code === c)).filter((r): r is CatalogItem => !!r);
+    return [...top, ...sorted.filter((r) => !recent.includes(r.code))];
   });
 
   readonly pageRows = computed(() => {
@@ -90,6 +159,7 @@ class CatalogView {
   });
   readonly pageKeys = computed(() => this.pageRows().map((r) => r.code));
   readonly narrowed = computed(() => !!this.query().trim() || this.filters.activeCount() > 0);
+  readonly selectedRows = computed(() => this.rows().filter((r) => this.selection.has(r.code)));
 
   readonly chips = computed<NxtFilterChip[]>(() => {
     const f = this.filters.applied();
@@ -101,6 +171,36 @@ class CatalogView {
     }
     return chips;
   });
+
+  /** Why a row stands out (the strip is a hint; the same words show in the row). */
+  rowState(r: CatalogItem): { highlight: NxtRowHighlight; label: string } | null {
+    if (this.stale().has(r.code)) return { highlight: 'warning', label: 'Không còn khớp bộ lọc' };
+    const mark = this.recent().find((x) => x.code === r.code)?.mark;
+    return mark ? { highlight: 'info', label: mark === 'added' ? 'Mới thêm' : 'Vừa sửa' } : null;
+  }
+
+  mark(codes: string[], mark: Mark) {
+    this.recent.update((list) => [...codes.map((code) => ({ code, mark })), ...list.filter((x) => !codes.includes(x.code))]);
+    this.page.set(1);
+  }
+
+  /** Sorting puts saved rows back in their place; rows edited out of the filters stay until the next filter. */
+  setSort(sort: NxtSortState) {
+    this.sort.set(sort);
+    this.recent.set([]);
+  }
+
+  /**
+   * Search, filters or the view changed the results: marks are dropped, back to page 1, and selected rows that are
+   * no longer in the results are deselected (bulk actions never touch rows the user cannot see).
+   */
+  resultsChanged() {
+    this.recent.set([]);
+    this.stale.set(new Set());
+    this.page.set(1);
+    const dropped = this.selection.retain(this.rows().map((r) => r.code));
+    this.note.set(dropped ? `Đã bỏ chọn ${dropped} ${this.def.noun} không còn trong kết quả.` : '');
+  }
 }
 
 interface Notice {
@@ -110,7 +210,7 @@ interface Notice {
   undo?: () => void;
 }
 
-/** Danh mục — nhiều danh mục trên một màn: tab, tìm kiếm + bộ lọc, chọn nhiều (Shift), nhập/xuất Excel, thêm/sửa trong drawer */
+/** Danh mục — nhiều danh mục trên một màn: tab, chế độ xem, tìm kiếm + bộ lọc, chọn cột, chọn nhiều (Shift), nhập/xuất Excel, thêm/sửa trong drawer */
 @Component({
   selector: 'example-template-catalog',
   imports: [
@@ -133,11 +233,13 @@ interface Notice {
     NxtMenuTrigger,
     NxtPageHeader,
     NxtPagination,
+    NxtRowActions,
     NxtSearch,
     NxtSort,
     NxtSortHeader,
     NxtTab,
     NxtTable,
+    NxtTableColumnsTrigger,
     NxtTableScroll,
     NxtTabs,
     NxtTag,
@@ -148,11 +250,7 @@ interface Notice {
     <!-- fill: the page fits the screen; the grid scrolls inside (vertical and horizontal). -->
     <example-hrm-frame fill>
       <div class="stack" nxtFill>
-        <nxt-page-header
-          title="Danh mục tổ chức"
-          description="Danh mục dùng chung cho hồ sơ nhân viên, hợp đồng và chấm công."
-          [breadcrumb]="[{ label: 'Thiết lập' }, { label: 'Danh mục tổ chức' }]"
-        >
+        <nxt-page-header placement="topbar" title="Danh mục tổ chức" [breadcrumb]="[{ label: 'Thiết lập' }, { label: 'Danh mục tổ chức' }]">
           <nxt-tabs label="Danh mục" [panels]="false" [value]="active()" (valueChange)="setCatalog($event!)">
             @for (v of views; track v.def.id) {
               <nxt-tab [value]="v.def.id" [label]="v.def.label" [count]="v.items().length" />
@@ -181,9 +279,14 @@ interface Notice {
                     <button nxtButton variant="ghost" size="sm" type="button" (click)="v.selection.setMany(allKeys(v), true)">Chọn tất cả {{ v.rows().length }} {{ def().noun }}</button>
                   }
                   <span class="bar__spacer"></span>
-                  <button nxtButton size="sm" type="button" (click)="setActive(selectedKeys(v), false)"><nxt-icon name="ban" />Ngừng sử dụng</button>
-                  <button nxtButton size="sm" type="button" (click)="setActive(selectedKeys(v), true)"><nxt-icon name="restore" />Dùng lại</button>
-                  <button nxtButton size="sm" type="button" (click)="exportRows(selectedRows(v))"><nxt-icon name="file-download" />Xuất {{ v.selection.count() }}</button>
+                  <!-- On when it applies to at least one selected row; off (still focusable) with the reason otherwise. -->
+                  <button nxtButton size="sm" type="button" [disabled]="!countActive(v, true)" [nxtTooltip]="bulkTip(v, false)" (click)="setActive(selectedKeys(v), false)">
+                    <nxt-icon name="ban" />Ngừng sử dụng
+                  </button>
+                  <button nxtButton size="sm" type="button" [disabled]="!countActive(v, false)" [nxtTooltip]="bulkTip(v, true)" (click)="setActive(selectedKeys(v), true)">
+                    <nxt-icon name="restore" />Dùng lại
+                  </button>
+                  <button nxtButton size="sm" type="button" (click)="exportRows(v.selectedRows())"><nxt-icon name="file-download" />Xuất {{ v.selection.count() }}</button>
                   <button nxtButton variant="danger" size="sm" type="button" (click)="remove(selectedKeys(v))"><nxt-icon name="trash" />Xoá {{ v.selection.count() }}</button>
                   <button nxtButton variant="ghost" size="sm" type="button" (click)="v.selection.clear()">Bỏ chọn</button>
                 </div>
@@ -223,14 +326,17 @@ interface Notice {
                       </select>
                     </nxt-form-field>
                   </nxt-filter>
-                  <!-- Actions sit on the toolbar, inside the tab they act on (Carbon, SAP Fiori, M365): tools, then the primary action at the far right. -->
+                  <!-- Tools, the table settings last, then the primary action at the far right (Carbon, SAP Fiori, M365). -->
                   <span class="bar__spacer"></span>
                   <div class="bar__actions">
-                    <button nxtIconButton type="button" [attr.aria-label]="importLabel()" [nxtTooltip]="importLabel()" (click)="openImport()">
+                    <button nxtIconButton variant="ghost" type="button" [attr.aria-label]="importLabel()" [nxtTooltip]="importLabel()" (click)="openImport()">
                       <nxt-icon name="file-upload" />
                     </button>
-                    <button nxtIconButton type="button" [attr.aria-label]="exportLabel()" [nxtTooltip]="exportLabel()" [disabled]="!v.rows().length" (click)="exportRows(v.rows())">
+                    <button nxtIconButton variant="ghost" type="button" [attr.aria-label]="exportLabel()" [nxtTooltip]="exportLabel()" [disabled]="!v.rows().length" (click)="exportRows(v.rows())">
                       <nxt-icon name="file-download" />
+                    </button>
+                    <button nxtIconButton variant="ghost" type="button" aria-label="Cài đặt bảng" nxtTooltip="Cài đặt bảng" [nxtTableColumnsFor]="v.columns">
+                      <nxt-icon name="adjustments" />
                     </button>
                     <span class="bar__divider" aria-hidden="true"></span>
                     <button nxtButton variant="primary" type="button" [attr.aria-label]="'Thêm mới ' + def().noun" (click)="openForm()"><nxt-icon name="plus" />Thêm mới</button>
@@ -242,14 +348,14 @@ interface Notice {
                   </div>
                 }
               }
-              <p class="nxt-visually-hidden" role="status">{{ v.narrowed() ? 'Tìm thấy ' + v.rows().length + ' ' + def().noun : '' }}</p>
+              <p class="nxt-visually-hidden" role="status">{{ v.narrowed() ? 'Tìm thấy ' + v.rows().length + ' ' + def().noun + '.' : '' }} {{ v.note() }}</p>
 
               @if (v.rows().length) {
                 <nxt-table-scroll fill [label]="'Bảng ' + def().noun">
-                  <table nxtTable stickyHeader [(nxtSort)]="v.sort">
+                  <table nxtTable stickyHeader [nxtSort]="v.sort()" (nxtSortChange)="v.setSort($event)">
                     <thead>
                       <tr>
-                        <th scope="col" class="nxt-table__select">
+                        <th scope="col" class="nxt-table__select nxt-table__sticky">
                           <nxt-checkbox
                             [label]="'Chọn tất cả ' + def().noun + ' trên trang'"
                             hideLabel
@@ -258,20 +364,41 @@ interface Notice {
                             (checkedChange)="v.selection.setMany(v.pageKeys(), $event)"
                           />
                         </th>
-                        <th scope="col" nxtSortHeader="code">Mã</th>
-                        <th scope="col" nxtSortHeader="name">Tên</th>
-                        @for (f of v.def.fields; track f.key) {
-                          <th scope="col" [nxtSortHeader]="f.key" [class.nxt-table__num]="f.type !== 'select'">{{ f.label }}</th>
+                        @for (c of v.columns.visible(); track c.key) {
+                          @switch (c.key) {
+                            @case ('name') {
+                              <th scope="col" class="nxt-table__sticky" nxtSortHeader="name">{{ c.label }}</th>
+                            }
+                            @case ('code') {
+                              <th scope="col" nxtSortHeader="code">{{ c.label }}</th>
+                            }
+                            @case ('status') {
+                              <th scope="col">{{ c.label }}</th>
+                            }
+                            @case ('updated') {
+                              <th scope="col" class="nxt-table__num" nxtSortHeader="updated">{{ c.label }}</th>
+                            }
+                            @case ('description') {
+                              <th scope="col">{{ c.label }}</th>
+                            }
+                            @default {
+                              <th scope="col" [nxtSortHeader]="c.key" [class.nxt-table__num]="v.field(c.key)?.type !== 'select'">{{ c.label }}</th>
+                            }
+                          }
                         }
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col" nxtSortHeader="updated">Cập nhật</th>
-                        <th scope="col" class="nxt-table__actions"><span class="nxt-visually-hidden">Thao tác</span></th>
+                        <th scope="col" nxtRowActions></th>
                       </tr>
                     </thead>
                     <tbody>
                       @for (r of v.pageRows(); track r.code) {
-                        <tr class="row" [attr.aria-selected]="v.selection.has(r.code)" (click)="onRowClick($event, v, r)">
-                          <td class="nxt-table__select">
+                        <tr
+                          class="row"
+                          [attr.aria-selected]="v.selection.has(r.code)"
+                          [attr.aria-current]="r.code === v.openCode() ? 'true' : null"
+                          [attr.data-highlight]="v.rowState(r)?.highlight ?? null"
+                          (click)="onRowClick($event, v, r)"
+                        >
+                          <td class="nxt-table__select nxt-table__sticky">
                             <nxt-checkbox
                               [label]="'Chọn ' + r.name"
                               hideLabel
@@ -279,19 +406,37 @@ interface Notice {
                               (toggled)="v.selection.select(r.code, $event.checked, { range: $event.shiftKey, order: v.pageKeys() })"
                             />
                           </td>
-                          <td class="code">{{ r.code }}</td>
-                          <th scope="row" class="name">
-                            <!-- Opens the read-only detail; the whole row does too (mouse), the checkbox only selects. -->
-                            <button type="button" class="name__open" (click)="openDetail(v, r)">{{ r.name }}</button>
-                          </th>
-                          @for (f of v.def.fields; track f.key) {
-                            <td [class.nxt-table__num]="f.type !== 'select'">{{ format(f, r.extra[f.key]) }}</td>
+                          @for (c of v.columns.visible(); track c.key) {
+                            @switch (c.key) {
+                              @case ('name') {
+                                <th scope="row" class="name nxt-table__sticky">
+                                  <!-- Opens the read-only detail; the whole row does too (mouse), the checkbox only selects. -->
+                                  <button type="button" class="name__open" (click)="openDetail(v, r)">{{ r.name }}</button>
+                                  @if (v.rowState(r); as s) {
+                                    <nxt-tag class="name__state" size="sm" [tone]="s.highlight === 'warning' ? 'warning' : 'info'">{{ s.label }}</nxt-tag>
+                                  }
+                                </th>
+                              }
+                              @case ('code') {
+                                <td class="code">{{ r.code }}</td>
+                              }
+                              @case ('status') {
+                                <td>
+                                  <nxt-tag [tone]="r.active ? 'success' : 'neutral'" dot>{{ r.active ? 'Đang sử dụng' : 'Ngừng sử dụng' }}</nxt-tag>
+                                </td>
+                              }
+                              @case ('updated') {
+                                <td class="nxt-table__num">{{ r.updated }}</td>
+                              }
+                              @case ('description') {
+                                <td class="nxt-table__wrap">{{ r.description || '—' }}</td>
+                              }
+                              @default {
+                                <td [class.nxt-table__num]="v.field(c.key)?.type !== 'select'">{{ format(v.field(c.key)!, r.extra[c.key]) }}</td>
+                              }
+                            }
                           }
-                          <td>
-                            <nxt-tag [tone]="r.active ? 'success' : 'neutral'" dot>{{ r.active ? 'Đang sử dụng' : 'Ngừng sử dụng' }}</nxt-tag>
-                          </td>
-                          <td class="nxt-tabular-nums">{{ r.updated }}</td>
-                          <td class="nxt-table__actions">
+                          <td nxtRowActions>
                             <button nxtIconButton size="sm" variant="ghost" type="button" [attr.aria-label]="'Sửa ' + r.name" nxtTooltip="Sửa" (click)="openForm(r)">
                               <nxt-icon name="pencil" />
                             </button>
@@ -435,6 +580,9 @@ interface Notice {
       outline-offset: var(--nxt-focus-ring-offset);
       border-radius: var(--nxt-radius-control);
     }
+    .name__state {
+      margin-inline-start: var(--nxt-space-gap-sm);
+    }
     .footer {
       padding: var(--nxt-space-inset-sm) var(--nxt-space-inset-md);
       border-block-start: var(--nxt-border-width-default) solid var(--nxt-color-border-default);
@@ -477,8 +625,16 @@ export class TemplateCatalogExample {
     return [...v.selection.selected()];
   }
 
-  protected selectedRows(v: CatalogView): CatalogItem[] {
-    return v.rows().filter((r) => v.selection.has(r.code));
+  /** Selected rows that are (active = true) or are not (false) in use. */
+  protected countActive(v: CatalogView, active: boolean): number {
+    return v.selectedRows().filter((r) => r.active === active).length;
+  }
+
+  protected bulkTip(v: CatalogView, toActive: boolean): string {
+    const n = this.countActive(v, !toActive);
+    const noun = v.def.noun;
+    if (!n) return toActive ? `Các ${noun} đã chọn đều đang sử dụng` : `Các ${noun} đã chọn đều đã ngừng sử dụng`;
+    return `${toActive ? 'Dùng lại' : 'Ngừng sử dụng'} ${n} ${noun}`;
   }
 
   protected setCatalog(id: string) {
@@ -488,22 +644,22 @@ export class TemplateCatalogExample {
 
   protected setQuery(v: CatalogView, query: string) {
     v.query.set(query);
-    v.page.set(1);
+    v.resultsChanged();
   }
 
   protected applyFilters(v: CatalogView) {
     v.filters.apply();
-    v.page.set(1);
+    v.resultsChanged();
   }
 
   protected clearFilter(v: CatalogView, key: string) {
     v.filters.clear(key);
-    v.page.set(1);
+    v.resultsChanged();
   }
 
   protected clearFilters(v: CatalogView) {
     v.filters.clearAll();
-    v.page.set(1);
+    v.resultsChanged();
   }
 
   protected clearAll(v: CatalogView) {
@@ -511,14 +667,32 @@ export class TemplateCatalogExample {
     this.clearFilters(v);
   }
 
+  /**
+   * Only rows whose state changes; the others are reported (partial processing). The selection stays, so a second
+   * action can follow on the same rows. Rows that leave the filters stay until the next filter.
+   */
   protected setActive(codes: string[], active: boolean) {
     const v = this.view();
     const before = v.items();
-    v.items.update((list) => list.map((r) => (codes.includes(r.code) ? { ...r, active, updated: TODAY } : r)));
-    v.selection.clear();
+    const staleBefore = v.stale();
+    const target = before.filter((r) => codes.includes(r.code));
+    const change = target.filter((r) => r.active !== active).map((r) => r.code);
+    if (!change.length) return;
+    v.items.update((list) => list.map((r) => (change.includes(r.code) ? { ...r, active, updated: TODAY } : r)));
+    const out = v.items().filter((r) => change.includes(r.code) && !v.matches(r)).map((r) => r.code);
+    if (out.length) v.stale.update((s) => new Set([...s, ...out]));
+    const noun = v.def.noun;
+    const parts = [`${active ? 'Đã dùng lại' : 'Đã ngừng sử dụng'} ${change.length} ${noun}.`];
+    const skipped = target.length - change.length;
+    if (skipped) parts.push(`${skipped}/${target.length} ${noun} giữ nguyên vì ${active ? 'đang sử dụng' : 'đã ngừng sử dụng'} từ trước.`);
+    if (out.length) parts.push(`${out.length} ${noun} không còn khớp bộ lọc; sẽ ẩn ở lần lọc sau.`);
     this.notice.set({
-      text: `${active ? 'Đã dùng lại' : 'Đã ngừng sử dụng'} ${codes.length} ${v.def.noun}.`,
-      undo: () => v.items.set(before),
+      text: parts.join(' '),
+      tone: skipped ? 'warning' : 'success',
+      undo: () => {
+        v.items.set(before);
+        v.stale.set(staleBefore);
+      },
     });
   }
 
@@ -547,13 +721,16 @@ export class TemplateCatalogExample {
     this.openDetail(v, r);
   }
 
+  /** The row stays marked as the open one (aria-current) while the drawer shows it, and follows previous / next. */
   protected openDetail(v: CatalogView, r: CatalogItem) {
     const rows = v.rows();
+    v.openCode.set(r.code);
     const ref = this.drawer.open<CatalogDetailResult, CatalogDetailData>(CatalogDetail, {
       title: 'Chi tiết ' + v.def.noun + ' ' + r.name,
-      data: { def: v.def, rows, index: Math.max(0, rows.findIndex((x) => x.code === r.code)) },
+      data: { def: v.def, rows, index: Math.max(0, rows.findIndex((x) => x.code === r.code)), onMove: (item) => v.openCode.set(item.code) },
     });
     ref.closed.subscribe((result) => {
+      v.openCode.set(null);
       if (!result) return;
       if (result.action === 'edit') this.openForm(result.item);
       else if (result.action === 'duplicate') this.duplicate(result.item);
@@ -565,17 +742,24 @@ export class TemplateCatalogExample {
     this.openForm(undefined, { ...r, code: '', name: `${r.name} (bản sao)` });
   }
 
+  /** Saved records go to the top of page 1, highlighted, until the next sort or filter (they are easy to lose otherwise). */
   protected openForm(item?: CatalogItem, prefill?: Partial<CatalogItem>) {
     const v = this.view();
+    if (item) v.openCode.set(item.code);
     const ref = this.drawer.open<CatalogItem, CatalogFormData>(CatalogForm, {
       title: item ? `Sửa ${v.def.noun} ${item.name}` : `Thêm ${v.def.noun}`,
       data: { def: v.def, item, prefill, existingCodes: v.items().map((r) => r.code) },
     });
     ref.closed.subscribe((saved) => {
+      v.openCode.set(null);
       if (!saved) return;
       const exists = v.items().some((r) => r.code === saved.code);
       v.items.update((list) => (exists ? list.map((r) => (r.code === saved.code ? saved : r)) : [saved, ...list]));
-      this.notice.set({ text: exists ? `Đã lưu thay đổi cho “${saved.name}”.` : `Đã thêm ${v.def.noun} “${saved.name}”.` });
+      v.mark([saved.code], exists ? 'edited' : 'added');
+      const outside = !v.matches(saved);
+      if (outside) v.stale.update((s) => new Set([...s, saved.code]));
+      const text = exists ? `Đã lưu thay đổi cho “${saved.name}”.` : `Đã thêm ${v.def.noun} “${saved.name}”.`;
+      this.notice.set({ text: outside ? `${text} “${saved.name}” không còn khớp bộ lọc đang dùng; sẽ ẩn ở lần lọc sau.` : text });
     });
   }
 
@@ -590,11 +774,15 @@ export class TemplateCatalogExample {
       if (!imported?.length) return;
       const before = v.items();
       v.items.update((list) => [...imported, ...list]);
+      v.mark(
+        imported.map((r) => r.code),
+        'added',
+      );
       this.notice.set({ text: `Đã nhập ${imported.length} ${v.def.noun}.`, undo: () => v.items.set(before) });
     });
   }
 
-  /** Exports what the user is looking at (search + filters, all pages), or the selected rows. */
+  /** Exports what the user is looking at (search + filters, all pages), or the selected rows, in the import file format. */
   protected exportRows(rows: CatalogItem[]) {
     const v = this.view();
     if (!rows.length) return;

@@ -1,0 +1,76 @@
+{
+  "component": {
+    "radio-group": {
+      "accent": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Màu nút đã chọn (accent-color)."
+      },
+      "accent-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Màu nút đã chọn khi nhóm chỉ đọc: trung tính, không mời bấm (≥ 3:1)."
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.md}",
+        "$description": "Kích thước nút radio (vùng chạm mở rộng bằng label). Nút tự vẽ (appearance: none), 20px."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Chiều cao tối thiểu của hàng radio (nhãn bấm được) khi thiết bị trỏ chính là ngón tay (pointer: coarse). Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.input}",
+        "$description": "Viền nút chưa chọn (≥ 3:1)."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền nút."
+      },
+      "bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền nút khi vô hiệu."
+      },
+      "border-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.disabled}",
+        "$description": "Viền và chấm khi vô hiệu."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn nhóm (legend), như nhãn form field."
+      },
+      "option-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn từng phương án."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý của nhóm và của từng phương án, như hint của form field."
+      },
+      "error-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Thông điệp lỗi cấp nhóm, đặt dưới nhóm."
+      },
+      "required-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Dấu bắt buộc sau nhãn nhóm."
+      },
+      "border-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.border.danger}",
+        "$description": "Viền lỗi quanh từng nút (outline) khi nhóm có lỗi."
+      }
+    }
+  }
+}

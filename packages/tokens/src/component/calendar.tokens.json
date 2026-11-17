@@ -1,0 +1,101 @@
+{
+  "component": {
+    "calendar": {
+      "cell-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Cạnh ô ngày/tháng/năm (vuông, theo density: 28 / 32 / 40px)."
+      },
+      "cell-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo ô ngày: viên thuốc, nên ngày chọn / hôm nay / hover là hình tròn và dải khoảng ngày bo tròn hai đầu."
+      },
+      "cell-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Số ngày trong tháng đang xem."
+      },
+      "cell-text-muted": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Ngày của tháng kề (hiện để dễ điều hướng)."
+      },
+      "cell-text-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.text.disabled}",
+        "$description": "Ngày ngoài min/max hoặc bị dateFilter khoá."
+      },
+      "cell-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền ô khi rê chuột."
+      },
+      "selected-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary}",
+        "$description": "Nền ngày đã chọn và hai đầu khoảng."
+      },
+      "selected-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.on-primary}",
+        "$description": "Chữ trên nền ngày đã chọn."
+      },
+      "range-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Dải nền các ngày trong khoảng (cả khoảng tạm khi đang chọn ngày cuối)."
+      },
+      "range-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ ngày trong khoảng."
+      },
+      "today-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Vòng viền đánh dấu hôm nay (≥ 3:1 với nền)."
+      },
+      "today-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ hôm nay (kèm chữ đậm)."
+      },
+      "non-working-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.subtle}",
+        "$description": "Nền ngày nghỉ (thứ nghỉ cố định, ngày nghỉ bù)."
+      },
+      "holiday-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Chữ ngày lễ (kèm chấm tròn, không chỉ dựa vào màu)."
+      },
+      "holiday-marker": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Chấm tròn dưới số ngày lễ và trong chú giải."
+      },
+      "event-marker": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.info}",
+        "$description": "Gạch ngang dưới số ngày có sự kiện và trong chú giải."
+      },
+      "weekday-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Hàng tên thứ T2…CN."
+      },
+      "title-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Tiêu đề tháng/năm."
+      },
+      "legend-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ chú giải và danh sách ngày đặc biệt của tháng."
+      }
+    }
+  }
+}

@@ -3,13 +3,13 @@
     "empty-state": {
       "icon-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.muted}",
-        "$description": "Nền vòng icon minh hoạ."
+        "$value": "{semantic.color.bg.primary-subtle}",
+        "$description": "Nền ô icon minh hoạ: tông thương hiệu nhạt (kiểu C)."
       },
       "icon-color": {
         "$type": "color",
-        "$value": "{semantic.color.icon.subtle}",
-        "$description": "Màu icon minh hoạ."
+        "$value": "{semantic.color.text.link}",
+        "$description": "Màu icon minh hoạ trên nền thương hiệu nhạt (cặp text.link trên bg.primary-subtle, đã kiểm ≥ 4.5:1)."
       },
       "title-text": {
         "$type": "color",

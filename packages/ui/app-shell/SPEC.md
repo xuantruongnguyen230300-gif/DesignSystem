@@ -2,16 +2,16 @@
 component: app-shell
 status: beta
 owner: "NXT core"
-updated: 2026-10-19
+updated: 2026-11-06
 apg-pattern: "disclosure (navigation) + landmarks"
 ---
 
 # App shell, Topbar & Sidenav: Spec
 
-Entry `@nxt/ui/app-shell` gồm `nxt-app-shell` (khung ứng dụng), `nxt-topbar` (thanh trên), `nxt-sidenav` (điều hướng bên), service nội bộ `NxtShellState` (trạng thái dùng chung, cung cấp bởi shell) và type `NxtNavItem`.
+Entry `@nxt/ui/app-shell` gồm `nxt-app-shell` (khung ứng dụng), `nxt-topbar` (thanh trên), `nxt-sidenav` (điều hướng bên), service nội bộ `NxtShellState` (trạng thái dùng chung, cung cấp bởi shell), hàm `nxtShellStateOf(el)` và type `NxtNavItem`.
 
 ## 1. Mục đích
-- **Vấn đề người dùng giải quyết:** mọi sản phẩm có cùng một khung: điều hướng chính ở bên trái, thanh trên chứa tìm kiếm và tài khoản, vùng nội dung cuộn riêng. Người dùng chuyển sản phẩm mà không phải học lại vị trí; trên màn hình nhỏ điều hướng thành drawer.
+- **Vấn đề người dùng giải quyết:** mọi sản phẩm có cùng một khung: điều hướng chính ở bên trái, thanh trên chứa tiêu đề trang (page header `placement="topbar"`) và tài khoản, vùng nội dung cuộn riêng. Người dùng chuyển sản phẩm mà không phải học lại vị trí; trên màn hình nhỏ điều hướng thành drawer.
 - **Khi nào dùng:** gốc của ứng dụng nghiệp vụ (register Operate), mỗi ứng dụng một shell; `scroll="page"` cho trang đọc dài (docs).
 - **Khi nào KHÔNG dùng:**
   - Trang đăng nhập, onboarding (register Welcome): dùng layout riêng không có điều hướng.
@@ -22,14 +22,14 @@ Entry `@nxt/ui/app-shell` gồm `nxt-app-shell` (khung ứng dụng), `nxt-topba
 ## 2. Anatomy
 | # | Phần tử | Bắt buộc | Ghi chú |
 |---|---------|----------|---------|
-| 1 | Host `nxt-app-shell` | ✓ | Lưới 2 cột (nav + frame), nền `canvas`; cung cấp `NxtShellState` |
+| 1 | Host `nxt-app-shell` | ✓ | Lưới 2 cột (nav + frame), nền `canvas`, **khoảng hở nổi** (`app-shell.gap`, theo density) quanh và giữa các khối (kiểu C); khoảng hở nằm ngoài vùng nội dung nên chuỗi `nxtFill` và vùng cuộn của lưới không đổi; cung cấp `NxtShellState` |
 | 2 | Skip link "Bỏ qua tới nội dung" | ✓ | Ẩn tới khi focus; không render khi shell nằm trong `main` khác |
 | 3 | Vùng nav `.nxt-app-shell__nav` | ✓ | Chứa `nxt-sidenav`; dưới 1024px thành drawer trượt từ cạnh trái |
 | 4 | Backdrop | — | Chỉ khi drawer mobile mở; `aria-hidden="true"`, bấm vào thì đóng |
 | 5 | Frame | ✓ | `nxt-topbar` + vùng nội dung; `inert` khi drawer mobile mở |
 | 6 | Vùng nội dung `.nxt-app-shell__main` | ✓ | `role="main"` (trừ khi lồng), `tabindex="-1"`, cuộn riêng ở `scroll="container"` |
-| 7 | `nxt-topbar` | ✓ | `header`; nút mở menu (mobile) + 3 slot start / center / end |
-| 8 | `nxt-sidenav` | ✓ | `nav` có tên; header (brand + nút thu gọn), slot top, cây điều hướng, slot footer |
+| 7 | `nxt-topbar` | ✓ | `header` dạng viên thuốc nổi (`radius.pill`, bóng `elevation.card`, không viền); nút mở menu (mobile) + 3 slot start / center / end; page header `placement="topbar"` render cuối vùng start |
+| 8 | `nxt-sidenav` | ✓ | card nổi bo `radius.container`, bóng `elevation.card`, không viền (header không còn đường kẻ); `nav` có tên; header (brand + nút thu gọn), slot top, cây điều hướng, slot footer |
 | 9 | Item / nhóm / heading | ✓ | Link, nút disclosure của nhóm (chevron), tiêu đề section, badge |
 
 ## 3. API (Angular)
@@ -40,7 +40,8 @@ Selector: `nxt-app-shell`, `nxt-topbar`, `nxt-sidenav`. Export `NxtShellState`, 
 | `nxt-app-shell` input | `scroll` | `'container' \| 'page'` | `'container'` | `container`: shell lấp đầy container, nội dung cuộn riêng (ứng dụng). `page`: tài liệu cuộn, nav và topbar dính (`sticky`) |
 | `nxt-app-shell` content | `nxt-sidenav`, `nxt-topbar`, (default) | | | Điều hướng, thanh trên, nội dung trang |
 | `nxt-topbar` content | `[nxtTopbarStart]` | bất kỳ | | Logo / tên sản phẩm (khi sidenav không có brand) |
-| `nxt-topbar` content | `[nxtTopbarCenter]` | ô tìm kiếm | | Vùng giữa rộng tối đa 480px, co lại trước khi che hành động; ẩn khi rỗng |
+| `nxt-topbar` content | `[nxtTopbarCenter]` | ô tìm kiếm | | Vùng giữa rộng tối đa 480px, co lại trước khi che hành động; ẩn khi rỗng. Không dùng cùng page header trên topbar |
+| `nxt-topbar` (tự động) | page header | | | Khi có `nxt-page-header placement="topbar"` trong shell (≥ 1024px): vùng start giãn hết chỗ trống, vùng end chỉ giữ hành động toàn cục (`data-page-header` trên `header`) |
 | `nxt-topbar` content | `[nxtTopbarEnd]` | nút, avatar, menu | | Hành động toàn cục, không bao giờ bị che |
 | `nxt-sidenav` input | `items` | `NxtNavItem[]` | (bắt buộc) | Cây điều hướng |
 | `nxt-sidenav` model | `collapsed` | `boolean` | `false` | Chế độ icon rail, two-way `[(collapsed)]`; ứng dụng tự lưu lại. Bị bỏ qua khi shell đang ở mobile |
@@ -62,7 +63,9 @@ Selector: `nxt-app-shell`, `nxt-topbar`, `nxt-sidenav`. Export `NxtShellState`, 
 | `disabled` | `boolean` | Hiện nhưng không dùng được (tắt tính năng, không có quyền) |
 | `hint` | `string` | Tooltip giải thích mục disabled: "Cần quyền Quản trị nhân sự" |
 
-`NxtShellState` (một instance mỗi shell): `mobile`, `mobileOpen` (signal), `open(trigger?)`, `close()`, `returnFocus`. Topbar và sidenav inject `optional`, nên dùng được ngoài shell.
+`NxtShellState` (một instance mỗi shell): `mobile`, `mobileOpen`, `pageHeader` (signal, `TemplateRef` phần đầu của page header đang ở topbar), `open(trigger?)`, `close()`, `returnFocus`. Topbar và sidenav inject `optional`, nên dùng được ngoài shell.
+
+`nxtShellStateOf(el: Element): NxtShellState | null`: state của shell gần nhất **theo DOM** chứa `el`. Dùng khi phần tử nằm trong shell nhờ content projection qua component khác (layout bọc shell, preview docs): DI đi theo nơi khai báo nên sẽ không thấy shell đó, hoặc thấy nhầm shell bên ngoài.
 
 ## 4. Variants & sizes
 | Chế độ | Khi nào | Hành vi |
@@ -113,13 +116,16 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclo
 |-------|----------------|
 | `bg` | `color.bg.canvas` |
 | `backdrop` | `color.bg.overlay` |
+| `gap` | `space.gap.md` (khoảng hở nổi quanh và giữa sidenav, topbar, nội dung; drawer mobile cũng cách mép bằng khoảng này) |
 
 `packages/tokens/src/component/topbar.tokens.json`:
 
 | Token | Alias semantic |
 |-------|----------------|
 | `bg` | `color.bg.surface` |
-| `border` | `color.border.default` |
+| `border` | `color.border.subtle` (chỉ dùng khi forced-colors, vì thanh nổi không viền) |
+| `radius` | `radius.pill` |
+| `shadow` | `elevation.card` |
 | `height` | `layout.header-height` |
 | `center-width` | `layout.header-search-width` |
 
@@ -127,7 +133,9 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclo
 
 | Token | Alias semantic |
 |-------|----------------|
-| `bg`, `border` | `color.bg.surface`, `color.border.default` |
+| `bg`, `border` | `color.bg.surface`, `color.border.subtle` (đường kẻ mảnh: chân sidenav, vạch ngăn nhóm ở rail; viền ngoài chỉ khi forced-colors) |
+| `radius` | `radius.container` |
+| `shadow`, `shadow-drawer` | `elevation.card`; `elevation.modal` khi mở thành drawer trên màn hình hẹp |
 | `width`, `width-collapsed` | `layout.sidebar-width`, `layout.sidebar-width-collapsed` |
 | `item-height`, `subitem-height` | `size.control.lg`, `size.control.md` |
 | `item-radius` | `radius.control` |
@@ -158,7 +166,7 @@ Mượn token component khác: skip link dùng `--nxt-tooltip-bg/-text`, badge d
 - [ ] Đầy đủ, rail có fly-out, drawer mobile, `scroll="page"`, mục disabled có `hint`, badge có trong docs example
 - [x] Unit test (`sidenav.spec.ts`): landmark có tên + nút thu gọn, rail hai chiều `[(collapsed)]`, nhóm là disclosure điều khiển danh sách con, mở nhóm chứa trang hiện tại + `aria-current`, mục disabled vẫn focus được và báo không dùng được, badge + nhóm thành menu button ở rail
 - [x] Playwright e2e: thu gọn / rail + lưu trạng thái; drawer mobile: focus vào nav, trang `inert`, Escape trả focus (2026-10-19)
-- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
+- [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-11-06, 430/430)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
 
@@ -168,6 +176,9 @@ Mượn token component khác: skip link dùng `--nxt-tooltip-bg/-text`, badge d
 - `src/app-shell.css:20`–`28`, `sidenav.css:168`–`169`: skip link và badge dùng component token của tooltip / badge; `sidenav.css:190`, `:196`, `:200` dùng thẳng `--nxt-color-*-disabled`; `:98`, `:205`, `:225`, `:265`–`269` dùng primitive `--nxt-space-*`.
 - `src/app-shell.css:91`: drawer mobile trượt bằng `translateX(-100%)` (vật lý) trong khi vị trí dùng `inset-inline-start` (logic).
 - `src/app-shell.ts:77`, `:162`, `:211`–`212`: chuỗi giao diện viết cứng, không đổi được.
+
+### Bổ sung (2026-11-06)
+- Topbar nhận phần đầu của page header (`NxtShellState.pageHeader`, `nxtShellStateOf`). Mẫu HRM bỏ ô tìm kiếm ở giữa topbar; tiêu đề trang lên topbar. Slot `[nxtTopbarCenter]` vẫn giữ cho sản phẩm cần tìm kiếm toàn cục.
 
 ### Đã xử lý (2026-10-19)
 - Drawer mobile khi mở là `role="dialog"` + `aria-modal="true"` + tên "Menu điều hướng", phần trang phía sau `inert`; nút ở header của sidenav đổi thành "Đóng menu điều hướng" khi ở mobile. Có e2e.

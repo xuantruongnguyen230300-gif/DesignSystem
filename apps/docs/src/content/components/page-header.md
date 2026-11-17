@@ -21,6 +21,7 @@ keywords:
 
 - Đầu mỗi trang trong vùng nội dung của [App shell](/components/app-shell): tiêu đề trang (`h1`), một dòng mô tả, và các hành động áp cho cả trang.
 - Breadcrumb cho trang nằm sâu từ hai cấp trở lên, nhất là trang chi tiết mở từ một danh sách ("Phê duyệt › DNP-0412").
+- Ứng dụng nghiệp vụ: đặt `placement="topbar"` để tiêu đề lên thanh trên cùng, cùng hàng với tài khoản, nhường chỗ cho bảng dữ liệu (xem [Trên thanh trên cùng](#tren-thanh-tren-cung)).
 
 ## Khi nào không dùng
 
@@ -33,9 +34,10 @@ keywords:
 | Vùng | Cách đặt | Ghi chú |
 |------|----------|---------|
 | Breadcrumb | `[breadcrumb]="items"` | Chỉ hiện khi mảng có phần tử |
+| Nút quay lại | phần tử có `nxtPageBack` | Icon button ghost `arrow-left` ngay trước tiêu đề, có `aria-label` và tooltip |
 | Tiêu đề | `title` | `h1` mặc định. `headingLevel="2"` khi header nằm trong vùng con |
 | Trạng thái | phần tử có `nxtPageMeta` | Thường là một [Tag](/components/tag), đứng cạnh tiêu đề |
-| Mô tả | `description` | Một dòng: số lượng, thời điểm cập nhật, đơn vị |
+| Mô tả | `description` | Một dòng: số lượng, thời điểm cập nhật, đơn vị. Không hiện khi ở thanh trên |
 | Hành động | phần tử có `nxtPageActions` | Tối đa một nút `primary` |
 | Phía dưới | nội dung mặc định | Thường là [Tabs](/components/tabs) của trang |
 
@@ -96,6 +98,29 @@ protected show(p: Position) {
 - Có router thì dùng `link`: link mở được tab mới và gửi được cho người khác. `navigable` chỉ dành cho màn hình không có route.
 - Vòng focus trên tiêu đề chỉ hiện khi người dùng đang dùng bàn phím, ôm sát chữ. Bấm chuột rồi chuyển màn hình thì không có vòng.
 
+## Trên thanh trên cùng
+
+Với `placement="topbar"`, khi nằm trong [App shell](/components/app-shell) và màn hình rộng từ 1024px, breadcrumb, nút quay lại, tiêu đề, trạng thái và hành động hiện ở đầu thanh trên, cùng hàng với trợ giúp, thông báo và tài khoản. Màn danh sách có thêm khoảng 130px cho lưới. Các mẫu [Tổng quan](/templates/dashboard), [Phê duyệt](/templates/approval), [Danh mục](/templates/catalog) và [Quy trình duyệt](/templates/workflow) đều dùng cách này.
+
+```html
+<nxt-page-header placement="topbar" [title]="workflow.name" [breadcrumb]="crumbs" (navigate)="leave()">
+  <button nxtPageBack nxtIconButton variant="ghost" aria-label="Quay lại danh sách" nxtTooltip="Quay lại danh sách" (click)="leave()">
+    <nxt-icon name="arrow-left" />
+  </button>
+  <nxt-tag nxtPageMeta dot tone="success">Đang áp dụng</nxt-tag>
+  <ng-container ngProjectAs="[nxtPageActions]">
+    <button nxtButton>Lưu nháp</button>
+    <button nxtButton variant="primary">Áp dụng</button>
+  </ng-container>
+</nxt-page-header>
+```
+
+- **Mô tả không hiện.** Thông tin cần thiết đặt trong nội dung trang.
+- **Tabs ở lại trong trang**, ngay đầu vùng nội dung.
+- **Một dòng, không xuống dòng.** Breadcrumb ở trên, tiêu đề 20px ở dưới. Tiêu đề được ưu tiên chỗ và chỉ rút gọn "…" khi riêng nó đã dài hơn dòng. Trạng thái không đủ chỗ thì ẩn trọn, nên **không đặt phần tử bấm được trong `nxtPageMeta`**.
+- **Dưới 1024px** thanh trên dành cho nút menu: page header tự về lại đầu trang, có mô tả nếu có.
+- Hành động của trang đứng trước một vạch ngăn, sau đó là hành động toàn cục của thanh trên.
+
 ## Accessibility
 
 | Phím | Hành vi |
@@ -108,7 +133,8 @@ protected show(p: Position) {
 - Breadcrumb là landmark `navigation` chứa danh sách có thứ tự (`ol`). Tên mặc định là "Đường dẫn trang"; đặt `label` khi trang có nhiều breadcrumb. Page header hiện chưa cho đổi tên này.
 - Dấu `›` giữa các mục là icon `aria-hidden`, screen reader không đọc.
 - Link và nút của breadcrumb cao tối thiểu 24px (WCAG 2.5.8).
-- Tiêu đề có `tabindex="-1"` để `focusTitle()` đặt focus được khi đổi màn hình không qua router (WCAG 2.4.3).
+- Tiêu đề có `tabindex="-1"` để `focusTitle()` đặt focus được khi đổi màn hình không qua router (WCAG 2.4.3). Ở thanh trên, tiêu đề hiện sau một lượt render; `focusTitle()` gọi sớm vẫn đặt focus khi tiêu đề xuất hiện.
+- Ở thanh trên, tiêu đề nằm trong landmark `banner` (`header` của topbar), không trong `main`. Thứ tự Tab: nút quay lại, link breadcrumb, hành động của trang, rồi hành động toàn cục.
 
 ## Nội dung
 
@@ -147,4 +173,4 @@ Method của `NxtPageHeader`:
 ## Changelog
 
 - **0.1.0**: phát hành beta: tiêu đề `h1`/`h2`, mô tả, slot trạng thái và hành động, nội dung phía dưới, breadcrumb với `aria-current="page"`.
-- **Chưa phát hành**: mục breadcrumb `navigable` và output `navigate` (trên `nxt-breadcrumb` và `nxt-page-header`) cho màn hình đổi không qua router; tiêu đề `tabindex="-1"` và method `focusTitle()`; link breadcrumb cao tối thiểu 24px.
+- **Chưa phát hành**: `placement="topbar"` (page header lên thanh trên của app shell từ 1024px, không hiện mô tả); slot `nxtPageBack` cho nút quay lại trước tiêu đề; `focusTitle()` chờ tiêu đề render. Mục breadcrumb `navigable` và output `navigate` (trên `nxt-breadcrumb` và `nxt-page-header`) cho màn hình đổi không qua router; tiêu đề `tabindex="-1"` và method `focusTitle()`; link breadcrumb cao tối thiểu 24px.

@@ -1,0 +1,16 @@
+{
+  "component": {
+    "view-manager": {
+      "name-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Tên chế độ xem đang dùng trên nút \"Chế độ xem\" (hàng tiêu đề danh sách)."
+      },
+      "meta-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ phụ của chế độ xem: \"Đã sửa\", số bản ghi, \"Mặc định\" trong menu."
+      }
+    }
+  }
+}

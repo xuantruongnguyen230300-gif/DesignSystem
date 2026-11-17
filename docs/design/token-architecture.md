@@ -47,9 +47,10 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 |----------|-------|
 | `color.bg` | `canvas`, `surface`, `surface-hover`, `surface-raised`, `subtle`, `muted`, `disabled`, `inverse`, `overlay`, `primary`, `primary-hover`, `primary-pressed`, `primary-subtle`, `selected`, `selected-hover`, `danger`, `danger-hover`, `danger-pressed`, `danger-subtle`, `success-subtle`, `warning-subtle`, `info-subtle`, `transparent` |
 | `color.text` | `default`, `strong`, `subtle`, `disabled`, `inverse`, `link`, `link-hover`, `on-primary`, `on-danger`, `danger`, `success`, `warning`, `info` |
-| `color.border` | `default`, `subtle`, `strong`, `input`, `input-hover`, `danger`, `selected`, `transparent` |
+| `color.border` | `default`, `subtle`, `strong`, `input`, `input-hover`, `danger`, `warning`, `success`, `info`, `selected`, `transparent` (`danger` / `warning` / `success` / `info` là viền control theo trạng thái giá trị, ≥ 3:1 trên `bg.surface`) |
 | `color.icon` | `default`, `subtle`, `disabled`, `inverse`, `primary`, `danger`, `success`, `warning`, `info` |
-| `color.data` | `1`…`8` (categorical). Thang `sequential-*` / `diverging-*` sẽ thêm khi có component chart |
+| `color.data` | `1`…`8` (categorical). Chỉ cho biểu đồ. Thang `sequential-*` / `diverging-*` sẽ thêm khi có component chart |
+| `color.indication` | `1`…`8`, mỗi màu có `bg` (nền nhạt), `text` (chữ trên `bg`, ≥ 4.5:1), `solid` (chấm/viền/icon trên `bg.surface`, ≥ 3:1). Tông: 1 xanh dương, 2 xanh mòng két, 3 tím, 4 hồng, 5 cam, 6 xanh lơ, 7 xanh lá, 8 xám. Màu chỉ thị để **phân loại**, không mang nghĩa trạng thái (xem dưới bảng) |
 | `border-width` | `default`, `strong` |
 | `focus.ring` | `color`, `width`, `offset` |
 | `space.inset` | `xs`, `sm`, `md`, `lg` (padding bên trong control/container) |
@@ -60,14 +61,17 @@ Component template của scaffold dựa vào các token này. Thêm token mới 
 | `size.icon` | `sm`, `md`, `lg`, `stroke` (độ dày nét icon, kiểu number) |
 | `size.popover` | `md` (bề rộng tối đa panel nổi neo vào nút, ví dụ panel Bộ lọc) |
 | `size.drawer` | `sm`, `md`, `lg` (bề rộng drawer) |
+| `size.dialog` | `sm`, `md`, `lg` (bề rộng dialog) |
 | `radius` | `control`, `container`, `overlay`, `pill` |
 | `typography` | `display`, `heading-lg`, `heading-md`, `heading-sm`, `body-lg`, `body-md`, `body-sm`, `label-md`, `label-sm`, `caption`, `code` (composite `typography`; lớp tiện ích `.nxt-text-<vai-trò>`) |
 | `font-family` | `sans`, `mono` |
 | `elevation` | `raised`, `overlay`, `modal` (shadow) |
-| `motion.duration` | `instant`, `fast`, `normal`, `slow` |
+| `motion.duration` | `instant`, `fast`, `normal`, `slow`, `loop` (một vòng của chuyển động lặp: spinner, skeleton) |
 | `motion.ease` | `standard`, `enter`, `exit` |
 | `z` | `base`, `sticky`, `dropdown`, `overlay`, `modal`, `toast`, `tooltip` |
-| `layout` | `container-max`, `content-default`, `content-narrow`, `sidebar-width`, `sidebar-width-collapsed`, `header-height`, `header-search-width`, `gutter-sm/md/lg`, `item-min-sm/md/lg` |
+| `layout` | `container-max`, `content-default`, `content-narrow`, `sidebar-width`, `sidebar-width-collapsed`, `header-height`, `header-search-width`, `scroll-region-min`, `gutter-sm/md/lg`, `item-min-sm/md/lg` |
+
+**Màu chỉ thị khác màu trạng thái và màu dữ liệu.** Status (`danger`/`success`/`warning`/`info`) có nghĩa cố định ở mọi sản phẩm. `color.indication.*` có nghĩa **do sản phẩm gán** trong glossary (loại hợp đồng, nhóm ca, avatar chữ cái), luôn đi kèm chữ, không dùng thay status và không đổi theo brand. `color.data.*` chỉ cho biểu đồ. Component token phân loại (avatar, tag phân loại) alias `color.indication.*`, không alias status. Mỗi cặp `text`/`bg` và `solid`/`bg.surface` có trong `contrastPairs`.
 
 Tên CSS của primitive và semantic **không được trùng nhau**. Validator chặn trường hợp này; ví dụ thực tế là `primitive.font.family.sans` và `semantic.font-family.sans` cùng ra `--nxt-font-family-sans`. Vì vậy primitive đặt tên theo bản chất (`font.family.inter`), còn semantic đặt theo vai trò (`font-family.sans`).
 
@@ -79,7 +83,7 @@ Mode là các file cùng tên khác hậu tố: `<name>.<mode>.tokens.json`. Cá
 |------|-----------------------------|--------------|--------------|
 | `color` | `light`, `dark` | `semantic.color.*`, `semantic.elevation.*` | `:root`, `[data-nxt-color="dark"]`, có thể theo `prefers-color-scheme` |
 | `density` | `comfortable`, `compact`, `spacious` | `semantic.space.*`, `semantic.size.control.*`, `semantic.size.row.*` | `[data-nxt-density="compact"]`… |
-| `motion` | `full`, `reduced` | `semantic.motion.duration.*` (reduced = 0ms trừ fade ngắn) | `@media (prefers-reduced-motion: reduce)` + `[data-nxt-motion="reduced"]` |
+| `motion` | `full`, `reduced` | `semantic.motion.duration.*`: reduced đặt `instant` / `fast` / `normal` / `slow` = 0ms (mở, đóng, hover thay đổi tức thì) và **`loop` chậm lại** 700ms → 1600ms, không về 0, vì chỉ báo đang chờ vẫn phải thấy được | `@media (prefers-reduced-motion: reduce)` + `[data-nxt-motion="reduced"]` |
 
 Một token đã nằm trong file mode thì không được định nghĩa lại trong file base.
 
@@ -101,12 +105,12 @@ Mọi thuộc tính `data-nxt-*` dùng được trên bất kỳ phần tử nà
   - `semantic.color.bg.primary*`, `semantic.color.text.on-primary`, `semantic.color.text.link`, `semantic.color.border.selected`, `semantic.focus.ring.color`.
   - `semantic.font-family.sans`, chỉ khi font đó hỗ trợ đầy đủ tiếng Việt.
   - `semantic.radius.*`, giới hạn ở hai preset `default` và `rounded`.
-- Không override màu status (danger/success/warning/info). Ý nghĩa của trạng thái phải giống nhau ở mọi sản phẩm.
+- Không override màu status (danger/success/warning/info) và màu chỉ thị (`color.indication.*`). Ý nghĩa của trạng thái phải giống nhau ở mọi sản phẩm; nghĩa của màu chỉ thị do glossary sản phẩm gán, không do brand đổi màu. Validator hiện chỉ chặn brand **thêm** token mới, chưa kiểm danh sách slot; review phải bắt lỗi override ngoài slot.
 - Selector CSS là `[data-nxt-brand="hrm"]`.
 
 ## 6. Tương phản tự động
 
-`packages/tokens/tokens.config.json → contrastPairs` liệt kê các cặp màu bắt buộc. Validator tính các cặp này ở **mọi** tổ hợp mode × brand. Hiện có 40 cặp × 10 ngữ cảnh = 400 phép kiểm. Dạng rút gọn của file:
+`packages/tokens/tokens.config.json → contrastPairs` liệt kê các cặp màu bắt buộc. Validator tính các cặp này ở **mọi** tổ hợp mode × brand. Lúc cập nhật tài liệu này (06/11/2026): 74 cặp × 10 ngữ cảnh = 740 phép kiểm. Con số luôn đúng là dòng `Contrast: …` mà `npm run ds:tokens` in ra; đừng chép số này sang trang khác. Dạng rút gọn của file:
 
 ```json
 {
