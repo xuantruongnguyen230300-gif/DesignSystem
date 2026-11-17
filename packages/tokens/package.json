@@ -1,6 +1,6 @@
 {
   "name": "@nxt/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NXT Design tokens — W3C DTCG source, CSS custom properties per mode/brand, SCSS breakpoints, JS constants",
   "license": "MIT",
   "type": "module",

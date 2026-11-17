@@ -4,7 +4,7 @@
  *   import { NxtStack, NxtInline, NxtGrid, NxtSpan } from '@nxt/ui/layout';
  * Global styles (layer order, reset, base, utilities): @nxt/ui/styles/nxt.css
  */
-export const NXT_UI_VERSION = '0.1.0';
+export const NXT_UI_VERSION = '0.1.1';
 export { provideNxt } from './provide-nxt';
 export type { NxtColorMode, NxtDensity, NxtMotion, NxtOptions } from './provide-nxt';
 export { NxtTheme } from './theme/theme';
