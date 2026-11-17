@@ -10,6 +10,7 @@ import {
   inject,
   input,
   isDevMode,
+  model,
 } from '@angular/core';
 
 /** Emphasis level — see packages/ui/button/SPEC.md §4. */
@@ -25,6 +26,7 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
  * - `disabled` / `loading` block activation before any consumer `(click)` listener runs.
  * - `type` defaults to `button`, so it never submits a form by accident.
  * - `nxtIconButton` renders a square, icon-only button — it must have an `aria-label`.
+ * - `pressed` (true/false) turns a secondary/ghost button into a toggle button (`aria-pressed`).
  */
 @Component({
   selector: 'button[nxtButton], a[nxtButton], button[nxtIconButton], a[nxtIconButton]',
@@ -47,6 +49,9 @@ export type NxtButtonType = 'button' | 'submit' | 'reset';
     '[attr.aria-disabled]': 'inactive() || null',
     '[attr.aria-busy]': 'loading() || null',
     '[attr.type]': 'isNativeButton ? type() : null',
+    '[attr.aria-pressed]': 'isToggle() ? pressed() : null',
+    '[attr.data-pressed]': 'isToggle() && pressed() ? "" : null',
+    '(click)': 'togglePressed()',
     // A static `disabled` attribute would stay on the DOM and make the native button unfocusable.
     '[attr.disabled]': 'null',
   },
@@ -66,9 +71,16 @@ export class NxtButton {
   readonly loading = input(false, { transform: booleanAttribute });
   /** Native button type; ignored on anchors. */
   readonly type = input<NxtButtonType>('button');
+  /**
+   * Toggle button: true/false makes it a toggle (aria-pressed) that flips on click; undefined = ordinary button.
+   * Only secondary and ghost, only on `<button>`. Two-way: `[(pressed)]`.
+   */
+  readonly pressed = model<boolean | undefined>(undefined);
 
   /** True while the button must not activate. */
   protected readonly inactive = computed(() => this.disabled() || this.loading());
+  /** A toggle button: `pressed` is set and the host is a native button (links cannot be pressed). */
+  protected readonly isToggle = computed(() => this.isNativeButton && this.pressed() !== undefined);
 
   constructor() {
     // A capture listener on the target runs before the consumer's (click) listeners on the same element.
@@ -80,6 +92,14 @@ export class NxtButton {
     this.host.addEventListener('click', block, { capture: true });
     inject(DestroyRef).onDestroy(() => this.host.removeEventListener('click', block, { capture: true }));
 
+    if (isDevMode()) {
+      afterNextRender(() => {
+        if (this.pressed() !== undefined && (this.variant() === 'primary' || this.variant() === 'danger')) {
+          console.warn('[nxtButton] toggle buttons (pressed) are secondary or ghost only (SPEC §4).', this.host);
+        }
+      });
+    }
+
     if (this.iconOnly && isDevMode()) {
       afterNextRender(() => {
         if (!this.host.getAttribute('aria-label') && !this.host.getAttribute('aria-labelledby')) {
@@ -87,5 +107,10 @@ export class NxtButton {
         }
       });
     }
+  }
+
+  /** Runs after the capture blocker above, so a disabled/loading toggle never flips. */
+  protected togglePressed() {
+    if (this.isToggle() && !this.inactive()) this.pressed.set(!this.pressed());
   }
 }

@@ -3,13 +3,13 @@
     "topbar": {
       "bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.surface}",
-        "$description": "Nền thanh trên cùng."
+        "$value": "{semantic.color.bg.transparent}",
+        "$description": "Nền thanh trên: trong suốt, nằm thẳng trên nền ứng dụng."
       },
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
-        "$description": "Viền dưới thanh trên cùng."
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Viền chỉ dùng khi forced-colors (thanh nổi không viền, tách lớp bằng bóng)."
       },
       "height": {
         "$type": "dimension",
@@ -20,6 +20,16 @@
         "$type": "dimension",
         "$value": "{semantic.layout.header-search-width}",
         "$description": "Bề rộng tối đa của vùng giữa (ô tìm kiếm); co lại khi màn hẹp."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Thanh trên cùng bo viên thuốc."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.none}",
+        "$description": "Thanh trên phẳng, không bóng."
       }
     }
   }

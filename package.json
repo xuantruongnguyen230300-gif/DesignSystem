@@ -20,10 +20,16 @@
     "docs:generate": "node tools/docs/generate.mjs",
     "ds:tokens": "node tools/tokens/validate.mjs",
     "ds:hardcoded": "node tools/lint/check-hardcoded.mjs",
-    "ds:check": "node tools/tokens/validate.mjs && node tools/lint/check-hardcoded.mjs",
+    "ds:check": "node tools/tokens/validate.mjs && node tools/lint/check-hardcoded.mjs && node tools/tokens/wire-component-tokens.mjs --check",
     "ds:palette": "node tools/tokens/palette.mjs",
     "ds:contrast": "node tools/tokens/contrast.mjs",
-    "ds:new": "node tools/scaffold/component.mjs"
+    "ds:new": "node tools/scaffold/component.mjs",
+    "size:check": "node tools/size/report.mjs",
+    "release:prepare": "node tools/release/prepare-publish.mjs",
+    "pretest": "npm run tokens:build",
+    "consumer:smoke": "node tools/consumer/smoke.mjs",
+    "release:check": "node tools/release/check-version.mjs",
+    "consumer:smoke:registry": "node tools/consumer/smoke.mjs --from-registry"
   },
   "dependencies": {
     "@angular/cdk": "^21.2.0",
@@ -33,7 +39,7 @@
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
-    "@fontsource-variable/inter": "^5.2.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

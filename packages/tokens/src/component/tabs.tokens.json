@@ -13,8 +13,8 @@
       },
       "text-selected": {
         "$type": "color",
-        "$value": "{semantic.color.text.strong}",
-        "$description": "Chữ tab đang chọn."
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ tab đang chọn (màu accent, cùng màu vạch dưới)."
       },
       "indicator": {
         "$type": "color",
@@ -23,13 +23,23 @@
       },
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
+        "$value": "{semantic.color.border.subtle}",
         "$description": "Đường kẻ dưới danh sách tab."
       },
       "height": {
         "$type": "dimension",
         "$value": "{semantic.size.control.lg}",
         "$description": "Chiều cao tab."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Chiều cao tối thiểu của tab khi thiết bị trỏ chính là ngón tay (pointer: coarse); lấy giá trị lớn hơn giữa height và token này. Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "indicator-height": {
+        "$type": "dimension",
+        "$value": "{semantic.border-width.strong}",
+        "$description": "Độ dày vạch dưới tab đang chọn (hai đầu bo tròn)."
       }
     }
   }

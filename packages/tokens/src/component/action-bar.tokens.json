@@ -1,0 +1,34 @@
+{
+  "component": {
+    "action-bar": {
+      "bg": { "$type": "color", "$value": "{semantic.color.bg.surface}", "$description": "Nền thanh hành động dính đáy vùng nội dung." },
+      "border": { "$type": "color", "$value": "{semantic.color.border.default}", "$description": "Viền trên, tách thanh khỏi nội dung đang cuộn phía sau." },
+      "status-text": { "$type": "color", "$value": "{semantic.color.text.subtle}", "$description": "Chữ trạng thái lưu ngay trước nhóm nút (\"Có thay đổi chưa lưu\")." },
+      "message": {
+        "$type": "color",
+        "error-bg": { "$value": "{semantic.color.bg.danger-subtle}", "$description": "Nền nút thông báo khi tin nặng nhất là lỗi." },
+        "error-text": { "$value": "{semantic.color.text.danger}", "$description": "Chữ và icon nút thông báo khi có lỗi." },
+        "error-border": { "$value": "{semantic.color.border.danger}", "$description": "Viền nút thông báo khi có lỗi." },
+        "warning-bg": { "$value": "{semantic.color.bg.warning-subtle}", "$description": "Nền nút thông báo khi tin nặng nhất là cảnh báo." },
+        "warning-text": { "$value": "{semantic.color.text.warning}", "$description": "Chữ và icon nút thông báo khi có cảnh báo." },
+        "warning-border": { "$value": "{semantic.color.border.warning}", "$description": "Viền nút thông báo khi có cảnh báo." },
+        "info-bg": { "$value": "{semantic.color.bg.info-subtle}", "$description": "Nền nút thông báo khi chỉ có tin thông tin." },
+        "info-text": { "$value": "{semantic.color.text.info}", "$description": "Chữ và icon nút thông báo khi chỉ có tin thông tin." },
+        "info-border": { "$value": "{semantic.color.border.info}", "$description": "Viền nút thông báo khi chỉ có tin thông tin." },
+        "success-bg": { "$value": "{semantic.color.bg.success-subtle}", "$description": "Nền nút thông báo khi chỉ có tin thành công." },
+        "success-text": { "$value": "{semantic.color.text.success}", "$description": "Chữ và icon nút thông báo khi chỉ có tin thành công." },
+        "success-border": { "$value": "{semantic.color.border.success}", "$description": "Viền nút thông báo khi chỉ có tin thành công." }
+      },
+      "item": {
+        "$type": "color",
+        "text": { "$value": "{semantic.color.text.default}", "$description": "Chữ tiêu đề một tin trong danh sách thông báo." },
+        "description": { "$value": "{semantic.color.text.subtle}", "$description": "Chữ mô tả/vị trí của một tin." },
+        "bg-hover": { "$value": "{semantic.color.bg.selected}", "$description": "Nền một tin bấm được khi hover (nhạt tông accent; bg.surface-hover trùng nền popover ở dark)." },
+        "icon-error": { "$value": "{semantic.color.icon.danger}", "$description": "Icon tin lỗi trong danh sách." },
+        "icon-warning": { "$value": "{semantic.color.icon.warning}", "$description": "Icon tin cảnh báo trong danh sách." },
+        "icon-info": { "$value": "{semantic.color.icon.info}", "$description": "Icon tin thông tin trong danh sách." },
+        "icon-success": { "$value": "{semantic.color.icon.success}", "$description": "Icon tin thành công trong danh sách." }
+      }
+    }
+  }
+}

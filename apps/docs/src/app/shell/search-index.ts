@@ -15,6 +15,8 @@ export interface SearchItem {
   fragment?: string;
   /** Diacritic-folded text the query is matched against ("nut" finds "Nút"). */
   haystack: string;
+  /** Diacritic-folded keywords of the page: a keyword match ranks above a match in the description only. */
+  terms?: readonly string[];
   rank: number;
 }
 
@@ -33,6 +35,7 @@ export const SEARCH_INDEX: readonly SearchItem[] = [
     icon: SECTION_ICON[p.section] ?? 'file-text',
     path: p.path,
     haystack: fold([p.title, ...(p.keywords ?? []), p.description].join(' ')),
+    terms: (p.keywords ?? []).map((k) => fold(k)),
     rank: 0,
   })),
   ...PAGES.flatMap((p) =>

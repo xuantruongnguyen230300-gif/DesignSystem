@@ -48,13 +48,13 @@
       },
       "chip-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.default}",
-        "$description": "Chữ chip."
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ chip theo accent (≥ 4.5:1 trên bg.selected, cặp text.link / bg.selected)."
       },
       "chip-border": {
         "$type": "color",
-        "$value": "{semantic.color.border.selected}",
-        "$description": "Viền chip (≥ 3:1 để thấy ranh giới vùng bấm)."
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Chip không viền (nền accent nhạt tách lớp); giữ token để brand/ứng dụng đổi được."
       },
       "chip-radius": {
         "$type": "dimension",

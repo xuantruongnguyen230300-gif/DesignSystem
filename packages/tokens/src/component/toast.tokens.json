@@ -1,0 +1,14 @@
+{
+  "component": {
+    "toast": {
+      "bg": { "$type": "color", "$value": "{semantic.color.bg.inverse}", "$description": "Nền toast: bề mặt đảo (tối ở chế độ sáng, sáng ở chế độ tối)." },
+      "border": { "$type": "color", "$value": "{semantic.color.border.transparent}", "$description": "Viền trong suốt: kiểu C không vẽ viền; chỉ hiện ở chế độ forced-colors." },
+      "text": { "$type": "color", "$value": "{semantic.color.text.inverse}", "$description": "Chữ thông điệp của toast (cặp text.inverse trên bg.inverse, đã kiểm ≥ 4.5:1)." },
+      "icon": { "$type": "color", "$value": "{semantic.color.icon.inverse}", "$description": "Icon thành công đứng đầu toast (toast chỉ dùng cho thành công); màu đảo để đạt tương phản trên nền đảo ở mọi mode × brand." },
+      "action-text": { "$type": "color", "$value": "{semantic.color.text.inverse}", "$description": "Chữ nút hành động (Hoàn tác) trên nền đảo." },
+      "focus-ring": { "$type": "color", "$value": "{semantic.color.text.inverse}", "$description": "Vòng focus của nút hành động: màu đảo để ≥ 3:1 với nền đảo ở mọi mode × brand (màu focus thường thuộc brand, không đảm bảo trên nền đảo)." },
+      "radius": { "$type": "dimension", "$value": "{semantic.radius.container}", "$description": "Bo góc toast (28px); toast có thể xuống dòng nên không dùng pill." },
+      "width": { "$type": "dimension", "$value": "{semantic.size.popover.md}", "$description": "Bề rộng tối đa của toast; câu dài xuống dòng." }
+    }
+  }
+}

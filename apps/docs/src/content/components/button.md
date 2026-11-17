@@ -10,6 +10,9 @@ keywords:
   - nut bam
   - button
   - hanh dong
+  - toggle
+  - nut bat tat
+  - aria-pressed
 ---
 
 # Button
@@ -22,7 +25,7 @@ keywords:
 ## Khi nào không dùng
 
 - **Điều hướng sang trang khác**: dùng link. Nếu link cần trông như nút, dùng `a[nxtButton]`; nó vẫn giữ ngữ nghĩa link, mở được tab mới và hiện URL khi hover.
-- **Bật/tắt có hiệu lực ngay**: dùng switch (đợt B).
+- **Bật/tắt một cài đặt** (nhận email, chế độ tối): dùng switch. Bật/tắt một **chế độ hiển thị** trên thanh công cụ thì dùng toggle button (bên dưới).
 - **Chọn một trong vài giá trị**: dùng segmented control hoặc radio (đợt B).
 - **Chỉ có icon**: dùng `nxtIconButton` kèm `aria-label` (đợt A).
 
@@ -59,6 +62,17 @@ Icon đặt trước nhãn cho hành động, đặt sau nhãn cho hành động
 
 ::example{button-icons}
 
+## Toggle button
+
+Đặt `[(pressed)]` để nút thành nút bật/tắt: bấm thì đảo giá trị, screen reader đọc "đã nhấn / chưa nhấn" (`aria-pressed`). Dùng cho chế độ xem trên thanh công cụ: "Chỉ xem của tôi", "Hiện cột đã ẩn", mở/đóng khung chi tiết.
+
+::example{button-toggle}
+
+- Chỉ `secondary` và `ghost` (không có toggle primary/danger). Khi bật: nền chọn và viền chọn dày gấp đôi, không chỉ khác ở màu.
+- Nhãn **giữ nguyên** khi đổi trạng thái ("Chỉ xem của tôi"), không đổi thành "Bỏ chỉ xem của tôi".
+- `pressed` để `undefined` (mặc định) là nút thường, không có `aria-pressed`.
+- Khác switch (cài đặt) và checkbox (lựa chọn cần bấm Lưu).
+
 ## Trong bố cục thật
 
 Thanh công cụ của trang danh sách (ngay trên bảng): bên trái ô tìm kiếm và Bộ lọc, bên phải hai nút icon nhập/xuất Excel có tooltip, vạch ngăn, rồi nút primary **"Thêm mới"** ngoài cùng. Bố cục đầy đủ ở pattern [Trang danh sách & danh mục](/patterns/list-page).
@@ -77,6 +91,7 @@ Thanh công cụ của trang danh sách (ngay trên bảng): bên trái ô tìm 
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Focus vào/ra, kể cả khi disabled (để đọc lý do) |
 | <kbd>Enter</kbd> | Kích hoạt; bị chặn khi disabled/loading |
 | <kbd>Space</kbd> | Kích hoạt (`<button>`); bị chặn khi disabled/loading |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> trên toggle button | Đảo trạng thái nhấn (`aria-pressed`); bị chặn khi disabled/loading |
 
 - Role native `button` hoặc `link`, không gắn thêm `role`.
 - Vùng chạm nhỏ nhất là 24×24px (size `sm` ở mật độ gọn).
@@ -109,4 +124,5 @@ Nhãn nút là **động từ + đối tượng** khi đối tượng chưa rõ 
 
 ## Changelog
 
+- **Chưa phát hành**: toggle button (`pressed`, `aria-pressed`, chỉ `secondary`/`ghost`); spinner dùng `motion.duration.loop`.
 - **0.1.0**: phát hành beta: 4 variant, 3 size, `aria-disabled`, `loading`, `type` an toàn.

@@ -1,0 +1,31 @@
+{
+  "component": {
+    "date-picker": {
+      "panel-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-raised}",
+        "$description": "Nền panel lịch."
+      },
+      "panel-border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền panel lịch và đường kẻ footer."
+      },
+      "panel-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.overlay}",
+        "$description": "Bo góc panel lịch."
+      },
+      "trigger-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Icon lịch trên nút \"Chọn ngày\"."
+      },
+      "trigger-bg-open": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền nút \"Chọn ngày\" khi panel đang mở (trạng thái pressed)."
+      }
+    }
+  }
+}

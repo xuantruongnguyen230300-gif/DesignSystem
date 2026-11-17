@@ -1,6 +1,6 @@
 # ADR-001: Font mặc định là Inter
 
-- **Trạng thái:** Đã áp dụng, chờ xác nhận
+- **Trạng thái:** Thay thế (bởi [ADR-010](010-font-plus-jakarta-sans.md), 2026-11-06)
 - **Ngày:** 2026-10-16
 
 ## Bối cảnh

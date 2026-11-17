@@ -138,4 +138,66 @@ describe('NxtButton', () => {
       expect(host.clicks).toBe(1);
     });
   });
+
+  describe('toggle button (pressed, SPEC §4/§6)', () => {
+    @Component({
+      imports: [NxtButton],
+      template: `
+        <button nxtButton id="mine" [(pressed)]="mine" [disabled]="disabled()" (click)="clicks = clicks + 1">Chỉ xem của tôi</button>
+        <button nxtIconButton id="panel" variant="ghost" aria-label="Hiện khung chi tiết" [pressed]="true"><span>i</span></button>
+        <button nxtButton id="plain">Xuất file</button>
+        <a nxtButton id="link" href="#x" [pressed]="true">Liên kết</a>
+      `,
+    })
+    class ToggleHost {
+      mine = false;
+      readonly disabled = signal(false);
+      clicks = 0;
+    }
+
+    function toggleSetup() {
+      const fixture = TestBed.createComponent(ToggleHost);
+      fixture.detectChanges();
+      const q = (id: string) => fixture.nativeElement.querySelector(`#${id}`) as HTMLElement;
+      return { fixture, host: fixture.componentInstance, q };
+    }
+
+    it('reflects pressed as aria-pressed and data-pressed', () => {
+      const { q } = toggleSetup();
+      expect(q('mine').getAttribute('aria-pressed')).toBe('false');
+      expect(q('mine').hasAttribute('data-pressed')).toBe(false);
+      expect(q('panel').getAttribute('aria-pressed')).toBe('true');
+      expect(q('panel').hasAttribute('data-pressed')).toBe(true);
+    });
+
+    it('an ordinary button and a link never get aria-pressed', () => {
+      const { q } = toggleSetup();
+      expect(q('plain').hasAttribute('aria-pressed')).toBe(false);
+      expect(q('link').hasAttribute('aria-pressed')).toBe(false);
+    });
+
+    it('click (Enter/Space on a native button) flips the state and updates the two-way binding', () => {
+      const { fixture, host, q } = toggleSetup();
+      q('mine').click();
+      fixture.detectChanges();
+      expect(host.mine).toBe(true);
+      expect(host.clicks).toBe(1);
+      expect(q('mine').getAttribute('aria-pressed')).toBe('true');
+      q('mine').click();
+      fixture.detectChanges();
+      expect(host.mine).toBe(false);
+      expect(q('mine').getAttribute('aria-pressed')).toBe('false');
+    });
+
+    it('a disabled toggle does not flip', () => {
+      const { fixture, host, q } = toggleSetup();
+      host.disabled.set(true);
+      fixture.detectChanges();
+      q('mine').click();
+      fixture.detectChanges();
+      expect(host.mine).toBe(false);
+      expect(host.clicks).toBe(0);
+      expect(q('mine').getAttribute('aria-pressed')).toBe('false');
+    });
+  });
 });

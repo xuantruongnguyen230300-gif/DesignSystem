@@ -1,0 +1,51 @@
+{
+  "component": {
+    "value-help": {
+      "row-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.row.md}",
+        "$description": "Đơn vị chiều cao vùng bảng: trong dialog vùng bảng cao 10 hàng (theo density), nên dialog không nhảy khi lọc."
+      },
+      "summary-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Dòng số kết quả và ghi chú dưới ô tìm."
+      },
+      "bar-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền dòng \"Đã chọn: N\" (chọn nhiều)."
+      },
+      "bar-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ dòng \"Đã chọn: N\"."
+      },
+      "pick-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link}",
+        "$description": "Nút tên trong hàng (chọn một): bấm là chọn."
+      },
+      "pick-text-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.text.link-hover}",
+        "$description": "Nút tên khi hover."
+      },
+      "current-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.selected}",
+        "$description": "Nền hàng đang là giá trị của trường (chọn một)."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo góc dòng \"Đã chọn: N\" và vòng focus của nút tên."
+      },
+      "match-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Đoạn chữ khớp với chữ tìm (kèm chữ đậm hơn)."
+      }
+    }
+  }
+}

@@ -2,10 +2,20 @@
   "name": "@nxt/tokens",
   "version": "0.1.0",
   "description": "NXT Design tokens — W3C DTCG source, CSS custom properties per mode/brand, SCSS breakpoints, JS constants",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
-  "sideEffects": ["*.css"],
-  "files": ["dist", "src", "tokens.config.json"],
+  "sideEffects": [
+    "*.css"
+  ],
+  "bin": {
+    "nxt-palette": "cli/nxt-palette.mjs"
+  },
+  "files": [
+    "cli",
+    "dist",
+    "src",
+    "tokens.config.json"
+  ],
   "exports": {
     "./css/*": "./dist/css/*",
     "./scss/*": "./dist/scss/*",
@@ -14,5 +24,12 @@
       "types": "./dist/js/index.d.ts",
       "default": "./dist/js/index.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuantruongnguyen230300-gif/DesignSystem.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

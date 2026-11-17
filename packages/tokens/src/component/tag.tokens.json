@@ -18,12 +18,12 @@
       },
       "info-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.info-subtle}",
+        "$value": "{semantic.color.bg.muted}",
         "$description": "Nền tag tông info."
       },
       "info-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.info}",
+        "$value": "{semantic.color.text.default}",
         "$description": "Chữ tag tông info."
       },
       "info-dot": {
@@ -33,12 +33,12 @@
       },
       "success-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.success-subtle}",
+        "$value": "{semantic.color.bg.muted}",
         "$description": "Nền tag tông success."
       },
       "success-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.success}",
+        "$value": "{semantic.color.text.default}",
         "$description": "Chữ tag tông success."
       },
       "success-dot": {
@@ -48,12 +48,12 @@
       },
       "warning-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.warning-subtle}",
+        "$value": "{semantic.color.bg.muted}",
         "$description": "Nền tag tông warning."
       },
       "warning-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.warning}",
+        "$value": "{semantic.color.text.default}",
         "$description": "Chữ tag tông warning."
       },
       "warning-dot": {
@@ -63,12 +63,12 @@
       },
       "danger-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.danger-subtle}",
+        "$value": "{semantic.color.bg.muted}",
         "$description": "Nền tag tông danger."
       },
       "danger-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.danger}",
+        "$value": "{semantic.color.text.default}",
         "$description": "Chữ tag tông danger."
       },
       "danger-dot": {

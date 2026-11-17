@@ -1,0 +1,46 @@
+{
+  "component": {
+    "skeleton": {
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.placeholder}",
+        "$description": "Màu khối giữ chỗ khi nội dung đang tải; thấy được cả trên nền trang (canvas) lẫn trong thẻ (surface)."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc của dòng chữ, khối và ô nhập giữ chỗ."
+      },
+      "radius-circle": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn của avatar giữ chỗ."
+      },
+      "circle-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.lg}",
+        "$description": "Đường kính avatar giữ chỗ cỡ sm (bằng nxt-avatar sm)."
+      },
+      "circle-md": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Đường kính avatar giữ chỗ cỡ md (bằng nxt-avatar md, theo density)."
+      },
+      "circle-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Đường kính avatar giữ chỗ cỡ lg (bằng nxt-avatar lg, theo density)."
+      },
+      "control-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao ô nhập / nút giữ chỗ (theo density)."
+      },
+      "block-height": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.scroll-region-min}",
+        "$description": "Chiều cao mặc định của khối giữ chỗ (ảnh, biểu đồ) khi nơi dùng không đặt chiều cao."
+      }
+    }
+  }
+}

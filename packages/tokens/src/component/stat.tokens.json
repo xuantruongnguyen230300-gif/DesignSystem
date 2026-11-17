@@ -38,8 +38,8 @@
       },
       "icon-radius": {
         "$type": "dimension",
-        "$value": "{semantic.radius.container}",
-        "$description": "Bo góc ô icon."
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc ô icon (ô vuông bo mềm, không bo cỡ card)."
       }
     }
   }

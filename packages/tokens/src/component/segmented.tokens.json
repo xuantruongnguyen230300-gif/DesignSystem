@@ -8,8 +8,8 @@
       },
       "track-border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
-        "$description": "Viền rãnh."
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Viền rãnh: trong suốt (kiểu C bỏ viền; nền track-bg và thanh nổi đã tách lớp). Giữ độ dày để hình học không đổi."
       },
       "item-text": {
         "$type": "color",
@@ -20,6 +20,11 @@
         "$type": "color",
         "$value": "{semantic.color.text.default}",
         "$description": "Chữ/icon khi hover."
+      },
+      "item-text-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.text.disabled}",
+        "$description": "Chữ/icon lựa chọn bị khoá (cả nhóm hoặc từng lựa chọn)."
       },
       "selected-bg": {
         "$type": "color",
@@ -34,7 +39,7 @@
       "radius": {
         "$type": "dimension",
         "$value": "{semantic.radius.control}",
-        "$description": "Bo góc rãnh và lựa chọn."
+        "$description": "Skin iOS: segmented control bo vuông mềm, không viên thuốc."
       },
       "height": {
         "$type": "dimension",
@@ -45,6 +50,16 @@
         "$type": "dimension",
         "$value": "{semantic.size.control.sm}",
         "$description": "Chiều cao (sm)."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Vùng chạm tối thiểu theo chiều khối của mỗi lựa chọn khi thiết bị trỏ chính là ngón tay (pointer: coarse); rãnh nhìn thấy giữ nguyên. Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "item-padding-inline": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.lg}",
+        "$description": "Padding ngang mặt lựa chọn (viên thuốc cần đệm rộng)."
       },
       "label-text": {
         "$type": "color",

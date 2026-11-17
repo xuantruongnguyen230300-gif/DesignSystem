@@ -9,6 +9,10 @@ keywords:
   - che do toi
   - mat do
   - density
+  - primary
+  - doi mau
+  - mau chu dao
+  - mau thuong hieu
 ---
 
 # Theming cho sản phẩm
@@ -25,9 +29,60 @@ Một token chỉ thuộc **một** trục. Validator chặn ngay khi token củ
 
 ## Lồng nhau tới từng phần tử
 
-Ví dụ dưới là một vùng tối nằm trong trang sáng, bên trong lại có vùng brand khác ở mật độ gọn. Token tự tính lại ở mỗi cấp. Engine build sinh CSS khai báo lại mọi token phụ thuộc trong từng khối mode, nên alias như `--nxt-button-primary-bg` không bị "đóng băng" theo giá trị ở `:root`.
+Ví dụ dưới là một vùng tối nằm trong trang sáng, bên trong lại có vùng brand khác ở mật độ gọn. Token tự tính lại ở mỗi cấp. Đây là khả năng kỹ thuật (dùng cho docs, bản xem trước, vùng nhúng của sản phẩm khác); trong một ứng dụng, mật độ đặt ở cấp ứng dụng và **không trộn trong cùng một vùng làm việc** (xem [Spacing & mật độ](/foundations/spacing)). Engine build sinh CSS khai báo lại mọi token phụ thuộc trong từng khối mode, nên alias như `--nxt-button-primary-bg` không bị "đóng băng" theo giá trị ở `:root`.
 
 ::example{theming-nested}
+
+## Đổi màu thương hiệu trong dự án của bạn
+
+Dự án dùng NXT tự đặt màu chủ đạo, **không cần sửa repo NXT và không cần build lại**. Màu chủ đạo là thang 11 bậc `--nxt-color-brand-50 … 950`. Nút chính, link, mục được chọn, vòng focus, slider… đều lấy từ thang này, ở cả chế độ sáng và tối. Màu trạng thái (lỗi, thành công, cảnh báo, thông tin) **không đổi** theo sản phẩm.
+
+### Cách 1: một dòng khi khởi động (khuyến nghị)
+
+```ts
+bootstrapApplication(App, {
+  providers: [provideNxt({ primary: '#0f766e' })],
+});
+```
+
+`primary` nhận hai dạng:
+
+- **Một màu gốc** (`#rrggbb`, `rgb()` hoặc `oklch()`): NXT sinh thang 11 bậc từ màu đó. Màu gốc rơi đúng vào bậc gần nhất; **nút chính dùng bậc 600**, nên với màu gốc sáng (vàng, cam nhạt) nút sẽ đậm hơn màu đã nhập một chút, để chữ trắng trên nút luôn đạt 4,5:1.
+- **Một thang đầy đủ** do designer làm: `primary: { 50: '…', 100: '…', … 950: '…' }`.
+
+Đổi lúc chạy (người dùng chọn màu trong phần cài đặt, nhiều khách hàng dùng chung một bản build…) bằng `NxtTheme`:
+
+```ts
+const theme = inject(NxtTheme);
+theme.setPrimary('#e11d48');   // trả về false và giữ màu cũ nếu màu không đọc được
+theme.resetPrimary();          // về màu của stylesheet
+```
+
+::example{theming-primary}
+
+Giá trị được ghi vào `<html>` bằng CSSOM (`style.setProperty`) chứ không chèn thẻ `<style>`, nên chạy được cả khi dự án bật Content-Security-Policy nghiêm.
+
+### Cách 2: CSS tĩnh bằng lệnh
+
+Khi không muốn tính lúc chạy, sinh sẵn CSS bằng lệnh đi kèm gói `@nxt/tokens`:
+
+```bash
+npx nxt-palette "#0f766e" > brand.css
+```
+
+`brand.css` là một khối `:root { --nxt-color-brand-50: …; … }`. Nạp nó **sau** `core.css`. Lệnh in kết quả kiểm tương phản ra stderr (`--json` in thang dưới dạng JSON).
+
+### Cách 3: file brand trong repo NXT
+
+Dùng khi sản phẩm nằm trong repo NXT, hoặc một vùng con của ứng dụng phải có màu khác với phần còn lại. Xem hai mục "Brand slot" và "Tạo brand mới" bên dưới.
+
+### Tương phản được bảo đảm
+
+Thang sinh ra có cùng độ sáng ở mỗi bậc, nên với **mọi** màu gốc, chữ trắng trên nút (bậc 600, hover 700, nhấn 800), link (bậc 700) và link ở chế độ tối (bậc 400) đều đạt 4,5:1. Unit test quét hơn 1000 màu gốc để chứng minh điều này. Thang tự làm không được bảo đảm: NXT kiểm cùng các vai trò đó và `console.warn` ở chế độ dev khi có cặp không đạt (vẫn áp dụng thang).
+
+### Phạm vi
+
+Cách 1 và 2 đổi màu cho **cả ứng dụng** (gốc `<html>`). Ghi đè thang màu trên một phần tử con không đủ: nút trong vùng đó vẫn giữ màu cũ, vì các token phụ thuộc đã được tính ở `<html>`. Vùng con khác màu phải dùng brand (cách 3). Nếu đặt cả `brand` và `primary` thì `primary` thắng.
 
 ## Brand slot
 
@@ -56,4 +111,4 @@ Brand `sample` (teal) trong repo là ví dụ đầy đủ. Đổi brand ở gó
 
 ## Tương phản được bảo đảm
 
-`packages/tokens/tokens.config.json` liệt kê các cặp màu bắt buộc: chữ/nền, viền input, vòng focus, màu biểu đồ. Validator tính tỷ lệ tương phản WCAG cho **mọi** tổ hợp mode × brand. Hiện có **400 phép kiểm**, tất cả đều đạt.
+`packages/tokens/tokens.config.json` liệt kê các cặp màu bắt buộc: chữ/nền, viền input, vòng focus, màu biểu đồ. Validator tính tỷ lệ tương phản WCAG cho **mọi** tổ hợp mode × brand. Số phép kiểm hiện tại in ra ở dòng `Contrast:` của `npm run ds:tokens`; CI chặn khi có phép kiểm không đạt.

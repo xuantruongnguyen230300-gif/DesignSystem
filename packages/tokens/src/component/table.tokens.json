@@ -8,18 +8,18 @@
       },
       "header-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.subtle}",
-        "$description": "Nền hàng tiêu đề."
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Skin iOS: tiêu đề cột phẳng như danh sách."
       },
       "header-text": {
         "$type": "color",
         "$value": "{semantic.color.text.subtle}",
-        "$description": "Chữ tiêu đề cột."
+        "$description": "Chữ tiêu đề cột: nhỏ, đậm vừa, tông phụ."
       },
       "row-border": {
         "$type": "color",
         "$value": "{semantic.color.border.subtle}",
-        "$description": "Đường kẻ giữa các hàng."
+        "$description": "Skin iOS: đường kẻ mảnh giữa các hàng như list."
       },
       "row-bg-hover": {
         "$type": "color",
@@ -29,7 +29,52 @@
       "row-bg-selected": {
         "$type": "color",
         "$value": "{semantic.color.bg.selected}",
-        "$description": "Nền hàng đang chọn."
+        "$description": "Nền hàng đang chọn: tông accent nhạt, hai đầu hàng bo (table.row-radius). Dấu hiệu không dựa vào màu: checkbox + aria-selected."
+      },
+      "row-bg-current": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface-hover}",
+        "$description": "Nền hàng đang mở ở drawer / cột chi tiết (tr[aria-current=\"true\"]): trung tính, khác nền hàng đang chọn."
+      },
+      "row-current-indicator": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Dải ở đầu hàng đang mở (sau dải tô sáng nếu có), để biết hàng nào đang hiện ở chi tiết."
+      },
+      "row-highlight-danger": {
+        "$type": "color",
+        "$value": "{semantic.color.border.danger}",
+        "$description": "Dải tô sáng đầu hàng có lỗi (tr[data-highlight=\"danger\"]). Luôn kèm chữ lỗi trong hàng."
+      },
+      "row-highlight-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.border.warning}",
+        "$description": "Dải tô sáng đầu hàng cần chú ý: sắp hết hạn, quá hạn. Luôn kèm chữ giải thích."
+      },
+      "row-highlight-success": {
+        "$type": "color",
+        "$value": "{semantic.color.border.success}",
+        "$description": "Dải tô sáng đầu hàng vừa hoàn tất / thành công. Luôn kèm chữ giải thích."
+      },
+      "row-highlight-info": {
+        "$type": "color",
+        "$value": "{semantic.color.border.info}",
+        "$description": "Dải tô sáng đầu hàng mới thêm hoặc vừa sửa (hiện ở đầu bảng tới lần sắp xếp/lọc sau)."
+      },
+      "row-indicator-width": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.xs}",
+        "$description": "Bề rộng dải tô sáng và dải hàng đang mở ở đầu hàng (mảnh hơn ở mật độ gọn)."
+      },
+      "sticky-divider": {
+        "$type": "color",
+        "$value": "{semantic.color.border.strong}",
+        "$description": "Vạch sau cột cố định (.nxt-table__sticky) khi bảng đã cuộn ngang: tách cột định danh khỏi dữ liệu trượt bên dưới."
+      },
+      "placeholder-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.placeholder}",
+        "$description": "Thanh giữ chỗ trong hàng đang tải (tbody[nxtTablePlaceholder]); cùng nền với nxt-skeleton."
       },
       "row-height": {
         "$type": "dimension",
@@ -55,6 +100,51 @@
         "$type": "dimension",
         "$value": "{semantic.layout.scroll-region-min}",
         "$description": "Chiều cao tối thiểu của nxt-table-scroll khi lấp đầy (fill): luôn thấy được vài dòng."
+      },
+      "row-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo hai đầu hàng khi hàng được tô nền (hover, đang chọn, đang mở)."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Bo góc vùng chứa bảng (card chứa bảng)."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.card}",
+        "$description": "Bóng mềm của vùng chứa bảng (card)."
+      },
+      "resize-handle-hit": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.lg}",
+        "$description": "Bề rộng vùng chạm của tay nắm đổi rộng cột (th[nxtResizable]), nằm ở mép cuối ô tiêu đề: không dưới 24px (WCAG 2.5.8)."
+      },
+      "resize-handle-width": {
+        "$type": "dimension",
+        "$value": "{semantic.border-width.strong}",
+        "$description": "Bề dày vạch của tay nắm đổi rộng cột khi hover, focus hoặc đang kéo. Lúc nghỉ vạch mảnh hơn (border-width.default)."
+      },
+      "resize-handle-color": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.subtle}",
+        "$description": "Vạch của tay nắm đổi rộng cột lúc nghỉ. Tương phản tối thiểu 3:1 trên nền tiêu đề (WCAG 1.4.11)."
+      },
+      "resize-handle-color-active": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Vạch của tay nắm đổi rộng cột khi hover, focus bàn phím hoặc đang kéo."
+      },
+      "resize-min": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Bề rộng tối thiểu mặc định của cột đổi rộng được. Cột có nội dung dài nâng lên bằng nxtResizeMin."
+      },
+      "resize-max": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.content-narrow}",
+        "$description": "Bề rộng tối đa mặc định của cột đổi rộng được. Ghi đè theo cột bằng nxtResizeMax."
       }
     }
   }

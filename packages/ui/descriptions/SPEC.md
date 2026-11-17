@@ -52,7 +52,7 @@ Một kích thước; khoảng cách theo density (`space.gap.*`).
 | Token | Alias semantic |
 |-------|----------------|
 | `label-text` | `color.text.subtle` |
-| `value-text` | `color.text.default` |
+| `value-text` | `color.text.default` (chữ `body-md` đậm vừa / semibold, kiểu C: nhãn mờ, giá trị đậm) |
 
 Dùng thẳng semantic: `space.gap.*`, `typography.label-sm`, `typography.body-md`, `layout.item-min-sm`.
 

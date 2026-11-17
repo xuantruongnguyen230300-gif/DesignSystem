@@ -3,67 +3,67 @@
     "avatar": {
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.subtle}",
-        "$description": "Viền mảnh giữ hình tròn của avatar rõ ràng trên nền trắng (nền tông nhạt gần trùng surface)."
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Viền avatar: trong suốt (kiểu C bỏ viền), giữ chỗ để forced-colors vẫn thấy ranh giới."
       },
       "tone-1-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.primary-subtle}",
-        "$description": "Nền avatar chữ cái, tông 1 (chọn theo tên)."
+        "$value": "{semantic.color.indication.1.bg}",
+        "$description": "Nền avatar chữ cái, tông 1 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-1-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.link}",
+        "$value": "{semantic.color.indication.1.text}",
         "$description": "Chữ avatar chữ cái, tông 1."
       },
       "tone-2-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.info-subtle}",
-        "$description": "Nền avatar chữ cái, tông 2 (chọn theo tên)."
+        "$value": "{semantic.color.indication.2.bg}",
+        "$description": "Nền avatar chữ cái, tông 2 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-2-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.info}",
+        "$value": "{semantic.color.indication.2.text}",
         "$description": "Chữ avatar chữ cái, tông 2."
       },
       "tone-3-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.success-subtle}",
-        "$description": "Nền avatar chữ cái, tông 3 (chọn theo tên)."
+        "$value": "{semantic.color.indication.3.bg}",
+        "$description": "Nền avatar chữ cái, tông 3 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-3-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.success}",
+        "$value": "{semantic.color.indication.3.text}",
         "$description": "Chữ avatar chữ cái, tông 3."
       },
       "tone-4-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.warning-subtle}",
-        "$description": "Nền avatar chữ cái, tông 4 (chọn theo tên)."
+        "$value": "{semantic.color.indication.4.bg}",
+        "$description": "Nền avatar chữ cái, tông 4 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-4-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.warning}",
+        "$value": "{semantic.color.indication.4.text}",
         "$description": "Chữ avatar chữ cái, tông 4."
       },
       "tone-5-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.danger-subtle}",
-        "$description": "Nền avatar chữ cái, tông 5 (chọn theo tên)."
+        "$value": "{semantic.color.indication.5.bg}",
+        "$description": "Nền avatar chữ cái, tông 5 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-5-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.danger}",
+        "$value": "{semantic.color.indication.5.text}",
         "$description": "Chữ avatar chữ cái, tông 5."
       },
       "tone-6-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.muted}",
-        "$description": "Nền avatar chữ cái, tông 6 (chọn theo tên)."
+        "$value": "{semantic.color.indication.6.bg}",
+        "$description": "Nền avatar chữ cái, tông 6 (chọn theo tên). Màu chỉ thị, không mang nghĩa trạng thái."
       },
       "tone-6-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.default}",
+        "$value": "{semantic.color.indication.6.text}",
         "$description": "Chữ avatar chữ cái, tông 6."
       },
       "size-sm": {

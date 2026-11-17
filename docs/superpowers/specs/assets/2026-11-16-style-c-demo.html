@@ -1,0 +1,296 @@
+<h2>Demo kiểu C: toàn bộ component, trang đăng nhập, trang danh mục</h2>
+<p class="subtitle">Đây là mockup HTML dựng tay để bạn đánh giá hình dáng, chưa phải code NXT. Dùng thanh dưới để chuyển giữa 3 phần và bật chế độ tối.</p>
+
+<style>
+  .c{--bg:#f2f2f7;--sf:#fff;--fd:#f2f2f7;--tx:#1c1c1e;--mu:#6e6e73;--sp:rgba(60,60,67,.14);--ac:#007aff;--acs:#e5f0ff;--act:#0a54c9;--oks:#e3f6e8;--okt:#1d7a35;--ok:#34c759;--wns:#fff1dc;--wnt:#9a5b00;--wn:#ff9f0a;--ers:#ffe7e5;--ert:#c4251b;--er:#ff3b30;--seg:#e9e9ee;
+    --sh:0 2px 4px rgba(20,30,60,.04),0 14px 36px rgba(20,30,60,.10);--sh2:0 24px 64px rgba(20,30,60,.24);--shb:0 8px 20px rgba(0,122,255,.35);
+    --r-ctl:14px;--r-card:28px;--r-sm:10px;--h:46px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;color:var(--tx);font-size:14px;line-height:1.45;background:var(--bg);border-radius:20px;padding:20px;border:1px solid rgba(0,0,0,.08)}
+  .c.dk{--bg:#000;--sf:#1c1c1e;--fd:#2c2c2e;--tx:#f5f5f7;--mu:#a1a1a6;--sp:rgba(255,255,255,.14);--ac:#0a84ff;--acs:rgba(10,132,255,.2);--act:#64acff;--oks:rgba(52,199,89,.18);--okt:#5fe08a;--wns:rgba(255,159,10,.18);--wnt:#ffc04d;--ers:rgba(255,69,58,.18);--ert:#ff8a82;--seg:#2c2c2e;--sh:0 2px 4px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.5);--sh2:0 24px 64px rgba(0,0,0,.7)}
+  .c *{box-sizing:border-box}
+  .c .nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;background:var(--sf);box-shadow:var(--sh);border-radius:999px;padding:6px;margin-bottom:20px;width:max-content;max-width:100%;flex-wrap:wrap}
+  .c .nav button{font:inherit;font-weight:600;border:0;background:transparent;color:var(--mu);height:38px;padding:0 18px;border-radius:999px;cursor:pointer}
+  .c .nav button.on{background:var(--ac);color:#fff;box-shadow:var(--shb)}
+  .c .nav .sp{width:1px;height:22px;background:var(--sp)}
+  .c .panel{display:none}.c .panel.on{display:block}
+  .c h3{font-size:20px;letter-spacing:-.2px;margin:26px 0 12px}
+  .c h5{margin:0 0 12px;font-size:12px;font-weight:700;text-transform:none;color:var(--mu);letter-spacing:.2px}
+  .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+  .spec{background:var(--sf);border-radius:var(--r-card);box-shadow:var(--sh);padding:22px}
+  .spec.w{grid-column:1/-1}
+  .rw{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .col{display:flex;flex-direction:column;gap:12px}
+  /* button */
+  .b{height:var(--h);padding:0 24px;border-radius:999px;border:0;background:var(--fd);color:var(--tx);font:inherit;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap}
+  .b.p{background:var(--ac);color:#fff;box-shadow:var(--shb)}
+  .b.t{background:var(--acs);color:var(--act)}
+  .b.gh{background:transparent;color:var(--act)}
+  .b.d{background:var(--er);color:#fff;box-shadow:0 8px 20px rgba(255,59,48,.3)}
+  .b.sm{height:34px;padding:0 16px;font-size:13px}.b.lg{height:54px;padding:0 32px;font-size:16px}
+  .b.dis{opacity:.4;box-shadow:none}
+  .b.ic{width:var(--h);padding:0;font-size:18px}.b.ic.sm{width:34px}
+  .spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff}
+  /* fields */
+  .f{display:flex;flex-direction:column;gap:6px}
+  .f label{font-weight:600;font-size:13px}
+  .in{height:var(--h);border-radius:var(--r-ctl);background:var(--fd);padding:0 16px;display:flex;align-items:center;gap:10px;color:var(--mu);border:2px solid transparent}
+  .in.foc{background:var(--sf);border-color:var(--ac);box-shadow:0 0 0 4px var(--acs);color:var(--tx)}
+  .in.err{border-color:var(--er);background:var(--ers)}
+  .in.wn{border-color:var(--wn)}
+  .in .gap{flex:1}
+  .hint{font-size:12px;color:var(--mu)}.hint.e{color:var(--ert)}.hint.w{color:var(--wnt)}
+  .ta{height:92px;align-items:flex-start;padding-top:12px}
+  /* choice */
+  .ck{display:flex;gap:10px;align-items:center}
+  .box{width:24px;height:24px;border-radius:8px;border:2px solid #c7c7cc;flex:none;display:grid;place-items:center;color:#fff;font-size:14px}
+  .box.on{background:var(--ac);border-color:var(--ac)}
+  .rd{width:24px;height:24px;border-radius:50%;border:2px solid #c7c7cc;flex:none;display:grid;place-items:center}
+  .rd.on{border-color:var(--ac)}.rd.on::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--ac)}
+  .sw{width:51px;height:31px;border-radius:999px;background:#c7c7cc;position:relative;flex:none}
+  .sw::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 6px rgba(0,0,0,.25)}
+  .sw.on{background:var(--ok)}.sw.on::after{left:22px}
+  .seg{display:inline-flex;background:var(--seg);border-radius:999px;padding:3px;gap:2px}
+  .seg span{padding:8px 18px;border-radius:999px;font-weight:600;font-size:13px;color:var(--mu)}
+  .seg span.on{background:var(--sf);color:var(--tx);box-shadow:0 2px 6px rgba(0,0,0,.14)}
+  /* tag avatar */
+  .tag{font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:var(--acs);color:var(--act);display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+  .tag.g{background:var(--oks);color:var(--okt)}.tag.o{background:var(--wns);color:var(--wnt)}.tag.r{background:var(--ers);color:var(--ert)}.tag.n{background:var(--fd);color:var(--mu)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .bdg{min-width:22px;height:22px;border-radius:999px;background:var(--er);color:#fff;font-size:12px;font-weight:700;display:inline-grid;place-items:center;padding:0 6px}
+  .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#a5b4fc,#7dd3fc);flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px}
+  .av.s{width:30px;height:30px;font-size:11px}.av.l{width:56px;height:56px;font-size:18px}
+  .stack .av{margin-left:-10px;border:3px solid var(--sf)}.stack .av:first-child{margin-left:0}
+  /* feedback */
+  .al{display:flex;gap:12px;padding:14px 16px;border-radius:20px;background:var(--acs);color:var(--act);align-items:flex-start}
+  .al.g{background:var(--oks);color:var(--okt)}.al.o{background:var(--wns);color:var(--wnt)}.al.r{background:var(--ers);color:var(--ert)}
+  .al b{display:block;color:var(--tx)}.al span{color:var(--tx);opacity:.8}
+  .toast{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:22px;background:#2c2c2e;color:#fff;box-shadow:var(--sh2);width:max-content;max-width:100%}
+  .toast a{color:#64acff;font-weight:700}
+  .pr{height:8px;border-radius:999px;background:var(--seg);overflow:hidden}.pr i{display:block;height:100%;border-radius:999px;background:var(--ac)}
+  .sk{border-radius:12px;background:var(--seg);height:14px}
+  .tip{position:relative;background:#2c2c2e;color:#fff;padding:8px 14px;border-radius:12px;font-size:12px;font-weight:600;width:max-content;box-shadow:var(--sh2)}
+  .pop,.menu{background:var(--sf);border-radius:22px;box-shadow:var(--sh2);padding:8px;width:240px;border:1px solid var(--sp)}
+  .pop{padding:18px;width:280px}
+  .mi{display:flex;gap:12px;align-items:center;padding:11px 14px;border-radius:14px;font-weight:500}
+  .mi.on{background:var(--acs);color:var(--act)}.mi.dg{color:var(--ert)}.mi small{margin-left:auto;color:var(--mu)}
+  .sep{height:1px;background:var(--sp);margin:6px 10px}
+  .dlg{background:var(--sf);border-radius:32px;box-shadow:var(--sh2);padding:26px;width:min(420px,100%)}
+  .dlg h4{margin:0 0 8px;font-size:20px}.dlg p{margin:0 0 22px;color:var(--mu)}
+  .dlg .rw{justify-content:flex-end}
+  .scrim{background:rgba(0,0,0,.35);border-radius:24px;padding:28px;display:grid;place-items:center}
+  .drw{background:var(--sf);border-radius:28px;box-shadow:var(--sh2);padding:22px;width:100%}
+  .drw .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .emp{text-align:center;padding:18px 10px}
+  .emp .ill{width:84px;height:84px;border-radius:30px;background:var(--acs);margin:0 auto 14px;display:grid;place-items:center;font-size:34px;color:var(--act)}
+  /* data */
+  .tbl{width:100%;border-collapse:separate;border-spacing:0}
+  .tbl th{font-size:12px;font-weight:700;color:var(--mu);text-align:left;padding:10px 14px;white-space:nowrap}
+  .tbl td{padding:14px;border-top:1px solid var(--sp);white-space:nowrap}
+  .tbl tr.sel td{background:var(--acs)}.tbl tr.sel td:first-child{border-radius:16px 0 0 16px}.tbl tr.sel td:last-child{border-radius:0 16px 16px 0}
+  .tbl .num{text-align:right;font-variant-numeric:tabular-nums}
+  .scroll{overflow-x:auto}
+  .pg{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:12px;color:var(--mu)}
+  .pg span{min-width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:600}
+  .pg span.on{background:var(--ac);color:#fff;box-shadow:var(--shb)}
+  .st{background:var(--sf);border-radius:var(--r-card);box-shadow:var(--sh);padding:22px}
+  .st small{color:var(--mu);display:block}.st strong{font-size:30px;letter-spacing:-.4px}
+  .ds{display:grid;grid-template-columns:130px 1fr;gap:12px 16px}.ds dt{color:var(--mu)}.ds dd{margin:0;font-weight:600}
+  .tl{display:flex;flex-direction:column;gap:0}.tl div{display:flex;gap:14px;padding-bottom:16px;position:relative}
+  .tl div::before{content:"";position:absolute;left:11px;top:24px;bottom:0;width:2px;background:var(--sp)}.tl div:last-child::before{display:none}
+  .tl i{width:24px;height:24px;border-radius:50%;background:var(--ok);flex:none;color:#fff;display:grid;place-items:center;font-size:12px;font-style:normal}
+  .tl i.cur{background:var(--ac);box-shadow:0 0 0 5px var(--acs)}.tl i.wt{background:var(--seg);color:var(--mu)}
+  /* nav */
+  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--sp);overflow-x:auto}
+  .tabs span{padding:12px 16px;font-weight:600;color:var(--mu);position:relative;white-space:nowrap}
+  .tabs span.on{color:var(--act)}.tabs span.on::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:3px;border-radius:3px;background:var(--ac)}
+  .bc{color:var(--mu);font-size:13px}.bc b{color:var(--tx)}
+  .chip{display:inline-flex;gap:8px;align-items:center;height:34px;padding:0 14px;border-radius:999px;background:var(--acs);color:var(--act);font-weight:600;font-size:13px}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px;width:280px}
+  .cal span{height:34px;display:grid;place-items:center;border-radius:50%;font-weight:500}.cal .h{color:var(--mu);font-size:11px;font-weight:700}.cal .on{background:var(--ac);color:#fff;box-shadow:var(--shb)}.cal .rg{background:var(--acs);border-radius:12px;color:var(--act)}.cal .m{color:var(--mu);opacity:.5}
+  .ab{display:flex;align-items:center;gap:12px;background:var(--sf);box-shadow:var(--sh2);border-radius:999px;padding:8px 8px 8px 22px;width:max-content;max-width:100%;border:1px solid var(--sp)}
+  /* shell */
+  .shell{display:grid;grid-template-columns:78px 1fr;gap:16px;min-height:640px}
+  .side{background:var(--sf);box-shadow:var(--sh);border-radius:var(--r-card);padding:16px 10px;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .side .lg{width:44px;height:44px;border-radius:16px;background:var(--ac);margin-bottom:10px;box-shadow:var(--shb)}
+  .side i{width:48px;height:48px;border-radius:18px;display:grid;place-items:center;font-style:normal;font-size:19px;color:var(--mu)}
+  .side i.on{background:var(--acs);color:var(--act)}
+  .main{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .top{display:flex;align-items:center;gap:14px;background:var(--sf);box-shadow:var(--sh);border-radius:999px;padding:8px 10px 8px 22px}
+  .top .in{flex:1;height:40px;background:var(--fd);border-radius:999px}
+  .card{background:var(--sf);box-shadow:var(--sh);border-radius:var(--r-card);padding:22px}
+  .ph{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .ph h4{margin:4px 0 0;font-size:30px;letter-spacing:-.5px}
+  .tb{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .tb .in{flex:1;min-width:200px;border-radius:999px}
+  .rowact{color:var(--mu);font-size:20px;letter-spacing:2px}
+  /* login */
+  .login{min-height:640px;border-radius:var(--r-card);background:var(--bg);display:grid;place-items:center;padding:28px;position:relative;overflow:hidden}
+  .login .b1,.login .b2{position:absolute;border-radius:50%;background:var(--acs);opacity:.7}
+  .login .b1{width:420px;height:420px;left:-120px;top:-140px}.login .b2{width:300px;height:300px;right:-80px;bottom:-110px;background:var(--oks)}
+  .lc{position:relative;width:min(420px,100%);background:var(--sf);border-radius:36px;box-shadow:var(--sh2);padding:36px 32px}
+  .lc .lg{width:56px;height:56px;border-radius:20px;background:var(--ac);box-shadow:var(--shb);margin:0 auto 18px}
+  .lc h4{margin:0;text-align:center;font-size:26px;letter-spacing:-.4px}.lc>p{text-align:center;color:var(--mu);margin:6px 0 24px}
+  .or{display:flex;align-items:center;gap:12px;color:var(--mu);font-size:12px;margin:18px 0}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--sp)}
+</style>
+
+<div class="c" id="demo">
+  <div class="nav">
+    <button class="on" data-p="p1">Component</button>
+    <button data-p="p2">Đăng nhập</button>
+    <button data-p="p3">Danh mục</button>
+    <span class="sp"></span>
+    <button id="mode">Chế độ tối</button>
+  </div>
+
+  <!-- ============ 1. COMPONENT ============ -->
+  <div class="panel on" id="p1">
+
+    <h3>Hành động</h3>
+    <div class="g">
+      <div class="spec"><h5>Button · biến thể</h5><div class="rw"><span class="b p">Chính</span><span class="b">Phụ</span><span class="b t">Tông màu</span><span class="b gh">Văn bản</span><span class="b d">Xoá</span></div></div>
+      <div class="spec"><h5>Button · cỡ và trạng thái</h5><div class="rw"><span class="b p sm">Nhỏ</span><span class="b p">Vừa</span><span class="b p lg">Lớn</span><span class="b p"><i class="spin"></i>Đang lưu</span><span class="b p dis">Vô hiệu</span></div></div>
+      <div class="spec"><h5>Icon button · toggle</h5><div class="rw"><span class="b ic">✎</span><span class="b ic t">★</span><span class="b ic p">+</span><span class="b ic sm">⋯</span><span class="b t" style="box-shadow:inset 0 0 0 2px var(--ac)">✓ Đã ghim</span></div></div>
+      <div class="spec"><h5>Menu</h5><div class="menu"><div class="mi">✎ Chỉnh sửa <small>⌘E</small></div><div class="mi">⧉ Nhân bản</div><div class="mi on">★ Ghim lên đầu</div><div class="sep"></div><div class="mi dg">🗑 Xoá</div></div></div>
+      <div class="spec"><h5>Segmented</h5><div class="col"><div class="seg"><span class="on">Ngày</span><span>Tuần</span><span>Tháng</span></div><div class="seg"><span>Danh sách</span><span class="on">Lưới</span></div></div></div>
+      <div class="spec"><h5>Action bar (lưu dính đáy)</h5><div class="ab"><span>Có 3 thay đổi chưa lưu</span><span class="b gh sm">Huỷ</span><span class="b p sm">Lưu</span></div></div>
+    </div>
+
+    <h3>Nhập liệu</h3>
+    <div class="g">
+      <div class="spec"><h5>Form field · mặc định, focus</h5><div class="col">
+        <div class="f"><label>Họ và tên</label><div class="in">Nguyễn Minh Anh</div><span class="hint">Nhập đúng như trên giấy tờ.</span></div>
+        <div class="f"><label>Email công ty</label><div class="in foc">anh.nguyen@<span style="width:1px;height:20px;background:var(--ac)"></span></div></div></div></div>
+      <div class="spec"><h5>Form field · lỗi, cảnh báo, chỉ đọc</h5><div class="col">
+        <div class="f"><label>Số CCCD</label><div class="in err">0123 4567</div><span class="hint e">CCCD phải gồm 12 chữ số.</span></div>
+        <div class="f"><label>Mức lương</label><div class="in wn">120.000.000 ₫</div><span class="hint w">Vượt khung của chức danh.</span></div>
+        <div class="f"><label>Mã nhân viên</label><div class="in" style="opacity:.7">NV-00482 <span class="gap"></span>🔒</div></div></div></div>
+      <div class="spec"><h5>Textarea · select</h5><div class="col">
+        <div class="f"><label>Ghi chú</label><div class="in ta">Hồ sơ bổ sung sau…<span class="gap"></span><span class="hint">24/500</span></div></div>
+        <div class="f"><label>Phòng ban</label><div class="in" style="color:var(--tx)">Phòng Công nghệ <span class="gap"></span>▾</div></div></div></div>
+      <div class="spec"><h5>Combobox · mở</h5><div class="col"><div class="in foc">Công <span class="gap"></span>▴</div>
+        <div class="menu" style="width:100%"><div class="mi on"><b>Công</b> nghệ thông tin</div><div class="mi"><b>Công</b> nghệ sản xuất</div><div class="mi"><b>Công</b> đoàn</div></div></div></div>
+      <div class="spec"><h5>Search · filter</h5><div class="col"><div class="in" style="border-radius:999px">⌕ Tìm nhân viên…</div><div class="rw"><span class="chip">Phòng: Công nghệ ✕</span><span class="chip">Trạng thái: Đang làm ✕</span><span class="b gh sm">Xoá lọc</span></div></div></div>
+      <div class="spec"><h5>Checkbox · radio · switch</h5><div class="col">
+        <div class="ck"><div class="box on">✓</div>Đồng ý điều khoản</div><div class="ck"><div class="box"></div>Gửi email chào mừng</div>
+        <div class="ck"><div class="rd on"></div>Toàn thời gian</div><div class="ck"><div class="rd"></div>Bán thời gian</div>
+        <div class="ck"><div class="sw on"></div>Thông báo đẩy</div><div class="ck"><div class="sw"></div>Chế độ gọn</div></div></div>
+      <div class="spec"><h5>Date picker · calendar</h5><div class="col"><div class="in foc">📅 16/11/2026</div>
+        <div class="pop" style="width:auto"><div class="rw" style="justify-content:space-between;margin-bottom:10px"><b>Tháng 11, 2026</b><span>‹ ›</span></div>
+        <div class="cal"><span class="h">T2</span><span class="h">T3</span><span class="h">T4</span><span class="h">T5</span><span class="h">T6</span><span class="h">T7</span><span class="h">CN</span>
+        <span class="m">26</span><span class="m">27</span><span class="m">28</span><span class="m">29</span><span class="m">30</span><span class="m">31</span><span>1</span>
+        <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+        <span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+        <span class="on">16</span><span class="rg">17</span><span class="rg">18</span><span class="rg">19</span><span class="rg">20</span><span>21</span><span>22</span></div></div></div></div>
+      <div class="spec"><h5>Value help (chọn từ danh mục lớn)</h5><div class="col"><div class="in" style="color:var(--tx)">Chức danh: Kỹ sư phần mềm<span class="gap"></span>☰</div>
+        <div class="menu" style="width:100%"><div class="in" style="border-radius:999px;height:40px;margin:4px">⌕ Lọc chức danh</div><div class="mi on">Kỹ sư phần mềm <small>IT-02</small></div><div class="mi">Kỹ sư kiểm thử <small>IT-03</small></div><div class="mi">Quản lý dự án <small>PM-01</small></div></div></div></div>
+    </div>
+
+    <h3>Phản hồi và lớp phủ</h3>
+    <div class="g">
+      <div class="spec w"><h5>Alert · thông tin, thành công, cảnh báo, lỗi</h5><div class="g" style="gap:12px">
+        <div class="al">ⓘ<div><b>Lịch bảo trì</b><span>Hệ thống nghỉ 22:00–23:00 tối nay.</span></div></div>
+        <div class="al g">✓<div><b>Đã lưu hồ sơ</b><span>Thay đổi có hiệu lực ngay.</span></div></div>
+        <div class="al o">!<div><b>Sắp hết hạn hợp đồng</b><span>5 nhân viên hết hạn trong 30 ngày.</span></div></div>
+        <div class="al r">✕<div><b>Không thể gửi</b><span>Thiếu người duyệt bước 2.</span></div></div></div></div>
+      <div class="spec"><h5>Toast (có hoàn tác)</h5><div class="toast">🗑 Đã xoá 1 bản ghi <a>Hoàn tác</a></div></div>
+      <div class="spec"><h5>Progress · skeleton · spinner</h5><div class="col"><div class="pr"><i style="width:68%"></i></div><div class="pr"><i style="width:30%;background:var(--ok)"></i></div><div class="sk" style="width:70%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:45%"></div></div></div>
+      <div class="spec"><h5>Tooltip · popover</h5><div class="col"><div class="tip">Chỉnh sửa hồ sơ</div><div class="pop"><b>Hạn mức phép năm</b><p style="margin:6px 0 12px;color:var(--mu)">Còn 7 / 12 ngày. Cộng dồn tối đa 5 ngày sang năm sau.</p><span class="b t sm">Xem chi tiết</span></div></div></div>
+      <div class="spec"><h5>Dialog xác nhận</h5><div class="scrim"><div class="dlg"><h4>Xoá 3 chức danh?</h4><p>Các nhân viên đang giữ chức danh này sẽ chuyển về "Chưa phân loại". Bạn có thể hoàn tác trong 10 giây.</p><div class="rw"><span class="b">Huỷ</span><span class="b d">Xoá</span></div></div></div></div>
+      <div class="spec"><h5>Drawer (xem nhanh bản ghi)</h5><div class="drw"><div class="hd"><b style="font-size:18px">Kỹ sư phần mềm</b><span class="b ic sm">✕</span></div>
+        <dl class="ds"><dt>Mã</dt><dd>IT-02</dd><dt>Nhóm</dt><dd>Công nghệ</dd><dt>Bậc lương</dt><dd>5 – 9</dd><dt>Trạng thái</dt><dd><span class="tag g"><i class="dot"></i>Hoạt động</span></dd></dl></div></div>
+      <div class="spec"><h5>Empty state</h5><div class="emp"><div class="ill">⌕</div><b style="font-size:17px">Không tìm thấy kết quả</b><p style="color:var(--mu);margin:6px 0 16px">Thử bỏ bớt bộ lọc hoặc tìm bằng từ khoá khác.</p><span class="b t">Xoá bộ lọc</span></div></div>
+    </div>
+
+    <h3>Dữ liệu</h3>
+    <div class="g">
+      <div class="spec w"><h5>Table · chọn hàng, sắp xếp, tag, số căn phải</h5><div class="scroll"><table class="tbl">
+        <tr><th style="width:44px"><div class="box on" style="background:var(--ac)">–</div></th><th>Họ tên ↑</th><th>Phòng ban</th><th>Trạng thái</th><th class="num">Lương cơ bản</th><th></th></tr>
+        <tr class="sel"><td><div class="box on">✓</div></td><td><div class="rw"><div class="av s">MA</div>Nguyễn Minh Anh</div></td><td>Công nghệ</td><td><span class="tag g"><i class="dot"></i>Đang làm</span></td><td class="num">32.000.000</td><td class="rowact">⋯</td></tr>
+        <tr><td><div class="box"></div></td><td><div class="rw"><div class="av s" style="background:linear-gradient(135deg,#fda4af,#fcd34d)">QB</div>Trần Quốc Bảo</div></td><td>Nhân sự</td><td><span class="tag o"><i class="dot"></i>Chờ duyệt</span></td><td class="num">18.500.000</td><td class="rowact">⋯</td></tr>
+        <tr><td><div class="box"></div></td><td><div class="rw"><div class="av s" style="background:linear-gradient(135deg,#86efac,#67e8f9)">TH</div>Lê Thu Hà</div></td><td>Tài chính</td><td><span class="tag"><i class="dot"></i>Thử việc</span></td><td class="num">24.000.000</td><td class="rowact">⋯</td></tr>
+      </table></div><div class="pg"><span>‹</span><span class="on">1</span><span>2</span><span>3</span><span>…</span><span>12</span><span>›</span></div></div>
+      <div class="spec"><h5>Card · stat</h5><div class="g" style="grid-template-columns:1fr 1fr;gap:12px"><div class="st" style="box-shadow:none;background:var(--fd)"><small>Đang làm việc</small><strong>1.248</strong> <span class="tag g">+12</span></div><div class="st" style="box-shadow:none;background:var(--fd)"><small>Chờ duyệt</small><strong>37</strong> <span class="tag o">+5</span></div></div></div>
+      <div class="spec"><h5>Tag · badge · avatar</h5><div class="col"><div class="rw"><span class="tag">Mặc định</span><span class="tag g">Thành công</span><span class="tag o">Cảnh báo</span><span class="tag r">Lỗi</span><span class="tag n">Trung tính</span><span class="bdg">12</span></div><div class="rw"><div class="av s">A</div><div class="av">MA</div><div class="av l">TH</div><span class="stack rw" style="gap:0"><div class="av s">A</div><div class="av s" style="background:linear-gradient(135deg,#fda4af,#fcd34d)">B</div><div class="av s" style="background:linear-gradient(135deg,#86efac,#67e8f9)">C</div><div class="av s" style="background:var(--seg);color:var(--mu)">+4</div></span></div></div></div>
+      <div class="spec"><h5>Descriptions</h5><dl class="ds"><dt>Họ tên</dt><dd>Nguyễn Minh Anh</dd><dt>Phòng ban</dt><dd>Công nghệ</dd><dt>Ngày vào làm</dt><dd>04/03/2022</dd><dt>Quản lý</dt><dd>Phạm Gia Huy</dd></dl></div>
+      <div class="spec"><h5>Timeline · quy trình duyệt</h5><div class="tl"><div><i>✓</i><span><b>Tạo đề nghị</b><br><span class="hint">Trần Quốc Bảo · 09:12</span></span></div><div><i>✓</i><span><b>Trưởng phòng duyệt</b><br><span class="hint">Phạm Gia Huy · 10:40</span></span></div><div><i class="cur">3</i><span><b>Giám đốc nhân sự</b><br><span class="hint">Đang chờ</span></span></div><div><i class="wt">4</i><span style="color:var(--mu)">Hoàn tất</span></div></div></div>
+    </div>
+
+    <h3>Điều hướng và khuôn trang</h3>
+    <div class="g">
+      <div class="spec w"><h5>Page header · breadcrumb · tabs</h5><div class="ph"><div><span class="bc">Danh mục › <b>Chức danh</b></span><h4>Chức danh</h4></div><div class="rw"><span class="b">Xuất Excel</span><span class="b p">+ Thêm mới</span></div></div><div class="tabs" style="margin-top:14px"><span class="on">Chức danh</span><span>Phòng ban</span><span>Loại hợp đồng</span><span>Xem thêm ▾</span></div></div>
+      <div class="spec"><h5>View manager</h5><div class="rw"><span class="b t">☰ Chế độ xem: Mặc định ▾</span><span class="b ic">⚙</span></div></div>
+      <div class="spec"><h5>Object page header</h5><div class="rw" style="gap:16px"><div class="av l">MA</div><div><b style="font-size:20px">Nguyễn Minh Anh</b><br><span class="hint">NV-00482 · Kỹ sư phần mềm</span><br><span class="tag g" style="margin-top:6px"><i class="dot"></i>Đang làm</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- ============ 2. DANG NHAP ============ -->
+  <div class="panel" id="p2">
+    <div class="login"><i class="b1"></i><i class="b2"></i>
+      <div class="lc">
+        <div class="lg"></div>
+        <h4>Chào mừng trở lại</h4><p>Đăng nhập để tiếp tục vào hệ thống nhân sự</p>
+        <div class="col" style="gap:16px">
+          <div class="f"><label>Tên đăng nhập hoặc email</label><div class="in foc">anh.nguyen@congty.vn</div></div>
+          <div class="f"><label>Mật khẩu</label><div class="in">••••••••••<span class="gap"></span>👁</div><span class="hint e" style="display:none"></span></div>
+          <div class="rw" style="justify-content:space-between"><div class="ck"><div class="box on">✓</div>Ghi nhớ tôi</div><a style="color:var(--act);font-weight:600">Quên mật khẩu?</a></div>
+          <span class="b p lg" style="width:100%">Đăng nhập</span>
+        </div>
+        <div class="or">hoặc</div>
+        <span class="b" style="width:100%">Đăng nhập bằng tài khoản công ty (SSO)</span>
+        <p class="hint" style="text-align:center;margin:20px 0 0">Cần hỗ trợ? <a style="color:var(--act);font-weight:600">Liên hệ IT</a></p>
+      </div>
+    </div>
+    <div class="g" style="margin-top:18px">
+      <div class="spec"><h5>Trạng thái lỗi</h5><div class="col"><div class="al r">✕<div><b>Sai tên đăng nhập hoặc mật khẩu</b><span>Còn 2 lần thử trước khi khoá tạm.</span></div></div><div class="in err">anh.nguyen@congty.vn</div></div></div>
+      <div class="spec"><h5>Đang đăng nhập</h5><span class="b p lg" style="width:100%"><i class="spin"></i>Đang xử lý…</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 3. DANH MUC ============ -->
+  <div class="panel" id="p3">
+    <div class="shell">
+      <div class="side"><div class="lg"></div><i>⌂</i><i>☷</i><i class="on">▤</i><i>✉</i><i>⚙</i></div>
+      <div class="main">
+        <div class="top"><b>HRM</b><div class="in">⌕ Tìm kiếm toàn hệ thống…</div><span class="b ic sm">🔔</span><div class="av s">MA</div></div>
+        <div class="card" style="padding:26px">
+          <div class="ph"><div><span class="bc">Danh mục › <b>Chức danh</b></span><h4>Danh mục chức danh</h4></div><div class="rw"><span class="b">Nhập Excel</span><span class="b">Xuất Excel</span><span class="b p">+ Thêm mới</span></div></div>
+          <div class="tabs" style="margin:18px 0 16px"><span class="on">Chức danh</span><span>Phòng ban</span><span>Loại hợp đồng</span><span>Trình độ</span><span>Xem thêm ▾</span></div>
+          <div class="tb"><div class="in">⌕ Tìm theo mã hoặc tên chức danh…</div><span class="b t">⚲ Bộ lọc <span class="bdg" style="background:var(--ac)">2</span></span><span class="b">☰ Mặc định ▾</span></div>
+          <div class="rw" style="margin-bottom:10px"><span class="chip">Nhóm: Công nghệ ✕</span><span class="chip">Trạng thái: Hoạt động ✕</span><span class="b gh sm">Xoá lọc</span></div>
+          <div class="scroll"><table class="tbl">
+            <tr><th style="width:44px"><div class="box on">–</div></th><th>Mã ↑</th><th>Tên chức danh</th><th>Nhóm</th><th>Bậc lương</th><th>Nhân viên</th><th>Trạng thái</th><th></th></tr>
+            <tr class="sel"><td><div class="box on">✓</div></td><td>IT-01</td><td><b>Lập trình viên</b></td><td>Công nghệ</td><td>3 – 7</td><td class="num">86</td><td><span class="tag g"><i class="dot"></i>Hoạt động</span></td><td class="rowact">⋯</td></tr>
+            <tr class="sel"><td><div class="box on">✓</div></td><td>IT-02</td><td><b>Kỹ sư phần mềm</b></td><td>Công nghệ</td><td>5 – 9</td><td class="num">142</td><td><span class="tag g"><i class="dot"></i>Hoạt động</span></td><td class="rowact">⋯</td></tr>
+            <tr><td><div class="box"></div></td><td>IT-03</td><td><b>Kỹ sư kiểm thử</b></td><td>Công nghệ</td><td>4 – 8</td><td class="num">37</td><td><span class="tag g"><i class="dot"></i>Hoạt động</span></td><td class="rowact">⋯</td></tr>
+            <tr><td><div class="box"></div></td><td>IT-04</td><td><b>Quản trị hệ thống</b></td><td>Công nghệ</td><td>5 – 9</td><td class="num">12</td><td><span class="tag o"><i class="dot"></i>Sắp ngưng</span></td><td class="rowact">⋯</td></tr>
+            <tr><td><div class="box"></div></td><td>PM-01</td><td><b>Quản lý dự án</b></td><td>Công nghệ</td><td>7 – 12</td><td class="num">21</td><td><span class="tag n"><i class="dot"></i>Ngưng dùng</span></td><td class="rowact">⋯</td></tr>
+          </table></div>
+          <div class="pg"><span style="width:auto;padding:0 10px">1–5 trong 48</span><span>‹</span><span class="on">1</span><span>2</span><span>3</span><span>…</span><span>10</span><span>›</span></div>
+        </div>
+        <div class="rw" style="justify-content:space-between;align-items:flex-end">
+          <div class="ab"><b>Đã chọn 2</b><span class="b gh sm">Xuất</span><span class="b sm">Đổi nhóm</span><span class="b d sm">Xoá</span></div>
+          <div class="toast">✓ Đã nhập 12 chức danh từ Excel <a>Xem</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('demo');
+    root.querySelectorAll('.nav button[data-p]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        root.querySelectorAll('.nav button[data-p]').forEach(function (x) { x.classList.remove('on'); });
+        root.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
+        b.classList.add('on');
+        document.getElementById(b.dataset.p).classList.add('on');
+      });
+    });
+    var m = document.getElementById('mode');
+    m.addEventListener('click', function () {
+      var d = root.classList.toggle('dk');
+      m.textContent = d ? 'Chế độ sáng' : 'Chế độ tối';
+    });
+  })();
+</script>

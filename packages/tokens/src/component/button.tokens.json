@@ -1,57 +1,211 @@
 {
   "component": {
     "button": {
-      "height-sm": { "$type": "dimension", "$value": "{semantic.size.control.sm}", "$description": "Chiều cao nút sm (theo density)." },
-      "height-md": { "$type": "dimension", "$value": "{semantic.size.control.md}", "$description": "Chiều cao nút md (theo density)." },
-      "height-lg": { "$type": "dimension", "$value": "{semantic.size.control.lg}", "$description": "Chiều cao nút lg (theo density)." },
-      "padding-inline-sm": { "$type": "dimension", "$value": "{semantic.space.inset.sm}", "$description": "Padding ngang nút sm." },
-      "padding-inline-md": { "$type": "dimension", "$value": "{semantic.space.inset.md}", "$description": "Padding ngang nút md." },
-      "padding-inline-lg": { "$type": "dimension", "$value": "{semantic.space.inset.lg}", "$description": "Padding ngang nút lg." },
-      "gap": { "$type": "dimension", "$value": "{semantic.space.gap.sm}", "$description": "Khoảng cách icon – nhãn." },
-      "radius": { "$type": "dimension", "$value": "{semantic.radius.control}", "$description": "Góc bo." },
-      "border-width": { "$type": "dimension", "$value": "{semantic.border-width.default}", "$description": "Độ dày viền (mọi variant giữ viền để không nhảy layout)." },
-      "font": { "$type": "typography", "$value": "{semantic.typography.label-md}", "$description": "Chữ nhãn md/lg." },
-      "font-sm": { "$type": "typography", "$value": "{semantic.typography.label-sm}", "$description": "Chữ nhãn sm." },
-      "icon-size": { "$type": "dimension", "$value": "{semantic.size.icon.sm}", "$description": "Kích thước icon và spinner trong nút." },
-      "spinner-width": { "$type": "dimension", "$value": "{semantic.border-width.strong}", "$description": "Độ dày vòng spinner khi loading." },
-      "spinner-radius": { "$type": "dimension", "$value": "{semantic.radius.pill}", "$description": "Bo tròn spinner." },
+      "height-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.sm}",
+        "$description": "Chiều cao nút sm (theo density)."
+      },
+      "height-md": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao nút md (theo density)."
+      },
+      "height-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Chiều cao nút lg (theo density)."
+      },
+      "touch-target": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touch-target}",
+        "$description": "Vùng chạm tối thiểu theo chiều khối khi thiết bị trỏ chính là ngón tay (pointer: coarse); phần nhìn thấy giữ nguyên, chỉ vùng bấm được nới ra. Tạm alias size.row.md (44px ở mức Vừa, theo HIG); đổi sang semantic.size.touch-target khi token đó có."
+      },
+      "padding-inline-sm": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.md}",
+        "$description": "Padding ngang nút sm (viên thuốc cần đệm rộng hơn nút vuông góc)."
+      },
+      "padding-inline-md": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.lg}",
+        "$description": "Padding ngang nút md."
+      },
+      "padding-inline-lg": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inset.lg}",
+        "$description": "Padding ngang nút lg."
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.gap.sm}",
+        "$description": "Khoảng cách icon – nhãn."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Góc bo: viên thuốc (kiểu C)."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.none}",
+        "$description": "Nút primary/danger phẳng, không bóng (theo HeroUI)."
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{semantic.border-width.default}",
+        "$description": "Độ dày viền. Viền trong suốt ở mọi variant (kiểu C bỏ viền); chỉ toggle đang bật vẽ viền thật. Giữ độ dày để bật/tắt không nhảy layout."
+      },
+      "font": {
+        "$type": "typography",
+        "$value": "{semantic.typography.label-md}",
+        "$description": "Chữ nhãn md/lg."
+      },
+      "font-sm": {
+        "$type": "typography",
+        "$value": "{semantic.typography.label-sm}",
+        "$description": "Chữ nhãn sm."
+      },
+      "icon-size": {
+        "$type": "dimension",
+        "$value": "{semantic.size.icon.sm}",
+        "$description": "Kích thước icon và spinner trong nút."
+      },
+      "spinner-width": {
+        "$type": "dimension",
+        "$value": "{semantic.border-width.strong}",
+        "$description": "Độ dày vòng spinner khi loading."
+      },
+      "spinner-radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.pill}",
+        "$description": "Bo tròn spinner."
+      },
       "primary": {
         "$type": "color",
-        "bg": { "$value": "{semantic.color.bg.primary}", "$description": "Nền primary." },
-        "bg-hover": { "$value": "{semantic.color.bg.primary-hover}", "$description": "Nền primary khi hover." },
-        "bg-pressed": { "$value": "{semantic.color.bg.primary-pressed}", "$description": "Nền primary khi nhấn." },
-        "text": { "$value": "{semantic.color.text.on-primary}", "$description": "Chữ primary." },
-        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền primary." }
+        "bg": {
+          "$value": "{semantic.color.bg.primary}",
+          "$description": "Nền primary."
+        },
+        "bg-hover": {
+          "$value": "{semantic.color.bg.primary-hover}",
+          "$description": "Nền primary khi hover."
+        },
+        "bg-pressed": {
+          "$value": "{semantic.color.bg.primary-pressed}",
+          "$description": "Nền primary khi nhấn."
+        },
+        "text": {
+          "$value": "{semantic.color.text.on-primary}",
+          "$description": "Chữ primary."
+        },
+        "border": {
+          "$value": "{semantic.color.border.transparent}",
+          "$description": "Viền primary."
+        }
       },
       "secondary": {
         "$type": "color",
-        "bg": { "$value": "{semantic.color.bg.surface}", "$description": "Nền secondary." },
-        "bg-hover": { "$value": "{semantic.color.bg.surface-hover}", "$description": "Nền secondary khi hover." },
-        "bg-pressed": { "$value": "{semantic.color.bg.muted}", "$description": "Nền secondary khi nhấn." },
-        "text": { "$value": "{semantic.color.text.default}", "$description": "Chữ secondary." },
-        "border": { "$value": "{semantic.color.border.strong}", "$description": "Viền secondary." }
+        "bg": {
+          "$value": "{semantic.color.bg.primary-subtle}",
+          "$description": "Skin iOS: nút \"tinted\": nền accent nhạt."
+        },
+        "bg-hover": {
+          "$value": "{semantic.color.bg.selected}",
+          "$description": "Nền khi hover."
+        },
+        "bg-pressed": {
+          "$value": "{semantic.color.bg.selected-hover}",
+          "$description": "Nền khi nhấn."
+        },
+        "text": {
+          "$value": "{semantic.color.text.link}",
+          "$description": "Chữ accent."
+        },
+        "border": {
+          "$value": "{semantic.color.border.transparent}",
+          "$description": "Không viền."
+        }
       },
       "ghost": {
         "$type": "color",
-        "bg": { "$value": "{semantic.color.bg.transparent}", "$description": "Nền ghost." },
-        "bg-hover": { "$value": "{semantic.color.bg.surface-hover}", "$description": "Nền ghost khi hover." },
-        "bg-pressed": { "$value": "{semantic.color.bg.muted}", "$description": "Nền ghost khi nhấn." },
-        "text": { "$value": "{semantic.color.text.default}", "$description": "Chữ ghost." },
-        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền ghost." }
+        "bg": {
+          "$value": "{semantic.color.bg.transparent}",
+          "$description": "Nền ghost."
+        },
+        "bg-hover": {
+          "$value": "{semantic.color.bg.surface-hover}",
+          "$description": "Nền ghost khi hover."
+        },
+        "bg-pressed": {
+          "$value": "{semantic.color.bg.muted}",
+          "$description": "Nền ghost khi nhấn."
+        },
+        "text": {
+          "$value": "{semantic.color.text.link}",
+          "$description": "Skin iOS: nút \"plain\": chữ accent."
+        },
+        "border": {
+          "$value": "{semantic.color.border.transparent}",
+          "$description": "Viền ghost."
+        }
       },
       "danger": {
         "$type": "color",
-        "bg": { "$value": "{semantic.color.bg.danger}", "$description": "Nền danger." },
-        "bg-hover": { "$value": "{semantic.color.bg.danger-hover}", "$description": "Nền danger khi hover." },
-        "bg-pressed": { "$value": "{semantic.color.bg.danger-pressed}", "$description": "Nền danger khi nhấn." },
-        "text": { "$value": "{semantic.color.text.on-danger}", "$description": "Chữ danger." },
-        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền danger." }
+        "bg": {
+          "$value": "{semantic.color.bg.danger}",
+          "$description": "Nền danger."
+        },
+        "bg-hover": {
+          "$value": "{semantic.color.bg.danger-hover}",
+          "$description": "Nền danger khi hover."
+        },
+        "bg-pressed": {
+          "$value": "{semantic.color.bg.danger-pressed}",
+          "$description": "Nền danger khi nhấn."
+        },
+        "text": {
+          "$value": "{semantic.color.text.on-danger}",
+          "$description": "Chữ danger."
+        },
+        "border": {
+          "$value": "{semantic.color.border.transparent}",
+          "$description": "Viền danger."
+        }
       },
       "disabled": {
         "$type": "color",
-        "bg": { "$value": "{semantic.color.bg.disabled}", "$description": "Nền khi disabled (mọi variant trừ ghost)." },
-        "text": { "$value": "{semantic.color.text.disabled}", "$description": "Chữ khi disabled." },
-        "border": { "$value": "{semantic.color.border.transparent}", "$description": "Viền khi disabled." }
+        "bg": {
+          "$value": "{semantic.color.bg.disabled}",
+          "$description": "Nền khi disabled (mọi variant trừ ghost)."
+        },
+        "text": {
+          "$value": "{semantic.color.text.disabled}",
+          "$description": "Chữ khi disabled."
+        },
+        "border": {
+          "$value": "{semantic.color.border.transparent}",
+          "$description": "Viền khi disabled."
+        }
+      },
+      "pressed": {
+        "$type": "color",
+        "bg": {
+          "$value": "{semantic.color.bg.selected}",
+          "$description": "Nền toggle button đang bật (aria-pressed=true), cho secondary và ghost."
+        },
+        "bg-hover": {
+          "$value": "{semantic.color.bg.selected-hover}",
+          "$description": "Nền toggle button đang bật khi hover."
+        },
+        "text": {
+          "$value": "{semantic.color.text.default}",
+          "$description": "Chữ toggle button đang bật."
+        },
+        "border": {
+          "$value": "{semantic.color.border.selected}",
+          "$description": "Viền toggle button đang bật; vẽ dày gấp đôi để trạng thái không chỉ khác ở màu."
+        }
       }
     }
   }

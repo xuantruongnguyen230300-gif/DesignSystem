@@ -1,0 +1,101 @@
+{
+  "component": {
+    "stepper": {
+      "height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.md}",
+        "$description": "Chiều cao khung theo mật độ (gọn 28 · vừa 36 · rộng 46); cũng là cạnh của nút tăng/giảm, nên ở mật độ rộng vùng chạm đạt 44px."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}",
+        "$description": "Bo góc khung, bo vuông mềm như ô nhập."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.muted}",
+        "$description": "Nền khung: xám nhạt đặc, không viền (kiểu iOS), như ô nhập của form field."
+      },
+      "bg-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.danger-subtle}",
+        "$description": "Nền khung có lỗi (nền nhạt + viền đỏ + icon và chữ)."
+      },
+      "bg-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.disabled}",
+        "$description": "Nền khung khi vô hiệu."
+      },
+      "bg-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.transparent}",
+        "$description": "Nền khung chỉ đọc: không có nền nhập, để lộ nền của form."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.transparent}",
+        "$description": "Viền khung: trong suốt (ô nhập nền xám không viền). Giữ độ dày để đổi trạng thái không làm nhảy layout."
+      },
+      "border-invalid": {
+        "$type": "color",
+        "$value": "{semantic.color.border.danger}",
+        "$description": "Viền khung có lỗi."
+      },
+      "border-readonly": {
+        "$type": "color",
+        "$value": "{semantic.color.border.default}",
+        "$description": "Viền nhạt của khung chỉ đọc: khác khung sửa được."
+      },
+      "button-icon": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.default}",
+        "$description": "Icon dấu trừ / dấu cộng của hai nút."
+      },
+      "button-icon-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.disabled}",
+        "$description": "Icon của nút khi đã tới cận hoặc cả control bị vô hiệu."
+      },
+      "button-bg-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền nút khi hover: nổi lên bề mặt trắng trên khung xám."
+      },
+      "button-bg-active": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.primary-subtle}",
+        "$description": "Nền nút khi đang nhấn: nền nhạt màu nhấn."
+      },
+      "value-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Con số trong ô giá trị."
+      },
+      "value-text-disabled": {
+        "$type": "color",
+        "$value": "{semantic.color.text.disabled}",
+        "$description": "Con số khi vô hiệu (đơn vị là chữ ngoài ô nhập nên giữ màu unit-text để còn đạt tương phản)."
+      },
+      "unit-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Đơn vị sau con số (ngày, giờ, %)."
+      },
+      "label-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Nhãn của stepper."
+      },
+      "hint-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Gợi ý dưới khung, như hint của form field."
+      },
+      "error-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Lời nhắc lỗi dưới khung."
+      }
+    }
+  }
+}

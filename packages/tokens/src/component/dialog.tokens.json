@@ -9,7 +9,7 @@
       "border": {
         "$type": "color",
         "$value": "{semantic.color.border.default}",
-        "$description": "Viền ngoài dialog, tách khỏi lớp phủ ở chế độ tối."
+        "$description": "Viền hộp \"Xem chi tiết\" của notify. Khung ngoài dialog không vẽ viền (kiểu C, tách bằng bóng modal)."
       },
       "backdrop": {
         "$type": "color",
@@ -35,6 +35,36 @@
         "$type": "dimension",
         "$value": "{semantic.size.dialog.lg}",
         "$description": "Bề rộng dialog có nội dung dài."
+      },
+      "icon-info": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.info}",
+        "$description": "Icon tone info trước tiêu đề (notify: thông tin)."
+      },
+      "icon-success": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.success}",
+        "$description": "Icon tone success trước tiêu đề (notify: thành công)."
+      },
+      "icon-warning": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.warning}",
+        "$description": "Icon tone warning trước tiêu đề (notify: cảnh báo)."
+      },
+      "icon-danger": {
+        "$type": "color",
+        "$value": "{semantic.color.icon.danger}",
+        "$description": "Icon tone danger trước tiêu đề (notify: lỗi)."
+      },
+      "details-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.subtle}",
+        "$description": "Nền vùng \"Xem chi tiết\" của hộp thông báo (notify), tách chi tiết kỹ thuật khỏi câu chính."
+      },
+      "alternate-danger-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.danger}",
+        "$description": "Chữ của lựa chọn thứ ba khi alternateTone là danger (nút ghost chữ đỏ)."
       }
     }
   }

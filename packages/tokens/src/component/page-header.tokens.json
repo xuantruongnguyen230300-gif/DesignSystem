@@ -20,6 +20,11 @@
         "$type": "color",
         "$value": "{semantic.color.text.default}",
         "$description": "Mục breadcrumb hiện tại."
+      },
+      "divider": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Vạch ngăn hành động của trang với hành động toàn cục khi page header nằm trên top bar."
       }
     }
   }

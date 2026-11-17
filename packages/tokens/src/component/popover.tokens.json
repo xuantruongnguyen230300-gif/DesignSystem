@@ -1,0 +1,12 @@
+{
+  "component": {
+    "popover": {
+      "bg": { "$type": "color", "$value": "{semantic.color.bg.surface-raised}", "$description": "Nền panel popover (thẻ nhanh, danh sách thông báo, xác nhận nhanh)." },
+      "border": { "$type": "color", "$value": "{semantic.color.border.default}", "$description": "Viền panel và vạch ngăn header/footer; tách panel khỏi trang ở chế độ tối." },
+      "text": { "$type": "color", "$value": "{semantic.color.text.default}", "$description": "Chữ thân popover." },
+      "title": { "$type": "color", "$value": "{semantic.color.text.strong}", "$description": "Chữ tiêu đề popover." },
+      "radius": { "$type": "dimension", "$value": "{semantic.radius.overlay}", "$description": "Bo góc panel (20px), cùng họ với dialog và menu." },
+      "width": { "$type": "dimension", "$value": "{semantic.size.popover.md}", "$description": "Bề rộng tối đa của panel; panel co theo nội dung và không vượt màn hình." }
+    }
+  }
+}

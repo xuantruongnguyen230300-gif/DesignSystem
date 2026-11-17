@@ -2,7 +2,7 @@
 component: drawer
 status: beta
 owner: "NXT core"
-updated: 2026-10-19
+updated: 2026-11-06
 apg-pattern: dialog-modal
 ---
 
@@ -40,12 +40,28 @@ Service: `NxtDrawer` (`providedIn: 'root'`). Selector: `nxt-drawer-layout`. Expo
 | config | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 400 / 560 / 720px |
 | config | `data` | `D` | `undefined` | Dữ liệu cho nội dung, lấy bằng `inject(DIALOG_DATA)` (từ `@angular/cdk/dialog`) |
 | config | `disableClose` | `boolean` | `false` | Chặn đóng bằng Escape / backdrop (ví dụ khi đang lưu) |
+| config | `canClose` | `() => boolean \| Promise<boolean> \| Observable<boolean>` | `undefined` | Hỏi trước khi đóng **không kèm kết quả** (Escape, backdrop, nút "Đóng", `ref.close()` của nút "Huỷ"). Trả `false` thì drawer ở lại. Dùng để cảnh báo thay đổi chưa lưu |
+| `nxt-drawer-layout` input | `canClose` | cùng kiểu | `undefined` | Như config, nhưng khai báo trong nội dung (nơi biết form đã đổi chưa). Config được ưu tiên nếu có cả hai |
 | `nxt-drawer-layout` input | `title` | `string` | (bắt buộc) | Tiêu đề hiển thị (`h2`) |
 | `nxt-drawer-layout` input | `description` | `string` | `undefined` | Mô tả dưới tiêu đề |
 | `nxt-drawer-layout` content | (default) | bất kỳ | | Thân drawer |
 | `nxt-drawer-layout` content | `[nxtDrawerFooter]` | nút | | Hành động: "Huỷ", "Lưu" (primary ở cuối) |
 
 Cấu hình CDK cố định: `autoFocus: 'first-tabbable'`, `restoreFocus: true`, vị trí `global().right('0').top('0')`, cao 100%. Nút "Đóng" gọi `DialogRef.close()` không kèm kết quả.
+
+**`canClose`** (chặn đóng khi còn thay đổi chưa lưu) dựa trên `closePredicate` của CDK. Theo SAP Fiori (Dialog, Draft handling): dữ liệu trong lớp phủ mất khi Huỷ/đóng, nên phải cảnh báo khi có thay đổi; không có thay đổi thì đóng luôn, không hỏi.
+- `ref.close(kếtQuả)` với kết quả khác `undefined` (nút "Lưu") **luôn đóng**, không hỏi.
+- Đóng không kèm kết quả (Escape, bấm backdrop, nút "Đóng" ở header, nút "Huỷ" gọi `ref.close()`) gọi `canClose()`. Trả `true` (đồng bộ) thì đóng ngay; trả `Promise`/`Observable` thì drawer ở lại cho tới khi có câu trả lời, `true` mới đóng. Trong lúc đang chờ, các yêu cầu đóng khác bị bỏ qua.
+- `disableClose` vẫn chặn trước `canClose` (đang lưu thì không hỏi gì).
+- Nội dung trả về `false` ngay khi chưa có thay đổi là sai: kiểm tra "đã đổi chưa" trước, chỉ hỏi khi có thay đổi.
+
+```ts
+canClose: () => !this.dirty() || this.dialog
+  .confirm({ title: 'Rời khỏi biểu mẫu khi chưa lưu?', message: 'Các thông tin vừa nhập sẽ mất.', confirmLabel: 'Rời khỏi', cancelLabel: 'Ở lại' })
+  .pipe(map((answer) => answer === 'confirm'))
+```
+
+Đây là ngoại lệ duy nhất cho luật "không mở dialog từ drawer" ([Dialog](../dialog/SPEC.md) §1).
 
 ## 4. Variants & sizes
 | Size | Bề rộng | Dùng khi |
@@ -59,7 +75,7 @@ Mọi size bị giới hạn `min(100vw, …)`: trên màn hình hẹp drawer ch
 ## 5. States
 | Rest | Hover | Focus-visible | Active/Pressed | Selected | Disabled | Loading | Error | Read-only | Empty |
 |------|-------|---------------|----------------|----------|----------|---------|-------|-----------|-------|
-| ✓ mở | — (theo control bên trong) | ✓ theo control bên trong; focus bị giữ trong drawer | — | — | ✓ `disableClose`: Escape / backdrop không đóng | — (nơi dùng đặt `loading` cho nút Lưu + `disableClose`) | — (lỗi theo `nxt-form-field`, tóm tắt trong thân) | — | — |
+| ✓ mở; có thay đổi chưa lưu thì `canClose` hỏi trước khi đóng | — (theo control bên trong) | ✓ theo control bên trong; focus bị giữ trong drawer | — | — | ✓ `disableClose`: Escape / backdrop / nút Đóng không đóng | — (nơi dùng đặt `loading` cho nút Lưu + `disableClose`) | — (lỗi theo `nxt-form-field`, tóm tắt trong thân) | — | — |
 
 ## 6. Keyboard & ARIA
 APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
@@ -68,7 +84,8 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
 |------|---------|
 | (khi mở) | Focus vào phần tử nhận focus đầu tiên (nút "Đóng" trong header) |
 | Tab / Shift+Tab | Vòng trong drawer (focus trap của CDK), không ra trang phía sau |
-| Escape | Đóng drawer (trừ khi `disableClose`) |
+| Escape | Đóng drawer (trừ khi `disableClose`); có `canClose` thì hỏi trước |
+| (`canClose` trả lời "ở lại") | Drawer giữ nguyên; focus về chỗ cũ trong drawer (CDK `restoreFocus` của dialog xác nhận) |
 | (khi đóng) | Focus trả về phần tử đã mở drawer (`restoreFocus`) |
 
 - Container: `role="dialog"`, `aria-label` = `config.title`. CDK đặt `aria-hidden="true"` cho các phần tử anh em của overlay container, nên trang phía sau không đọc được khi drawer mở.
@@ -81,7 +98,8 @@ APG pattern: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
 | Token | Alias semantic |
 |-------|----------------|
 | `bg` | `color.bg.surface-raised` |
-| `border` | `color.border.default` |
+| `border` | `color.border.default` (đường kẻ mảnh giữa header/thân/footer; khung ngoài không viền) |
+| `radius` | `radius.container` (hai góc tự do phía bắt đầu; cạnh sát màn hình vuông) |
 | `backdrop` | `color.bg.overlay` |
 | `width-sm`, `width-md`, `width-lg` | `size.drawer.{sm,md,lg}` |
 
@@ -95,9 +113,10 @@ Dùng thẳng semantic: `color.text.{default,strong,subtle}`, `elevation.modal`,
 
 ## 9. Content guidelines
 - `title` (config) và `title` (layout) là **cùng một chuỗi**: "Thêm nhân viên", "Sửa hồ sơ Nguyễn Văn An".
-- Footer: nút primary là động từ + đối tượng ("Lưu hồ sơ"), nút phụ "Huỷ"; primary đặt cuối.
+- Footer theo luật chung chân dialog/drawer ([Dialog](../dialog/SPEC.md) §9): tối đa **1** primary và nó đứng **cuối**; "Huỷ" là `ghost`, không bao giờ primary/danger; drawer chỉ xem (chỉ có "Đóng") thì nút đó là `secondary`; lựa chọn thứ ba dạt trái. Primary là động từ + đối tượng ("Lưu hồ sơ").
 - Mô tả nói phạm vi hoặc điều kiện: "Các trường có dấu * là bắt buộc."
-- Khi đóng mà còn thay đổi chưa lưu, phải cảnh báo (principles §2.5) — xem §11.
+- Khi đóng mà còn thay đổi chưa lưu, phải cảnh báo (principles §2.5): dùng `canClose` + `NxtDialog.confirm()` với tiêu đề "Rời khỏi biểu mẫu khi chưa lưu?", nút "Rời khỏi" / "Ở lại" (tone `default`; không phải `danger` vì người dùng có thể nhập lại). Không hỏi khi chưa có thay đổi.
+- Sau khi lưu và đóng, báo kết quả bằng [Toast](../toast/SPEC.md) ("Đã thêm người phụ thuộc Đặng Gia Bảo.") vì drawer đã biến mất.
 
 ## 10. Acceptance (Definition of Done)
 - [ ] Ba size, có/không footer, form có lỗi, `disableClose` khi đang lưu có trong docs example
@@ -106,14 +125,20 @@ Dùng thẳng semantic: `color.text.{default,strong,subtle}`, `elevation.modal`,
 - [x] axe: 0 vi phạm ở sáng/tối/gọn (Playwright, `npm run test:a11y`; 2026-10-19, 341/341)
 - [x] `npm run ds:check` sạch (tokens + hardcoded)
 - [x] Docs page đủ mục (skill `nxt-docs-page`)
+- [x] Unit test `canClose` (2026-11-06): Escape / backdrop / nút Đóng / `ref.close()` đều hỏi; `false` giữ drawer; `true` đồng bộ đóng ngay; `Promise`/`Observable` đóng khi trả lời `true`; `close(kếtQuả)` không hỏi; `disableClose` chặn trước; input `canClose` của layout
+- [x] Example `drawer-unsaved` (cảnh báo rời biểu mẫu khi chưa lưu)
+- [ ] axe cho `drawer-unsaved`: cần `npm run build && npm run test:a11y` (phiên chính chạy)
 
 ## 11. Việc còn mở
 - `src/drawer.ts:30`, `:70`: tên truy cập (`config.title` → `aria-label`) và tiêu đề hiển thị (`layout.title`) là hai input riêng, dễ lệch nhau. Nên dùng `aria-labelledby` trỏ tới `h2`.
-- Không có cơ chế cảnh báo khi đóng drawer còn thay đổi chưa lưu; `NxtDrawerConfig` không mở `closePredicate` của CDK.
 - `src/drawer.ts:38`: `autoFocus: 'first-tabbable'` luôn focus nút "Đóng" ở header thay vì trường đầu tiên của form; không cấu hình được.
 - `src/drawer.ts:34`, `src/drawer.css:23`: vị trí và animation dùng cạnh phải vật lý (`right`, `translateX(100%)`) dù tài liệu nói "end edge".
 - `src/drawer.ts:56`: nhãn "Đóng" viết cứng; tiêu đề luôn là `h2`.
 - `src/drawer.css:33`, `:52`, `:57`: màu chữ dùng thẳng `--nxt-color-text-*`; `:48` primitive `--nxt-space-0-5`.
+- `canClose` đi qua `closePredicate` nên cũng áp cho `Dialog.closeAll()` và việc CDK đóng dialog khi bấm Back của trình duyệt (`closeOnNavigation`): drawer có thay đổi sẽ hỏi thay vì đóng. Chưa có e2e cho trường hợp này.
+
+### Đã xử lý (2026-11-06)
+- Cảnh báo khi đóng còn thay đổi chưa lưu: `canClose` (config và input của layout), có unit test.
 
 ### Đã xử lý (2026-10-19)
 - Đặt `ariaModal: true`. Header/footer của layout là `div` (trước là `header`/`footer`, thành landmark banner/contentinfo trong modal). Có unit test.

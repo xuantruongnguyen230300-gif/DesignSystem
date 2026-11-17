@@ -188,6 +188,55 @@ for (const axis of activeAxes) {
   }
 }
 
+// ---------- split CSS: core + one file per component ----------
+// `nxt.css` (above) stays the full bundle for prototypes and the docs site. Apps that import single
+// components load `core.css` once and each component brings its own `components/<name>.css`
+// (token aliases only, with the mode/density/motion blocks that re-declare them for nested regions).
+// Brand overrides are applied at the document root (component aliases resolve on <html>); nested brand
+// regions need the full bundle.
+function emitSubset(keep, withScheme = false) {
+  const scheme = (axis, mode) => (withScheme ? schemeLine(axis, mode) : []);
+  const own = new Set([...allPaths].filter(keep));
+  const kept = (set) => new Set([...set].filter(keep));
+  let css = header;
+  css += block(':root', coreDefault, own, scheme('color', defaultSelection.color));
+  for (const axis of activeAxes) {
+    const variantModes = config.modes[axis].filter((m) => m !== defaultSelection[axis] && ctxOf(null, axis, m));
+    const sets = {};
+    for (const m of variantModes) sets[m] = kept(closure(diff(ctxOf(null, axis, m), coreDefault, allPaths)));
+    const restore = new Set(variantModes.flatMap((m) => [...sets[m]]));
+    if (!restore.size) continue;
+    css += `\n/* ${axis}: ${config.modes[axis].join(' | ')} */\n`;
+    css += block(attr(axis, defaultSelection[axis]), coreDefault, restore, scheme(axis, defaultSelection[axis]));
+    for (const m of variantModes) {
+      const ctx = ctxOf(null, axis, m);
+      css += block(attr(axis, m), ctx, sets[m], scheme(axis, m));
+      const auto = AUTO[axis];
+      if (auto?.mode === m) {
+        const sel = auto.byDefault ? `:root:not([data-${config.prefix}-${axis}])` : attr(axis, auto.value);
+        css += media(auto.media, block(sel, ctx, sets[m], scheme(axis, m)));
+      }
+    }
+  }
+  return css;
+}
+const isComponent = (p) => p.startsWith('component.');
+const componentOf = (p) => p.split('.')[1];
+const splitCoreCss = emitSubset((p) => !isComponent(p), true);
+const componentNames = [...new Set([...allPaths].filter(isComponent).map(componentOf))].sort();
+const splitComponentCss = Object.fromEntries(componentNames.map((n) => [n, emitSubset((p) => isComponent(p) && componentOf(p) === n)]));
+// Sanity: splitting must not lose or invent a declaration.
+{
+  const decl = (css) => new Set((css.match(/^\s*--[a-z0-9-]+:/gm) ?? []).map((d) => d.trim()));
+  const all = decl(coreCss);
+  const parts = new Set([...decl(splitCoreCss), ...Object.values(splitComponentCss).flatMap((c) => [...decl(c)])]);
+  const missing = [...all].filter((d) => !parts.has(d));
+  if (missing.length) {
+    console.error(`Split CSS lost ${missing.length} declaration(s), e.g. ${missing.slice(0, 3).join(', ')}`);
+    process.exit(1);
+  }
+}
+
 // ---------- brand CSS ----------
 const brandCss = {};
 for (const b of Object.keys(result.layers.brands)) {
@@ -266,7 +315,11 @@ const write = (file, content) => {
 fs.rmSync(outDir, { recursive: true, force: true });
 const written = [];
 written.push(write(`css/${config.prefix}.css`, coreCss));
+written.push(write('css/core.css', splitCoreCss));
+for (const [n, css] of Object.entries(splitComponentCss)) written.push(write(`css/components/${n}.css`, css));
 for (const [b, css] of Object.entries(brandCss)) written.push(write(`css/brands/${b}.css`, css));
+// The same color math as `npm run ds:palette`, shipped so `cli/nxt-palette.mjs` works in a project that only installs the package.
+for (const lib of ['color.mjs', 'palette.mjs']) written.push(write(`lib/${lib}`, fs.readFileSync(new URL(`../lib/${lib}`, import.meta.url), 'utf8')));
 // Convenience bundle for apps (like the docs site) that switch between every product brand.
 written.push(write('css/brands/all.css', `${header}${Object.keys(brandCss).map((b) => `@import './${b}.css';`).join('\n')}\n`));
 
@@ -326,4 +379,8 @@ written.push(
 
 const kb = (f) => (fs.statSync(f).size / 1024).toFixed(1);
 console.log(`NXT tokens built: ${jsonTokens.length} tokens · ${contexts.length} contexts · warnings: ${result.summary.warnings}`);
-for (const f of written) console.log(`  ${rel(f).padEnd(48)} ${kb(f).padStart(7)} KB`);
+const isPerComponent = (f) => f.split(path.sep).join('/').includes('/css/components/');
+for (const f of written.filter((x) => !isPerComponent(x))) console.log(`  ${rel(f).padEnd(48)} ${kb(f).padStart(7)} KB`);
+const perComponent = written.filter(isPerComponent);
+const biggest = perComponent.map((f) => fs.statSync(f).size).sort((a, b) => b - a)[0] ?? 0;
+console.log(`  css/components/*.css (${perComponent.length} files)`.padEnd(50) + `${(perComponent.reduce((s, f) => s + fs.statSync(f).size, 0) / 1024).toFixed(1).padStart(7)} KB total, largest ${(biggest / 1024).toFixed(1)} KB`);

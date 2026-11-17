@@ -13,7 +13,11 @@ import { NxtSearch, nxtMatches } from '@nxt/ui/search';
 import { NxtTab, NxtTabs } from '@nxt/ui/tabs';
 import { NxtTag, NxtTone } from '@nxt/ui/tag';
 import { NxtTimeline, NxtTimelineItem } from '@nxt/ui/timeline';
+import { NxtMemoryViewStore, NxtViewManager, NxtViews, nxtViewTargets } from '@nxt/ui/view-manager';
+import { TODAY, daysBetween } from './catalog-data';
 import { HrmFrame } from './hrm-frame';
+
+type Filters = { types: string[]; depts: string[] };
 
 type Status = 'pending' | 'approved' | 'rejected' | 'returned';
 type RequestType = 'Nghỉ phép' | 'Tăng ca' | 'Công tác';
@@ -52,16 +56,48 @@ const REQUESTS: LeaveRequest[] = [
   { id: 'CT-0071', type: 'Công tác', name: 'Đỗ Minh Khoa', title: 'Chuyên viên pháp chế', dept: 'Ban Pháp chế', from: '09/10/2026', to: '10/10/2026', days: '2 ngày', submitted: '05/10/2026', reason: 'Làm việc với đối tác tại Hà Nội.', status: 'returned', note: 'Bổ sung dự toán chi phí đi lại.' },
 ];
 
-/** Phê duyệt đơn từ — danh sách (↑/↓ để chuyển đơn) và chi tiết, quy trình, ý kiến */
+/** A pending request that starts soon (or already started) needs a decision first: highlighted, with the reason in words. */
+function urgencyOf(r: LeaveRequest): { highlight: 'danger' | 'warning'; label: string } | null {
+  if (r.status !== 'pending') return null;
+  const days = daysBetween(TODAY, r.from.slice(0, 10));
+  if (days < 0) return { highlight: 'danger', label: 'Đã qua ngày bắt đầu' };
+  if (days === 0) return { highlight: 'warning', label: 'Bắt đầu hôm nay' };
+  if (days <= 2) return { highlight: 'warning', label: `Bắt đầu sau ${days} ngày` };
+  return null;
+}
+
+/** Phê duyệt đơn từ — hàng đợi việc: chế độ xem, danh sách (↑/↓ để chuyển đơn, đơn gấp được tô sáng) và chi tiết, quy trình, ý kiến */
 @Component({
   selector: 'example-template-approval',
-  imports: [HrmFrame, NxtAlert, NxtAvatar, NxtButton, NxtCard, NxtEmptyState, NxtFormField, NxtInput, NxtIcon, NxtLiveRegion, NxtPageHeader, NxtCheckbox, NxtFilter, NxtFilterChips, NxtSearch, NxtTab, NxtTabs, NxtTag, NxtTimeline, NxtTimelineItem],
+  imports: [
+    HrmFrame,
+    NxtAlert,
+    NxtAvatar,
+    NxtButton,
+    NxtCard,
+    NxtEmptyState,
+    NxtFormField,
+    NxtInput,
+    NxtIcon,
+    NxtLiveRegion,
+    NxtPageHeader,
+    NxtCheckbox,
+    NxtFilter,
+    NxtFilterChips,
+    NxtSearch,
+    NxtTab,
+    NxtTabs,
+    NxtTag,
+    NxtTimeline,
+    NxtTimelineItem,
+    NxtViewManager,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Wide screens: list and detail fill the screen and scroll inside; narrow screens stack and the page scrolls. -->
     <example-hrm-frame [fill]="wide()">
       <div class="stack" [class.nxt-fill]="wide()" [class.is-fill]="wide()">
-        <nxt-page-header title="Phê duyệt" description="Đơn từ của nhân viên trong các phòng bạn quản lý.">
+        <nxt-page-header placement="topbar" title="Phê duyệt">
           <nxt-tabs label="Lọc đơn theo trạng thái" [panels]="false" [value]="tab()" (valueChange)="setTab($event!)">
             <nxt-tab value="pending" label="Chờ tôi duyệt" [count]="count('pending')" />
             <nxt-tab value="done" label="Đã xử lý" [count]="count('done')" />
@@ -77,6 +113,10 @@ const REQUESTS: LeaveRequest[] = [
 
         <div class="split">
           <nxt-card padding="none" class="list" [fill]="wide()">
+            <!-- Head of the queue: the view in use (saved search + filters) and how many requests it shows. -->
+            <div class="list__head">
+              <nxt-view-manager [views]="views" [count]="visible().length" itemLabel="đơn" />
+            </div>
             <div class="list__toolbar">
               <nxt-search class="list__search" label="Tìm đơn" placeholder="Tên người gửi, mã đơn, lý do" [value]="query()" (valueChange)="setQuery($event)" />
               <nxt-filter #filter title="Lọc đơn" [activeCount]="filters.activeCount()" (opened)="filters.edit()" (applied)="applyFilters()" (reset)="filters.resetDraft()">
@@ -103,11 +143,21 @@ const REQUESTS: LeaveRequest[] = [
               <ul class="requests" role="list" aria-label="Danh sách đơn" (keydown)="onListKey($event)">
                 @for (r of visible(); track r.id) {
                   <li>
-                    <button type="button" class="request" [attr.data-id]="r.id" [attr.aria-current]="r.id === current()?.id ? 'true' : null" (click)="select(r.id)">
+                    <button
+                      type="button"
+                      class="request"
+                      [attr.data-id]="r.id"
+                      [attr.data-highlight]="urgency(r)?.highlight ?? null"
+                      [attr.aria-current]="r.id === current()?.id ? 'true' : null"
+                      (click)="select(r.id)"
+                    >
                       <nxt-avatar [name]="r.name" />
                       <span class="request__main">
                         <span class="request__name">{{ r.name }}</span>
                         <span class="request__meta">{{ r.type }} · {{ r.days }} · {{ r.from }}</span>
+                        @if (urgency(r); as u) {
+                          <span class="request__flag" [attr.data-tone]="u.highlight">{{ u.label }}</span>
+                        }
                       </span>
                       <span class="request__side">
                         <span class="request__time">{{ r.submitted }}</span>
@@ -231,6 +281,9 @@ const REQUESTS: LeaveRequest[] = [
         grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
       }
     }
+    .list__head {
+      padding: var(--nxt-space-inset-xs) var(--nxt-space-inset-md) 0;
+    }
     .list__toolbar {
       display: flex;
       align-items: center;
@@ -282,6 +335,28 @@ const REQUESTS: LeaveRequest[] = [
     }
     .request[aria-current='true'] {
       background: var(--nxt-color-bg-selected);
+    }
+    /* Same strip as a highlighted table row (tr[data-highlight]): a hint; the reason is written in the item. */
+    .request[data-highlight='warning'] {
+      box-shadow: inset var(--nxt-space-inset-xs) 0 0 0 var(--nxt-color-border-warning);
+    }
+    .request[data-highlight='danger'] {
+      box-shadow: inset var(--nxt-space-inset-xs) 0 0 0 var(--nxt-color-border-danger);
+    }
+    .request[data-highlight]:dir(rtl) {
+      box-shadow: inset calc(-1 * var(--nxt-space-inset-xs)) 0 0 0 var(--nxt-color-border-warning);
+    }
+    .request[data-highlight='danger']:dir(rtl) {
+      box-shadow: inset calc(-1 * var(--nxt-space-inset-xs)) 0 0 0 var(--nxt-color-border-danger);
+    }
+    .request__flag {
+      font: var(--nxt-typography-caption);
+    }
+    .request__flag[data-tone='warning'] {
+      color: var(--nxt-color-text-warning);
+    }
+    .request__flag[data-tone='danger'] {
+      color: var(--nxt-color-text-danger);
     }
     .request:focus-visible {
       outline: var(--nxt-focus-ring-width) solid var(--nxt-focus-ring-color);
@@ -413,8 +488,27 @@ export class TemplateApprovalExample {
   protected readonly requests = signal<LeaveRequest[]>(REQUESTS);
   protected readonly tab = signal<'pending' | 'done' | 'all'>('pending');
   protected readonly query = signal('');
-  protected readonly filters = new NxtFilterState({ types: [] as string[], depts: [] as string[] });
+  protected readonly filters = new NxtFilterState<Filters>({ types: [], depts: [] });
   protected readonly selectedId = signal<string | null>(REQUESTS[0].id);
+  private readonly targets = nxtViewTargets<Filters>({ query: this.query, filters: this.filters });
+  /** Saved views of the queue (search + filters; the tab is not part of a view). One was saved earlier. */
+  protected readonly views = new NxtViews<Filters>({
+    current: this.targets.current,
+    apply: (state) => {
+      this.targets.apply(state);
+      this.selectedId.set(null);
+    },
+    store: new NxtMemoryViewStore<Filters>({
+      views: [
+        {
+          id: 'tang-ca-cong-tac',
+          name: 'Tăng ca và công tác',
+          state: { query: '', filters: { types: ['Tăng ca', 'Công tác'], depts: [] }, sort: { active: '', direction: '' } },
+        },
+      ],
+    }),
+  });
+  protected readonly urgency = urgencyOf;
   protected readonly comment = signal('');
   protected readonly commentError = signal<string | null>(null);
   protected readonly message = signal('');

@@ -20,15 +20,16 @@ NXT Design là design system dùng chung cho các sản phẩm phần mềm nghi
 | `@nxt/ui` | Component Angular 21 (standalone, signals, CDK headless). Mỗi component là một entry point riêng: `@nxt/ui/button` |
 | Tài liệu này | Hướng dẫn chọn và dùng đúng, ví dụ chạy thật, bảng API và token sinh tự động |
 
-## Bảy nguyên tắc
+## Tám nguyên tắc
 
 1. **Rõ trước đẹp.** Mỗi vùng màn hình chỉ có một hành động chính.
-2. **Mật độ có kiểm soát.** Có ba mức gọn, vừa, rộng; chữ không bao giờ nhỏ hơn 12px.
+2. **Mật độ có kiểm soát.** Có ba mức gọn, vừa, rộng, đặt ở cấp ứng dụng và không trộn trong cùng một vùng làm việc; chữ không bao giờ nhỏ hơn 12px.
 3. **Bàn phím là công dân hạng nhất.** Mọi luồng chính làm được không cần chuột.
 4. **Trạng thái đầy đủ.** Mỗi màn hình đều có đủ trạng thái loading, rỗng, lỗi và không có quyền.
 5. **Không làm mất dữ liệu.** Hệ thống cảnh báo khi rời trang chưa lưu và ưu tiên hoàn tác hơn hỏi xác nhận.
 6. **Nhất quán xuyên sản phẩm.** Sản phẩm chỉ được đổi các brand slot đã định nghĩa.
 7. **Tiếng Việt là ngôn ngữ chính.** Tìm kiếm không phân biệt dấu, định dạng ngày và tiền theo `vi-VN`.
+8. **Dùng được ở mọi mức độ.** Mặc định đơn giản, sức mạnh có sẵn khi cần; không bắt người mới học phím tắt, không bắt người thạo đi đường vòng.
 
 ## Đọc tài liệu thế nào
 

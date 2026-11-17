@@ -2,7 +2,7 @@
 component: pagination
 status: beta
 owner: "NXT core"
-updated: 2026-10-19
+updated: 2026-11-16
 apg-pattern: "none (navigation landmark + button)"
 ---
 
@@ -83,15 +83,18 @@ APG pattern: không có pattern riêng; dùng landmark `navigation` và `button`
 | `text` | `color.text.subtle` |
 | `item-text` | `color.text.default` |
 | `item-bg-hover` | `color.bg.surface-hover` |
-| `item-current-bg` | `color.bg.selected` |
-| `item-current-text` | `color.text.strong` |
+| `item-current-bg` | `color.bg.primary` (vòng tròn accent đặc) |
+| `item-current-text` | `color.text.on-primary` |
+| `item-current-shadow` | `elevation.raised` (bóng trung tính, không tô theo accent) |
 | `item-size` | `size.control.md` |
-| `item-radius` | `radius.control` |
+| `item-radius` | `radius.pill` (nút tròn) |
+| `touch-target` | `size.row.md` (tạm, xem §8 Density / touch) |
 
-`select` mượn `--nxt-form-field-control-border`, `--nxt-form-field-control-bg`, `--nxt-form-field-affix-color`. Dùng thẳng: `color.text.default`, `color.text.disabled`, `size.icon.sm`, `space.gap.{sm,lg}`, `space.inset.{xs,sm,lg}`, `border-width.default`, `typography.{body-sm,label-sm}`, `focus.ring.*`.
+`select` bo `radius.control` và mượn `--nxt-form-field-control-border`, `--nxt-form-field-control-bg`, `--nxt-form-field-affix-color`. Dùng thẳng: `color.text.default`, `color.text.disabled`, `size.icon.sm`, `space.gap.{sm,lg}`, `space.inset.{xs,sm,lg}`, `border-width.default`, `typography.{body-sm,label-sm}`, `focus.ring.*`.
 
 ## 8. Density, responsive, i18n
 - Chiều cao nút và `select` theo density; vùng chạm tối thiểu 28px ở compact.
+- **Density / touch (Apple HIG: vùng chạm ≥ 44×44pt).** Trên thiết bị có `@media (pointer: coarse)`, mỗi nút (trước, sau, số trang) có một `::after` trong suốt thuộc chính nút, nới vùng chạm tới `touch-target` cả hai chiều; vòng tròn nhìn thấy giữ nguyên cỡ `item-size`. `select` chọn số dòng là phần tử native, không gắn được pseudo-element, nên cao bằng giá trị lớn hơn giữa `item-size` và `touch-target` (cao hơn các nút số trang trên cảm ứng). Không có rule nào cho `pointer: fine`. Token `touch-target` tạm alias `size.row.md` (44px ở comfortable, 56px ở spacious, 32px ở compact); cần token `semantic.size.touch-target` (44px, không đổi theo density), khi có chỉ việc đổi alias (xem Button §8).
 - Số dùng `tabular-nums` để không nhảy bề rộng. Tổng số định dạng `vi-VN` ("1.284").
 - Chuỗi giao diện viết sẵn bằng tiếng Việt trong template: "Hiển thị … trong …", "Không có …", "/ trang", "Số dòng mỗi trang", "Trang trước", "Trang sau", "Trang {n}". Chỉ `itemLabel` và `label` đổi được.
 

@@ -1,0 +1,86 @@
+name: Publish
+
+# Publishes @<owner>/ui and @<owner>/tokens to GitHub Packages (the account that owns this repo; npm scope = account name).
+#   git tag v0.1.0 && git push origin v0.1.0     → check, build, test, then publish for real
+#   Actions → Publish → Run workflow             → the same pipeline, ending in `npm publish --dry-run` (tick "publish" to publish)
+# A version can be published only once; bump it in packages/*/package.json, NXT_UI_VERSION and CHANGELOG.md first
+# (`npm run release:check` tells what is out of step). Accessibility tests run in ci.yml for the same commit.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish for real (unticked: npm publish --dry-run)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Check · build · test · install check · publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm 10.8 has an arborist bug with this dependency graph (see docs/adr/009).
+      - run: npm install -g npm@11
+
+      - run: npm ci
+
+      - name: Versions agree with each other and with the tag
+        run: npm run release:check -- "${{ github.ref_type == 'tag' && github.ref_name || '' }}"
+
+      - name: Design-system gate (tokens + hard-coded values)
+        run: npm run ds:check
+
+      - name: Build tokens, docs data, @nxt/ui and docs site
+        run: npm run build
+
+      - name: Unit tests (Vitest)
+        run: npm test
+
+      - name: Size budgets
+        run: npm run size:check
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      # Installs the staged packages with the documented `npm install @nxt/ui@npm:@<owner>/ui …` from a throw-away registry,
+      # builds an app with them and runs it in a browser.
+      - name: Install check (what a stranger runs)
+        run: npm run consumer:smoke:registry
+
+      - name: Stage packages for GitHub Packages
+        run: npm run release:prepare
+
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm config set "//npm.pkg.github.com/:_authToken" "${NODE_AUTH_TOKEN}"
+          flag="--dry-run"
+          if [ "${{ github.ref_type }}" = "tag" ] || [ "${{ inputs.publish }}" = "true" ]; then flag=""; fi
+          # tokens first: ui lists it as an optional peer. A version can be published only once, so a re-run (for example after
+          # the second package failed) skips what is already there instead of failing on it.
+          for pkg in tokens ui; do
+            cd "dist/publish/${pkg}"
+            name="$(node -p "require('./package.json').name")"
+            version="$(node -p "require('./package.json').version")"
+            if npm view "${name}@${version}" version --registry=https://npm.pkg.github.com > /dev/null 2>&1; then
+              echo "${name}@${version} is already published: skipping"
+            else
+              npm publish ${flag}
+            fi
+            cd ../../..
+          done

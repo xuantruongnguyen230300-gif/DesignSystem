@@ -195,17 +195,32 @@
     {
       "fg": "semantic.color.border.input",
       "bg": "semantic.color.bg.surface",
-      "min": 3,
-      "note": "WCAG 1.4.11 non-text"
+      "min": 1.3,
+      "note": "WCAG 1.4.11 non-text; viền mềm kiểu iOS (ADR-012): chỉ đảm bảo còn nhìn thấy, không còn là ranh giới 3:1"
     },
     {
       "fg": "semantic.color.border.input",
       "bg": "semantic.color.bg.surface-raised",
-      "min": 3,
-      "note": "inputs inside dialogs"
+      "min": 1.3,
+      "note": "inputs inside dialogs; viền mềm kiểu iOS (ADR-012): chỉ đảm bảo còn nhìn thấy, không còn là ranh giới 3:1"
     },
     {
       "fg": "semantic.color.border.danger",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.warning",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.success",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.info",
       "bg": "semantic.color.bg.surface",
       "min": 3
     },
@@ -295,6 +310,305 @@
       "fg": "semantic.color.data.8",
       "bg": "semantic.color.bg.surface",
       "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.subtle",
+      "bg": "semantic.color.bg.muted",
+      "min": 3,
+      "note": "sort icon in the table header"
+    },
+    {
+      "fg": "semantic.color.icon.primary",
+      "bg": "semantic.color.bg.muted",
+      "min": 3,
+      "note": "active sort icon in the table header"
+    },
+    {
+      "fg": "semantic.color.border.input",
+      "bg": "semantic.color.bg.muted",
+      "min": 1.3,
+      "note": "select-all checkbox in the table header; viền mềm kiểu iOS (ADR-012): chỉ đảm bảo còn nhìn thấy, không còn là ranh giới 3:1"
+    },
+    {
+      "fg": "semantic.color.indication.1.text",
+      "bg": "semantic.color.indication.1.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.1.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.2.text",
+      "bg": "semantic.color.indication.2.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.2.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.3.text",
+      "bg": "semantic.color.indication.3.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.3.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.4.text",
+      "bg": "semantic.color.indication.4.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.4.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.5.text",
+      "bg": "semantic.color.indication.5.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.5.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.6.text",
+      "bg": "semantic.color.indication.6.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.6.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.7.text",
+      "bg": "semantic.color.indication.7.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.7.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.indication.8.text",
+      "bg": "semantic.color.indication.8.bg",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.indication.8.solid",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.text.danger",
+      "bg": "semantic.color.bg.subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.icon.danger",
+      "bg": "semantic.color.bg.subtle",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.info",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.selected",
+      "bg": "semantic.color.bg.subtle",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.text.subtle",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.icon.subtle",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.selected",
+      "bg": "semantic.color.bg.canvas",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.text.link",
+      "bg": "semantic.color.bg.selected",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.icon.success",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.danger",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.warning",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.icon.info",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.text.default",
+      "bg": "semantic.color.bg.subtle",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.warning",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.info",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.success",
+      "bg": "semantic.color.bg.surface",
+      "min": 4.5
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.border.input",
+      "min": 1.3,
+      "note": "viền mềm kiểu iOS (ADR-012): chỉ đảm bảo còn nhìn thấy, không còn là ranh giới 3:1"
+    },
+    {
+      "fg": "semantic.color.bg.primary",
+      "bg": "semantic.color.bg.surface",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.danger",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.danger",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.warning",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.warning",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.success",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.success",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.info",
+      "bg": "semantic.color.bg.selected",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.info",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.border.selected",
+      "bg": "semantic.color.bg.surface-hover",
+      "min": 3
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.bg.success",
+      "min": 3,
+      "note": "tay gạt trắng trên rãnh switch bật (WCAG 1.4.11)"
+    },
+    {
+      "fg": "semantic.color.text.on-primary",
+      "bg": "semantic.color.bg.success-hover",
+      "min": 3,
+      "note": "tay gạt trắng trên rãnh switch bật khi hover"
+    },
+    {
+      "fg": "semantic.color.bg.success",
+      "bg": "semantic.color.bg.surface",
+      "min": 3,
+      "note": "rãnh switch bật so với nền (WCAG 1.4.11)"
+    },
+    {
+      "fg": "semantic.color.text.strong",
+      "bg": "semantic.color.bg.muted",
+      "min": 4.5,
+      "note": "giá trị stepper/slider trên rãnh muted"
+    },
+    {
+      "fg": "semantic.color.icon.default",
+      "bg": "semantic.color.bg.muted",
+      "min": 3,
+      "note": "icon trong stepper/slider"
+    },
+    {
+      "fg": "semantic.color.icon.default",
+      "bg": "semantic.color.bg.primary-subtle",
+      "min": 3,
+      "note": "icon trên nền accent nhạt"
+    },
+    {
+      "fg": "semantic.focus.ring.color",
+      "bg": "semantic.color.bg.muted",
+      "min": 3,
+      "note": "vòng focus trên rãnh muted"
+    },
+    {
+      "fg": "semantic.color.border.input-hover",
+      "bg": "semantic.color.bg.surface",
+      "min": 3,
+      "note": "rãnh slider khi hover"
+    },
+    {
+      "fg": "semantic.color.border.input-hover",
+      "bg": "semantic.color.bg.surface-raised",
+      "min": 3,
+      "note": "rãnh slider trong dialog"
+    },
+    {
+      "fg": "semantic.color.bg.primary",
+      "bg": "semantic.color.bg.surface",
+      "min": 3,
+      "note": "phần đã điền của slider"
     }
   ]
 }

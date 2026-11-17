@@ -69,7 +69,7 @@ Avatar không tương tác và không có điểm dừng Tab. Nếu avatar mở 
 
 - Không có `label`: avatar hoàn toàn trang trí.
 - Có `label`: ảnh dùng `label` làm `alt`; khi hiện chữ cái đầu, `label` nằm trong một chữ ẩn đi kèm.
-- Viền mảnh `component.avatar.border` giữ hình tròn rõ ràng khi nền tông gần trùng màu nền trang.
+- `component.avatar.border` trong suốt (kiểu C bỏ viền, nền tông chỉ thị đủ rõ); viền vẫn giữ chỗ để chế độ tương phản cao thấy ranh giới.
 
 ## Nội dung
 

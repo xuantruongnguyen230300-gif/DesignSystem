@@ -9,7 +9,12 @@
       "border": {
         "$type": "color",
         "$value": "{semantic.color.border.default}",
-        "$description": "Đường kẻ header/footer."
+        "$description": "Đường kẻ mảnh giữa header, thân và footer (không có viền ngoài)."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Góc bo của hai góc tự do (phía bắt đầu) của drawer; cạnh sát màn hình giữ vuông."
       },
       "backdrop": {
         "$type": "color",

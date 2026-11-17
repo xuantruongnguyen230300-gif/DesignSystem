@@ -61,9 +61,8 @@
               }
             ],
             "styles": [
-              "packages/tokens/dist/css/nxt.css",
+              "packages/tokens/dist/css/core.css",
               "packages/tokens/dist/css/brands/all.css",
-              "node_modules/@fontsource-variable/inter/index.css",
               "node_modules/@angular/cdk/overlay-prebuilt.css",
               "packages/ui/styles/nxt.css",
               "apps/docs/src/styles.css"
@@ -79,8 +78,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "8kB",
-                  "maximumError": "16kB"
+                  "maximumWarning": "16kB",
+                  "maximumError": "32kB"
                 }
               ],
               "outputHashing": "all"

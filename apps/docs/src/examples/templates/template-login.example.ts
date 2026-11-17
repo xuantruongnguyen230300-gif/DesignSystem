@@ -84,7 +84,9 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       min-block-size: 100%;
-      background: var(--nxt-color-bg-surface);
+      gap: var(--nxt-space-gap-lg);
+      padding: var(--nxt-space-gap-lg);
+      background: var(--nxt-color-bg-canvas);
     }
     @container (min-width: 900px) {
       .login {
@@ -97,8 +99,9 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
       justify-content: space-between;
       gap: var(--nxt-space-section-md);
       padding: var(--nxt-space-section-lg);
-      background: var(--nxt-color-bg-primary);
-      color: var(--nxt-color-text-on-primary);
+      border-radius: var(--nxt-radius-container);
+      background: var(--nxt-color-bg-primary-subtle);
+      color: var(--nxt-color-text-strong);
     }
     @container (min-width: 900px) {
       .brand {
@@ -116,8 +119,9 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
       place-items: center;
       inline-size: var(--nxt-size-control-lg);
       block-size: var(--nxt-size-control-lg);
-      border: var(--nxt-border-width-default) solid currentColor;
       border-radius: var(--nxt-radius-container);
+      background: var(--nxt-color-bg-primary);
+      color: var(--nxt-color-text-on-primary);
     }
     .brand__copy {
       display: grid;
@@ -147,6 +151,9 @@ import { NxtIcon, NxtIconName } from '@nxt/ui/icon';
       display: grid;
       place-items: center;
       padding: var(--nxt-space-section-md) var(--nxt-space-inset-lg);
+      border-radius: var(--nxt-radius-container);
+      background: var(--nxt-color-bg-surface);
+      box-shadow: var(--nxt-elevation-card);
     }
     .panel__inner {
       display: grid;

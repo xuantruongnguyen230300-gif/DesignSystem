@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NxtDatePicker } from '@nxt/ui/date-picker';
 import { NxtFormField, NxtInput } from '@nxt/ui/form-field';
 import { NxtGrid, NxtSpan } from '@nxt/ui/layout';
 
 /** Nhãn luôn hiển thị, dấu * đánh dấu trường bắt buộc */
 @Component({
   selector: 'example-form-field-basic',
-  imports: [NxtFormField, NxtInput, NxtGrid, NxtSpan],
+  imports: [NxtDatePicker, NxtFormField, NxtInput, NxtGrid, NxtSpan],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nxt-grid gap="md">
@@ -19,7 +20,7 @@ import { NxtGrid, NxtSpan } from '@nxt/ui/layout';
         <input nxtInput type="tel" inputmode="tel" autocomplete="off" placeholder="0912 345 678" />
       </nxt-form-field>
       <nxt-form-field label="Ngày sinh" [nxtSpan]="{ base: 12, md: 6 }">
-        <input nxtInput type="date" value="1994-03-18" />
+        <nxt-date-picker value="1994-03-18" today="2026-11-06" max="2026-11-06" />
       </nxt-form-field>
     </nxt-grid>
   `,

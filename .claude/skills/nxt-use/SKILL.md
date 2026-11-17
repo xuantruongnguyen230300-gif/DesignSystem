@@ -20,7 +20,9 @@ argument-hint: "[màn hình cần dựng]"
 <html lang="vi" data-nxt-brand="<product>" data-nxt-color="light" data-nxt-density="comfortable">
 ```
 - `data-nxt-color="dark"` bật dark mode. Bỏ attribute thì hệ thống theo `prefers-color-scheme` nếu app bật chế độ auto.
+- **Cài gói**: GitHub Packages của tài khoản chứa repo NXT, bằng alias để code vẫn là `@nxt/*`: `npm install @nxt/ui@npm:@<tài-khoản>/ui @nxt/tokens@npm:@<tài-khoản>/tokens`, kèm `.npmrc` trỏ scope `@<tài-khoản>` về `https://npm.pkg.github.com` và token `read:packages` (chi tiết ở trang Cài đặt của docs). Không cài thẳng tên có scope rồi tự đổi import.
 - Density có thể đặt riêng từng vùng, ví dụ `<section data-nxt-density="compact">` cho bảng rà soát.
+- **Đổi màu thương hiệu** (không cần brand riêng, không build lại): `provideNxt({ primary: '#0f766e' })` trong `app.config.ts`; đổi lúc chạy bằng `inject(NxtTheme).setPrimary('#…')`; hoặc CSS tĩnh bằng `npx nxt-palette "#0f766e" > brand.css` (nạp sau `core.css`). Chỉ đổi cho cả ứng dụng; vùng con khác màu cần brand. Không tự ghi đè `--nxt-color-brand-*` bằng tay: màu phải đủ 11 bậc và đạt tương phản, hai cách trên lo việc đó.
 
 ## 2. Chọn đúng thứ cần dùng
 Theo thứ tự ưu tiên:

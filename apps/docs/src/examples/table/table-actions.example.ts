@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, afterNextRender, inject, signal } from '@angular/core';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtIcon } from '@nxt/ui/icon';
-import { NxtTable } from '@nxt/ui/table';
+import { NxtRowActions, NxtTable } from '@nxt/ui/table';
 import { NxtTag, NxtTone } from '@nxt/ui/tag';
 import { NxtTooltip } from '@nxt/ui/tooltip';
 
@@ -9,20 +9,23 @@ interface Candidate {
   code: string;
   name: string;
   position: string;
+  source: string;
+  applied: string;
+  owner: string;
   stage: { label: string; tone: NxtTone };
 }
 
 const CANDIDATES: Candidate[] = [
-  { code: 'UV-301', name: 'Nguyễn Văn An', position: 'Kỹ sư kiểm thử', stage: { label: 'Phỏng vấn vòng 2', tone: 'info' } },
-  { code: 'UV-302', name: 'Trần Thị Bích', position: 'Chuyên viên tuyển dụng', stage: { label: 'Chờ đề nghị', tone: 'warning' } },
-  { code: 'UV-303', name: 'Lê Minh Châu', position: 'Kế toán thuế', stage: { label: 'Đã nhận việc', tone: 'success' } },
-  { code: 'UV-304', name: 'Phạm Quốc Dũng', position: 'Kỹ sư kiểm thử', stage: { label: 'Không đạt', tone: 'neutral' } },
+  { code: 'UV-301', name: 'Nguyễn Văn An', position: 'Kỹ sư kiểm thử', source: 'Giới thiệu nội bộ', applied: '02/10/2026', owner: 'Đặng Anh', stage: { label: 'Phỏng vấn vòng 2', tone: 'info' } },
+  { code: 'UV-302', name: 'Trần Thị Bích', position: 'Chuyên viên tuyển dụng', source: 'Trang tuyển dụng', applied: '05/10/2026', owner: 'Võ Thành Nam', stage: { label: 'Chờ đề nghị', tone: 'warning' } },
+  { code: 'UV-303', name: 'Lê Minh Châu', position: 'Kế toán thuế', source: 'Hội chợ việc làm', applied: '18/09/2026', owner: 'Đặng Anh', stage: { label: 'Đã nhận việc', tone: 'success' } },
+  { code: 'UV-304', name: 'Phạm Quốc Dũng', position: 'Kỹ sư kiểm thử', source: 'Trang tuyển dụng', applied: '09/10/2026', owner: 'Võ Thành Nam', stage: { label: 'Không đạt', tone: 'neutral' } },
 ];
 
-/** Thao tác trên hàng: nút icon có tên gồm cả đối tượng của hàng */
+/** Thao tác trên hàng: hiện khi hover hoặc Tab tới, luôn ở mép phải phần đang thấy (không phải cuộn ngang) */
 @Component({
   selector: 'example-table-actions',
-  imports: [NxtButton, NxtIcon, NxtTable, NxtTag, NxtTooltip],
+  imports: [NxtButton, NxtIcon, NxtRowActions, NxtTable, NxtTag, NxtTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="wrap" role="region" aria-label="Ứng viên đang theo dõi" tabindex="0">
@@ -32,8 +35,11 @@ const CANDIDATES: Candidate[] = [
           <tr>
             <th scope="col">Họ và tên</th>
             <th scope="col">Vị trí ứng tuyển</th>
+            <th scope="col">Nguồn</th>
+            <th scope="col">Ngày nộp</th>
+            <th scope="col">Người phụ trách</th>
             <th scope="col">Giai đoạn</th>
-            <th scope="col" class="nxt-table__actions"><span class="nxt-visually-hidden">Thao tác</span></th>
+            <th scope="col" nxtRowActions></th>
           </tr>
         </thead>
         <tbody>
@@ -41,8 +47,11 @@ const CANDIDATES: Candidate[] = [
             <tr>
               <th scope="row">{{ r.name }}</th>
               <td>{{ r.position }}</td>
+              <td>{{ r.source }}</td>
+              <td class="nxt-tabular-nums">{{ r.applied }}</td>
+              <td>{{ r.owner }}</td>
               <td><nxt-tag size="sm" dot [tone]="r.stage.tone">{{ r.stage.label }}</nxt-tag></td>
-              <td class="nxt-table__actions">
+              <td nxtRowActions>
                 <button nxtIconButton size="sm" variant="ghost" type="button" [attr.aria-label]="'Sửa ' + r.name" nxtTooltip="Sửa" (click)="edit(r)">
                   <nxt-icon name="pencil" />
                 </button>
@@ -53,7 +62,7 @@ const CANDIDATES: Candidate[] = [
             </tr>
           } @empty {
             <tr>
-              <td colspan="4" class="empty">Không còn ứng viên nào trong danh sách.</td>
+              <td colspan="8" class="empty">Không còn ứng viên nào trong danh sách.</td>
             </tr>
           }
         </tbody>

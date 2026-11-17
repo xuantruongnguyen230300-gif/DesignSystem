@@ -45,6 +45,7 @@ export class DialogConfirmExample {
         message: 'Các thay đổi trong “Nghỉ phép · toàn công ty” sẽ mất. Lưu nháp để giữ lại mà chưa áp dụng.',
         confirmLabel: 'Lưu nháp',
         alternateLabel: 'Bỏ thay đổi',
+        alternateTone: 'danger',
         cancelLabel: 'Ở lại',
       })
       .subscribe((answer) => this.message.set(ANSWERS[answer]));

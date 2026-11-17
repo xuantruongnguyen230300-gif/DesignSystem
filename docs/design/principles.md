@@ -14,12 +14,12 @@ Sản phẩm dùng NXT là phần mềm nghiệp vụ (HRM, quản trị nhân t
 
 Mọi đề xuất UI phải ghi rõ đang ở register nào. Không đem thẩm mỹ của trang marketing vào màn hình Operate.
 
-## 2. Bảy nguyên tắc
+## 2. Tám nguyên tắc
 
 1. **Rõ trước đẹp.** Mỗi vùng màn hình có đúng một hành động chính. Phân cấp bằng typography và khoảng trắng trước, màu sắc sau.
-2. **Mật độ có kiểm soát.** Có ba density: `compact`, `comfortable` (mặc định) và `spacious`. Density chỉ đổi space, control height và row height; không bao giờ làm nhỏ chữ dưới 12px.
+2. **Mật độ có kiểm soát.** Có ba density: `compact`, `comfortable` (mặc định) và `spacious`. Density chỉ đổi space, control height và row height; không bao giờ làm nhỏ chữ dưới 12px. Density đặt ở cấp ứng dụng (mặc định của sản phẩm + lựa chọn người dùng lưu bền), không trộn trong cùng một vùng làm việc; thiết bị cảm ứng dùng `spacious` (xem [Spacing & mật độ](../../apps/docs/src/content/foundations/spacing.md)).
 3. **Bàn phím là công dân hạng nhất.** Mọi luồng chính phải làm được không cần chuột. Focus luôn nhìn thấy được, có phím tắt cho thao tác lặp, có command palette.
-4. **Trạng thái đầy đủ.** Mỗi màn hình, mỗi component phải thiết kế đủ các trạng thái: loading (skeleton, không spinner toàn trang), empty (giải thích + hành động tiếp theo), error (nguyên nhân + cách sửa), partial, no-permission, offline/stale.
+4. **Trạng thái đầy đủ.** Mỗi màn hình, mỗi component phải thiết kế đủ các trạng thái: loading (skeleton, không spinner toàn trang), empty (giải thích + hành động tiếp theo), error (nguyên nhân + cách sửa), partial, no-permission, offline/stale. Trục trạng thái, tổ hợp được phép, khi nào ẩn / vô hiệu hoá / chỉ đọc và chính sách vô hiệu hoá chung: [Trạng thái](../../apps/docs/src/content/foundations/states.md). Thời gian hiện chỉ báo đang tải: [Motion › Thời gian phản hồi](../../apps/docs/src/content/foundations/motion.md).
 5. **Không làm mất dữ liệu của người dùng.** Cảnh báo khi rời trang có thay đổi chưa lưu. Ưu tiên undo hơn confirm. Thao tác phá huỷ phải ghi rõ đối tượng ("Xoá 3 nhân viên"), không hỏi chung chung "Bạn chắc chứ?".
 6. **Nhất quán xuyên sản phẩm.** Mỗi sản phẩm chỉ được đổi các brand slot đã định nghĩa (xem [token-architecture.md §5](token-architecture.md)). Cấu trúc, hành vi và vị trí không đổi theo sản phẩm.
 7. **Tiếng Việt là ngôn ngữ chính.**
@@ -27,7 +27,7 @@ Mọi đề xuất UI phải ghi rõ đang ở register nào. Không đem thẩm
    - Tìm kiếm không phân biệt dấu ("nguyen" khớp "Nguyễn").
    - Sắp xếp theo collation `vi`.
    - Định dạng `dd/MM/yyyy`, tiền `1.250.000 ₫`, số thập phân dấu phẩy.
-   - Tên người dài phải truncate có tooltip.
+   - Chữ dài (tên người, tên phòng ban, chức danh) ưu tiên không cắt: xuống dòng, hoặc để bảng cuộn ngang. Nếu phải cắt thì toàn văn xem được bằng **một thao tác, bằng chuột, bàn phím và cảm ứng** (màn chi tiết, mở rộng tại chỗ "Xem thêm", hoặc cơ chế sẵn có của component). Tooltip chỉ là cách bổ sung và chỉ trên phần tử nhận focus được; thuộc tính `title` là không đủ. Xem [Cách viết › Xuống dòng & cắt chữ](../../apps/docs/src/content/foundations/writing.md).
 8. **Dùng được ở mọi mức độ.** Mặc định đơn giản, sức mạnh có sẵn khi cần (progressive disclosure). Không bắt người mới học phím tắt, không bắt người thạo đi đường vòng.
    - *Người mới:* nút có chữ ở hành động chính ("Bộ lọc", "Thêm mới"); icon luôn có tooltip và tên truy cập; empty state nói bước tiếp theo; lỗi nói cách sửa; hoàn tác được.
    - *Người dùng thường xuyên:* trạng thái hiện rõ (chip bộ lọc, số tiêu chí, số đã chọn); màn hình nhớ lựa chọn (tab, bộ lọc, thu gọn menu); thao tác hàng loạt.
@@ -47,10 +47,10 @@ Skill `nxt-ui-review` và `nxt-a11y-audit` chấm theo danh sách này. Mỗi m�
 
 **Trạng thái & dữ liệu**
 - [ ] Hover, focus, active, disabled, loading, error, empty đều được thiết kế.
-- [ ] Disabled control giải thích *vì sao* (tooltip/helper text) khi lý do không hiển nhiên.
+- [ ] Vô hiệu hoá theo một chính sách: hành động (nút, mục menu, tab) dùng `aria-disabled`, vẫn focus được, tooltip nói *vì sao*; trường nhập dùng `disabled` native chỉ khi lý do hiển nhiên, còn lại `readonly` kèm hướng dẫn; lý do không rõ thì để bật và báo lỗi khi dùng ([Trạng thái](../../apps/docs/src/content/foundations/states.md)).
 - [ ] Lỗi form nằm cạnh field, dùng ngôn ngữ người dùng, nói cách sửa; tóm tắt lỗi ở đầu form dài.
 - [ ] Số liệu căn phải, dùng `font-variant-numeric: tabular-nums`; tiền/ngày theo locale.
-- [ ] Nội dung dài (tên, địa chỉ, tên phòng ban) không làm vỡ layout.
+- [ ] Nội dung dài (tên, địa chỉ, tên phòng ban) không làm vỡ layout; chữ bị cắt xem được đầy đủ bằng bàn phím và cảm ứng, không chỉ qua tooltip hover hay `title`.
 
 **Token & code**
 - [ ] Không có giá trị hard-code: `npm run ds:check` phải sạch.
@@ -62,7 +62,7 @@ Skill `nxt-ui-review` và `nxt-a11y-audit` chấm theo danh sách này. Mỗi m�
 | Anti-pattern | Vì sao cấm | Làm gì thay thế |
 |---|---|---|
 | Card lồng card, mọi thứ đều là card | Tốn không gian, phân cấp giả | Section + divider/khoảng trắng |
-| Gradient, glassmorphism, blur nền, glow | Giảm tương phản, rối mắt khi dùng lâu | Surface phẳng + elevation token |
+| Gradient trang trí, glassmorphism, `backdrop-filter`, glow, animate `box-shadow` | Giảm tương phản, rối mắt khi dùng lâu, tốn chi phí vẽ | Surface đặc + bo góc lớn + bóng mềm định nghĩa sẵn trong `elevation` token (ADR-012: bo lớn và các bóng đó **được phép**) |
 | Hero metric khổng lồ trên dashboard nghiệp vụ | Đẩy dữ liệu cần thao tác xuống dưới | Stat strip gọn + bảng/biểu đồ có ngữ cảnh |
 | Spinner toàn trang | Mất ngữ cảnh, cảm giác chậm | Skeleton đúng hình khối, loading cục bộ |
 | Modal chồng modal | Mất định hướng, kẹt focus | Drawer, hoặc chia bước trong cùng một modal |
@@ -76,6 +76,8 @@ Skill `nxt-ui-review` và `nxt-a11y-audit` chấm theo danh sách này. Mỗi m�
 | Nhiều theme "phong cách" tự do (kính mờ, aurora…) | Không đảm bảo tương phản, khó QA | Brand slot + light/dark + density |
 
 ## 5. Giọng văn (UX writing tiếng Việt)
+
+Luật đầy đủ (viết hoa, dấu câu, số đếm, biến trong chuỗi, bảng từ chuẩn cho hành động, thông báo & xác nhận, nhãn trường quản trị, xuống dòng & cắt chữ) ở trang [Cách viết](../../apps/docs/src/content/foundations/writing.md). Tóm tắt:
 
 - Viết ngắn, chủ động, gọi đúng tên đối tượng: "Lưu hồ sơ", không viết "OK" hay "Xác nhận".
 - Nhãn nút là động từ, kèm đối tượng nếu cần: "Gửi duyệt", "Xoá 3 nhân viên".

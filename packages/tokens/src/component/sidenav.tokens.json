@@ -3,13 +3,13 @@
     "sidenav": {
       "bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.surface}",
-        "$description": "Nền thanh điều hướng."
+        "$value": "{semantic.color.bg.transparent}",
+        "$description": "Nền thanh điều hướng: trong suốt, nằm thẳng trên nền ứng dụng (phẳng như HeroUI)."
       },
       "border": {
         "$type": "color",
-        "$value": "{semantic.color.border.default}",
-        "$description": "Viền ngăn với nội dung."
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Đường kẻ mảnh trong sidenav (chân, vạch ngăn nhóm ở rail); viền ngoài chỉ dùng khi forced-colors."
       },
       "width": {
         "$type": "dimension",
@@ -53,18 +53,18 @@
       },
       "item-active-bg": {
         "$type": "color",
-        "$value": "{semantic.color.bg.selected}",
-        "$description": "Nền mục đang ở trang hiện tại."
+        "$value": "{semantic.color.bg.primary-subtle}",
+        "$description": "Skin iOS: mục active tô accent nhạt."
       },
       "item-active-text": {
         "$type": "color",
-        "$value": "{semantic.color.text.strong}",
-        "$description": "Chữ mục đang active."
+        "$value": "{semantic.color.text.link}",
+        "$description": "Chữ accent."
       },
       "item-active-icon": {
         "$type": "color",
         "$value": "{semantic.color.icon.primary}",
-        "$description": "Icon mục đang active."
+        "$description": "Icon accent."
       },
       "indicator": {
         "$type": "color",
@@ -80,6 +80,21 @@
         "$type": "color",
         "$value": "{semantic.color.text.subtle}",
         "$description": "Chữ tiêu đề nhóm."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Bo góc card sidenav (kiểu C: sidenav là một card nổi)."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.none}",
+        "$description": "Sidenav phẳng, không bóng."
+      },
+      "shadow-drawer": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.modal}",
+        "$description": "Bóng của sidenav khi mở như drawer trên màn hình hẹp."
       }
     }
   }

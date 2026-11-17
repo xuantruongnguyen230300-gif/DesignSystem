@@ -1,0 +1,81 @@
+{
+  "component": {
+    "object-page": {
+      "header-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền header nội dung (khối tóm tắt: avatar, phụ đề, nhãn–giá trị chính, trạng thái)."
+      },
+      "section-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền của mỗi section."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}",
+        "$description": "Đường kẻ mảnh bên trong (dưới thanh neo, giữa các khối con); viền ngoài card chỉ dùng khi forced-colors."
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}",
+        "$description": "Bo góc header nội dung và section."
+      },
+      "bar-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.canvas}",
+        "$description": "Nền thanh dính (thanh neo / tab, dòng tóm tắt gọn): cùng màu nền trang, che nội dung cuộn bên dưới."
+      },
+      "footer-bg": {
+        "$type": "color",
+        "$value": "{semantic.color.bg.surface}",
+        "$description": "Nền thanh chân dính đáy (Huỷ / Lưu ở chế độ sửa)."
+      },
+      "title-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Tiêu đề section và khối con."
+      },
+      "summary-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Dòng tóm tắt gọn trong thanh dính khi header nội dung đã khuất."
+      },
+      "anchor-text": {
+        "$type": "color",
+        "$value": "{semantic.color.text.subtle}",
+        "$description": "Chữ neo chưa chọn trên thanh neo."
+      },
+      "anchor-text-hover": {
+        "$type": "color",
+        "$value": "{semantic.color.text.default}",
+        "$description": "Chữ neo khi hover."
+      },
+      "anchor-text-current": {
+        "$type": "color",
+        "$value": "{semantic.color.text.strong}",
+        "$description": "Chữ neo của section đang thấy."
+      },
+      "anchor-indicator": {
+        "$type": "color",
+        "$value": "{semantic.color.border.selected}",
+        "$description": "Vạch dưới neo của section đang thấy."
+      },
+      "anchor-height": {
+        "$type": "dimension",
+        "$value": "{semantic.size.control.lg}",
+        "$description": "Chiều cao neo (vùng chạm), theo density."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.card}",
+        "$description": "Bóng mềm của header nội dung và section (card bo lớn, không viền)."
+      },
+      "footer-shadow": {
+        "$type": "shadow",
+        "$value": "{semantic.elevation.overlay}",
+        "$description": "Bóng của thanh chân dính đáy (nổi trên nội dung cuộn)."
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-export { NxtCheckbox } from './src/checkbox';
+export { NxtCheckbox, NxtCheckboxGroup } from './src/checkbox';

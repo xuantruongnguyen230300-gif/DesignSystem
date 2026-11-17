@@ -13,6 +13,9 @@ keywords:
   - form them moi
   - xem nhanh
   - hop thoai
+  - chua luu
+  - roi bieu mau
+  - can close
 ---
 
 # Drawer
@@ -78,6 +81,31 @@ Mặc định drawer focus vào phần tử đầu tiên tương tác được, 
 
 ::example{drawer-sizes}
 
+## Chặn đóng khi chưa lưu
+
+Form đã sửa mà người dùng nhấn <kbd>Esc</kbd>, bấm ra ngoài, bấm "Đóng" hay "Huỷ" thì phải hỏi trước (principles §2.5). Truyền `canClose` cho `nxt-drawer-layout` (trong nội dung, nơi biết form đã đổi chưa) hoặc cho config của `open()`:
+
+::example{drawer-unsaved}
+
+```ts
+protected readonly canClose: NxtDrawerCanClose = () =>
+  !this.dirty() ||                                     // chưa sửa gì: đóng luôn, không hỏi
+  this.dialog
+    .confirm({
+      title: 'Rời khỏi biểu mẫu khi chưa lưu?',
+      message: 'Số điện thoại và email vừa sửa sẽ mất.',
+      confirmLabel: 'Rời khỏi',
+      cancelLabel: 'Ở lại',
+    })
+    .pipe(map((answer) => answer === 'confirm'));
+```
+
+- `canClose` trả `boolean`, `Promise<boolean>` hoặc `Observable<boolean>`. Đang chờ câu trả lời thì drawer ở lại và bỏ qua các yêu cầu đóng khác.
+- Áp cho mọi cách đóng **không kèm kết quả**: <kbd>Esc</kbd>, backdrop, nút "Đóng", và nút "Huỷ" gọi `ref.close()`. `ref.close(giáTrị)` của nút Lưu luôn đóng, không hỏi.
+- Không hỏi khi chưa có thay đổi. Tone `default` (không `danger`): người dùng nhập lại được.
+- Đây là trường hợp duy nhất được mở dialog từ drawer.
+- Lưu xong thì drawer đóng, nên báo kết quả bằng [Toast](/components/toast).
+
 ## Chặn đóng khi đang lưu
 
 `disableClose: true` chặn đóng bằng <kbd>Esc</kbd> và bằng click ra ngoài. Chỉ bật khi đóng drawer sẽ làm mất việc đang chạy, ví dụ trong lúc gửi dữ liệu. Có thể bật tạm thời từ component nội dung qua `ref.disableClose = true`, rồi tắt khi xong. Đừng bật cho cả vòng đời của một form chỉ để tránh mất dữ liệu đang nhập, vì người dùng sẽ không có cách thoát nhanh.
@@ -89,7 +117,7 @@ Mặc định drawer focus vào phần tử đầu tiên tương tác được, 
 | Phím | Hành vi |
 |------|---------|
 | <kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd> | Đi vòng trong drawer, không ra được trang phía sau (focus trap) |
-| <kbd>Esc</kbd> | Đóng drawer, trừ khi `disableClose` |
+| <kbd>Esc</kbd> | Đóng drawer, trừ khi `disableClose`; có `canClose` thì hỏi trước |
 | <kbd>Enter</kbd> trong ô nhập | Gửi form (khi nút Lưu có `type="submit"` và `form`) |
 | Đóng bằng cách bất kỳ | Focus quay về phần tử đã mở drawer |
 
@@ -98,6 +126,10 @@ Mặc định drawer focus vào phần tử đầu tiên tương tác được, 
 - Khi drawer mở, focus vào phần tử đầu tiên tương tác được, hoặc vào phần tử có `cdkFocusInitial`.
 - Hiệu ứng trượt dùng `motion.duration.slow`. Ở chế độ giảm chuyển động, drawer hiện ngay không trượt.
 - Báo kết quả sau khi đóng (đã thêm, đã lưu) bằng vùng `role="status"` trên trang, vì drawer đã biến mất.
+
+## Chân drawer
+
+Theo luật chung của [Dialog › Chân dialog và drawer](/components/dialog#chan-dialog-va-drawer): căn phải, tối đa một `primary` đứng cuối; "Huỷ" là `ghost`, không bao giờ primary/danger; drawer chỉ xem có một nút "Đóng" thì nút đó `secondary`; lựa chọn thứ ba dạt trái.
 
 ## Nội dung
 
@@ -119,4 +151,5 @@ Mặc định drawer focus vào phần tử đầu tiên tương tác được, 
 
 ## Changelog
 
+- **Chưa phát hành**: thêm `canClose` (config và input của `nxt-drawer-layout`) để chặn đóng khi còn thay đổi chưa lưu; luật chân drawer.
 - **0.1.0**: phát hành beta: service `NxtDrawer` (CDK Dialog, 3 size, `data`, `disableClose`) và `nxt-drawer-layout` (tiêu đề, mô tả, nút Đóng, chân cố định).

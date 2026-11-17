@@ -139,7 +139,9 @@ Nguyên tắc (principles §2): nội dung bị cắt phải xem được đầy
 | `radius` | `radius.pill` |
 | `height` | `size.icon.md` |
 
-Dùng thẳng semantic: `space.gap.xs`, `space.inset.{xs,sm}`, `size.icon.sm`, `radius.pill`, `typography.label-sm`.
+Chữ `label-sm` đậm vừa (semibold), đệm ngang `space.inset.md` (cỡ `sm`: `space.inset.sm`).
+
+Dùng thẳng semantic: `space.gap.xs`, `space.inset.{xs,sm,md}`, `font-weight.semibold`, `size.icon.sm`, `radius.pill`, `typography.label-sm`.
 
 ## 8. Density, responsive, i18n
 - Chiều cao tag và badge dựa trên `size.icon.*` nên **không** đổi theo density; padding ngang theo density.

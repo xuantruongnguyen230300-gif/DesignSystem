@@ -2,7 +2,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NxtButton } from '@nxt/ui/button';
 import { NxtDrawer, NxtDrawerLayout } from '@nxt/ui/drawer';
-import { NxtTable } from '@nxt/ui/table';
+import { NxtRowActions, NxtTable } from '@nxt/ui/table';
 import { NxtTag } from '@nxt/ui/tag';
 
 interface Employee {
@@ -26,7 +26,7 @@ const EMPLOYEES: Employee[] = [
 /** Xem nhanh hồ sơ từ một hàng mà không rời danh sách */
 @Component({
   selector: 'example-drawer-detail',
-  imports: [NxtButton, NxtTable],
+  imports: [NxtButton, NxtRowActions, NxtTable],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="table-wrap" role="region" aria-label="Nhân viên Phòng Kế toán" tabindex="0">
@@ -36,7 +36,7 @@ const EMPLOYEES: Employee[] = [
             <th scope="col">Mã NV</th>
             <th scope="col">Họ và tên</th>
             <th scope="col">Chức danh</th>
-            <th scope="col" class="nxt-table__actions"><span class="nxt-visually-hidden">Thao tác</span></th>
+            <th scope="col" nxtRowActions></th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@ const EMPLOYEES: Employee[] = [
               <td class="nxt-tabular-nums">{{ e.code }}</td>
               <th scope="row">{{ e.name }}</th>
               <td>{{ e.title }}</td>
-              <td class="nxt-table__actions">
+              <td nxtRowActions>
                 <button nxtButton size="sm" variant="ghost" [attr.aria-label]="'Xem hồ sơ ' + e.name" (click)="open(e)">Xem</button>
               </td>
             </tr>

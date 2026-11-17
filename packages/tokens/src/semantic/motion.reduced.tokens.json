@@ -13,11 +13,15 @@
         },
         "normal": {
           "$value": "{primitive.duration.0}",
-          "$description": "Mở/đóng phần tử nhỏ: dropdown, tooltip."
+          "$description": "Mở/đóng phần tử vừa: dialog mở, sidenav thu gọn, popover, dropdown lớn."
         },
         "slow": {
           "$value": "{primitive.duration.0}",
-          "$description": "Mở/đóng phần tử lớn: dialog, drawer."
+          "$description": "Mở/đóng phần tử lớn hoặc di chuyển xa: drawer, sidenav ở màn hẹp, thanh progress."
+        },
+        "loop": {
+          "$value": "{primitive.duration.1600}",
+          "$description": "Một vòng của chuyển động lặp khi người dùng giảm chuyển động: chậm lại, không về 0, vì chỉ báo đang chờ vẫn phải thấy được."
         }
       }
     }
