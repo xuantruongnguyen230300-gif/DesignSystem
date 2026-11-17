@@ -35,6 +35,18 @@ npm install @nxt/ui@npm:@xuantruongnguyen230300-gif/ui @nxt/tokens@npm:@xuantruo
 
 Đường cài này đã được kiểm bằng npm thật: `npm run consumer:smoke:registry` đóng gói như workflow phát hành, phục vụ qua một registry cục bộ, chạy đúng lệnh ở trên, build một app Angular với gói đã cài rồi chạy trong trình duyệt (cả axe). pnpm và yarn hỗ trợ cú pháp `npm:` tương tự nhưng chưa thử.
 
+Trên Windows PowerShell đặt token bằng `$env:GITHUB_TOKEN = "<token>"` (phiên hiện tại) hoặc `setx GITHUB_TOKEN "<token>"` (lâu dài, mở terminal mới). `.npmrc` không chứa token nên commit được.
+
+### Lỗi thường gặp
+
+| Triệu chứng | Nguyên nhân thường gặp | Cách sửa |
+|-------------|------------------------|----------|
+| `E401` hoặc `E403` khi cài | Token thiếu, hết hạn hoặc không có quyền `read:packages` | Tạo lại token (classic) với quyền đó |
+| `E404` với `@xuantruongnguyen230300-gif/ui` | `.npmrc` thiếu dòng `registry`, hoặc không nằm ở thư mục gốc project | Kiểm tra bước 2 |
+| `Failed to replace env in config: ${GITHUB_TOKEN}` | Biến `GITHUB_TOKEN` chưa được đặt trong terminal đang chạy | Đặt biến rồi mở terminal mới |
+| Build báo `Could not resolve "@nxt/ui/…"` | Đã cài thẳng theo tên scope, không qua alias | Gỡ gói đó rồi cài lại bằng bước 3 |
+| Cảnh báo thiếu peer `@angular/cdk` | Chưa cài CDK | `npm install @angular/cdk` |
+
 NXT yêu cầu Angular `>=21 <23` và Node ≥ 20.19. Mỗi phiên bản được ghi trong [CHANGELOG](https://github.com/xuantruongnguyen230300-gif/DesignSystem/blob/main/CHANGELOG.md).
 
 ## 2. Nạp style

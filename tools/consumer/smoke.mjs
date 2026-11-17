@@ -2,7 +2,9 @@
 // Consumer smoke test: proves a project outside this repo can install @nxt/ui + @nxt/tokens and use them.
 //
 //   npm run build && npm run consumer:smoke                      packed tarballs, extracted into node_modules
-//   npm run build && npm run consumer:smoke -- --from-registry   the way a stranger installs them from GitHub Packages
+//   npm run build && npm run consumer:smoke -- --from-registry   the way a stranger installs them from GitHub Packages (local registry)
+//   GITHUB_TOKEN=<read:packages> npm run consumer:smoke:published  the same install from the REAL GitHub Packages (latest published
+//                                                                version, or NXT_VERSION=0.1.2); no build needed
 //
 // Default: `npm pack` both packages, extract the tarballs into a fresh Angular app's node_modules.
 // --from-registry: stage the packages exactly as the publish workflow does (tools/release/stage.mjs: scoped names), serve
@@ -25,6 +27,7 @@ import { ownerFromRepository, stagePackages } from '../release/stage.mjs';
 
 const repo = process.cwd();
 const fromRegistry = process.argv.includes('--from-registry');
+const fromPublished = process.argv.includes('--from-published');
 const work = path.join(os.tmpdir(), 'nxt-consumer-smoke');
 const app = path.join(work, 'app');
 const tgz = path.join(work, 'tgz');
@@ -34,7 +37,7 @@ const fail = (m) => {
   process.exit(1);
 };
 
-for (const p of ['dist/ui/package.json', 'packages/tokens/dist/css/core.css']) {
+for (const p of fromPublished ? [] : ['dist/ui/package.json', 'packages/tokens/dist/css/core.css']) {
   if (!fs.existsSync(path.join(repo, p))) fail(`${p} is missing. Run npm run build first.`);
 }
 fs.rmSync(work, { recursive: true, force: true });
@@ -62,20 +65,30 @@ function linkRepoModules() {
   }
 }
 
-if (fromRegistry) {
-  // 1+2. stage like the publish workflow, serve from a fixture registry, install with the documented alias command
+if (fromRegistry || fromPublished) {
+  // 1+2. install with the documented alias command, from a fixture registry (staged like the publish workflow) or from GitHub Packages
   const scope = ownerFromRepository(repo);
   if (!scope) fail('cannot read the GitHub owner from packages/tokens/package.json "repository".');
-  const staged = stagePackages({ scope, root: repo, outDir: path.join(work, 'publish') });
-  log(`staged ${staged.map((p) => `${p.name}@${p.version}`).join(' and ')}`);
-  const registry = await startRegistry([...staged.map((p) => ({ dir: p.dir })), { dir: path.join(repo, 'node_modules/tslib') }], path.join(work, 'registry'));
+  let registry = null;
+  if (fromRegistry) {
+    const staged = stagePackages({ scope, root: repo, outDir: path.join(work, 'publish') });
+    log(`staged ${staged.map((p) => `${p.name}@${p.version}`).join(' and ')}`);
+    registry = await startRegistry([...staged.map((p) => ({ dir: p.dir })), { dir: path.join(repo, 'node_modules/tslib') }], path.join(work, 'registry'));
+  } else if (!process.env.GITHUB_TOKEN) {
+    fail('GITHUB_TOKEN (a token with read:packages) is required to install from GitHub Packages.');
+  }
+  const registryUrl = registry ? registry.url : 'https://npm.pkg.github.com/';
   fs.writeFileSync(path.join(app, 'package.json'), JSON.stringify({ name: 'consumer-smoke', version: '0.0.0', private: true }, null, 2));
-  // The project's .npmrc, as in the docs (the token line is not needed for a local registry). User and global npm config are
-  // replaced, so nothing from this machine leaks into the test.
-  fs.writeFileSync(path.join(app, '.npmrc'), `@${scope}:registry=${registry.url}\nregistry=${registry.url}\n`);
+  // The project's .npmrc. Published mode writes exactly what the docs tell users to write (the token comes from the environment);
+  // the local registry needs no token and also serves tslib. User and global npm config are replaced, so nothing from this machine leaks in.
+  fs.writeFileSync(
+    path.join(app, '.npmrc'),
+    registry ? `@${scope}:registry=${registry.url}\nregistry=${registry.url}\n` : `@${scope}:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=\${GITHUB_TOKEN}\n`,
+  );
   fs.writeFileSync(path.join(work, 'empty.npmrc'), '');
-  const command = [`@nxt/ui@npm:@${scope}/ui`, `@nxt/tokens@npm:@${scope}/tokens`];
-  log(`npm install ${command.join(' ')}   (registry ${registry.url})`);
+  const pin = fromPublished && process.env.NXT_VERSION ? `@${process.env.NXT_VERSION}` : '';
+  const command = [`@nxt/ui@npm:@${scope}/ui${pin}`, `@nxt/tokens@npm:@${scope}/tokens${pin}`];
+  log(`npm install ${command.join(' ')}   (registry ${registryUrl})`);
   // Asynchronous on purpose: the registry lives in this process, a blocking call would stop it from answering npm.
   try {
     await promisify(execFile)(npm, ['install', ...command, '--ignore-scripts', '--no-audit', '--no-fund', '--legacy-peer-deps', '--loglevel=error'], {
@@ -88,7 +101,7 @@ if (fromRegistry) {
   } catch (e) {
     fail(`npm install failed:\n${(e.stdout ?? '') + (e.stderr ?? '')}`.slice(0, 3000));
   } finally {
-    await registry.close();
+    await registry?.close();
   }
   for (const name of ['ui', 'tokens']) {
     const real = JSON.parse(fs.readFileSync(path.join(nm, '@nxt', name, 'package.json'), 'utf8')).name;
@@ -121,7 +134,7 @@ if (fromRegistry) {
   }
 }
 const ui = JSON.parse(fs.readFileSync(path.join(nm, '@nxt/ui/package.json'), 'utf8'));
-log(`installed @nxt/ui ${ui.version}${fromRegistry ? ` (package "${ui.name}", from the registry)` : ''}, peer @angular/core ${ui.peerDependencies?.['@angular/core']}`);
+log(`installed @nxt/ui ${ui.version}${fromRegistry || fromPublished ? ` (package "${ui.name}", from ${fromPublished ? 'GitHub Packages' : 'the local registry'})` : ''}, peer @angular/core ${ui.peerDependencies?.['@angular/core']}`);
 
 // 3. the consumer app (a few components + provideNxt)
 const w = (rel, content) => {

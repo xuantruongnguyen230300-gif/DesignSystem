@@ -29,7 +29,8 @@
     "pretest": "npm run tokens:build",
     "consumer:smoke": "node tools/consumer/smoke.mjs",
     "release:check": "node tools/release/check-version.mjs",
-    "consumer:smoke:registry": "node tools/consumer/smoke.mjs --from-registry"
+    "consumer:smoke:registry": "node tools/consumer/smoke.mjs --from-registry",
+    "consumer:smoke:published": "node tools/consumer/smoke.mjs --from-published"
   },
   "dependencies": {
     "@angular/cdk": "^21.2.0",

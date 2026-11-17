@@ -2,9 +2,17 @@
 
 Hai gói `@nxt/ui` và `@nxt/tokens` phát hành cùng một số phiên bản ([semver](https://semver.org/lang/vi/)). Thẻ phát hành có dạng `v<phiên bản>`; workflow `.github/workflows/publish.yml` chỉ chạy khi thẻ khớp phiên bản trong `package.json` (`npm run release:check`).
 
+## 0.1.2
+
+Mở rộng README của `@nxt/ui` thành hướng dẫn cài đặt đầy đủ cho một dự án Angular khác (không đổi code): tạo token, đặt biến môi trường (bash và PowerShell), `.npmrc`, cài bằng alias, `app.config.ts`, cập nhật phiên bản, CI và bảng lỗi thường gặp.
+
+## 0.1.1
+
+Sửa tài liệu đi kèm gói (không đổi code): README của hai gói và README gốc nay tự đủ các bước cài đặt, và nói rõ lệnh `npm install @<tài-khoản>/ui` mà trang gói của GitHub gợi ý **không dùng được**, phải cài bằng alias.
+
 ## 0.1.0
 
-Phiên bản đầu tiên (chưa phát hành).
+Phiên bản đầu tiên, phát hành 2026-11-17.
 
 - **Giao diện mặc định theo Apple HIG** (ADR-014): bo góc, nút tô nhạt, ô nhập nền xám, font hệ thống; sáng/tối và ba mật độ.
 - **Hơn 40 component** Angular 21 standalone, signals, OnPush, hành vi headless từ Angular CDK; mỗi component một entry point `@nxt/ui/<tên>` và một file token riêng, nên ứng dụng chỉ trả giá cho phần nó import.
